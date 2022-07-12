@@ -2,11 +2,11 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-from .src import shortcuts
+from .src import actions
 
 
 def init():
-    shortcuts.refresh_tools_options()
+    actions.bind_options_actions()
     pass
 
 

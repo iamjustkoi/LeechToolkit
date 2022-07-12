@@ -22,15 +22,18 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setWidgetResizable(True)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.OptionsScrollWidget.sizePolicy().hasHeightForWidth())
+        self.OptionsScrollWidget.setSizePolicy(sizePolicy)
         self.OptionsScrollWidget.setObjectName("OptionsScrollWidget")
         self.optionsScrollLayout = QtWidgets.QVBoxLayout(self.OptionsScrollWidget)
         self.optionsScrollLayout.setObjectName("optionsScrollLayout")
-        self.checkBox = QtWidgets.QCheckBox(self.OptionsScrollWidget)
-        self.checkBox.setChecked(True)
-        self.checkBox.setObjectName("checkBox")
-        self.optionsScrollLayout.addWidget(self.checkBox)
-        spacerItem = QtWidgets.QSpacerItem(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.optionsScrollLayout.addItem(spacerItem)
+        self.toolsOptionsCheckBox = QtWidgets.QCheckBox(self.OptionsScrollWidget)
+        self.toolsOptionsCheckBox.setChecked(True)
+        self.toolsOptionsCheckBox.setObjectName("toolsOptionsCheckBox")
+        self.optionsScrollLayout.addWidget(self.toolsOptionsCheckBox)
         self.OptionsScrollArea.setWidget(self.OptionsScrollWidget)
         self.optionsLayout.addWidget(self.OptionsScrollArea)
         self.buttonBox = QtWidgets.QDialogButtonBox(OptionsDialog)
@@ -47,7 +50,7 @@ class Ui_OptionsDialog(object):
     def retranslateUi(self, OptionsDialog):
         _translate = QtCore.QCoreApplication.translate
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
-        self.checkBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
+        self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
 
 
 if __name__ == "__main__":
