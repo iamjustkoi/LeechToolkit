@@ -10,7 +10,17 @@ from .options import OptionsDialog
 from .consts import String, Config
 
 
-def refresh_tools_options(changes=None, obj=None):
+def on_options_called(result=False):
+    options = OptionsDialog(LeechToolkitConfigManager(mw))
+    options.exec()
+
+
+def bind_options_actions():
+    _bind_config_options()
+    _bind_tools_options()
+
+
+def _bind_tools_options(changes=None, obj=None):
     """
 Updates the toolbar actions menu with the options shortcut. Expects an Operation Change hook call,
 but can also be used as a general update push, too.
@@ -30,8 +40,6 @@ but can also be used as a general update push, too.
                 mw.form.menuTools.removeAction(action)
 
 
-def on_options_called(result):
-    options = OptionsDialog(LeechToolkitConfigManager(mw))
-    options.exec()
-    print(f'o: {result}')
+def _bind_config_options():
+    mw.addonManager.setConfigAction(__name__, on_options_called)
 
