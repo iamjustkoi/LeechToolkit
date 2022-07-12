@@ -9,9 +9,11 @@ ANKI_LEGACY_VER = 35
 
 
 class Config:
-    TOOLBAR_ENABLED = 'Use_Toolbar_Options'
+    TOOLBAR_ENABLED = 'Use Toolbar Options'
+    SHOW_ALMOST_LEECH_MARKER = 'Show Almost Leech Marker'
     DEFAULT_CONFIG = {
-        TOOLBAR_ENABLED: True
+        TOOLBAR_ENABLED: True,
+        SHOW_ALMOST_LEECH_MARKER: True
     }
 
 
