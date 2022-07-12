@@ -16,5 +16,5 @@ class Config:
 
 
 class String:
-    TOOLBAR_OPTIONS = 'Leech Toolkit Options...'
+    TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
     pass

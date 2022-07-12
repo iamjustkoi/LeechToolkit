@@ -5,18 +5,19 @@ Full license text available in "LICENSE" file packaged with the program.
 from aqt import mw
 from aqt.qt import QAction
 
-from .config import ConfigManager
+from .config import LeechToolkitConfigManager
+from .options import OptionsDialog
 from .consts import String, Config
 
 
-def refresh_tools_menu(changes=None, obj=None):
+def refresh_tools_options(changes=None, obj=None):
     """
 Updates the toolbar actions menu with the options shortcut. Expects an Operation Change hook call,
 but can also be used as a general update push, too.
     :param changes: unused OpChanges object
     :param obj: unused options object
     """
-    config = ConfigManager(mw).config
+    config = LeechToolkitConfigManager(mw).config
     if config[Config.TOOLBAR_ENABLED]:
         options_action = QAction(String.TOOLBAR_OPTIONS, mw)
         options_action.triggered.connect(on_options_called)
@@ -29,5 +30,8 @@ but can also be used as a general update push, too.
                 mw.form.menuTools.removeAction(action)
 
 
-def on_options_called(o):
-    print(f'o: {o}')
+def on_options_called(result):
+    options = OptionsDialog(LeechToolkitConfigManager(mw))
+    options.exec()
+    print(f'o: {result}')
+

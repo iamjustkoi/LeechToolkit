@@ -6,7 +6,7 @@ from .src import shortcuts
 
 
 def init():
-    shortcuts.refresh_tools_menu()
+    shortcuts.refresh_tools_options()
     pass
 
 
