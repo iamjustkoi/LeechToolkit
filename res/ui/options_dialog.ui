@@ -40,6 +40,16 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QCheckBox" name="almostMarkCheckbox">
+         <property name="text">
+          <string>Show marker on about-to-be-leeched cards</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>
