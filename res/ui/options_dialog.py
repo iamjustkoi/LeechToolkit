@@ -34,6 +34,10 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox.setChecked(True)
         self.toolsOptionsCheckBox.setObjectName("toolsOptionsCheckBox")
         self.optionsScrollLayout.addWidget(self.toolsOptionsCheckBox)
+        self.almostMarkCheckbox = QtWidgets.QCheckBox(self.OptionsScrollWidget)
+        self.almostMarkCheckbox.setChecked(True)
+        self.almostMarkCheckbox.setObjectName("almostMarkCheckbox")
+        self.optionsScrollLayout.addWidget(self.almostMarkCheckbox)
         self.OptionsScrollArea.setWidget(self.OptionsScrollWidget)
         self.optionsLayout.addWidget(self.OptionsScrollArea)
         self.buttonBox = QtWidgets.QDialogButtonBox(OptionsDialog)
@@ -51,6 +55,7 @@ class Ui_OptionsDialog(object):
         _translate = QtCore.QCoreApplication.translate
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
+        self.almostMarkCheckbox.setText(_translate("OptionsDialog", "Show marker on about-to-be-leeched cards"))
 
 
 if __name__ == "__main__":
