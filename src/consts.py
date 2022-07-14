@@ -16,13 +16,15 @@ MARKER_POS_STYLES = {DEFAULT: 'unset', LEFT: 'left', RIGHT: 'right'}
 
 
 class Config:
-    TOOLBAR_ENABLED = 'Use Toolbar Options'
-    SHOW_ALMOST_LEECH_MARKER = 'Show Almost Leech Marker'
-    ALMOST_MARKER_POSITION = 'Marker Position'
+    TOOLBAR_ENABLED = 'show tools menu options'
+    SHOW_ALMOST_LEECH_MARKER = 'show almost leech marker'
+    ALMOST_ON_BACK = 'show almost marker on back'
+    ALMOST_MARK_POSITION = 'almost mark position'
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SHOW_ALMOST_LEECH_MARKER: True,
-        ALMOST_MARKER_POSITION: DEFAULT
+        ALMOST_ON_BACK: True,
+        ALMOST_MARK_POSITION: DEFAULT
     }
 
 
