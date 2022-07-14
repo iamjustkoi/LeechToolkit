@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>279</width>
+    <width>333</width>
     <height>353</height>
    </rect>
   </property>
@@ -27,8 +27,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>259</width>
-        <height>86</height>
+        <width>313</width>
+        <height>142</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -49,47 +49,66 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="almostMarkCheckbox">
-         <property name="text">
-          <string>Show marker on about-to-be-leeched cards</string>
+        <widget class="QGroupBox" name="markerGroup">
+         <property name="title">
+          <string>Almost Leech Mark</string>
          </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
+         <layout class="QVBoxLayout" name="markerLayout">
+          <item>
+           <widget class="QCheckBox" name="almostCheckbox">
+            <property name="text">
+             <string>Show marker on cards that are about to be leeched</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="almostBackCheckbox">
+            <property name="text">
+             <string>Only show on back of card</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout" name="almostPosLayout">
+            <property name="horizontalSpacing">
+             <number>64</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="almostLabel">
+              <property name="text">
+               <string>Marker Position</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="almostPosDropdown">
+              <item>
+               <property name="text">
+                <string>Default</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Left</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Right</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
-       </item>
-       <item>
-        <layout class="QFormLayout" name="almostPosLayout">
-         <property name="horizontalSpacing">
-          <number>64</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="almostLabel">
-           <property name="text">
-            <string>Marker Position</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="almostPosDropdown">
-           <item>
-            <property name="text">
-             <string>Default</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Left</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Right</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
