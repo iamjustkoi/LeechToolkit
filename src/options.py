@@ -20,13 +20,11 @@ def on_options_called(result=False):
     options.exec()
 
 
-def _bind_tools_options(changes=None, obj=None):
-    """
-Updates the toolbar actions menu with the options shortcut. Expects an Operation Change hook call,
-but can also be used as a general update push, too.
-    :param changes: unused OpChanges object
-    :param obj: unused options object
-    """
+def _bind_config_options():
+    mw.addonManager.setConfigAction(__name__, on_options_called)
+
+
+def _bind_tools_options(*args):
     config = LeechToolkitConfigManager(mw).config
     if config[Config.TOOLBAR_ENABLED]:
         options_action = QAction(String.TOOLBAR_OPTIONS, mw)
@@ -38,10 +36,6 @@ but can also be used as a general update push, too.
         for action in mw.form.menuTools.actions():
             if action.text() == String.TOOLBAR_OPTIONS:
                 mw.form.menuTools.removeAction(action)
-
-
-def _bind_config_options():
-    mw.addonManager.setConfigAction(__name__, on_options_called)
 
 
 class OptionsDialog(QDialog):
