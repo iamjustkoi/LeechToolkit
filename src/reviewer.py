@@ -47,13 +47,12 @@ def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewe
     max_fails = conf['lapse']['leechFails']
     user_conf = LeechToolkitConfigManager(mw).config
 
+
+def append_html(content: aqt.webview.WebContent):
     if user_conf[Config.SHOW_ALMOST_LEECH_MARKER]:
         marker_float = MARKER_POS_STYLES[user_conf[Config.ALMOST_MARK_POSITION]]
         content.body += almost_leech_html.format(
-            marker_id=marker_id,
-            marker_text=marker_text,
-            marker_color=marker_color,
-            marker_float=marker_float
+            marker_id=marker_id, marker_text=marker_text, marker_color=marker_color, marker_float=marker_float
         )
 
 
