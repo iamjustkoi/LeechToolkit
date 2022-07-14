@@ -30,4 +30,6 @@ class Config:
 
 class String:
     TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
+    EDIT_LEECHES = 'Edit Leeches'
+    SHORTCUT_KEY = 'Shortcut key'
     pass
