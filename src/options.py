@@ -58,10 +58,12 @@ class OptionsDialog(QDialog):
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
         self.ui.almostMarkCheckbox.setChecked(self.config[Config.SHOW_ALMOST_LEECH_MARKER])
+        self.ui.almostPosDropdown.setCurrentIndex(self.config[Config.ALMOST_MARKER_POSITION])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
         self.config[Config.SHOW_ALMOST_LEECH_MARKER] = self.ui.almostMarkCheckbox.isChecked()
+        self.config[Config.ALMOST_MARKER_POSITION] = self.ui.almostPosDropdown.currentIndex()
         self.manager.write_config()
 
     def accept(self) -> None:
