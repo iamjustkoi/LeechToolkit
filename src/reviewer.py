@@ -69,6 +69,7 @@ def on_did_show_question(card: anki.cards.Card):
         if card.type == anki.cards.CARD_TYPE_REV and (card.lapses + from_lapse) >= max_fails:
             show_marker(True)
 
+
 def show_marker(show=False):
     if show:
         mw.web.eval(f'document.getElementById("{marker_id}").style.display = "unset"')
