@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>333</width>
+    <width>390</width>
     <height>353</height>
    </rect>
   </property>
@@ -27,8 +27,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>313</width>
-        <height>142</height>
+        <width>370</width>
+        <height>165</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -56,8 +56,11 @@
          <layout class="QVBoxLayout" name="markerLayout">
           <item>
            <widget class="QCheckBox" name="almostCheckbox">
+            <property name="toolTip">
+             <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.</string>
+            </property>
             <property name="text">
-             <string>Show marker on cards that are about to be leeched</string>
+             <string>Enable almost-leech mark in reviews</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -108,6 +111,19 @@
            </layout>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="browseButtonCheckbox">
+         <property name="toolTip">
+          <string>Enables a button on the bottom bar to quickly view all leech cards for all on-screen decks.</string>
+         </property>
+         <property name="text">
+          <string>Show &quot;Leech Cards&quot; button on Anki's bottom bar</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
       </layout>
