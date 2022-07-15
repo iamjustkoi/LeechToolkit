@@ -34,11 +34,15 @@ marker_color = 'rgb(248, 197, 86)'
 
 
 def build_hooks():
-    gui_hooks.webview_will_set_content.append(
-        lambda content, context: on_will_start(content, context) if isinstance(context, reviewer.Reviewer) else None
+    from aqt.gui_hooks import webview_will_set_content
+    from aqt.gui_hooks import reviewer_did_show_question
+    from aqt.gui_hooks import reviewer_did_show_answer
+    webview_will_set_content.append(
+        lambda content, context:
+        on_will_start(content, context) if isinstance(context, reviewer.Reviewer) else None
     )
-    gui_hooks.reviewer_did_show_question.append(on_did_show_question)
-    gui_hooks.reviewer_did_show_answer.append(on_did_show_answer)
+    reviewer_did_show_question.append(on_did_show_question)
+    reviewer_did_show_answer.append(on_did_show_answer)
 
 
 def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewer):
