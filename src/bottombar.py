@@ -9,15 +9,15 @@ from aqt import dialogs, mw
 
 from .consts import String, LEECHES_URL
 
+leech_search_flag = 'tag:leech'
+
 
 def build_bottom_bar():
 
     def draw_bottom_bar(self, buf: str, web_context, link_handler):
         if isinstance(web_context, (OverviewBottomBar, DeckBrowserBottomBar)):
 
-            leech_search_flag = 'tag:leech'
             deck_search_flag = 'deck:current' if mw.state == 'overview' else 'deck:*'
-
             total_leeches = len(mw.col.find_cards(f'{leech_search_flag} {deck_search_flag}'))
 
             if total_leeches > 0:
