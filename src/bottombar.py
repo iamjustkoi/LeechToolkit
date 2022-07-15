@@ -7,24 +7,24 @@ from aqt.deckbrowser import DeckBrowserBottomBar
 from aqt.overview import OverviewBottomBar
 from aqt import dialogs, mw
 
-from .consts import String
+from .consts import String, LEECHES_URL
 
 
 def build_bottom_bar():
 
     def draw_bottom_bar(self, buf: str, web_context, link_handler):
         default_link_handler = link_handler
-        edit_leech_url = 'editleeches'
 
         def link_handler(url):
-            if isinstance(web_context, (OverviewBottomBar, DeckBrowserBottomBar)) and url == edit_leech_url:
+            if isinstance(web_context, (OverviewBottomBar, DeckBrowserBottomBar)) and url == LEECHES_URL:
                 leech_flag = 'tag:leech'
                 deck_flag = 'deck:current' if isinstance(web_context, OverviewBottomBar) else 'deck:*'
                 dialogs.open("Browser", mw, search=(leech_flag, deck_flag))
+
             default_link_handler(url=url)
 
         def updated_buf(default_buf):
-            button = BarButton(String.VIEW_LEECHES, edit_leech_url)
+            button = BarButton(String.VIEW_LEECHES, LEECHES_URL)
             return '\n'.join([default_buf, button.html])
 
         return default_draw(self, buf=updated_buf(buf), link_handler=link_handler, web_context=web_context)
