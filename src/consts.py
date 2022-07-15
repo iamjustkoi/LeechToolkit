@@ -17,6 +17,7 @@ LEECHES_URL = 'viewleeches'
 
 
 class Config:
+    SHOW_BROWSE_BUTTON = 'show browse button'
     TOOLBAR_ENABLED = 'show tools menu options'
     SHOW_ALMOST_LEECH_MARKER = 'show almost leech marker'
     ALMOST_ON_BACK = 'show almost marker on back'
@@ -25,6 +26,7 @@ class Config:
         TOOLBAR_ENABLED: True,
         SHOW_ALMOST_LEECH_MARKER: True,
         ALMOST_ON_BACK: True,
+        SHOW_BROWSE_BUTTON: True,
         ALMOST_MARK_POSITION: DEFAULT
     }
 
