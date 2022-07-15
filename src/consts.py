@@ -13,6 +13,7 @@ DEFAULT = PosType(0)
 LEFT = PosType(1)
 RIGHT = PosType(2)
 MARKER_POS_STYLES = {DEFAULT: 'unset', LEFT: 'left', RIGHT: 'right'}
+LEECHES_URL = 'viewleeches'
 
 
 class Config:
