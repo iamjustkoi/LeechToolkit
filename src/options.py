@@ -7,6 +7,7 @@ from aqt.qt import QAction, QDialog
 
 from .config import LeechToolkitConfigManager
 from .consts import String, Config
+from .bottombar import build_bottom_bar
 from ..res.ui.options_dialog import Ui_OptionsDialog
 
 
@@ -54,15 +55,18 @@ class OptionsDialog(QDialog):
         self.ui.almostCheckbox.setChecked(self.config[Config.SHOW_ALMOST_LEECH_MARKER])
         self.ui.almostPosDropdown.setCurrentIndex(self.config[Config.ALMOST_MARK_POSITION])
         self.ui.almostBackCheckbox.setChecked(self.config[Config.ALMOST_ON_BACK])
+        self.ui.browseButtonCheckbox.setChecked(self.config[Config.SHOW_BROWSE_BUTTON])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
         self.config[Config.SHOW_ALMOST_LEECH_MARKER] = self.ui.almostCheckbox.isChecked()
         self.config[Config.ALMOST_MARK_POSITION] = self.ui.almostPosDropdown.currentIndex()
         self.config[Config.ALMOST_ON_BACK] = self.ui.almostBackCheckbox.isChecked()
+        self.config[Config.SHOW_BROWSE_BUTTON] = self.ui.browseButtonCheckbox.isChecked()
         self.manager.write_config()
 
     def accept(self) -> None:
         self._save()
         super().accept()
         bind_actions()
+        mw.reset()
