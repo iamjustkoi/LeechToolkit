@@ -46,6 +46,7 @@ def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewe
     conf = mw.col.decks.config_dict_for_deck_id(mw.col.decks.get_current_id())
     max_fails = conf['lapse']['leechFails']
     user_conf = LeechToolkitConfigManager(mw).config
+    append_html(content)
 
 
 def append_html(content: aqt.webview.WebContent):
@@ -67,7 +68,6 @@ def on_did_show_question(card: anki.cards.Card):
     else:
         if card.type == anki.cards.CARD_TYPE_REV and (card.lapses + from_lapse) >= max_fails:
             show_marker(True)
-
 
 def show_marker(show=False):
     if show:
