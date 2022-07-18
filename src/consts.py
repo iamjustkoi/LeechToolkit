@@ -22,12 +22,16 @@ class Config:
     SHOW_ALMOST_LEECH_MARKER = 'show almost leech marker'
     ALMOST_ON_BACK = 'show almost marker on back'
     ALMOST_MARK_POSITION = 'almost mark position'
+    BROWSE_BUTTON_ON_BROWSER = 'show browse button on browser'
+    BROWSE_BUTTON_ON_OVERVIEW = 'show browse button on overview'
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SHOW_ALMOST_LEECH_MARKER: True,
         ALMOST_ON_BACK: True,
         SHOW_BROWSE_BUTTON: True,
-        ALMOST_MARK_POSITION: DEFAULT
+        ALMOST_MARK_POSITION: DEFAULT,
+        BROWSE_BUTTON_ON_BROWSER: True,
+        BROWSE_BUTTON_ON_OVERVIEW: True
     }
 
 
