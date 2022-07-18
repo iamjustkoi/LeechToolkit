@@ -28,7 +28,7 @@
         <x>0</x>
         <y>0</y>
         <width>370</width>
-        <height>165</height>
+        <height>238</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -114,16 +114,54 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="browseButtonCheckbox">
-         <property name="toolTip">
-          <string>Enables a button on the bottom bar to quickly view all leech cards for all on-screen decks.</string>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Leech Cards Button</string>
          </property>
-         <property name="text">
-          <string>Show &quot;Leech Cards&quot; button on Anki's bottom bar</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QCheckBox" name="browseButtonCheckbox">
+            <property name="toolTip">
+             <string>Enables a button on the bottom bar to quickly view all leech cards for all on-screen decks.</string>
+            </property>
+            <property name="text">
+             <string>Show &quot;Leech Cards&quot; button on Anki's bottom bar</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="leechButtonPagesGroup">
+            <property name="title">
+             <string>Enabled Pages</string>
+            </property>
+            <layout class="QHBoxLayout" name="leechButtonPagesLayout">
+             <item>
+              <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
+               <property name="text">
+                <string>Deck Browser</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
+               <property name="text">
+                <string>Deck Overview</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
