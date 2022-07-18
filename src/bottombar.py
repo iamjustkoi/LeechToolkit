@@ -16,6 +16,14 @@ leech_search_flag = 'tag:leech'
 def build_bottom_bar():
 
     def draw_bottom_bar(self, buf: str, web_context, link_handler):
+        """
+Custom handler for drawing Anki's bottom bar.
+        :param self: Anki window/QT object
+        :param buf: base string buffer for the bottom bar's html
+        :param web_context: Anki's current page context
+        :param link_handler: base link handler for buttons
+        :return:
+        """
         if isinstance(web_context, (OverviewBottomBar, DeckBrowserBottomBar)):
             deck_search_flag = 'deck:current' if mw.state == 'overview' else 'deck:*'
             total_leeches = len(mw.col.find_cards(f'{leech_search_flag} {deck_search_flag}'))
@@ -24,12 +32,21 @@ def build_bottom_bar():
                 default_link_handler = link_handler
 
                 def leech_link_handler(url):
+                    """
+                Custom link handler that adds functionality for the leech-browse button's link.
+                    :param url: passed url string to handle
+                    """
                     if url == LEECHES_URL:
                         dialogs.open("Browser", mw, search=(leech_search_flag, deck_search_flag))
 
                     default_link_handler(url=url)
 
                 def updated_buf(default_buf):
+                    """
+                Formats and returns a custom html string.
+                    :param default_buf: referenced buffer
+                    :return: formatted string-buffer with new or removed html elements
+                    """
                     button_html = BarButton(String.VIEW_LEECHES, LEECHES_URL).html
                     enabled = LeechToolkitConfigManager(mw).config[Config.SHOW_BROWSE_BUTTON]
                     return '\n'.join([default_buf, button_html]) if enabled else default_buf.replace(button_html, '')
@@ -48,6 +65,7 @@ def build_bottom_bar():
             link_handler=link_handler
         )
 
+    # Swap default/current and custom draw methods
     default_draw = BottomBar.draw
     BottomBar.draw = draw_bottom_bar
 
