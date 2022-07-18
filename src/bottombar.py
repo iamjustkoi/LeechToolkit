@@ -22,7 +22,7 @@ Custom handler for drawing Anki's bottom bar.
         :param buf: base string buffer for the bottom bar's html
         :param web_context: Anki's current page context
         :param link_handler: base link handler for buttons
-        :return:
+        :return: custom bottom bar
         """
         if isinstance(web_context, (OverviewBottomBar, DeckBrowserBottomBar)):
             deck_search_flag = 'deck:current' if mw.state == 'overview' else 'deck:*'
