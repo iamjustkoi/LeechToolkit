@@ -47,9 +47,14 @@ Custom handler for drawing Anki's bottom bar.
                     :param default_buf: referenced buffer
                     :return: formatted string-buffer with new or removed html elements
                     """
+                    config = LeechToolkitConfigManager(mw).config
                     button_html = BarButton(String.VIEW_LEECHES, LEECHES_URL).html
-                    enabled = LeechToolkitConfigManager(mw).config[Config.SHOW_BROWSE_BUTTON]
-                    return '\n'.join([default_buf, button_html]) if enabled else default_buf.replace(button_html, '')
+                    if config[Config.SHOW_BROWSE_BUTTON]:
+                        if isinstance(web_context, OverviewBottomBar) and config[Config.BROWSE_BUTTON_ON_OVERVIEW]:
+                            return '\n'.join([default_buf, button_html])
+                        elif isinstance(web_context, DeckBrowserBottomBar) and config[Config.BROWSE_BUTTON_ON_BROWSER]:
+                            return '\n'.join([default_buf, button_html])
+                    return default_buf.replace(button_html, '')
 
                 return default_draw(
                     self,
