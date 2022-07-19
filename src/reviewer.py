@@ -10,7 +10,7 @@ from aqt import mw, gui_hooks, utils
 from anki import cards
 
 from .config import LeechToolkitConfigManager
-from .consts import Config, MARKER_POS_STYLES, REV_DECREASE
+from .consts import Config, MARKER_POS_STYLES, REV_DECREASE, LEECH_TAG, CARD_TYPE_STR
 
 conf: dict
 max_fails: int
@@ -79,6 +79,7 @@ def on_did_show_answer(card: cards.Card):
 
 
 def on_did_show_question(card: cards.Card):
+    print(f'CardType({CARD_TYPE_STR[card.type]})')
     if user_conf[Config.ALMOST_ON_BACK]:
         show_marker(False)
     else:
@@ -88,13 +89,23 @@ def on_did_show_question(card: cards.Card):
 
 def on_did_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
     if hasattr(card, prev_type_attr):
-        if user_conf[Config.REVERSE_ENABLED] and user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
-            if ease > 1 and card.__getattribute__(prev_type_attr) != cards.CARD_TYPE_RELEARNING and card.lapses > 0:
-                card.lapses -= 1
-                card.flush()
-                if tooltip_enabled:
-                    utils.tooltip(f'Card\'s lapses set to: {card.lapses}', x_offset=500)
+        tooltip = ''
+        if user_conf[Config.REVERSE_ENABLED]:
+            prev_type = card.__getattribute__(prev_type_attr)
+            if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
+                if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
+                    card.lapses -= 1
+                    card.flush()
+                    tooltip += f'Card\'s lapses set to: {card.lapses}'
 
+            if user_conf[Config.REVERSE_THRESHOLD] > card.lapses:
+                if ease > 1 and card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
+                    card.note().remove_tag(LEECH_TAG)
+                    card.note().flush()
+                    tooltip += f'\nCard Un-Leeched' if len(tooltip) > 0 else f'Card Un-leeched'
+
+        if tooltip_enabled and len(tooltip) > 0:
+            utils.tooltip(tooltip, y_offset=200, x_offset=600)
         delattr(card, prev_type_attr)
 
 

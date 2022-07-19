@@ -20,6 +20,10 @@ REV_RESET = ReverseType(0)
 
 LEECHES_URL = 'viewleeches'
 
+LEECH_TAG = 'leech'
+
+CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
+
 
 class Config:
     SHOW_BROWSE_BUTTON = 'show browse button'
