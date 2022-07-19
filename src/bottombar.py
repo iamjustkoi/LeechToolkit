@@ -8,9 +8,9 @@ from aqt.overview import OverviewBottomBar
 from aqt import dialogs, mw
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config, LEECHES_URL
+from .consts import String, Config, LEECHES_URL, LEECH_TAG
 
-leech_search_flag = 'tag:leech'
+leech_search_flag = f'tag:{LEECH_TAG}'
 
 
 def build_bottom_bar():
