@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-37</y>
+        <y>-60</y>
         <width>344</width>
-        <height>348</height>
+        <height>364</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -181,6 +181,30 @@
            </widget>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="reverseThresholdLayout">
+            <item>
+             <widget class="QLabel" name="reverseThresholdLabel">
+              <property name="text">
+               <string>Reverse Leech Threshold</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="reverseThreshold">
+              <property name="toolTip">
+               <string>Un-leeches cards that get below this many lapses.</string>
+              </property>
+              <property name="maximum">
+               <number>999</number>
+              </property>
+              <property name="value">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
            <widget class="QComboBox" name="reverseMethodDropdown">
             <item>
              <property name="text">
@@ -193,30 +217,6 @@
              </property>
             </item>
            </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="reverseThresholdLayout">
-            <item>
-             <widget class="QLabel" name="reverseThresholdLabel">
-              <property name="text">
-               <string>Reverse Leech Threshold</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="reverseThreshold">
-              <property name="toolTip">
-               <string>Un-leeches a card that's lapse count has gone below this value.</string>
-              </property>
-              <property name="maximum">
-               <number>999</number>
-              </property>
-              <property name="value">
-               <number>8</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>

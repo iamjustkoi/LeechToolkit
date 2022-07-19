@@ -60,6 +60,7 @@ class OptionsDialog(QDialog):
         self.ui.browseButtonOverviewCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_OVERVIEW])
         self.ui.reverseCheckbox.setChecked(self.config[Config.REVERSE_ENABLED])
         self.ui.reverseMethodDropdown.setCurrentIndex(self.config[Config.REVERSE_METHOD])
+        self.ui.reverseThreshold.setValue(self.config[Config.REVERSE_THRESHOLD])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -71,6 +72,7 @@ class OptionsDialog(QDialog):
         self.config[Config.BROWSE_BUTTON_ON_OVERVIEW] = self.ui.browseButtonOverviewCheckbox.isChecked()
         self.config[Config.REVERSE_ENABLED] = self.ui.reverseCheckbox.isChecked()
         self.config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
+        self.config[Config.REVERSE_THRESHOLD] = self.ui.reverseThreshold.value()
         self.manager.write_config()
 
     def accept(self) -> None:

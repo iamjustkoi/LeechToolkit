@@ -31,6 +31,7 @@ class Config:
     BROWSE_BUTTON_ON_OVERVIEW = 'show browse button on overview'
     REVERSE_ENABLED = 'reverse enabled'
     REVERSE_METHOD = 'reverse type'
+    REVERSE_THRESHOLD = 'reverse threshold'
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SHOW_ALMOST_LEECH_MARKER: True,
@@ -40,7 +41,8 @@ class Config:
         BROWSE_BUTTON_ON_BROWSER: True,
         BROWSE_BUTTON_ON_OVERVIEW: True,
         REVERSE_ENABLED: True,
-        REVERSE_METHOD: 0
+        REVERSE_METHOD: 0,
+        REVERSE_THRESHOLD: 4
     }
 
 
