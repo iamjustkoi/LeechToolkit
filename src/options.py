@@ -58,6 +58,8 @@ class OptionsDialog(QDialog):
         self.ui.browseButtonCheckbox.setChecked(self.config[Config.SHOW_BROWSE_BUTTON])
         self.ui.browseButtonBrowserCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_BROWSER])
         self.ui.browseButtonOverviewCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_OVERVIEW])
+        self.ui.reverseCheckbox.setChecked(self.config[Config.REVERSE_ENABLED])
+        self.ui.reverseMethodDropdown.setCurrentIndex(self.config[Config.REVERSE_METHOD])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -67,6 +69,8 @@ class OptionsDialog(QDialog):
         self.config[Config.SHOW_BROWSE_BUTTON] = self.ui.browseButtonCheckbox.isChecked()
         self.config[Config.BROWSE_BUTTON_ON_BROWSER] = self.ui.browseButtonBrowserCheckbox.isChecked()
         self.config[Config.BROWSE_BUTTON_ON_OVERVIEW] = self.ui.browseButtonOverviewCheckbox.isChecked()
+        self.config[Config.REVERSE_ENABLED] = self.ui.reverseCheckbox.isChecked()
+        self.config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
         self.manager.write_config()
 
     def accept(self) -> None:
