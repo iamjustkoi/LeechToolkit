@@ -26,22 +26,28 @@ CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
 
 
 class Config:
-    SHOW_BROWSE_BUTTON = 'show browse button'
     TOOLBAR_ENABLED = 'show tools menu options'
-    SHOW_ALMOST_LEECH_MARKER = 'show almost leech marker'
-    ALMOST_ON_BACK = 'show almost marker on back'
-    ALMOST_MARK_POSITION = 'almost mark position'
+
+    SHOW_LEECH_MARKER = 'show leech marker'
+    USE_ALMOST_MARKER = 'show almost leech marker'
+    ONLY_SHOW_BACK_MARKER = 'show marker on back'
+    MARKER_POSITION = 'almost mark position'
+
+    SHOW_BROWSE_BUTTON = 'show browse button'
     BROWSE_BUTTON_ON_BROWSER = 'show browse button on browser'
     BROWSE_BUTTON_ON_OVERVIEW = 'show browse button on overview'
+
     REVERSE_ENABLED = 'reverse enabled'
     REVERSE_METHOD = 'reverse type'
     REVERSE_THRESHOLD = 'reverse threshold'
+
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
-        SHOW_ALMOST_LEECH_MARKER: True,
-        ALMOST_ON_BACK: True,
+        SHOW_LEECH_MARKER: True,
+        USE_ALMOST_MARKER: True,
+        ONLY_SHOW_BACK_MARKER: True,
+        MARKER_POSITION: DEFAULT,
         SHOW_BROWSE_BUTTON: True,
-        ALMOST_MARK_POSITION: DEFAULT,
         BROWSE_BUTTON_ON_BROWSER: True,
         BROWSE_BUTTON_ON_OVERVIEW: True,
         REVERSE_ENABLED: True,
