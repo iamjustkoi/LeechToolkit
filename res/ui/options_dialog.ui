@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>381</width>
-    <height>353</height>
+    <height>411</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-60</y>
+        <y>0</y>
         <width>344</width>
-        <height>364</height>
+        <height>387</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -51,16 +51,13 @@
        <item>
         <widget class="QGroupBox" name="markerGroup">
          <property name="title">
-          <string>Almost Leech Mark</string>
+          <string>Leech Mark</string>
          </property>
          <layout class="QVBoxLayout" name="markerLayout">
           <item>
-           <widget class="QCheckBox" name="almostCheckbox">
-            <property name="toolTip">
-             <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.</string>
-            </property>
+           <widget class="QCheckBox" name="showMarkerChecbkbox">
             <property name="text">
-             <string>Enable almost-leech mark in reviews</string>
+             <string>Show a marker on leech cards during review</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -70,7 +67,7 @@
           <item>
            <widget class="QCheckBox" name="almostBackCheckbox">
             <property name="text">
-             <string>Only show on back of card</string>
+             <string>Only show on back of cards</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -78,7 +75,7 @@
            </widget>
           </item>
           <item>
-           <layout class="QFormLayout" name="almostPosLayout">
+           <layout class="QFormLayout" name="markerPosLayout">
             <property name="horizontalSpacing">
              <number>64</number>
             </property>
@@ -109,6 +106,19 @@
              </widget>
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="almostCheckbox">
+            <property name="toolTip">
+             <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.</string>
+            </property>
+            <property name="text">
+             <string>Show unique marker for about-to-be-leeched cards</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
