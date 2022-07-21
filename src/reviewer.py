@@ -35,8 +35,7 @@ marker_text = '🩸'
 almost_color = 'rgb(248, 197, 86)'
 leech_color = 'rgb(248, 105, 86)'
 almost_leech_distance = 1
-decrease_enabled = True
-tooltip_enabled = True
+TOOLTIP_ENABLED = True
 
 
 def build_hooks():
@@ -70,7 +69,8 @@ def append_marker_html(content: aqt.webview.WebContent):
 
 
 def on_show_back(card: cards.Card):
-    setattr(card, prev_type_attr, card.type)
+    if user_conf[Config.REVERSE_ENABLED]:
+        setattr(card, prev_type_attr, card.type)
     update_marker(card, False)
 
 
@@ -96,9 +96,9 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
                 if ease > 1 and card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
                     card.note().remove_tag(LEECH_TAG)
                     card.note().flush()
-                    tooltip += f'\nCard Un-Leeched' if tooltip else f'Card Un-leeched'
+                    tooltip += f'<br>Card Un-Leeched' if tooltip else f'Card Un-leeched'
 
-        if tooltip_enabled and tooltip:
+        if TOOLTIP_ENABLED and tooltip:
             utils.tooltip(tooltip, y_offset=200, x_offset=600)
 
         delattr(card, prev_type_attr)
