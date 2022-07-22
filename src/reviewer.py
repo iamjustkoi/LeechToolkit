@@ -92,6 +92,11 @@ def card_has_consecutive_correct(card: cards.Card, num_correct: int):
 
 
 def get_correct_answers(card: cards.Card):
+    """
+Retrieves all reviews that were correct without any "again" answers.
+    :param card: card to use as reference
+    :return: a list of correct answers (2-4)
+    """
     again_ease = 1
 
     cmd = f'''
