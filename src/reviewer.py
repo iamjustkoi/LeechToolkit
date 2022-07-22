@@ -7,7 +7,7 @@ from aqt import reviewer, webview, gui_hooks, utils, mw
 from anki import cards
 
 from .config import LeechToolkitConfigManager
-from .consts import Config, MARKER_POS_STYLES, LEECH_TAG
+from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE
 
 conf: dict
 max_fails: int
@@ -32,7 +32,10 @@ marker_text = '🩸'
 almost_color = 'rgb(248, 197, 86)'
 leech_color = 'rgb(248, 105, 86)'
 almost_leech_distance = 1
+
 TOOLTIP_ENABLED = True
+TOOLTIP_TIME = 5000
+CONSECUTIVE_CORRECT = 2
 
 
 def build_hooks():
@@ -83,6 +86,26 @@ def on_show_front(card: cards.Card):
     update_marker(card, True)
 
 
+def card_has_consecutive_correct(card: cards.Card, num_correct: int):
+    total_correct = len(get_correct_answers(card))
+    return total_correct > 0 and total_correct % num_correct == 0
+
+
+def get_correct_answers(card: cards.Card):
+    again_ease = 1
+
+    cmd = f'''
+            SELECT ease FROM revlog 
+            WHERE cid is {card.id} and ease is not 0
+            ORDER BY id DESC
+        '''
+    answers = card.col.db.list(cmd)
+    if again_ease not in answers:
+        return answers
+    else:
+        return answers[:answers.index(again_ease) - 1] if answers.index(again_ease) != 0 else []
+
+
 def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
     if hasattr(card, prev_type_attr):
         tooltip = ''
@@ -90,11 +113,13 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         if user_conf[Config.REVERSE_ENABLED]:
             prev_type = card.__getattribute__(prev_type_attr)
 
-            # if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
-            #     if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
-            #         card.lapses -= 1
-            #         card.flush()
-            #         tooltip += f'Card\'s lapses set to: {card.lapses}'
+            # Card reverse functions
+            if card_has_consecutive_correct(card, CONSECUTIVE_CORRECT):
+                if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
+                    if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
+                        card.lapses -= 1
+                        card.flush()
+                        tooltip += f'Card\'s lapses set to: {card.lapses}'
 
             if user_conf[Config.REVERSE_THRESHOLD] > card.lapses:
                 if ease > 1 and card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
@@ -103,7 +128,7 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
                     tooltip += f'<br>Card Un-Leeched' if tooltip else f'Card Un-leeched'
 
         if TOOLTIP_ENABLED and tooltip:
-            utils.tooltip(tooltip, y_offset=200, x_offset=600)
+            utils.tooltip(tooltip, period=TOOLTIP_TIME, y_offset=200, x_offset=600)
 
         delattr(card, prev_type_attr)
 
