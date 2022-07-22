@@ -2,15 +2,12 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-import anki.cards
 import aqt.reviewer
-from aqt import reviewer
-from aqt import webview
-from aqt import mw, gui_hooks, utils
+from aqt import reviewer, webview, gui_hooks, utils, mw
 from anki import cards
 
 from .config import LeechToolkitConfigManager
-from .consts import Config, MARKER_POS_STYLES, REV_DECREASE, LEECH_TAG, CARD_TYPE_STR
+from .consts import Config, MARKER_POS_STYLES, LEECH_TAG
 
 conf: dict
 max_fails: int
@@ -40,25 +37,32 @@ TOOLTIP_ENABLED = True
 
 def build_hooks():
     from aqt.gui_hooks import webview_will_set_content
-    from aqt.gui_hooks import reviewer_did_show_question
-    from aqt.gui_hooks import reviewer_did_show_answer
-    from aqt.gui_hooks import reviewer_did_answer_card
+    from aqt.gui_hooks import reviewer_will_end
+    reviewer_will_end.append(on_will_end)
     webview_will_set_content.append(
         lambda content, context:
         on_will_start(content, context) if isinstance(context, reviewer.Reviewer) else None
     )
-    reviewer_did_show_question.append(on_show_front)
-    reviewer_did_show_answer.append(on_show_back)
-    reviewer_did_answer_card.append(on_answer)
 
 
 def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewer):
-    global conf, max_fails, user_conf
-    conf = mw.col.decks.config_dict_for_deck_id(mw.col.decks.get_current_id())
-    max_fails = conf['lapse']['leechFails']
-    user_conf = LeechToolkitConfigManager(mw).config
+    if not mw.col.decks.is_filtered(mw.col.decks.get_current_id()):
+        global conf, max_fails, user_conf
+        conf = mw.col.decks.config_dict_for_deck_id(mw.col.decks.get_current_id())
+        max_fails = conf['lapse']['leechFails']
+        user_conf = LeechToolkitConfigManager(mw).config
 
-    append_marker_html(content)
+        append_marker_html(content)
+
+        gui_hooks.reviewer_did_show_question.append(on_show_front)
+        gui_hooks.reviewer_did_show_answer.append(on_show_back)
+        gui_hooks.reviewer_did_answer_card.append(on_answer)
+
+
+def on_will_end():
+    gui_hooks.reviewer_did_show_question.remove(on_show_front)
+    gui_hooks.reviewer_did_show_answer.remove(on_show_back)
+    gui_hooks.reviewer_did_answer_card.remove(on_answer)
 
 
 def append_marker_html(content: aqt.webview.WebContent):
@@ -86,11 +90,11 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         if user_conf[Config.REVERSE_ENABLED]:
             prev_type = card.__getattribute__(prev_type_attr)
 
-            if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
-                if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
-                    card.lapses -= 1
-                    card.flush()
-                    tooltip += f'Card\'s lapses set to: {card.lapses}'
+            # if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
+            #     if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
+            #         card.lapses -= 1
+            #         card.flush()
+            #         tooltip += f'Card\'s lapses set to: {card.lapses}'
 
             if user_conf[Config.REVERSE_THRESHOLD] > card.lapses:
                 if ease > 1 and card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
