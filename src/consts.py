@@ -16,7 +16,7 @@ MARKER_POS_STYLES = {DEFAULT: 'unset', LEFT: 'left', RIGHT: 'right'}
 
 ReverseType = NewType('ReverseType', int)
 REV_DECREASE = ReverseType(0)
-REV_RESET = ReverseType(0)
+REV_RESET = ReverseType(1)
 
 LEECHES_URL = 'viewleeches'
 
