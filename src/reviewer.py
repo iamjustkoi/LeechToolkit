@@ -120,6 +120,7 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
 
             # Card reverse functions
             if card_has_consecutive_correct(card, CONSECUTIVE_CORRECT):
+
                 if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
                     if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
                         card.lapses -= 1
