@@ -7,7 +7,7 @@ from aqt import reviewer, webview, gui_hooks, utils, mw
 from anki import cards
 
 from .config import LeechToolkitConfigManager
-from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE
+from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET
 
 conf: dict
 max_fails: int
@@ -121,11 +121,15 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
             # Card reverse functions
             if card_has_consecutive_correct(card, CONSECUTIVE_CORRECT):
 
-                if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
-                    if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
+                if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
+                    if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
                         card.lapses -= 1
-                        card.flush()
-                        tooltip += f'Card\'s lapses set to: {card.lapses}'
+                        tooltip += f'Card\'s lapses decreased'
+                    elif user_conf[Config.REVERSE_METHOD] == REV_RESET:
+                        card.lapses = 0
+                        tooltip += f'Card\'s lapses reset'
+
+                    card.flush()
 
             if user_conf[Config.REVERSE_THRESHOLD] > card.lapses:
                 if ease > 1 and card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
