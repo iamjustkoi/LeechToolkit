@@ -65,6 +65,7 @@ class OptionsDialog(QDialog):
         self.ui.reverseCheckbox.setChecked(self.config[Config.REVERSE_ENABLED])
         self.ui.reverseMethodDropdown.setCurrentIndex(self.config[Config.REVERSE_METHOD])
         self.ui.reverseThreshold.setValue(self.config[Config.REVERSE_THRESHOLD])
+        self.ui.consAnswerSpinbox.setValue(self.config[Config.REVERSE_CONS_ANS])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -81,6 +82,7 @@ class OptionsDialog(QDialog):
         self.config[Config.REVERSE_ENABLED] = self.ui.reverseCheckbox.isChecked()
         self.config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
         self.config[Config.REVERSE_THRESHOLD] = self.ui.reverseThreshold.value()
+        self.config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
         self.manager.write_config()
 
     def accept(self) -> None:

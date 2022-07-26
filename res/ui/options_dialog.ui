@@ -191,6 +191,30 @@
            </widget>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="reverseThresholdLayout">
+            <item>
+             <widget class="QLabel" name="reverseThresholdLabel">
+              <property name="text">
+               <string>Reverse Leech Threshold</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="reverseThreshold">
+              <property name="toolTip">
+               <string>Un-leeches any cards with a lapse count below this value.</string>
+              </property>
+              <property name="maximum">
+               <number>999</number>
+              </property>
+              <property name="value">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QLabel" name="consPrefixLabel">
@@ -212,9 +236,6 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="buttonSymbols">
-               <enum>QAbstractSpinBox::PlusMinus</enum>
               </property>
               <property name="suffix">
                <string/>
@@ -245,46 +266,19 @@
           <item>
            <widget class="QComboBox" name="reverseMethodDropdown">
             <property name="currentText">
-             <string>Decrease the card's total lapse count</string>
+             <string>Decrease card's total lapse count</string>
             </property>
             <item>
              <property name="text">
-              <string>Decrease the card's total lapse count</string>
+              <string>Decrease card's total lapse count</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Reset the card's total lapse count</string>
+              <string>Reset card's total lapse count</string>
              </property>
             </item>
            </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="reverseThresholdLayout">
-            <item>
-             <widget class="QLabel" name="reverseThresholdLabel">
-              <property name="toolTip">
-               <string>Un-leeches any cards with a lapse count below this value.</string>
-              </property>
-              <property name="text">
-               <string>Reverse Leech Threshold</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="reverseThreshold">
-              <property name="toolTip">
-               <string>Un-leeches any cards with lapses below this value.</string>
-              </property>
-              <property name="maximum">
-               <number>999</number>
-              </property>
-              <property name="value">
-               <number>4</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>
