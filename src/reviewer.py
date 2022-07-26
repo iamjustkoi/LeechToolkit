@@ -48,7 +48,7 @@ def build_hooks():
         on_will_start(content, context) if isinstance(context, reviewer.Reviewer) else None
     )
 
-    actions = actions
+    # actions = actions
 
 
 def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewer):
