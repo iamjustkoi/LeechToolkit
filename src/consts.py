@@ -62,4 +62,6 @@ class String:
     TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
     VIEW_LEECHES = 'Leech Cards'
     SHORTCUT_KEY = 'Shortcut key'
+    LAPSES_DECREASED = r"Card's lapses decreased"
+    LAPSES_RESET = r"Card's lapses reset"
     pass
