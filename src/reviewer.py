@@ -28,14 +28,13 @@ mark_html_shell = '''
 marker_id = 'leech_marker'
 prev_type_attr = 'prevtype'
 
-marker_text = '🩸'
-almost_color = 'rgb(248, 197, 86)'
-leech_color = 'rgb(248, 105, 86)'
-almost_leech_distance = 1
+MARKER_TEXT = '🩸'
+LEECH_COLOR = 'rgb(248, 105, 86)'
+ALMOST_COLOR = 'rgb(248, 197, 86)'
+ALMOST_DISTANCE = 1
 
 TOOLTIP_ENABLED = True
 TOOLTIP_TIME = 5000
-CONSECUTIVE_CORRECT = 2
 
 
 def build_hooks():
@@ -71,7 +70,7 @@ def on_will_end():
 def append_marker_html(content: aqt.webview.WebContent):
     marker_float = MARKER_POS_STYLES[user_conf[Config.MARKER_POSITION]]
     content.body += mark_html_shell.format(
-        marker_id=marker_id, marker_text=marker_text, marker_color=leech_color, marker_float=marker_float
+        marker_id=marker_id, marker_text=MARKER_TEXT, marker_color=LEECH_COLOR, marker_float=marker_float
     )
 
 
@@ -82,7 +81,6 @@ def on_show_back(card: cards.Card):
 
 
 def on_show_front(card: cards.Card):
-    # print(f'    CardType({CARD_TYPE_STR[card.type]})')
     update_marker(card, True)
 
 
@@ -167,10 +165,10 @@ Updates marker style/visibility based on user options and current card's attribu
     if not user_conf[Config.SHOW_LEECH_MARKER] or (user_conf[Config.ONLY_SHOW_BACK_MARKER] and is_front):
         show_marker(False)
     elif card.note().has_tag(LEECH_TAG):
-        set_marker_color(leech_color)
+        set_marker_color(LEECH_COLOR)
         show_marker(True)
     elif user_conf[Config.USE_ALMOST_MARKER] \
             and card.type == cards.CARD_TYPE_REV \
-            and (card.lapses + almost_leech_distance) >= max_fails:
-        set_marker_color(almost_color)
+            and (card.lapses + ALMOST_DISTANCE) >= max_fails:
+        set_marker_color(ALMOST_COLOR)
         show_marker(True)
