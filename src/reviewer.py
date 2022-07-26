@@ -6,12 +6,14 @@ import aqt.reviewer
 from aqt import reviewer, webview, gui_hooks, utils, mw
 from anki import cards
 
+from .actions import LeechActionManager
 from .config import LeechToolkitConfigManager
-from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET, String
+from .consts import Config, String, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET
 
 conf: dict
 max_fails: int
 user_conf: dict
+action_manager: LeechActionManager
 mark_html_shell = '''
 <style>
     #{marker_id} {{
@@ -48,16 +50,15 @@ def build_hooks():
         on_will_start(content, context) if isinstance(context, reviewer.Reviewer) else None
     )
 
-    # actions = actions
-
 
 def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewer):
     remove_hooks()
     if not mw.col.decks.is_filtered(mw.col.decks.get_current_id()):
-        global conf, max_fails, user_conf
+        global conf, max_fails, user_conf, action_manager
         conf = mw.col.decks.config_dict_for_deck_id(mw.col.decks.get_current_id())
         max_fails = conf['lapse']['leechFails']
         user_conf = LeechToolkitConfigManager(mw).config
+        action_manager = LeechActionManager(context, mw.col.decks.get_current_id(), user_conf)
 
         append_marker_html(content)
 
@@ -87,6 +88,7 @@ def on_show_back(card: cards.Card):
 
 def on_show_front(card: cards.Card):
     update_marker(card, True)
+    action_manager.run_leech_actions(card)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
