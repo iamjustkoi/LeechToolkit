@@ -9,7 +9,6 @@ def init():
     options.bind_actions()
     reviewer.build_hooks()
     bottombar.build_bottom_bar()
-    pass
 
 
 init()
