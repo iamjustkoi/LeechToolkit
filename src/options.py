@@ -6,7 +6,7 @@ from aqt import mw
 from aqt.qt import QAction, QDialog
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config
+from .consts import String, Config, Action
 from .bottombar import build_bottom_bar
 from ..res.ui.options_dialog import Ui_OptionsDialog
 
@@ -67,6 +67,13 @@ class OptionsDialog(QDialog):
         self.ui.reverseThreshold.setValue(self.config[Config.REVERSE_THRESHOLD])
         self.ui.consAnswerSpinbox.setValue(self.config[Config.REVERSE_CONS_ANS])
 
+        # Leech Actions
+        action_config = self.config[Config.LEECH_ACTIONS]
+
+        flag_options = action_config[Action.FLAG]
+        self.ui.flagCheckbox.setChecked(flag_options[Action.ENABLED])
+        self.ui.flagDropdown.setCurrentIndex(flag_options[Action.FLAG_INDEX])
+
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
@@ -83,6 +90,15 @@ class OptionsDialog(QDialog):
         self.config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
         self.config[Config.REVERSE_THRESHOLD] = self.ui.reverseThreshold.value()
         self.config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
+
+        # Leech Actions
+        action_config = self.config[Config.LEECH_ACTIONS]
+
+        flag_options = action_config[Action.FLAG]
+        flag_options[Action.ENABLED] = self.ui.flagCheckbox.isChecked()
+        flag_options[Action.FLAG_INDEX] = self.ui.flagDropdown.currentIndex()
+
+        self.ui.flagCheckbox.setChecked(self.config[Config.LEECH_ACTIONS][Action.FLAG][Action.ENABLED])
         self.manager.write_config()
 
     def accept(self) -> None:
