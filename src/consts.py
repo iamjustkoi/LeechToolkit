@@ -72,6 +72,6 @@ class Config:
         REVERSE_CONS_ANS: 2,
         REVERSE_METHOD: 0,
         LEECH_ACTIONS: {
-            Action.FLAG: {Action.FLAG: False, Action.FLAG_INDEX: 0}
+            Action.FLAG: {Action.ENABLED: False, Action.FLAG_INDEX: 0}
         }
     }
