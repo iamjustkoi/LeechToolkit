@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-53</y>
         <width>344</width>
-        <height>387</height>
+        <height>415</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -75,6 +75,19 @@
            </widget>
           </item>
           <item>
+           <widget class="QCheckBox" name="almostCheckbox">
+            <property name="toolTip">
+             <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.</string>
+            </property>
+            <property name="text">
+             <string>Show unique marker for about-to-be-leeched cards</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QFormLayout" name="markerPosLayout">
             <property name="horizontalSpacing">
              <number>64</number>
@@ -107,35 +120,22 @@
             </item>
            </layout>
           </item>
-          <item>
-           <widget class="QCheckBox" name="almostCheckbox">
-            <property name="toolTip">
-             <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.</string>
-            </property>
-            <property name="text">
-             <string>Show unique marker for about-to-be-leeched cards</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="browseButtonGroup">
          <property name="title">
-          <string>Leech Cards Button</string>
+          <string>Bottom Bar Button</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QCheckBox" name="browseButtonCheckbox">
             <property name="toolTip">
-             <string>Enables a button on the bottom bar to quickly view all leech cards for all on-screen decks.</string>
+             <string>Show a button on the bottom bar whenever a currently displayed deck has any leeches.</string>
             </property>
             <property name="text">
-             <string>Show &quot;Leech Cards&quot; button on Anki's bottom bar</string>
+             <string>Enable &quot;Leech Cards&quot; button on bottom bar</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -183,7 +183,7 @@
           <item>
            <widget class="QCheckBox" name="reverseCheckbox">
             <property name="text">
-             <string>Use leech reversing</string>
+             <string>Enable leech reversing</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -191,9 +191,81 @@
            </widget>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="consPrefixLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Every</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="consAnswerSpinbox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::PlusMinus</enum>
+              </property>
+              <property name="suffix">
+               <string/>
+              </property>
+              <property name="prefix">
+               <string/>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+              <property name="value">
+               <number>2</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="consSuffixLabel">
+              <property name="text">
+               <string>correct answer(s) in a row:</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QComboBox" name="reverseMethodDropdown">
+            <property name="currentText">
+             <string>Decrease the card's total lapse count</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Decrease the card's total lapse count</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Reset the card's total lapse count</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="reverseThresholdLayout">
             <item>
              <widget class="QLabel" name="reverseThresholdLabel">
+              <property name="toolTip">
+               <string>Un-leeches any cards with a lapse count below this value.</string>
+              </property>
               <property name="text">
                <string>Reverse Leech Threshold</string>
               </property>
@@ -202,7 +274,7 @@
             <item>
              <widget class="QSpinBox" name="reverseThreshold">
               <property name="toolTip">
-               <string>Un-leeches cards that get below this many lapses.</string>
+               <string>Un-leeches any cards with lapses below this value.</string>
               </property>
               <property name="maximum">
                <number>999</number>
@@ -213,20 +285,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QComboBox" name="reverseMethodDropdown">
-            <item>
-             <property name="text">
-              <string>Decrease lapse count on correct answer</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Reset lapse count on consecutive correct answers</string>
-             </property>
-            </item>
-           </widget>
           </item>
          </layout>
         </widget>
