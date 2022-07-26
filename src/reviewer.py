@@ -40,7 +40,9 @@ TOOLTIP_TIME = 5000
 def build_hooks():
     from aqt.gui_hooks import webview_will_set_content
     from aqt.gui_hooks import reviewer_will_end
-    reviewer_will_end.append(on_will_end)
+
+    reviewer_will_end.append(remove_hooks)
+
     webview_will_set_content.append(
         lambda content, context:
         on_will_start(content, context) if isinstance(context, reviewer.Reviewer) else None
@@ -48,6 +50,7 @@ def build_hooks():
 
 
 def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewer):
+    remove_hooks()
     if not mw.col.decks.is_filtered(mw.col.decks.get_current_id()):
         global conf, max_fails, user_conf
         conf = mw.col.decks.config_dict_for_deck_id(mw.col.decks.get_current_id())
@@ -61,7 +64,7 @@ def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewe
         gui_hooks.reviewer_did_answer_card.append(on_answer)
 
 
-def on_will_end():
+def remove_hooks():
     gui_hooks.reviewer_did_show_question.remove(on_show_front)
     gui_hooks.reviewer_did_show_answer.remove(on_show_back)
     gui_hooks.reviewer_did_answer_card.remove(on_answer)
