@@ -4,9 +4,22 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 from typing import NewType
 
+
 CURRENT_VERSION = '0.0.4-alpha'
 
 ANKI_LEGACY_VER = 35
+
+
+class String:
+    TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
+    VIEW_LEECHES = 'Leech Cards'
+    BUTTON_SHORTCUT_HINT = 'Shortcut key'
+    LAPSES_DECREASED = r"Card's lapses decreased"
+    LAPSES_RESET = r"Card's lapses reset"
+
+    LEECHES_URL = 'viewleeches'
+    LEECH_TAG = 'leech'
+
 
 PosType = NewType('PosIndex', int)
 DEFAULT = PosType(0)
@@ -17,10 +30,6 @@ MARKER_POS_STYLES = {DEFAULT: 'unset', LEFT: 'left', RIGHT: 'right'}
 ReverseType = NewType('ReverseType', int)
 REV_DECREASE = ReverseType(0)
 REV_RESET = ReverseType(1)
-
-LEECHES_URL = 'viewleeches'
-
-LEECH_TAG = 'leech'
 
 CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
 
@@ -57,14 +66,9 @@ class Config:
         REVERSE_THRESHOLD: 4,
         REVERSE_CONS_ANS: 2,
         REVERSE_METHOD: 0,
-        LEECH_ACTIONS: []
+        LEECH_ACTIONS: {{'flag': [0]}}
     }
 
 
-class String:
-    TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
-    VIEW_LEECHES = 'Leech Cards'
-    SHORTCUT_KEY = 'Shortcut key'
-    LAPSES_DECREASED = r"Card's lapses decreased"
-    LAPSES_RESET = r"Card's lapses reset"
-    pass
+class Action:
+    FLAG = 'flag'
