@@ -42,6 +42,8 @@ class Config:
     REVERSE_THRESHOLD = 'reverse threshold'
     REVERSE_CONS_ANS = 'reverse consecutive answers'
 
+    LEECH_ACTIONS = 'leech actions'
+
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SHOW_LEECH_MARKER: True,
@@ -54,7 +56,8 @@ class Config:
         REVERSE_ENABLED: True,
         REVERSE_THRESHOLD: 4,
         REVERSE_CONS_ANS: 2,
-        REVERSE_METHOD: 0
+        REVERSE_METHOD: 0,
+        LEECH_ACTIONS: []
     }
 
 
