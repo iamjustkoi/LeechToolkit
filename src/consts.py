@@ -4,7 +4,7 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 from typing import NewType
 
-CURRENT_VERSION = '0.0.4-alpha'
+CURRENT_VERSION = '0.1.0-beta'
 
 ANKI_LEGACY_VER = 35
 
