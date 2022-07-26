@@ -18,7 +18,6 @@ class String:
     LAPSES_RESET = r"Card's lapses reset"
 
     LEECHES_URL = 'viewleeches'
-    LEECH_TAG = 'leech'
 
 
 PosType = NewType('PosIndex', int)
@@ -32,6 +31,8 @@ REV_DECREASE = ReverseType(0)
 REV_RESET = ReverseType(1)
 
 CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
+
+LEECH_TAG = 'leech'
 
 
 class Config:
