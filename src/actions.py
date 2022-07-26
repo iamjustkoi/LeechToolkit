@@ -28,15 +28,13 @@ class LeechActionManager:
         self.reviewer = reviewer
         self.user_config = user_conf
 
-    # Leech action dict: [['action': [arg1, arg2]]]
-
+    # Leech actions json: action: {enabled: bool, key: val}
     def run_leech_actions(self, card: anki.cards.Card):
         for action in self.user_config[Config.LEECH_ACTIONS]:
             if action == Action.FLAG:
+                print(f'LEECH FLAG: {self.user_config[Config.LEECH_ACTIONS][Action.FLAG]}')
                 flag_options = self.user_config[Config.LEECH_ACTIONS][Action.FLAG]
                 if flag_options[Action.ENABLED]:
-                    print(f'{self.user_config[Config.LEECH_ACTIONS][Action.FLAG]}')
                     card.set_user_flag(flag_options[Action.FLAG_INDEX])
 
         card.flush()
-        pass
