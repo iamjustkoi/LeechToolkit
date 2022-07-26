@@ -12,7 +12,7 @@ from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESE
 conf: dict
 max_fails: int
 user_conf: dict
-almost_leech_html = '''
+mark_html_shell = '''
 <style>
     #{marker_id} {{
         color: transparent;  
@@ -70,7 +70,7 @@ def on_will_end():
 
 def append_marker_html(content: aqt.webview.WebContent):
     marker_float = MARKER_POS_STYLES[user_conf[Config.MARKER_POSITION]]
-    content.body += almost_leech_html.format(
+    content.body += mark_html_shell.format(
         marker_id=marker_id, marker_text=marker_text, marker_color=leech_color, marker_float=marker_float
     )
 
