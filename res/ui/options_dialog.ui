@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -360,6 +360,9 @@
                 </item>
                 <item row="0" column="1">
                  <widget class="QComboBox" name="flagDropdown">
+                  <property name="sizeAdjustPolicy">
+                   <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
+                  </property>
                   <item>
                    <property name="text">
                     <string>No Flag</string>

@@ -2,8 +2,11 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+from pathlib import Path
+
+import aqt.flags
 from aqt import mw
-from aqt.qt import QAction, QDialog
+from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QBitmap, QSize
 
 from .config import LeechToolkitConfigManager
 from .consts import String, Config, Action
@@ -23,6 +26,13 @@ def on_options_called(result=False):
 
 def _bind_config_options():
     mw.addonManager.setConfigAction(__name__, on_options_called)
+
+
+def get_colored_icon(path, color):
+    icon = QIcon(path)
+    pixmap = icon.pixmap()
+    pixmap.fill(color)
+    return QIcon(pixmap)
 
 
 def _bind_tools_options(*args):
@@ -50,6 +60,9 @@ class OptionsDialog(QDialog):
 
         self._load()
 
+        # Just in case
+        self.ui.tabWidget.setCurrentIndex(0)
+
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
 
@@ -73,6 +86,16 @@ class OptionsDialog(QDialog):
         flag_options = action_config[Action.FLAG]
         self.ui.flagCheckbox.setChecked(flag_options[Action.ENABLED])
         self.ui.flagDropdown.setCurrentIndex(flag_options[Action.FLAG_INDEX])
+
+        flag_manager = aqt.flags.FlagManager(mw)
+        for index in range(1, self.ui.flagDropdown.count()):
+            flag = flag_manager.get_flag(index)
+            pixmap = QPixmap(flag.icon.path)
+            mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
+            pixmap.fill(QColor(flag.icon.current_color(mw.pm.night_mode())))
+            pixmap.setMask(mask)
+            self.ui.flagDropdown.setItemIcon(index, QIcon(pixmap))
+            self.ui.flagDropdown.setItemText(index, f'{flag.label}')
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()

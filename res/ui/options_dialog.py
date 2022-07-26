@@ -175,6 +175,7 @@ class Ui_OptionsDialog(object):
         self.flagCheckbox.setObjectName("flagCheckbox")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.flagCheckbox)
         self.flagDropdown = QtWidgets.QComboBox(self.collapsibleLeechActionsGroup)
+        self.flagDropdown.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToMinimumContentsLengthWithIcon)
         self.flagDropdown.setObjectName("flagDropdown")
         self.flagDropdown.addItem("")
         self.flagDropdown.addItem("")
@@ -200,7 +201,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
