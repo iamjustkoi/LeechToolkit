@@ -78,5 +78,5 @@ Custom handler for drawing Anki's bottom bar.
 class BarButton:
     def __init__(self, text: str, cmd: str, shortcut_key=None):
         attributes = f'onclick="pycmd(\'{cmd}\')"'
-        attributes += f' title="{String.SHORTCUT_KEY}: {shortcut_key}"' if shortcut_key else ''
+        attributes += f' title="{String.BUTTON_SHORTCUT_HINT}: {shortcut_key}"' if shortcut_key else ''
         self.html = f'<button {attributes}>{text}</button>'
