@@ -9,278 +9,419 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>381</width>
+    <width>355</width>
     <height>411</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Leech Toolkit</string>
   </property>
-  <layout class="QVBoxLayout" name="optionsLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <widget class="QScrollArea" name="OptionsScrollArea">
-     <property name="widgetResizable">
-      <bool>true</bool>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="OptionsScrollWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>-53</y>
-        <width>344</width>
-        <height>415</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <layout class="QVBoxLayout" name="optionsScrollLayout">
+     <widget class="QWidget" name="generalTab">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
        <item>
-        <widget class="QCheckBox" name="toolsOptionsCheckBox">
-         <property name="text">
-          <string>Show options in Tools menu</string>
-         </property>
-         <property name="checked">
+        <widget class="QScrollArea" name="OptionsScrollArea">
+         <property name="widgetResizable">
           <bool>true</bool>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="markerGroup">
-         <property name="title">
-          <string>Leech Mark</string>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
-         <layout class="QVBoxLayout" name="markerLayout">
-          <item>
-           <widget class="QCheckBox" name="showMarkerChecbkbox">
-            <property name="text">
-             <string>Show a marker on leech cards during review</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="almostBackCheckbox">
-            <property name="text">
-             <string>Only show on back of cards</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="almostCheckbox">
-            <property name="toolTip">
-             <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.</string>
-            </property>
-            <property name="text">
-             <string>Show unique marker for about-to-be-leeched cards</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QFormLayout" name="markerPosLayout">
-            <property name="horizontalSpacing">
-             <number>64</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="almostLabel">
-              <property name="text">
-               <string>Marker Position</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="almostPosDropdown">
-              <item>
-               <property name="text">
-                <string>Default</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Left</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Right</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="browseButtonGroup">
-         <property name="title">
-          <string>Bottom Bar Button</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QCheckBox" name="browseButtonCheckbox">
-            <property name="toolTip">
-             <string>Show a button on the bottom bar whenever a currently displayed deck has any leeches.</string>
-            </property>
-            <property name="text">
-             <string>Enable &quot;Leech Cards&quot; button on bottom bar</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QGroupBox" name="leechButtonPagesGroup">
-            <property name="title">
-             <string>Enabled Pages</string>
-            </property>
-            <layout class="QHBoxLayout" name="leechButtonPagesLayout">
-             <item>
-              <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
-               <property name="text">
-                <string>Deck Browser</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
-               <property name="text">
-                <string>Deck Overview</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Leech Reverse</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QCheckBox" name="reverseCheckbox">
-            <property name="text">
-             <string>Enable leech reversing</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="reverseThresholdLayout">
-            <item>
-             <widget class="QLabel" name="reverseThresholdLabel">
-              <property name="text">
-               <string>Reverse Leech Threshold</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="reverseThreshold">
-              <property name="toolTip">
-               <string>Un-leeches any cards with a lapse count below this value.</string>
-              </property>
-              <property name="maximum">
-               <number>999</number>
-              </property>
-              <property name="value">
-               <number>4</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLabel" name="consPrefixLabel">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Every</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="consAnswerSpinbox">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="suffix">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string/>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>9999</number>
-              </property>
-              <property name="value">
-               <number>2</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="consSuffixLabel">
-              <property name="text">
-               <string>correct answer(s) in a row:</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QComboBox" name="reverseMethodDropdown">
-            <property name="currentText">
-             <string>Decrease card's total lapse count</string>
-            </property>
-            <item>
+         <widget class="QWidget" name="OptionsScrollWidget">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>308</width>
+            <height>415</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <layout class="QVBoxLayout" name="optionsScrollLayout">
+           <item>
+            <widget class="QCheckBox" name="toolsOptionsCheckBox">
              <property name="text">
-              <string>Decrease card's total lapse count</string>
+              <string>Show options in Tools menu</string>
              </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Reset card's total lapse count</string>
+             <property name="checked">
+              <bool>true</bool>
              </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="markerGroup">
+             <property name="title">
+              <string>Leech Mark</string>
+             </property>
+             <layout class="QVBoxLayout" name="markerLayout">
+              <item>
+               <widget class="QCheckBox" name="showMarkerChecbkbox">
+                <property name="text">
+                 <string>Show a marker on leech cards during review</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="almostBackCheckbox">
+                <property name="text">
+                 <string>Only show on back of cards</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="almostCheckbox">
+                <property name="toolTip">
+                 <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.</string>
+                </property>
+                <property name="text">
+                 <string>Show unique marker for about-to-be-leeched cards</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QFormLayout" name="markerPosLayout">
+                <property name="horizontalSpacing">
+                 <number>64</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="almostLabel">
+                  <property name="text">
+                   <string>Marker Position</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="almostPosDropdown">
+                  <item>
+                   <property name="text">
+                    <string>Default</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Left</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Right</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="browseButtonGroup">
+             <property name="title">
+              <string>Bottom Bar Button</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <item>
+               <widget class="QCheckBox" name="browseButtonCheckbox">
+                <property name="toolTip">
+                 <string>Show a button on the bottom bar whenever a currently displayed deck has any leeches.</string>
+                </property>
+                <property name="text">
+                 <string>Enable &quot;Leech Cards&quot; button on bottom bar</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="leechButtonPagesGroup">
+                <property name="title">
+                 <string>Enabled Pages</string>
+                </property>
+                <layout class="QHBoxLayout" name="leechButtonPagesLayout">
+                 <item>
+                  <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
+                   <property name="text">
+                    <string>Deck Browser</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
+                   <property name="text">
+                    <string>Deck Overview</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>Leech Reverse</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QCheckBox" name="reverseCheckbox">
+                <property name="text">
+                 <string>Enable leech reversing</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="reverseThresholdLayout">
+                <item>
+                 <widget class="QLabel" name="reverseThresholdLabel">
+                  <property name="text">
+                   <string>Reverse Leech Threshold</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="reverseThreshold">
+                  <property name="toolTip">
+                   <string>Un-leeches any cards with a lapse count below this value.</string>
+                  </property>
+                  <property name="maximum">
+                   <number>999</number>
+                  </property>
+                  <property name="value">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <item>
+                 <widget class="QLabel" name="consPrefixLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Every</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="consAnswerSpinbox">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="prefix">
+                   <string/>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>9999</number>
+                  </property>
+                  <property name="value">
+                   <number>2</number>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="consSuffixLabel">
+                  <property name="text">
+                   <string>correct answer(s) in a row:</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QComboBox" name="reverseMethodDropdown">
+                <property name="currentText">
+                 <string>Decrease card's total lapse count</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Decrease card's total lapse count</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Reset card's total lapse count</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="actionsTab">
+      <attribute name="title">
+       <string>Actions</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QScrollArea" name="ActionsScrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>311</width>
+            <height>318</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QGroupBox" name="collapsibleLeechActionsGroup">
+             <property name="title">
+              <string>Leech Actions</string>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <layout class="QFormLayout" name="formLayout">
+                <item row="0" column="0">
+                 <widget class="QCheckBox" name="checkBox">
+                  <property name="text">
+                   <string>Set Flag</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="flagDropdown">
+                  <item>
+                   <property name="text">
+                    <string>No Flag</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Red</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Orange</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Green</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Blue</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Pink</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Turquise</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Purple</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
