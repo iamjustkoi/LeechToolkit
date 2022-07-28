@@ -25,6 +25,7 @@ LEECH_TAG = 'leech'
 
 class Macro:
     DATE = '%date'
+    MACROS = {DATE}
 
 
 class String:
