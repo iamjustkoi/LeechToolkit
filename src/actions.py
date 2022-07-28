@@ -2,15 +2,29 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+import re
+from datetime import date
 from typing import Any
 
 import anki.cards
 import aqt.reviewer
 
-# do_leech (Card):
+from .consts import Config, Action, Macro
 
+# do_leech (Card):
 # do_reverse (Card):
-from .consts import Config, Action
+
+
+def get_formatted_tag(tag):
+    result = tag
+
+    if re.search(fr'(?<!%){Macro.DATE}', tag):
+        result = result.replace(Macro.DATE, date.today().strftime('%x'))
+
+    if re.search(r'%%', tag):
+        result = result.replace('%%', '%')
+
+    return result
 
 
 class LeechActionManager:
@@ -35,7 +49,8 @@ class LeechActionManager:
             if action == Action.ADD_TAGS:
                 if leech_actions[Action.ADD_TAGS][Action.ENABLED]:
                     for tag in str(leech_actions[Action.ADD_TAGS][Action.INPUT]).split(', '):
-                        card.note().add_tag(tag)
+                        formatted_tag = get_formatted_tag(tag)
+                        card.note().add_tag(formatted_tag)
 
         card.flush()
         card.note().flush()
