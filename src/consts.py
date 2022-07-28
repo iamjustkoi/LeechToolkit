@@ -23,6 +23,10 @@ CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
 LEECH_TAG = 'leech'
 
 
+class Macro:
+    DATE = '%date'
+
+
 class String:
     TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
     VIEW_LEECHES = 'Leech Cards'
@@ -35,11 +39,11 @@ class String:
 
 class Action:
     ENABLED = 'enabled'
+    INPUT = 'input'
 
     FLAG = 'flag'
-    FLAG_INDEX = 'flagIndex'
-
     SUSPEND = 'suspend'
+    ADD_TAGS = 'addTags'
 
 
 class Config:
@@ -75,7 +79,8 @@ class Config:
         REVERSE_CONS_ANS: 2,
         REVERSE_METHOD: 0,
         LEECH_ACTIONS: {
-            Action.FLAG: {Action.ENABLED: False, Action.FLAG_INDEX: 0},
-            Action.SUSPEND: {Action.ENABLED: False}
+            Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
+            Action.SUSPEND: {Action.ENABLED: False},
+            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech'}
         }
     }

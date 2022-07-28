@@ -85,7 +85,7 @@ class OptionsDialog(QDialog):
 
         # FLAG
         self.ui.flagCheckbox.setChecked(action_config[Action.FLAG][Action.ENABLED])
-        self.ui.flagDropdown.setCurrentIndex(action_config[Action.FLAG][Action.FLAG_INDEX])
+        self.ui.flagDropdown.setCurrentIndex(action_config[Action.FLAG][Action.INPUT])
 
         flag_manager = aqt.flags.FlagManager(mw)
         for index in range(1, self.ui.flagDropdown.count()):
@@ -99,6 +99,10 @@ class OptionsDialog(QDialog):
 
         # SUSPEND
         self.ui.suspendCheckbox.setChecked(action_config[Action.SUSPEND][Action.ENABLED])
+
+        # TAGS
+        self.ui.addTagsCheckbox.setChecked(action_config[Action.ADD_TAGS][Action.ENABLED])
+        self.ui.addTagsLine.setText(action_config[Action.ADD_TAGS][Action.INPUT])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -122,12 +126,16 @@ class OptionsDialog(QDialog):
 
         # FLAG
         action_config[Action.FLAG][Action.ENABLED] = self.ui.flagCheckbox.isChecked()
-        action_config[Action.FLAG][Action.FLAG_INDEX] = self.ui.flagDropdown.currentIndex()
+        action_config[Action.FLAG][Action.INPUT] = self.ui.flagDropdown.currentIndex()
 
         # SUSPEND
         action_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
 
-        self.ui.flagCheckbox.setChecked(self.config[Config.LEECH_ACTIONS][Action.FLAG][Action.ENABLED])
+        # TAGS
+        action_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
+        action_config[Action.ADD_TAGS][Action.INPUT] = self.ui.addTagsLine.text()
+
+        # Write
         self.manager.write_config()
 
     def accept(self) -> None:
