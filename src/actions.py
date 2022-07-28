@@ -15,14 +15,21 @@ from .consts import Config, Action, Macro
 # do_reverse (Card):
 
 
-def get_formatted_tag(tag):
+def get_formatted_tag(card: anki.cards.Card, tag: str):
     result = tag
 
-    if re.search(fr'(?<!%){Macro.DATE}', tag):
-        result = result.replace(Macro.DATE, date.today().strftime('%x'))
+    macro = Macro.DATE
+    if re.search(fr'(?<!%){macro}', tag):
+        result = result.replace(macro, date.today().strftime('%x'))
 
-    if re.search(r'%%', tag):
-        result = result.replace('%%', '%')
+    macro = Macro.REVIEWS
+    if re.search(fr'(?<!%){macro}', tag):
+        cmd = f'SELECT reps FROM cards WHERE id is {card.id}'
+        result = result.replace(macro, str(card.col.db.scalar(cmd)))
+
+    macro = r'%%'
+    if re.search(macro, tag):
+        result = result.replace(macro, '%')
 
     return result
 
@@ -49,7 +56,7 @@ class LeechActionManager:
             if action == Action.ADD_TAGS:
                 if leech_actions[Action.ADD_TAGS][Action.ENABLED]:
                     for tag in str(leech_actions[Action.ADD_TAGS][Action.INPUT]).split(', '):
-                        formatted_tag = get_formatted_tag(tag)
+                        formatted_tag = get_formatted_tag(card, tag)
                         card.note().add_tag(formatted_tag)
 
         card.flush()
