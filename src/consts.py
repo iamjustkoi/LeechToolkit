@@ -34,9 +34,12 @@ class String:
 
 
 class Action:
+    ENABLED = 'enabled'
+
     FLAG = 'flag'
     FLAG_INDEX = 'flagIndex'
-    ENABLED = 'enabled'
+
+    SUSPEND = 'suspend'
 
 
 class Config:
@@ -72,6 +75,7 @@ class Config:
         REVERSE_CONS_ANS: 2,
         REVERSE_METHOD: 0,
         LEECH_ACTIONS: {
-            Action.FLAG: {Action.ENABLED: False, Action.FLAG_INDEX: 0}
+            Action.FLAG: {Action.ENABLED: False, Action.FLAG_INDEX: 0},
+            Action.SUSPEND: {Action.ENABLED: False}
         }
     }
