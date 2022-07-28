@@ -28,7 +28,7 @@ class LeechActionManager:
             if action == Action.FLAG:
                 flag_options = self.user_config[Config.LEECH_ACTIONS][Action.FLAG]
                 if flag_options[Action.ENABLED]:
-                    card.set_user_flag(flag_options[Action.FLAG_INDEX])
+                    card.set_user_flag(flag_options[Action.INPUT])
             if action == Action.SUSPEND:
                 sus_options = self.user_config[Config.LEECH_ACTIONS][Action.SUSPEND]
                 if sus_options[Action.ENABLED]:
