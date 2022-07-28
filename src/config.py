@@ -5,6 +5,19 @@ Full license text available in "LICENSE" file packaged with the program.
 from aqt import AnkiQt
 from .consts import Config
 
+current_depth = 0
+
+
+def _init_default_fields(default_config: dict, config: dict):
+    global current_depth
+    for field in default_config:
+        current_depth += 1
+        if field not in config:
+            print(f'\nField not found: {field}')
+            config[field] = default_config[field]
+        elif isinstance(default_config[field], dict):
+            _init_default_fields(default_config[field], config[field])
+
 
 class LeechToolkitConfigManager:
 
@@ -22,10 +35,7 @@ Config manager for accessing and writing addon config values.
         self.config = self._meta.get('config', Config.DEFAULT_CONFIG)
         self.decks = self.mw.col.decks if self.mw.col is not None else None
 
-        for field in Config.DEFAULT_CONFIG:
-            if field not in self.config:
-                # load temp defaults
-                self.config[field] = Config.DEFAULT_CONFIG[field]
+        _init_default_fields(Config.DEFAULT_CONFIG, self.config)
 
         self._meta['config'] = self.config
 
