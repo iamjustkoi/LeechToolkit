@@ -356,7 +356,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
               <item>
-               <layout class="QFormLayout" name="formLayout">
+               <layout class="QFormLayout" name="leechActionsLayout">
                 <item row="0" column="0">
                  <widget class="QCheckBox" name="flagCheckbox">
                   <property name="text">
