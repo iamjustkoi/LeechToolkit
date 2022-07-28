@@ -83,9 +83,9 @@ class OptionsDialog(QDialog):
         # Leech Actions
         action_config = self.config[Config.LEECH_ACTIONS]
 
-        flag_options = action_config[Action.FLAG]
-        self.ui.flagCheckbox.setChecked(flag_options[Action.ENABLED])
-        self.ui.flagDropdown.setCurrentIndex(flag_options[Action.FLAG_INDEX])
+        # FLAG
+        self.ui.flagCheckbox.setChecked(action_config[Action.FLAG][Action.ENABLED])
+        self.ui.flagDropdown.setCurrentIndex(action_config[Action.FLAG][Action.FLAG_INDEX])
 
         flag_manager = aqt.flags.FlagManager(mw)
         for index in range(1, self.ui.flagDropdown.count()):
@@ -96,6 +96,9 @@ class OptionsDialog(QDialog):
             pixmap.setMask(mask)
             self.ui.flagDropdown.setItemIcon(index, QIcon(pixmap))
             self.ui.flagDropdown.setItemText(index, f'{flag.label}')
+
+        # SUSPEND
+        self.ui.suspendCheckbox.setChecked(action_config[Action.SUSPEND][Action.ENABLED])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -117,9 +120,12 @@ class OptionsDialog(QDialog):
         # Leech Actions
         action_config = self.config[Config.LEECH_ACTIONS]
 
-        flag_options = action_config[Action.FLAG]
-        flag_options[Action.ENABLED] = self.ui.flagCheckbox.isChecked()
-        flag_options[Action.FLAG_INDEX] = self.ui.flagDropdown.currentIndex()
+        # FLAG
+        action_config[Action.FLAG][Action.ENABLED] = self.ui.flagCheckbox.isChecked()
+        action_config[Action.FLAG][Action.FLAG_INDEX] = self.ui.flagDropdown.currentIndex()
+
+        # SUSPEND
+        action_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
 
         self.ui.flagCheckbox.setChecked(self.config[Config.LEECH_ACTIONS][Action.FLAG][Action.ENABLED])
         self.manager.write_config()
