@@ -2,15 +2,15 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-from pathlib import Path
+import re
 
 import aqt.flags
 from aqt import mw
-from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QBitmap, QSize
+from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QCompleter
+from aqt.tagedit import TagEdit
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config, Action
-from .bottombar import build_bottom_bar
+from .consts import String, Config, Action, Macro
 from ..res.ui.options_dialog import Ui_OptionsDialog
 
 
@@ -49,7 +49,45 @@ def _bind_tools_options(*args):
                 mw.form.menuTools.removeAction(action)
 
 
+class TagCompleter(QCompleter):
+    def __init__(
+        self,
+        parent: aqt.qt.QLineEdit
+    ) -> None:
+        QCompleter.__init__(self, aqt.qt.QStringListModel(), parent)
+        self.tags: list[str] = []
+        self.edit = parent
+        self.cursor: int or None = None
+
+    def set_list(self, suggestions: list):
+        self.setModel(aqt.qt.QStringListModel(suggestions))
+
+    def splitPath(self, tags: str) -> list[str]:
+        stripped_tags = tags.strip()
+        stripped_tags = re.sub("  +", " ", stripped_tags)
+        self.tags = mw.col.tags.split(stripped_tags)
+        self.tags.append("")
+        pos = self.edit.cursorPosition()
+        if tags.endswith("  "):
+            self.cursor = len(self.tags) - 1
+        else:
+            self.cursor = stripped_tags.count(" ", 0, pos)
+        return [self.tags[self.cursor]]
+
+    def pathFromIndex(self, idx: aqt.qt.QModelIndex) -> str:
+        if self.cursor is None:
+            return self.edit.text()
+        ret = QCompleter.pathFromIndex(self, idx)
+        self.tags[self.cursor] = ret
+        try:
+            self.tags.remove("")
+        except ValueError:
+            pass
+        return f"{' '.join(self.tags)} "
+
+
 class OptionsDialog(QDialog):
+    completer: TagCompleter
 
     def __init__(self, manager: LeechToolkitConfigManager):
         super().__init__(flags=manager.mw.windowFlags())
@@ -57,6 +95,12 @@ class OptionsDialog(QDialog):
         self.config = manager.config
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
+
+        self.completer = TagCompleter(self.ui.addTagsLine)
+        self.completer.setCompletionMode(aqt.qt.QCompleter.CompletionMode.PopupCompletion)
+        self.completer.setCaseSensitivity(aqt.qt.Qt.CaseSensitivity.CaseInsensitive)
+        self.completer.setFilterMode(aqt.qt.Qt.MatchFlag.MatchContains)
+        self.ui.addTagsLine.setCompleter(self.completer)
 
         self._load()
 
@@ -102,7 +146,11 @@ class OptionsDialog(QDialog):
 
         # TAGS
         self.ui.addTagsCheckbox.setChecked(action_config[Action.ADD_TAGS][Action.ENABLED])
+        self.completer.set_list(mw.col.weakref().tags.all() + list(Macro.MACROS))
         self.ui.addTagsLine.setText(action_config[Action.ADD_TAGS][Action.INPUT])
+
+        # tags.focusInEvent = lambda: show_completer_with_focus(evt, self.ui.tags)
+        # tags.textEdited.connect(lambda: self.ui.tags.setFocus())
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -133,7 +181,8 @@ class OptionsDialog(QDialog):
 
         # TAGS
         action_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
-        action_config[Action.ADD_TAGS][Action.INPUT] = self.ui.addTagsLine.text()
+        action_config[Action.ADD_TAGS][Action.INPUT] = mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
+        print(f'res: {action_config[Action.ADD_TAGS][Action.INPUT]}')
 
         # Write
         self.manager.write_config()
