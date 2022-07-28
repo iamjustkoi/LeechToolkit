@@ -4,7 +4,7 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 import aqt.reviewer
 from aqt import reviewer, webview, gui_hooks, utils, mw
-from anki import cards
+from anki import cards, hooks
 
 from .actions import LeechActionManager
 from .config import LeechToolkitConfigManager
@@ -65,12 +65,17 @@ def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewe
         gui_hooks.reviewer_did_show_question.append(on_show_front)
         gui_hooks.reviewer_did_show_answer.append(on_show_back)
         gui_hooks.reviewer_did_answer_card.append(on_answer)
+        hooks.card_did_leech.append(action_manager.run_leech_actions)
 
 
 def remove_hooks():
     gui_hooks.reviewer_did_show_question.remove(on_show_front)
     gui_hooks.reviewer_did_show_answer.remove(on_show_back)
     gui_hooks.reviewer_did_answer_card.remove(on_answer)
+    try:
+        hooks.card_did_leech.remove(action_manager.run_leech_actions)
+    except NameError:
+        print(f'Action manager not defined yet.')
 
 
 def append_marker_html(content: aqt.webview.WebContent):
@@ -88,7 +93,6 @@ def on_show_back(card: cards.Card):
 
 def on_show_front(card: cards.Card):
     update_marker(card, True)
-    action_manager.run_leech_actions(card)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
