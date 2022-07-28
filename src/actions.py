@@ -23,15 +23,19 @@ class LeechActionManager:
 
     # Leech actions json: action: {enabled: bool, key: val}
     def run_leech_actions(self, card: anki.cards.Card):
-        for action in self.user_config[Config.LEECH_ACTIONS]:
-            print(f'ACTION {action}: {self.user_config[Config.LEECH_ACTIONS][action]}')
+        leech_actions = self.user_config[Config.LEECH_ACTIONS]
+        for action in leech_actions:
+            print(f'ACTION {action}: {leech_actions[action]}')
             if action == Action.FLAG:
-                flag_options = self.user_config[Config.LEECH_ACTIONS][Action.FLAG]
-                if flag_options[Action.ENABLED]:
-                    card.set_user_flag(flag_options[Action.INPUT])
+                if leech_actions[Action.FLAG][Action.ENABLED]:
+                    card.set_user_flag(leech_actions[Action.FLAG][Action.INPUT])
             if action == Action.SUSPEND:
-                sus_options = self.user_config[Config.LEECH_ACTIONS][Action.SUSPEND]
-                if sus_options[Action.ENABLED]:
+                if leech_actions[Action.SUSPEND][Action.ENABLED]:
                     card.queue = -1
+            if action == Action.ADD_TAGS:
+                if leech_actions[Action.ADD_TAGS][Action.ENABLED]:
+                    for tag in str(leech_actions[Action.ADD_TAGS][Action.INPUT]).split(', '):
+                        card.note().add_tag(tag)
 
         card.flush()
+        card.note().flush()
