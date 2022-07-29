@@ -146,7 +146,7 @@ class OptionsDialog(QDialog):
 
         # TAGS
         suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
-        self.add_completer.set_list(suggestions)
+        self.add_completer.set_list([suggestion for suggestion in suggestions if suggestion != Macro.REGEX])
         self.remove_completer.set_list(suggestions)
 
         # ADD TAGS
