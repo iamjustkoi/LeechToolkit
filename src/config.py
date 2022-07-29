@@ -7,6 +7,12 @@ from .consts import Config
 
 
 def _init_default_fields(default_config: dict, config: dict):
+    """
+    Recursively initializes config variables using the default config. If a field exists but also has subfields,
+    does subsequent checks through each subfield as well.
+    :param default_config: base config to compare against
+    :param config: config to initialize with the default config
+    """
     for field in default_config:
         if field not in config:
             print(f'\nField not found: {field}')
