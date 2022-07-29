@@ -5,13 +5,9 @@ Full license text available in "LICENSE" file packaged with the program.
 from aqt import AnkiQt
 from .consts import Config
 
-current_depth = 0
-
 
 def _init_default_fields(default_config: dict, config: dict):
-    global current_depth
     for field in default_config:
-        current_depth += 1
         if field not in config:
             print(f'\nField not found: {field}')
             config[field] = default_config[field]
