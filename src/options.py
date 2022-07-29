@@ -7,6 +7,7 @@ import re
 import aqt.flags
 from aqt import mw
 from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QCompleter
+from aqt.qt import Qt
 from aqt.tagedit import TagEdit
 
 from .config import LeechToolkitConfigManager
@@ -57,28 +58,24 @@ class TagCompleter(QCompleter):
         QCompleter.__init__(self, aqt.qt.QStringListModel(), parent)
         self.tags: list[str] = []
         self.edit = parent
-        self.cursor: int or None = None
+        self.cursor_pos: int or None = None
 
     def set_list(self, suggestions: list):
         self.setModel(aqt.qt.QStringListModel(suggestions))
 
-    def splitPath(self, tags: str) -> list[str]:
-        stripped_tags = tags.strip()
-        stripped_tags = re.sub("  +", " ", stripped_tags)
+    def splitPath(self, tags_path: str) -> list[str]:
+        stripped_tags = re.sub("  +", " ", tags_path.strip())
         self.tags = mw.col.tags.split(stripped_tags)
-        self.tags.append("")
+        # self.tags.append("")
         pos = self.edit.cursorPosition()
-        if tags.endswith("  "):
-            self.cursor = len(self.tags) - 1
-        else:
-            self.cursor = stripped_tags.count(" ", 0, pos)
-        return [self.tags[self.cursor]]
+        self.cursor_pos = len(self.tags) - 1 if tags_path.endswith("  ") else stripped_tags.count(" ", 0, pos)
+        return [self.tags[self.cursor_pos]]
 
     def pathFromIndex(self, idx: aqt.qt.QModelIndex) -> str:
-        if self.cursor is None:
+        if self.cursor_pos is None:
             return self.edit.text()
         ret = QCompleter.pathFromIndex(self, idx)
-        self.tags[self.cursor] = ret
+        self.tags[self.cursor_pos] = ret
         try:
             self.tags.remove("")
         except ValueError:
@@ -87,7 +84,8 @@ class TagCompleter(QCompleter):
 
 
 class OptionsDialog(QDialog):
-    completer: TagCompleter
+    add_completer: TagCompleter
+    remove_completer: TagCompleter
 
     def __init__(self, manager: LeechToolkitConfigManager):
         super().__init__(flags=manager.mw.windowFlags())
@@ -96,9 +94,13 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
-        self.completer = TagCompleter(self.ui.addTagsLine)
-        self.completer.setCaseSensitivity(aqt.qt.Qt.CaseSensitivity.CaseInsensitive)
-        self.completer.setFilterMode(aqt.qt.Qt.MatchFlag.MatchContains)
+        self.add_completer = TagCompleter(self.ui.addTagsLine)
+        self.add_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.add_completer.setFilterMode(Qt.MatchContains)
+
+        self.remove_completer = TagCompleter(self.ui.removeTagsLine)
+        self.remove_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.remove_completer.setFilterMode(Qt.MatchContains)
 
         self._load()
 
@@ -143,13 +145,14 @@ class OptionsDialog(QDialog):
         self.ui.suspendCheckbox.setChecked(action_config[Action.SUSPEND][Action.ENABLED])
 
         # TAGS
-
-        self.completer.set_list(mw.col.weakref().tags.all() + list(Macro.MACROS))
+        suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
+        self.add_completer.set_list(suggestions)
+        self.remove_completer.set_list(suggestions)
 
         # ADD TAGS
         self.ui.addTagsCheckbox.setChecked(action_config[Action.ADD_TAGS][Action.ENABLED])
         self.ui.addTagsLine.setText(action_config[Action.ADD_TAGS][Action.INPUT])
-        self.ui.addTagsLine.setCompleter(self.completer)
+        self.ui.addTagsLine.setCompleter(self.add_completer)
 
         # tags.focusInEvent = lambda: show_completer_with_focus(evt, self.ui.tags)
         # tags.textEdited.connect(lambda: self.ui.tags.setFocus())
@@ -157,7 +160,7 @@ class OptionsDialog(QDialog):
         # REMOVE TAGS
         self.ui.removeTagsCheckbox.setChecked(action_config[Action.REMOVE_TAGS][Action.ENABLED])
         self.ui.removeTagsLine.setText(action_config[Action.REMOVE_TAGS][Action.INPUT])
-        self.ui.removeTagsLine.setCompleter(self.completer)
+        self.ui.removeTagsLine.setCompleter(self.remove_completer)
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
