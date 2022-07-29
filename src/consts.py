@@ -46,6 +46,7 @@ class Action:
     FLAG = 'flag'
     SUSPEND = 'suspend'
     ADD_TAGS = 'addTags'
+    REMOVE_TAGS = 'removeTags'
 
 
 class Config:
@@ -83,6 +84,7 @@ class Config:
         LEECH_ACTIONS: {
             Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
             Action.SUSPEND: {Action.ENABLED: False},
-            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech'}
+            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech'},
+            Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''}
         }
     }
