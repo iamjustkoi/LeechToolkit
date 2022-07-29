@@ -97,7 +97,6 @@ class OptionsDialog(QDialog):
         self.ui.setupUi(OptionsDialog=self)
 
         self.completer = TagCompleter(self.ui.addTagsLine)
-        self.completer.setCompletionMode(aqt.qt.QCompleter.CompletionMode.PopupCompletion)
         self.completer.setCaseSensitivity(aqt.qt.Qt.CaseSensitivity.CaseInsensitive)
         self.completer.setFilterMode(aqt.qt.Qt.MatchFlag.MatchContains)
         self.ui.addTagsLine.setCompleter(self.completer)
@@ -182,7 +181,6 @@ class OptionsDialog(QDialog):
         # TAGS
         action_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
         action_config[Action.ADD_TAGS][Action.INPUT] = mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
-        print(f'res: {action_config[Action.ADD_TAGS][Action.INPUT]}')
 
         # Write
         self.manager.write_config()
