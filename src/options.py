@@ -99,7 +99,6 @@ class OptionsDialog(QDialog):
         self.completer = TagCompleter(self.ui.addTagsLine)
         self.completer.setCaseSensitivity(aqt.qt.Qt.CaseSensitivity.CaseInsensitive)
         self.completer.setFilterMode(aqt.qt.Qt.MatchFlag.MatchContains)
-        self.ui.addTagsLine.setCompleter(self.completer)
 
         self._load()
 
@@ -144,12 +143,21 @@ class OptionsDialog(QDialog):
         self.ui.suspendCheckbox.setChecked(action_config[Action.SUSPEND][Action.ENABLED])
 
         # TAGS
-        self.ui.addTagsCheckbox.setChecked(action_config[Action.ADD_TAGS][Action.ENABLED])
+
         self.completer.set_list(mw.col.weakref().tags.all() + list(Macro.MACROS))
+
+        # ADD TAGS
+        self.ui.addTagsCheckbox.setChecked(action_config[Action.ADD_TAGS][Action.ENABLED])
         self.ui.addTagsLine.setText(action_config[Action.ADD_TAGS][Action.INPUT])
+        self.ui.addTagsLine.setCompleter(self.completer)
 
         # tags.focusInEvent = lambda: show_completer_with_focus(evt, self.ui.tags)
         # tags.textEdited.connect(lambda: self.ui.tags.setFocus())
+
+        # REMOVE TAGS
+        self.ui.removeTagsCheckbox.setChecked(action_config[Action.REMOVE_TAGS][Action.ENABLED])
+        self.ui.removeTagsLine.setText(action_config[Action.REMOVE_TAGS][Action.INPUT])
+        self.ui.removeTagsLine.setCompleter(self.completer)
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -178,9 +186,15 @@ class OptionsDialog(QDialog):
         # SUSPEND
         action_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
 
-        # TAGS
+        # ADD TAGS
         action_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
-        action_config[Action.ADD_TAGS][Action.INPUT] = mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
+        action_config[Action.ADD_TAGS][Action.INPUT] = \
+            mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
+
+        # REMOVE TAGS
+        action_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
+        action_config[Action.REMOVE_TAGS][Action.INPUT] = \
+            mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
 
         # Write
         self.manager.write_config()

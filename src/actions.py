@@ -58,11 +58,11 @@ class LeechActionManager:
                     for tag in str(leech_actions[Action.ADD_TAGS][Action.INPUT]).split(' '):
                         formatted_tag = get_formatted_tag(card, tag)
                         card.note().add_tag(formatted_tag)
-            # if action == Action.REMOVE_TAGS:
-            #     if leech_actions[Action.REMOVE_TAGS][Action.ENABLED]:
-            #         for tag in str(leech_actions[Action.REMOVE_TAGS][Action.INPUT]).split(' '):
-            #             formatted_tag = get_formatted_tag(card, tag)
-            #             card.note().add_tag(formatted_tag)
+            if action == Action.REMOVE_TAGS:
+                if leech_actions[Action.REMOVE_TAGS][Action.ENABLED]:
+                    for tag in str(leech_actions[Action.REMOVE_TAGS][Action.INPUT]).split(' '):
+                        formatted_tag = get_formatted_tag(card, tag)
+                        card.note().remove_tag(formatted_tag)
 
         card.flush()
         card.note().flush()
