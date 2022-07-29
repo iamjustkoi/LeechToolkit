@@ -26,7 +26,8 @@ LEECH_TAG = 'leech'
 class Macro:
     DATE = '%date'
     REVIEWS = '%reviews'
-    MACROS = {DATE, REVIEWS}
+    REGEX = '%re'
+    MACROS = {DATE, REVIEWS, REGEX}
 
 
 class String:
