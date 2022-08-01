@@ -513,14 +513,14 @@
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="QRadioButton" name="forgetOffRadio">
+                    <widget class="QRadioButton" name="forgetOnRadio">
                      <property name="text">
                       <string>On</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QRadioButton" name="forgetOnRadio">
+                    <widget class="QRadioButton" name="forgetOffRadio">
                      <property name="text">
                       <string>Off</string>
                      </property>
