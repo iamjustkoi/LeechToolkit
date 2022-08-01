@@ -6,7 +6,7 @@ import re
 
 import aqt.flags
 from aqt import mw
-from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QCompleter
+from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QCompleter, QButtonGroup
 from aqt.qt import Qt
 from aqt.tagedit import TagEdit
 
@@ -143,6 +143,8 @@ class OptionsDialog(QDialog):
 
         # SUSPEND
         self.ui.suspendCheckbox.setChecked(action_config[Action.SUSPEND][Action.ENABLED])
+        self.ui.suspendOnButton.setChecked(action_config[Action.SUSPEND][Action.INPUT])
+        self.ui.suspendOffButton.setChecked(not action_config[Action.SUSPEND][Action.INPUT])
 
         # TAGS
         suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
@@ -161,9 +163,6 @@ class OptionsDialog(QDialog):
         self.ui.removeTagsCheckbox.setChecked(action_config[Action.REMOVE_TAGS][Action.ENABLED])
         self.ui.removeTagsLine.setText(action_config[Action.REMOVE_TAGS][Action.INPUT])
         self.ui.removeTagsLine.setCompleter(self.remove_completer)
-
-        # Default actions
-        self.ui.disableDefaultCheckbox.setChecked(action_config[Action.DISABLE_DEFAULT][Action.ENABLED])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -191,6 +190,7 @@ class OptionsDialog(QDialog):
 
         # SUSPEND
         action_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
+        action_config[Action.SUSPEND][Action.INPUT] = self.ui.suspendOnButton.isChecked()
 
         # ADD TAGS
         action_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
@@ -201,9 +201,6 @@ class OptionsDialog(QDialog):
         action_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
         action_config[Action.REMOVE_TAGS][Action.INPUT] = \
             mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
-
-        # Default actions
-        action_config[Action.DISABLE_DEFAULT][Action.ENABLED] = self.ui.disableDefaultCheckbox.isChecked()
 
         # Write
         self.manager.write_config()

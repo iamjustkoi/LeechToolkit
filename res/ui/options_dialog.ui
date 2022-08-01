@@ -418,14 +418,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="0">
+                <item row="2" column="0">
                  <widget class="QCheckBox" name="addTagsCheckbox">
                   <property name="text">
                    <string>Add Tag(s)</string>
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="1">
+                <item row="2" column="1">
                  <widget class="QLineEdit" name="addTagsLine">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -435,14 +435,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="0">
+                <item row="3" column="0">
                  <widget class="QCheckBox" name="removeTagsCheckbox">
                   <property name="text">
                    <string>Remove Tag(s)</string>
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="1">
+                <item row="3" column="1">
                  <widget class="QLineEdit" name="removeTagsLine">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -452,14 +452,30 @@
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="0">
-                 <widget class="QCheckBox" name="disableDefaultCheckbox">
-                  <property name="toolTip">
-                   <string>Disable Anki's default leech action (tag/suspend).</string>
-                  </property>
-                  <property name="text">
-                   <string>Disable default leech action</string>
-                  </property>
+                <item row="1" column="1">
+                 <widget class="QFrame" name="suspendFrame">
+                  <layout class="QHBoxLayout" name="horizontalLayout_2">
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QRadioButton" name="suspendOnButton">
+                     <property name="text">
+                      <string>On</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="suspendOffButton">
+                     <property name="text">
+                      <string>Off</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </widget>
                 </item>
                </layout>
