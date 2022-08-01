@@ -164,6 +164,13 @@ class OptionsDialog(QDialog):
         self.ui.removeTagsLine.setText(action_config[Action.REMOVE_TAGS][Action.INPUT])
         self.ui.removeTagsLine.setCompleter(self.remove_completer)
 
+        # FORGET
+        self.ui.forgetCheckbox.setChecked(action_config[Action.FORGET][Action.ENABLED])
+        self.ui.forgetOnRadio.setChecked(action_config[Action.FORGET][Action.INPUT][0])
+        self.ui.forgetOffRadio.setChecked(not action_config[Action.FORGET][Action.INPUT][0])
+        self.ui.forgetRestorePosCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][1])
+        self.ui.forgetResetCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][2])
+
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
@@ -201,6 +208,12 @@ class OptionsDialog(QDialog):
         action_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
         action_config[Action.REMOVE_TAGS][Action.INPUT] = \
             mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
+
+        # FORGET
+        action_config[Action.FORGET][Action.ENABLED] = self.ui.forgetCheckbox.isChecked()
+        action_config[Action.FORGET][Action.INPUT][0] = self.ui.forgetOnRadio.isChecked()
+        action_config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
+        action_config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
 
         # Write
         self.manager.write_config()

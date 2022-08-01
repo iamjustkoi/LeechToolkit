@@ -8,9 +8,9 @@ from typing import Any
 
 import anki.cards
 import aqt.reviewer
-from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_REV
+from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_REV, QUEUE_TYPE_NEW
 
-from .consts import Config, Action, Macro, LEECH_TAG
+from .consts import Config, Action, Macro, LEECH_TAG, CARD_TYPE_STR
 
 
 # do_leech (Card):
@@ -37,7 +37,6 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
 
 
 class LeechActionManager:
-    debug = False
 
     def __init__(self, reviewer: aqt.reviewer.Reviewer, deck_id: int, user_conf: dict[str, Any]):
         # Deck Conf = (Config for Deck's Options Group or None)
@@ -51,8 +50,7 @@ class LeechActionManager:
 
         for action in leech_actions:
 
-            if self.debug:
-                print(f'ACTION {action}: {leech_actions[action]}')
+            # print(f':    ACTION {action}: {leech_actions[action]}')
 
             if action == Action.FLAG:
                 if leech_actions[Action.FLAG][Action.ENABLED]:
@@ -82,6 +80,22 @@ class LeechActionManager:
                         else:
                             card.note().remove_tag(formatted_tag)
 
-        if not self.debug:
-            card.flush()
-            card.note().flush()
+        card.flush()
+        card.note().flush()
+
+        if leech_actions[Action.FORGET][Action.ENABLED]:
+            forget_inputs = leech_actions[Action.FORGET][Action.INPUT]
+            if forget_inputs[0]:
+                attributes = [
+                    'odid=0',
+                    f'queue={QUEUE_TYPE_NEW if card.queue != QUEUE_TYPE_SUSPENDED else card.queue}'
+                ]
+
+                if forget_inputs[1]:
+                    attributes.append('odue=0')
+                if forget_inputs[2]:
+                    attributes.append('reps=0, lapses=0')
+
+                cmd = f'''UPDATE cards SET {", ".join(attributes)} WHERE id in ({card.id})'''
+                # print(f'cmd: {cmd}')
+                card.col.db.all(cmd)
