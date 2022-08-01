@@ -85,7 +85,7 @@ class Config:
         REVERSE_METHOD: 0,
         LEECH_ACTIONS: {
             Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
-            Action.SUSPEND: {Action.ENABLED: False},
+            Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
             Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech'},
             Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''}
         }
