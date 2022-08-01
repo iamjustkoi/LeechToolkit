@@ -149,18 +149,21 @@ class OptionsDialog(QDialog):
         self.add_completer.set_list([suggestion for suggestion in suggestions if suggestion != Macro.REGEX])
         self.remove_completer.set_list(suggestions)
 
+        # tags.focusInEvent = lambda: show_completer_with_focus(evt, self.ui.tags)
+        # tags.textEdited.connect(lambda: self.ui.tags.setFocus())
+
         # ADD TAGS
         self.ui.addTagsCheckbox.setChecked(action_config[Action.ADD_TAGS][Action.ENABLED])
         self.ui.addTagsLine.setText(action_config[Action.ADD_TAGS][Action.INPUT])
         self.ui.addTagsLine.setCompleter(self.add_completer)
 
-        # tags.focusInEvent = lambda: show_completer_with_focus(evt, self.ui.tags)
-        # tags.textEdited.connect(lambda: self.ui.tags.setFocus())
-
         # REMOVE TAGS
         self.ui.removeTagsCheckbox.setChecked(action_config[Action.REMOVE_TAGS][Action.ENABLED])
         self.ui.removeTagsLine.setText(action_config[Action.REMOVE_TAGS][Action.INPUT])
         self.ui.removeTagsLine.setCompleter(self.remove_completer)
+
+        # Default actions
+        self.ui.disableDefaultCheckbox.setChecked(action_config[Action.DISABLE_DEFAULT][Action.ENABLED])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -198,6 +201,9 @@ class OptionsDialog(QDialog):
         action_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
         action_config[Action.REMOVE_TAGS][Action.INPUT] = \
             mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
+
+        # Default actions
+        action_config[Action.DISABLE_DEFAULT][Action.ENABLED] = self.ui.disableDefaultCheckbox.isChecked()
 
         # Write
         self.manager.write_config()

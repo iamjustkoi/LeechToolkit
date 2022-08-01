@@ -41,13 +41,14 @@ class String:
 
 
 class Action:
-    ENABLED = 'enabled'
-    INPUT = 'input'
-
+    DISABLE_DEFAULT = 'disableDefault'
     FLAG = 'flag'
     SUSPEND = 'suspend'
     ADD_TAGS = 'addTags'
     REMOVE_TAGS = 'removeTags'
+
+    ENABLED = 'enabled'
+    INPUT = 'input'
 
 
 class Config:
