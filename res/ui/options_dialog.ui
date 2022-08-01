@@ -452,6 +452,16 @@
                   </property>
                  </widget>
                 </item>
+                <item row="5" column="0">
+                 <widget class="QCheckBox" name="disableDefaultCheckbox">
+                  <property name="toolTip">
+                   <string>Disable Anki's default leech action (tag/suspend).</string>
+                  </property>
+                  <property name="text">
+                   <string>Disable default leech action</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
              </layout>
