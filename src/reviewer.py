@@ -2,6 +2,8 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+from typing import Literal
+
 import aqt.reviewer
 from aqt import reviewer, webview, gui_hooks, utils, mw
 from anki import cards, hooks
@@ -132,7 +134,6 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
 
             # Card reverse functions
             if card_has_consecutive_correct(card, user_conf[Config.REVERSE_CONS_ANS]):
-
                 if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
                     if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
                         card.lapses -= 1
@@ -140,7 +141,6 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
                     elif user_conf[Config.REVERSE_METHOD] == REV_RESET:
                         card.lapses = 0
                         tooltip += String.LAPSES_RESET
-
                     card.flush()
 
             if user_conf[Config.REVERSE_THRESHOLD] > card.lapses:
