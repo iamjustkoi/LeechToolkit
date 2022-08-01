@@ -8,6 +8,7 @@ from typing import Any
 
 import anki.cards
 import aqt.reviewer
+from anki.consts import QUEUE_TYPE_SUSPENDED
 
 from .consts import Config, Action, Macro
 
@@ -47,6 +48,7 @@ class LeechActionManager:
     # Leech actions json: action: {enabled: bool, key: val}
     def run_leech_actions(self, card: anki.cards.Card):
         leech_actions = self.user_config[Config.LEECH_ACTIONS]
+
         for action in leech_actions:
 
             if self.debug:
@@ -58,7 +60,7 @@ class LeechActionManager:
 
             if action == Action.SUSPEND:
                 if leech_actions[Action.SUSPEND][Action.ENABLED]:
-                    card.queue = -1
+                    card.queue = QUEUE_TYPE_SUSPENDED
 
             if action == Action.ADD_TAGS:
                 if leech_actions[Action.ADD_TAGS][Action.ENABLED]:
