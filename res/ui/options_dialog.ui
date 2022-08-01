@@ -455,7 +455,13 @@
                 <item row="1" column="1">
                  <widget class="QFrame" name="suspendFrame">
                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
                    <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
                     <number>0</number>
                    </property>
                    <property name="bottomMargin">
@@ -494,6 +500,18 @@
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_3">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
                    <item>
                     <widget class="QRadioButton" name="forgetOffRadio">
                      <property name="text">
@@ -509,6 +527,20 @@
                     </widget>
                    </item>
                   </layout>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QCheckBox" name="forgetRestorePosCheckbox">
+                  <property name="text">
+                   <string>Restore import position where possible</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="QCheckBox" name="forgetResetCheckbox">
+                  <property name="text">
+                   <string>Reset total reviews and lapses</string>
+                  </property>
                  </widget>
                 </item>
                </layout>
