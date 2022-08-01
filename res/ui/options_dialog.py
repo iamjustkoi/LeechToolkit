@@ -216,6 +216,9 @@ class Ui_OptionsDialog(object):
         self.removeTagsLine.setSizePolicy(sizePolicy)
         self.removeTagsLine.setObjectName("removeTagsLine")
         self.leechActionsLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.removeTagsLine)
+        self.disableDefaultCheckbox = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
+        self.disableDefaultCheckbox.setObjectName("disableDefaultCheckbox")
+        self.leechActionsLayout.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.disableDefaultCheckbox)
         self.verticalLayout_7.addLayout(self.leechActionsLayout)
         self.verticalLayout_6.addWidget(self.collapsibleLeechActionsGroup)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -278,6 +281,8 @@ class Ui_OptionsDialog(object):
         self.suspendCheckbox.setText(_translate("OptionsDialog", "Suspend"))
         self.addTagsCheckbox.setText(_translate("OptionsDialog", "Add Tag(s)"))
         self.removeTagsCheckbox.setText(_translate("OptionsDialog", "Remove Tag(s)"))
+        self.disableDefaultCheckbox.setToolTip(_translate("OptionsDialog", "Disable Anki\'s default leech action (tag/suspend)."))
+        self.disableDefaultCheckbox.setText(_translate("OptionsDialog", "Disable default leech action"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
 
 
