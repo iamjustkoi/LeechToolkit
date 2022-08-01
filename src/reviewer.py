@@ -4,6 +4,7 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 from typing import Literal
 
+import anki.cards
 import aqt.reviewer
 from aqt import reviewer, webview, gui_hooks, utils, mw
 from anki import cards, hooks
@@ -31,6 +32,7 @@ mark_html_shell = '''
 
 marker_id = 'leech_marker'
 prev_type_attr = 'prevtype'
+was_leech_attr = 'was_leech'
 
 MARKER_TEXT = '🩸'
 LEECH_COLOR = 'rgb(248, 105, 86)'
@@ -67,7 +69,8 @@ def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewe
         gui_hooks.reviewer_did_show_question.append(on_show_front)
         gui_hooks.reviewer_did_show_answer.append(on_show_back)
         gui_hooks.reviewer_did_answer_card.append(on_answer)
-        hooks.card_did_leech.append(action_manager.run_leech_actions)
+        # hooks.card_did_leech.append(action_manager.run_leech_actions)
+        hooks.card_did_leech.append(update_leech)
 
 
 def remove_hooks():
@@ -75,9 +78,14 @@ def remove_hooks():
     gui_hooks.reviewer_did_show_answer.remove(on_show_back)
     gui_hooks.reviewer_did_answer_card.remove(on_answer)
     try:
-        hooks.card_did_leech.remove(action_manager.run_leech_actions)
+        hooks.card_did_leech.remove(update_leech)
+        # hooks.card_did_leech.remove(action_manager.run_leech_actions)
     except NameError:
         print(f'Action manager not defined yet.')
+
+
+def update_leech(card: anki.cards.Card):
+    setattr(card, was_leech_attr, True)
 
 
 def append_marker_html(content: aqt.webview.WebContent):
@@ -91,13 +99,12 @@ def on_show_back(card: cards.Card):
     if user_conf[Config.REVERSE_ENABLED]:
         setattr(card, prev_type_attr, card.type)
     update_marker(card, False)
+    # # @DEBUG
+    # action_manager.run_leech_actions(card, debug=True)
 
 
 def on_show_front(card: cards.Card):
     update_marker(card, True)
-    # # @DEBUG
-    # action_manager.debug = False
-    # action_manager.run_leech_actions(card)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
@@ -153,6 +160,10 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
             utils.tooltip(tooltip, period=TOOLTIP_TIME, y_offset=200, x_offset=600)
 
         delattr(card, prev_type_attr)
+
+    if hasattr(card, was_leech_attr):
+        action_manager.run_leech_actions(card)
+        delattr(card, was_leech_attr)
 
 
 def set_marker_color(color: str):
