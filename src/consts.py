@@ -41,6 +41,7 @@ class String:
 
 
 class Action:
+    FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'
     FLAG = 'flag'
     SUSPEND = 'suspend'
@@ -87,6 +88,7 @@ class Config:
             Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
             Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
             Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech'},
-            Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''}
+            Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
+            Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]}
         }
     }

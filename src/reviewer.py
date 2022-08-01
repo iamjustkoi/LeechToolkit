@@ -86,6 +86,7 @@ def remove_hooks():
 
 def update_leech(card: anki.cards.Card):
     setattr(card, was_leech_attr, True)
+    print(f'update_leech')
 
 
 def append_marker_html(content: aqt.webview.WebContent):
@@ -133,6 +134,7 @@ Retrieves all reviews that were correct without any "again" answers.
 
 
 def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
+    print(f'on_answer')
     if hasattr(card, prev_type_attr):
         tooltip = ''
 
