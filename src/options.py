@@ -6,7 +6,8 @@ import re
 
 import aqt.flags
 from aqt import mw
-from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QCompleter, QButtonGroup
+from aqt.models import Models
+from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QCompleter, QDialogButtonBox, qconnect
 from aqt.qt import Qt
 from aqt.tagedit import TagEdit
 
@@ -101,6 +102,14 @@ class OptionsDialog(QDialog):
         self.remove_completer = TagCompleter(self.ui.removeTagsLine)
         self.remove_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.remove_completer.setFilterMode(Qt.MatchContains)
+
+        def open_note_selection():
+            dialog = Models(mw, self, fromMain=False)
+            dialog.form.buttonBox.clear()
+            button = dialog.form.buttonBox.addButton('Select', QDialogButtonBox.ButtonRole.ActionRole)
+            qconnect(button.clicked, lambda _: print(f'Note selected!'))
+
+        self.ui.addFieldButton.clicked.connect(open_note_selection)
 
         self._load()
 
