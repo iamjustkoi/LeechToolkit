@@ -3,17 +3,40 @@ MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjust
 Full license text available in "LICENSE" file packaged with the program.
 """
 import re
+from pathlib import Path
+from typing import Tuple, Any
 
 import aqt.flags
+from anki.models import NotetypeDict, NotetypeNameIdUseCount
+from anki.notes import NoteId, Note
 from aqt import mw
 from aqt.models import Models
-from aqt.qt import QAction, QDialog, QIcon, QPixmap, QColor, QCompleter, QDialogButtonBox, qconnect
-from aqt.qt import Qt
-from aqt.tagedit import TagEdit
+from aqt.qt import (
+    Qt,
+    QAction,
+    QDialog,
+    QIcon,
+    QPixmap,
+    QColor,
+    QCompleter,
+    QDialogButtonBox,
+    qconnect,
+    QWidget,
+    QMenu,
+    QLabel,
+    QHBoxLayout,
+    QListWidgetItem,
+    QFontMetrics,
+    QPainter,
+    QVBoxLayout,
+    QListWidget,
+    QSize
+)
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config, Action, Macro
+from .consts import String, Config, Action, Macro, EditType, REMOVE_ICON_PATH
 from ..res.ui.options_dialog import Ui_OptionsDialog
+from ..res.ui.edit_field_item import Ui_FieldWidgetItem
 
 
 def bind_actions():
@@ -53,8 +76,8 @@ def _bind_tools_options(*args):
 
 class TagCompleter(QCompleter):
     def __init__(
-        self,
-        parent: aqt.qt.QLineEdit
+            self,
+            parent: aqt.qt.QLineEdit
     ) -> None:
         QCompleter.__init__(self, aqt.qt.QStringListModel(), parent)
         self.tags: list[str] = []
@@ -103,9 +126,18 @@ class OptionsDialog(QDialog):
         self.remove_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.remove_completer.setFilterMode(Qt.MatchContains)
 
+        def add_note_item(model: NotetypeNameIdUseCount):
+            note_item = NoteItem(model, self)
+            list_item = QListWidgetItem(self.ui.editFieldsList)
+            list_item.setSizeHint(note_item.sizeHint())
+            list_item.setFlags(Qt.NoItemFlags)
+            self.ui.editFieldsList.addItem(list_item)
+            self.redraw_list()
+
         def handle_note_selected(dialog: Models):
+            dialog.close()
             selected = dialog.form.modelsList.currentRow()
-            print(f'Note: {dialog.models[selected].id}')
+            add_note_item(dialog.models[selected])
 
         def open_note_selection():
             dialog = Models(mw, self, fromMain=False)
@@ -121,6 +153,7 @@ class OptionsDialog(QDialog):
             qconnect(dialog.form.modelsList.itemDoubleClicked, lambda _: handle_note_selected(dialog))
 
         self.ui.addFieldButton.clicked.connect(open_note_selection)
+        # self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
 
         self._load()
 
@@ -249,3 +282,78 @@ class OptionsDialog(QDialog):
         super().accept()
         bind_actions()
         mw.reset()
+
+    def redraw_list(self):
+        # width_hint = (fields_list.sizeHintForColumn(0) * fields_list.count()) if fields_list.count() > 0 else 0
+        # height_hint = (fields_list.sizeHintForRow(0) * fields_list.count()) if fields_list.count() > 0 else 0
+        fields_list = self.ui.editFieldsList
+        print(self.ui.editFieldsList.sizeHintForColumn(0) * fields_list.count())
+        print(self.ui.editFieldsList.sizeHintForRow(0))
+        fields_list.setMinimumWidth(fields_list.sizeHintForColumn(0))
+        fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
+        print(f'{fields_list.minimumSize()}')
+
+
+class NoteItem(QWidget):
+    # model: Models
+    model: NotetypeNameIdUseCount
+
+    def __init__(
+            self,
+            model: NotetypeNameIdUseCount,
+            dialog: OptionsDialog,
+            field_idx=-1,
+            method_idx=EditType(-1),
+            repl: str = None,
+            text: str = None
+    ):
+        """
+NoteItem used for the field edit list.
+        :param text: string value to use for the label of the list item
+        :param dialog: reference to the base class to use for context menu actions
+        """
+        super().__init__()
+        self.context_menu = QMenu(self)
+        self.dialog = dialog
+        self.widget = Ui_FieldWidgetItem()
+        self.widget.setupUi(FieldWidgetItem=self)
+
+        self.set_model(model)
+        self.update_forms(field_idx=field_idx, method_idx=method_idx, repl=repl, text=text)
+        self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
+
+        def remove(_):
+            for i in range(self.dialog.ui.editFieldsList.count()):
+                item = self.dialog.ui.editFieldsList.item(i)
+                if self == self.from_list_widget(item):
+                    self.dialog.ui.editFieldsList.takeItem(i)
+                    self.dialog.redraw_list()
+
+        self.widget.removeButton.clicked.connect(remove)
+
+    def update_forms(self, field_idx=-1, method_idx=EditType(-1), repl: str = None, text: str = None):
+        # print(f'    {mw.col.models.by_name(self.model.name)}')
+
+        note_fields = mw.col.models.by_name(self.model.name).get('flds')
+        self.widget.fieldDropdown.addItems([field['name'] for field in note_fields])
+
+        if field_idx >= 0:
+            self.widget.fieldDropdown.setCurrentIndex(field_idx)
+        if method_idx >= 0:
+            self.widget.methodDropdown.setCurrentIndex(method_idx)
+        if repl:
+            self.widget.replaceEdit.setText(repl)
+        if text:
+            self.widget.inputEdit.setText(text)
+
+    def set_model(self, model: NotetypeNameIdUseCount):
+        self.model = model
+        self.widget.noteLabel.setText(model.name)
+
+        # painter = QPainter(self.widget.noteLabel)
+        # metrics = QFontMetrics(self.font())
+        # elided = metrics.elidedText(self.widget.noteLabel.text(), Qt.ElideRight, self.widget.noteLabel.maximumWidth())
+        # painter.drawText(self.rect(), self.widget.noteLabel.alignment(), elided)
+
+    def from_list_widget(self, item: QListWidgetItem) -> "NoteItem":
+        return self.dialog.ui.editFieldsList.itemWidget(item)
