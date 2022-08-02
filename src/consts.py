@@ -41,6 +41,7 @@ class String:
 
 
 class Action:
+    EDIT_FIELDS = 'editFields'
     FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'
     FLAG = 'flag'
@@ -89,6 +90,7 @@ class Config:
             Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
             Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech'},
             Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
-            Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]}
+            Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
+            Action.EDIT_FIELDS: {Action.ENABLED: False, Action.INPUT: [['', ''], ['', '']]}
         }
     }
