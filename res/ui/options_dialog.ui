@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
+    <width>486</width>
     <height>462</height>
    </rect>
   </property>
@@ -27,18 +27,6 @@
        <string>General</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
-       <property name="leftMargin">
-        <number>2</number>
-       </property>
-       <property name="topMargin">
-        <number>2</number>
-       </property>
-       <property name="rightMargin">
-        <number>2</number>
-       </property>
-       <property name="bottomMargin">
-        <number>2</number>
-       </property>
        <item>
         <widget class="QScrollArea" name="OptionsScrollArea">
          <property name="widgetResizable">
@@ -52,7 +40,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>413</width>
+            <width>425</width>
             <height>415</height>
            </rect>
           </property>
@@ -332,8 +320,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>416</width>
-            <height>331</height>
+            <width>442</width>
+            <height>325</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -361,6 +349,12 @@
               <bool>true</bool>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
               <item>
                <layout class="QFormLayout" name="leechActionsLayout">
                 <item row="0" column="0">
@@ -500,7 +494,7 @@
                 <item row="4" column="1">
                  <widget class="QFrame" name="forgetFrame">
                   <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
+                   <enum>QFrame::NoFrame</enum>
                   </property>
                   <property name="frameShadow">
                    <enum>QFrame::Raised</enum>
@@ -559,25 +553,6 @@
                 <item row="7" column="1">
                  <layout class="QVBoxLayout" name="verticalLayout_8">
                   <item>
-                   <widget class="QListWidget" name="editFieldsList">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="verticalScrollBarPolicy">
-                     <enum>Qt::ScrollBarAlwaysOff</enum>
-                    </property>
-                    <property name="horizontalScrollBarPolicy">
-                     <enum>Qt::ScrollBarAlwaysOff</enum>
-                    </property>
-                    <property name="sizeAdjustPolicy">
-                     <enum>QAbstractScrollArea::AdjustToContents</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
                    <widget class="QPushButton" name="addFieldButton">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -587,6 +562,37 @@
                     </property>
                     <property name="text">
                      <string>Add...</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QListWidget" name="editFieldsList">
+                    <property name="frameShape">
+                     <enum>QFrame::NoFrame</enum>
+                    </property>
+                    <property name="verticalScrollBarPolicy">
+                     <enum>Qt::ScrollBarAsNeeded</enum>
+                    </property>
+                    <property name="horizontalScrollBarPolicy">
+                     <enum>Qt::ScrollBarAlwaysOff</enum>
+                    </property>
+                    <property name="sizeAdjustPolicy">
+                     <enum>QAbstractScrollArea::AdjustToContents</enum>
+                    </property>
+                    <property name="editTriggers">
+                     <set>QAbstractItemView::NoEditTriggers</set>
+                    </property>
+                    <property name="showDropIndicator" stdset="0">
+                     <bool>false</bool>
+                    </property>
+                    <property name="selectionMode">
+                     <enum>QAbstractItemView::NoSelection</enum>
+                    </property>
+                    <property name="itemAlignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                    </property>
+                    <property name="sortingEnabled">
+                     <bool>true</bool>
                     </property>
                    </widget>
                   </item>
