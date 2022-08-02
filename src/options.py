@@ -191,6 +191,9 @@ class OptionsDialog(QDialog):
         self.ui.forgetRestorePosCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][1])
         self.ui.forgetResetCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][2])
 
+        # FIELDS
+        self.ui.editFieldsCheckbox.setChecked(action_config[Action.EDIT_FIELDS][Action.ENABLED])
+
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
@@ -234,6 +237,9 @@ class OptionsDialog(QDialog):
         action_config[Action.FORGET][Action.INPUT][0] = self.ui.forgetOnRadio.isChecked()
         action_config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
         action_config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
+
+        # FIELDS
+        action_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
 
         # Write
         self.manager.write_config()
