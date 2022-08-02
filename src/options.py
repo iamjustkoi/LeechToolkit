@@ -103,11 +103,22 @@ class OptionsDialog(QDialog):
         self.remove_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.remove_completer.setFilterMode(Qt.MatchContains)
 
+        def handle_note_selected(dialog: Models):
+            selected = dialog.form.modelsList.currentRow()
+            print(f'Note: {dialog.models[selected].id}')
+
         def open_note_selection():
             dialog = Models(mw, self, fromMain=False)
             dialog.form.buttonBox.clear()
-            button = dialog.form.buttonBox.addButton('Select', QDialogButtonBox.ButtonRole.ActionRole)
-            qconnect(button.clicked, lambda _: print(f'Note selected!'))
+            dialog.form.modelsList.itemDoubleClicked.disconnect()
+
+            select_button = dialog.form.buttonBox.addButton('Select', QDialogButtonBox.ButtonRole.ActionRole)
+            qconnect(select_button.clicked, lambda _: handle_note_selected(dialog))
+
+            cancel_button = dialog.form.buttonBox.addButton('Cancel', QDialogButtonBox.ButtonRole.ActionRole)
+            qconnect(cancel_button.clicked, lambda _: dialog.reject())
+
+            qconnect(dialog.form.modelsList.itemDoubleClicked, lambda _: handle_note_selected(dialog))
 
         self.ui.addFieldButton.clicked.connect(open_note_selection)
 
