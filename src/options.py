@@ -4,11 +4,9 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 import re
 from pathlib import Path
-from typing import Tuple, Any
 
 import aqt.flags
-from anki.models import NotetypeDict, NotetypeNameIdUseCount
-from anki.notes import NoteId, Note
+from anki.models import NotetypeNameIdUseCount
 from aqt import mw
 from aqt.models import Models
 from aqt.qt import (
@@ -23,14 +21,7 @@ from aqt.qt import (
     qconnect,
     QWidget,
     QMenu,
-    QLabel,
-    QHBoxLayout,
-    QListWidgetItem,
-    QFontMetrics,
-    QPainter,
-    QVBoxLayout,
-    QListWidget,
-    QSize
+    QListWidgetItem
 )
 
 from .config import LeechToolkitConfigManager
@@ -131,7 +122,9 @@ class OptionsDialog(QDialog):
             list_item = QListWidgetItem(self.ui.editFieldsList)
             list_item.setSizeHint(note_item.sizeHint())
             list_item.setFlags(Qt.NoItemFlags)
+
             self.ui.editFieldsList.addItem(list_item)
+            self.ui.editFieldsList.setItemWidget(list_item, note_item)
             self.redraw_list()
 
         def handle_note_selected(dialog: Models):
@@ -153,7 +146,8 @@ class OptionsDialog(QDialog):
             qconnect(dialog.form.modelsList.itemDoubleClicked, lambda _: handle_note_selected(dialog))
 
         self.ui.addFieldButton.clicked.connect(open_note_selection)
-        # self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
+
+        self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
 
         self._load()
 
@@ -284,14 +278,9 @@ class OptionsDialog(QDialog):
         mw.reset()
 
     def redraw_list(self):
-        # width_hint = (fields_list.sizeHintForColumn(0) * fields_list.count()) if fields_list.count() > 0 else 0
-        # height_hint = (fields_list.sizeHintForRow(0) * fields_list.count()) if fields_list.count() > 0 else 0
         fields_list = self.ui.editFieldsList
-        print(self.ui.editFieldsList.sizeHintForColumn(0) * fields_list.count())
-        print(self.ui.editFieldsList.sizeHintForRow(0))
         fields_list.setMinimumWidth(fields_list.sizeHintForColumn(0))
         fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
-        print(f'{fields_list.minimumSize()}')
 
 
 class NoteItem(QWidget):
@@ -332,8 +321,6 @@ NoteItem used for the field edit list.
         self.widget.removeButton.clicked.connect(remove)
 
     def update_forms(self, field_idx=-1, method_idx=EditType(-1), repl: str = None, text: str = None):
-        # print(f'    {mw.col.models.by_name(self.model.name)}')
-
         note_fields = mw.col.models.by_name(self.model.name).get('flds')
         self.widget.fieldDropdown.addItems([field['name'] for field in note_fields])
 
@@ -350,6 +337,7 @@ NoteItem used for the field edit list.
         self.model = model
         self.widget.noteLabel.setText(model.name)
 
+        # Potential ellipses code instead
         # painter = QPainter(self.widget.noteLabel)
         # metrics = QFontMetrics(self.font())
         # elided = metrics.elidedText(self.widget.noteLabel.text(), Qt.ElideRight, self.widget.noteLabel.maximumWidth())
