@@ -308,7 +308,7 @@ class OptionsDialog(QDialog):
                 input_text=field[Action.Fields.TEXT]
             )
 
-    def add_note_item(self, nid: int, field_idx: int = -1, method_idx=Action.Fields.EditType(-1), repl='', input_text=''):
+    def add_note_item(self, nid: int, field_idx: int = -1, method_idx=Action.Fields.EditMethod(-1), repl='', input_text=''):
         note_item = NoteItem(self, nid, field_idx, method_idx, repl, input_text)
         list_item = QListWidgetItem(self.ui.editFieldsList)
         list_item.setSizeHint(note_item.sizeHint())
@@ -331,7 +331,7 @@ class NoteItem(QWidget):
             dialog: OptionsDialog,
             nid: int,
             field_idx: int = -1,
-            method_idx=Action.Fields.EditType(-1),
+            method_idx=Action.Fields.EditMethod(-1),
             repl: str = None,
             text: str = None
     ):
@@ -351,7 +351,7 @@ NoteItem used for the field edit list.
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
         def refresh_replace_input(index: int):
-            self.widget.replaceEdit.setVisible(index in (Action.Fields.EDIT_REPLACE, Action.Fields.EDIT_REGEX))
+            self.widget.replaceEdit.setVisible(index in (Action.Fields.REPLACE, Action.Fields.REGEX))
 
         self.widget.methodDropdown.currentIndexChanged.connect(refresh_replace_input)
 
@@ -367,7 +367,7 @@ NoteItem used for the field edit list.
     def update_forms(
             self,
             field_idx: int = -1,
-            method_idx=Action.Fields.EditType(-1),
+            method_idx=Action.Fields.EditMethod(-1),
             repl: str = None,
             text: str = None
     ):
