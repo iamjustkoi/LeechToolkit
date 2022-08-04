@@ -68,7 +68,3 @@ QLabel with automatic elision based on the label's minimum size.
         if did_elide != self.is_elided:
             self.is_elided = did_elide
             self.elision_changed.emit(did_elide)
-
-        print(f'{text_width} < {self.width()}')
-        print(f'    contents: {self._contents}')
-        print(f'    elided: {self._elided_text}')
