@@ -5,6 +5,7 @@ Full license text available in "LICENSE" file packaged with the program.
 import re
 from pathlib import Path
 
+import anki.models
 import aqt.flags
 from anki.models import NotetypeNameIdUseCount
 from aqt import mw
@@ -21,7 +22,8 @@ from aqt.qt import (
     qconnect,
     QWidget,
     QMenu,
-    QListWidgetItem
+    QListWidgetItem,
+    QListWidget
 )
 
 from .config import LeechToolkitConfigManager
@@ -97,7 +99,6 @@ class TagCompleter(QCompleter):
             pass
         return f"{' '.join(self.tags)} "
 
-
 class OptionsDialog(QDialog):
     add_completer: TagCompleter
     remove_completer: TagCompleter
@@ -117,20 +118,10 @@ class OptionsDialog(QDialog):
         self.remove_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.remove_completer.setFilterMode(Qt.MatchContains)
 
-        def add_note_item(model: NotetypeNameIdUseCount):
-            note_item = NoteItem(model, self)
-            list_item = QListWidgetItem(self.ui.editFieldsList)
-            list_item.setSizeHint(note_item.sizeHint())
-            list_item.setFlags(Qt.NoItemFlags)
-
-            self.ui.editFieldsList.addItem(list_item)
-            self.ui.editFieldsList.setItemWidget(list_item, note_item)
-            self.redraw_list()
-
         def handle_note_selected(dialog: Models):
             dialog.close()
             selected = dialog.form.modelsList.currentRow()
-            add_note_item(dialog.models[selected])
+            self.add_note_item(dialog.models[selected])
 
         def open_note_selection():
             dialog = Models(mw, self, fromMain=False)
@@ -218,8 +209,11 @@ class OptionsDialog(QDialog):
         self.ui.forgetRestorePosCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][1])
         self.ui.forgetResetCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][2])
 
-        # FIELDS
+        # # FIELDS
         self.ui.editFieldsCheckbox.setChecked(action_config[Action.EDIT_FIELDS][Action.ENABLED])
+        # for i in range(action_config[Action.EDIT_FIELDS][Action.INPUT]):
+        #     item = NoteItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
+        #     action_config[Action.EDIT_FIELDS][Action.INPUT] = item.get_data()
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -267,6 +261,9 @@ class OptionsDialog(QDialog):
 
         # FIELDS
         action_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
+        for i in range(self.ui.editFieldsList.count()):
+            item = NoteItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
+            action_config[Action.EDIT_FIELDS][Action.INPUT][i] = item.get_data()
 
         # Write
         self.manager.write_config()
@@ -282,10 +279,24 @@ class OptionsDialog(QDialog):
         fields_list.setMinimumWidth(fields_list.sizeHintForColumn(0))
         fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
 
+    def add_note_item(self, model: NotetypeNameIdUseCount):
+        note_item = NoteItem(model, self)
+        list_item = QListWidgetItem(self.ui.editFieldsList)
+        list_item.setSizeHint(note_item.sizeHint())
+        list_item.setFlags(Qt.NoItemFlags)
+
+        self.ui.editFieldsList.addItem(list_item)
+        self.ui.editFieldsList.setItemWidget(list_item, note_item)
+        self.redraw_list()
+
 
 class NoteItem(QWidget):
     # model: Models
     model: NotetypeNameIdUseCount
+
+    @staticmethod
+    def from_list_widget(edit_fields_list: QListWidget, item: QListWidgetItem) -> "NoteItem":
+        return edit_fields_list.itemWidget(item)
 
     def __init__(
             self,
@@ -314,7 +325,7 @@ NoteItem used for the field edit list.
         def remove(_):
             for i in range(self.dialog.ui.editFieldsList.count()):
                 item = self.dialog.ui.editFieldsList.item(i)
-                if self == self.from_list_widget(item):
+                if self == self.from_list_widget(self.dialog.ui.editFieldsList, item):
                     self.dialog.ui.editFieldsList.takeItem(i)
                     self.dialog.redraw_list()
 
@@ -337,5 +348,15 @@ NoteItem used for the field edit list.
         self.model = model
         self.widget.noteLabel.setText(model.name)
 
-    def from_list_widget(self, item: QListWidgetItem) -> "NoteItem":
-        return self.dialog.ui.editFieldsList.itemWidget(item)
+    def get_data(self):
+        """
+Retrieves the current, relevant data held in this list item.
+        :return: Tuple(note id, field index, method index, find text, input text)
+        """
+        return (
+            str(self.model.id),
+            str(self.widget.fieldDropdown.currentIndex()),
+            str(self.widget.methodDropdown.currentIndex()),
+            self.widget.replaceEdit.text(),
+            self.widget.inputEdit.text()
+        )
