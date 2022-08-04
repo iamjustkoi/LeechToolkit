@@ -50,6 +50,13 @@ class String:
 
 class Action:
     EDIT_FIELDS = 'editFields'
+    EDIT_FIELDS_INPUT = 0
+    EDIT_FIELDS_NOTE_ID = 1
+    EDIT_FIELDS_FIELD = 2
+    EDIT_FIELDS_METHOD = 3
+    EDIT_FIELDS_FIND = 4
+    EDIT_FIELDS_TEXT = 5
+
     FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'
     FLAG = 'flag'
