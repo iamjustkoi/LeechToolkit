@@ -50,12 +50,12 @@ class String:
 
 class Action:
     EDIT_FIELDS = 'editFields'
-    EDIT_FIELDS_INPUT = 0
-    EDIT_FIELDS_NOTE_ID = 1
-    EDIT_FIELDS_FIELD = 2
-    EDIT_FIELDS_METHOD = 3
-    EDIT_FIELDS_FIND = 4
-    EDIT_FIELDS_TEXT = 5
+
+    class Fields:
+        FIELD = 'field'
+        METHOD = 'method'
+        REPL = 'repl'
+        TEXT = 'text'
 
     FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'
@@ -66,6 +66,7 @@ class Action:
 
     ENABLED = 'enabled'
     INPUT = 'input'
+    EXTRA = 'extra'
 
 
 class Config:
@@ -106,6 +107,16 @@ class Config:
             Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech'},
             Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
             Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
-            Action.EDIT_FIELDS: {Action.ENABLED: False, Action.INPUT: ['id', 'field', 'method', 'repl', 'input']}
+            Action.EDIT_FIELDS: {
+                Action.ENABLED: False,
+                Action.INPUT: {
+                    # Action.Fields.NOTE_ID: {
+                    #     Action.Fields.FIELD: 0,
+                    #     Action.Fields.METHOD: 0,
+                    #     Action.Fields.FIND: 'repl',
+                    #     Action.Fields.TEXT: 'input'
+                    # }
+                }
+            }
         }
     }

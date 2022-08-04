@@ -8,6 +8,7 @@ from pathlib import Path
 import anki.models
 import aqt.flags
 from anki.models import NotetypeNameIdUseCount
+from anki.notes import NoteId
 from aqt import mw
 from aqt.models import Models
 from aqt.qt import (
@@ -99,6 +100,7 @@ class TagCompleter(QCompleter):
             pass
         return f"{' '.join(self.tags)} "
 
+
 class OptionsDialog(QDialog):
     add_completer: TagCompleter
     remove_completer: TagCompleter
@@ -121,7 +123,8 @@ class OptionsDialog(QDialog):
         def handle_note_selected(dialog: Models):
             dialog.close()
             selected = dialog.form.modelsList.currentRow()
-            self.add_note_item(dialog.models[selected])
+            self.add_note_item(dialog.models[selected].id)
+            self.redraw_list()
 
         def open_note_selection():
             dialog = Models(mw, self, fromMain=False)
@@ -211,9 +214,8 @@ class OptionsDialog(QDialog):
 
         # # FIELDS
         self.ui.editFieldsCheckbox.setChecked(action_config[Action.EDIT_FIELDS][Action.ENABLED])
-        # for i in range(action_config[Action.EDIT_FIELDS][Action.INPUT]):
-        #     item = NoteItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
-        #     action_config[Action.EDIT_FIELDS][Action.INPUT] = item.get_data()
+        self.add_note_items(action_config[Action.EDIT_FIELDS][Action.INPUT])
+        self.redraw_list()
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -263,7 +265,7 @@ class OptionsDialog(QDialog):
         action_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
         for i in range(self.ui.editFieldsList.count()):
             item = NoteItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
-            action_config[Action.EDIT_FIELDS][Action.INPUT][i] = item.get_data()
+            action_config[Action.EDIT_FIELDS][Action.INPUT][item.note['id']] = item.get_data()
 
         # Write
         self.manager.write_config()
@@ -279,20 +281,38 @@ class OptionsDialog(QDialog):
         fields_list.setMinimumWidth(fields_list.sizeHintForColumn(0))
         fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
 
-    def add_note_item(self, model: NotetypeNameIdUseCount):
-        note_item = NoteItem(model, self)
+    def add_note_items(self, data: {str: {str: int or str}}):
+        print(f'data {data}')
+        for nid in data:
+            field = data[nid]
+
+            print(field)
+            print(f'    field_idx={field[Action.Fields.FIELD]}')
+            print(f'    method_idx={field[Action.Fields.METHOD]}')
+            print(f'    repl={field[Action.Fields.REPL]}')
+            print(f'    input_text={field[Action.Fields.TEXT]}')
+
+            self.add_note_item(
+                nid=int(nid),
+                field_idx=field[Action.Fields.FIELD],
+                method_idx=field[Action.Fields.METHOD],
+                repl=field[Action.Fields.REPL],
+                input_text=field[Action.Fields.TEXT]
+            )
+
+    def add_note_item(self, nid: int, field_idx: int = -1, method_idx=EditType(-1), repl='', input_text=''):
+        note_item = NoteItem(self, nid, field_idx, method_idx, repl, input_text)
         list_item = QListWidgetItem(self.ui.editFieldsList)
         list_item.setSizeHint(note_item.sizeHint())
         list_item.setFlags(Qt.NoItemFlags)
 
         self.ui.editFieldsList.addItem(list_item)
         self.ui.editFieldsList.setItemWidget(list_item, note_item)
-        self.redraw_list()
 
 
 class NoteItem(QWidget):
     # model: Models
-    model: NotetypeNameIdUseCount
+    note: aqt.models.NotetypeDict
 
     @staticmethod
     def from_list_widget(edit_fields_list: QListWidget, item: QListWidgetItem) -> "NoteItem":
@@ -300,9 +320,9 @@ class NoteItem(QWidget):
 
     def __init__(
             self,
-            model: NotetypeNameIdUseCount,
             dialog: OptionsDialog,
-            field_idx=-1,
+            nid: int,
+            field_idx: int = -1,
             method_idx=EditType(-1),
             repl: str = None,
             text: str = None
@@ -318,7 +338,7 @@ NoteItem used for the field edit list.
         self.widget = Ui_FieldWidgetItem()
         self.widget.setupUi(FieldWidgetItem=self)
 
-        self.set_model(model)
+        self.set_note(nid)
         self.update_forms(field_idx=field_idx, method_idx=method_idx, repl=repl, text=text)
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
@@ -331,10 +351,10 @@ NoteItem used for the field edit list.
 
         self.widget.removeButton.clicked.connect(remove)
 
-    def update_forms(self, field_idx=-1, method_idx=EditType(-1), repl: str = None, text: str = None):
-        note_fields = mw.col.models.by_name(self.model.name).get('flds')
-        self.widget.fieldDropdown.addItems([field['name'] for field in note_fields])
+    def update_forms(self, field_idx: int = -1, method_idx=EditType(-1), repl: str = None, text: str = None):
+        note_fields = mw.col.models.get(self.note['id']).get('flds')
 
+        self.widget.fieldDropdown.addItems([field['name'] for field in note_fields])
         if field_idx >= 0:
             self.widget.fieldDropdown.setCurrentIndex(field_idx)
         if method_idx >= 0:
@@ -344,19 +364,18 @@ NoteItem used for the field edit list.
         if text:
             self.widget.inputEdit.setText(text)
 
-    def set_model(self, model: NotetypeNameIdUseCount):
-        self.model = model
-        self.widget.noteLabel.setText(model.name)
+    def set_note(self, nid: int):
+        self.note = mw.col.models.get(NoteId(nid))
+        self.widget.noteLabel.setText(mw.col.models.get(nid)['name'])
 
     def get_data(self):
         """
 Retrieves the current, relevant data held in this list item.
         :return: Tuple(note id, field index, method index, find text, input text)
         """
-        return (
-            str(self.model.id),
-            str(self.widget.fieldDropdown.currentIndex()),
-            str(self.widget.methodDropdown.currentIndex()),
-            self.widget.replaceEdit.text(),
-            self.widget.inputEdit.text()
-        )
+        return {
+            str(Action.Fields.FIELD): self.widget.fieldDropdown.currentIndex(),
+            str(Action.Fields.METHOD): self.widget.methodDropdown.currentIndex(),
+            str(Action.Fields.REPL): self.widget.replaceEdit.text(),
+            str(Action.Fields.TEXT): self.widget.inputEdit.text()
+        }
