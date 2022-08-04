@@ -20,12 +20,6 @@ REV_RESET = ReverseType(1)
 
 CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
 
-EditType = NewType('EditType', int)
-EDIT_APPEND = EditType(0)
-EDIT_PREPEND = EditType(1)
-EDIT_REPLACE = EditType(2)
-EDIT_REGEX = EditType(3)
-
 LEECH_TAG = 'leech'
 
 REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
@@ -56,6 +50,11 @@ class Action:
         METHOD = 'method'
         REPL = 'repl'
         TEXT = 'text'
+        EditType = NewType('EditType', int)
+        EDIT_APPEND = EditType(0)
+        EDIT_PREPEND = EditType(1)
+        EDIT_REPLACE = EditType(2)
+        EDIT_REGEX = EditType(3)
 
     FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'

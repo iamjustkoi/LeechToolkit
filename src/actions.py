@@ -80,6 +80,23 @@ class LeechActionManager:
                         else:
                             card.note().remove_tag(formatted_tag)
 
+            if action == Action.EDIT_FIELDS:
+                if leech_actions[Action.EDIT_FIELDS][Action.ENABLED]:
+                    for data in leech_actions[Action.EDIT_FIELDS][Action.INPUT]:
+                        for filtered_nid in data:
+                            field = data[filtered_nid]
+                            nid = str(filtered_nid).split('.')[0]
+                            # if card.nid == nid:
+                            #     if field[field[Action.Fields.METHOD]] == Action.Fields.
+                            #     card.note().fields[field[Action.Fields.FIELD]].replace()
+                            # self.add_note_item(
+                            #     nid=int(nid),
+                            #     field_idx=field[Action.Fields.FIELD],
+                            #     method_idx=field[Action.Fields.METHOD],
+                            #     repl=field[Action.Fields.REPL],
+                            #     input_text=field[Action.Fields.TEXT]
+                            # )
+
         card.flush()
         card.note().flush()
 
