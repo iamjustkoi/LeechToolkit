@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_FieldWidgetItem(object):
     def setupUi(self, FieldWidgetItem):
         FieldWidgetItem.setObjectName("FieldWidgetItem")
-        FieldWidgetItem.resize(303, 63)
+        FieldWidgetItem.resize(271, 67)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(FieldWidgetItem)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 9)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -29,7 +29,7 @@ class Ui_FieldWidgetItem(object):
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.noteLabel = ElidingLabel(self.frame)
-        self.noteLabel.setMinimumSize(QtCore.QSize(18, 0))
+        self.noteLabel.setMinimumSize(QtCore.QSize(42, 0))
         self.noteLabel.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.noteLabel.setObjectName("noteLabel")
         self.horizontalLayout_4.addWidget(self.noteLabel)
