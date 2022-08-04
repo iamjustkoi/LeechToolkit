@@ -263,12 +263,26 @@ class OptionsDialog(QDialog):
 
         # FIELDS
         action_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
+        action_config[Action.EDIT_FIELDS][Action.INPUT] = {}
         for i in range(self.ui.editFieldsList.count()):
             item = NoteItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
-            action_config[Action.EDIT_FIELDS][Action.INPUT][item.note['id']] = item.get_data()
+            note_id = str(item.note['id'])
+            if note_id in action_config[Action.EDIT_FIELDS][Action.INPUT]:
+                note_id += f'.{self.get_same_notes_count(note_id)}'
+            action_config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
 
         # Write
         self.manager.write_config()
+
+    def get_same_notes_count(self, nid):
+        filtered_nids = self.config[Config.LEECH_ACTIONS][Action.EDIT_FIELDS][Action.INPUT]
+        return len(
+            [
+                filtered_nid
+                for filtered_nid in filtered_nids
+                if str(filtered_nid).find(str(nid)) >= 0
+            ]
+        )
 
     def accept(self) -> None:
         self._save()
@@ -283,15 +297,9 @@ class OptionsDialog(QDialog):
 
     def add_note_items(self, data: {str: {str: int or str}}):
         print(f'data {data}')
-        for nid in data:
-            field = data[nid]
-
-            print(field)
-            print(f'    field_idx={field[Action.Fields.FIELD]}')
-            print(f'    method_idx={field[Action.Fields.METHOD]}')
-            print(f'    repl={field[Action.Fields.REPL]}')
-            print(f'    input_text={field[Action.Fields.TEXT]}')
-
+        for filtered_nid in data:
+            field = data[filtered_nid]
+            nid = str(filtered_nid).split('.')[0]
             self.add_note_item(
                 nid=int(nid),
                 field_idx=field[Action.Fields.FIELD],
