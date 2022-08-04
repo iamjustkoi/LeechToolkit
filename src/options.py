@@ -28,7 +28,7 @@ from aqt.qt import (
 )
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config, Action, Macro, EditType, REMOVE_ICON_PATH
+from .consts import String, Config, Action, Macro, EditType, REMOVE_ICON_PATH, EDIT_REPLACE, EDIT_REGEX
 from ..res.ui.options_dialog import Ui_OptionsDialog
 from ..res.ui.edit_field_item import Ui_FieldWidgetItem
 
@@ -349,6 +349,11 @@ NoteItem used for the field edit list.
         self.set_note(nid)
         self.update_forms(field_idx=field_idx, method_idx=method_idx, repl=repl, text=text)
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
+
+        def refresh_replace_input(index: int):
+            self.widget.replaceEdit.setVisible(index in (EDIT_REPLACE, EDIT_REGEX))
+
+        self.widget.methodDropdown.currentIndexChanged.connect(refresh_replace_input)
 
         def remove(_):
             for i in range(self.dialog.ui.editFieldsList.count()):
