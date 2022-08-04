@@ -337,11 +337,5 @@ NoteItem used for the field edit list.
         self.model = model
         self.widget.noteLabel.setText(model.name)
 
-        # Potential ellipses code instead
-        # painter = QPainter(self.widget.noteLabel)
-        # metrics = QFontMetrics(self.font())
-        # elided = metrics.elidedText(self.widget.noteLabel.text(), Qt.ElideRight, self.widget.noteLabel.maximumWidth())
-        # painter.drawText(self.rect(), self.widget.noteLabel.alignment(), elided)
-
     def from_list_widget(self, item: QListWidgetItem) -> "NoteItem":
         return self.dialog.ui.editFieldsList.itemWidget(item)
