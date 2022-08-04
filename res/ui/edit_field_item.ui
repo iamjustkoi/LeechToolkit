@@ -158,7 +158,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="inputEdit">
+      <widget class="QLineEdit" name="replaceEdit">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -183,7 +183,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="replaceEdit">
+      <widget class="QLineEdit" name="inputEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
