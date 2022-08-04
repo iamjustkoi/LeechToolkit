@@ -50,11 +50,11 @@ class Action:
         METHOD = 'method'
         REPL = 'repl'
         TEXT = 'text'
-        EditType = NewType('EditType', int)
-        EDIT_APPEND = EditType(0)
-        EDIT_PREPEND = EditType(1)
-        EDIT_REPLACE = EditType(2)
-        EDIT_REGEX = EditType(3)
+        EditMethod = NewType('EditMethod', int)
+        APPEND = EditMethod(0)
+        PREPEND = EditMethod(1)
+        REPLACE = EditMethod(2)
+        REGEX = EditMethod(3)
 
     FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'
