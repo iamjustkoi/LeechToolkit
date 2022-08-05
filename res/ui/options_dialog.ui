@@ -541,7 +541,7 @@
                 <item row="5" column="1">
                  <widget class="QCheckBox" name="forgetRestorePosCheckbox">
                   <property name="text">
-                   <string>Restore import position where possible</string>
+                   <string>Restore imported position where possible</string>
                   </property>
                  </widget>
                 </item>
