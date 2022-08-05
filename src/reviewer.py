@@ -104,8 +104,13 @@ def on_show_back(card: cards.Card):
 
 def on_show_front(card: cards.Card):
     update_marker(card, True)
-    # # @DEBUG
-    # action_manager.leech_update(card, debug=True)
+    # @DEBUG
+    # updated_card = card.col.get_card(card.id)
+    # print(f'orig card:\n    {updated_card.note().fields}\n   {updated_card.__dict__.items()}')
+    # print(f'\n        {updated_card.note().tags}')
+    # updated_card = action_manager.leech_update(updated_card)
+    # print(f'updt card:\n    {updated_card.note().fields}\n    {updated_card.__dict__.items()}')
+    # print(f'\n        {updated_card.note().tags}')
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
@@ -174,7 +179,7 @@ def reverse_update(card: anki.cards.Card, ease: int, prev_type: CardType):
 
 def was_card_updated(original_card, updated_card):
     changed_items = [item for item in original_card.__dict__.items() if item[1] != updated_card.__dict__.get(item[0])]
-    return changed_items is not None
+    return len(changed_items) > 0
 
 
 def set_marker_color(color: str):
