@@ -45,15 +45,15 @@ class LeechActionManager:
         self.user_config = user_conf
 
     # Leech actions json: action: {enabled: bool, key: val}
-    def leech_update(self, card: anki.cards.Card, debug=False):
+    def leech_update(self, card: anki.cards.Card):
         updated_card = card.col.get_card(card.id)
         leech_actions = self.user_config[Config.LEECH_ACTIONS]
 
         if leech_actions[Action.FLAG][Action.ENABLED]:
             updated_card.set_user_flag(leech_actions[Action.FLAG][Action.INPUT])
 
-        if leech_actions[Action.SUSPEND][Action.ENABLED]:
-            updated_card.queue = QUEUE_TYPE_SUSPENDED if leech_actions[Action.SUSPEND][Action.INPUT] else QUEUE_TYPE_REV
+        if leech_actions[Action.SUSPEND][Action.ENABLED] and leech_actions[Action.SUSPEND][Action.INPUT]:
+            updated_card.queue = QUEUE_TYPE_SUSPENDED
 
         if leech_actions[Action.ADD_TAGS][Action.ENABLED]:
             for tag in str(leech_actions[Action.ADD_TAGS][Action.INPUT]).split(' '):
@@ -61,46 +61,52 @@ class LeechActionManager:
 
         if leech_actions[Action.REMOVE_TAGS][Action.ENABLED]:
             for tag in leech_actions[Action.REMOVE_TAGS][Action.INPUT].split(' '):
+
                 # Formats the tag's macros then retrieves the regex pattern and replaces it from the tags string
                 formatted_tag = get_formatted_tag(updated_card, tag)
+
                 if re.search(f'(?<!%){Macro.REGEX}:.*', formatted_tag):
                     reg_cmd = formatted_tag.replace(f'{Macro.REGEX}:', '', 1)
+                    # Replace "everything" character with the "no spaces" character
                     reg_match = re.search(f'((?<=^\")(.*)(?=\"$))|(^(?!\")(.*))', reg_cmd)
                     reg_string = reg_match.group(0).replace(f'.', r'\S')
-                    result_tags = re.sub(fr'(?<!\S){reg_string}(?!\S)', '', updated_card.note().string_tags()).strip()
+                    # result_tags = re.sub(fr'(?<!\S){reg_string}(?!\S)', '', updated_card.note().string_tags()).strip()
+                    # Remove tags from the tags string
+                    result_tags = ''.join(re.split(reg_string, updated_card.note().string_tags())).strip()
                     updated_card.note().set_tags_from_str(result_tags)
                 else:
                     updated_card.note().remove_tag(formatted_tag)
 
-        forget_input = leech_actions[Action.FORGET][Action.INPUT]
-        if leech_actions[Action.FORGET][Action.ENABLED] and forget_input[0]:
-            updated_card.odid = 0 if updated_card.odid else updated_card.odid
-            updated_card.odue = 0 if forget_input[1] else updated_card.odue
-            updated_card.reps, updated_card.lapses = (0, 0) if forget_input[2] else (updated_card.reps, updated_card.lapses)
+        if leech_actions[Action.FORGET][Action.ENABLED] and leech_actions[Action.FORGET][Action.INPUT][0]:
+            if updated_card.odid:
+                updated_card.odid = 0
+            if leech_actions[Action.FORGET][Action.INPUT][1]:
+                updated_card.odue = 0
+            if leech_actions[Action.FORGET][Action.INPUT][2]:
+                updated_card.reps = 0
+                updated_card.lapses = 0
 
         if leech_actions[Action.EDIT_FIELDS][Action.ENABLED]:
             inputs: list[str] = leech_actions[Action.EDIT_FIELDS][Action.INPUT]
+
             for filtered_nid in inputs:
                 nid = int(filtered_nid.split('.')[0])
-                if card.note_type()['id'] == nid:
-                    print(f'conf_meta: {leech_actions[Action.EDIT_FIELDS][Action.INPUT][filtered_nid]}')
+                if updated_card.note_type()['id'] == nid:
                     conf_meta = leech_actions[Action.EDIT_FIELDS][Action.INPUT][filtered_nid]
 
-                    new_text = conf_meta[EditAction.TEXT]
-                    card_field = card.note().fields[conf_meta[EditAction.FIELD]]
+                    new_text: str = conf_meta[EditAction.TEXT]
+                    card_field = updated_card.note().fields[conf_meta[EditAction.FIELD]]
 
                     if conf_meta[EditAction.METHOD] == EditAction.APPEND_METHOD:
                         card_field += new_text
                     if conf_meta[EditAction.METHOD] == EditAction.PREPEND_METHOD:
                         card_field = new_text + card_field
                     if conf_meta[EditAction.METHOD] == EditAction.REPLACE_METHOD:
-                        card_field = card_field.replace(conf_meta[EditAction.REPL])
-                        pass
+                        card_field = card_field.replace(conf_meta[EditAction.REPL], new_text)
                     if conf_meta[EditAction.METHOD] == EditAction.REGEX_METHOD:
-                        pass
+                        card_field = new_text.join(re.split(conf_meta[EditAction.REPL], card_field))
 
-                    card.note().fields[conf_meta[EditAction.FIELD]] = card_field
-
+                    updated_card.note().fields[conf_meta[EditAction.FIELD]] = card_field
 
         return updated_card
 

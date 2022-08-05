@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
+    <width>507</width>
     <height>462</height>
    </rect>
   </property>
@@ -40,7 +40,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>306</width>
+            <width>380</width>
             <height>415</height>
            </rect>
           </property>
@@ -329,7 +329,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>397</width>
+            <width>463</width>
             <height>325</height>
            </rect>
           </property>
@@ -376,7 +376,7 @@
                 <item row="0" column="1">
                  <widget class="QComboBox" name="flagDropdown">
                   <property name="sizeAdjustPolicy">
-                   <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
+                   <enum>QComboBox::AdjustToContents</enum>
                   </property>
                   <item>
                    <property name="text">
