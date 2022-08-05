@@ -42,7 +42,7 @@ class String:
     LEECHES_URL = 'viewleeches'
 
 
-class ActionEdit:
+class EditAction:
     FIELD = 'field'
     METHOD = 'method'
     REPL = 'repl'
