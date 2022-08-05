@@ -104,7 +104,7 @@ def on_show_back(card: cards.Card):
 def on_show_front(card: cards.Card):
     update_marker(card, True)
     # @DEBUG
-    action_manager.leech(card, debug=True)
+    updated_card = action_manager.leech_update(card, debug=True)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
@@ -142,7 +142,7 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         delattr(card, prev_type_attr)
 
     if hasattr(card, was_leech_attr):
-        updated_card = action_manager.leech(card)
+        updated_card = action_manager.leech_update(card)
         delattr(card, was_leech_attr)
 
     if was_card_updated(updated_card, card):
@@ -176,7 +176,7 @@ def set_marker_color(color: str):
 
 def show_marker(show=False):
     """
-Changes the display state of the leech marker.
+Changes the display state of the leech_update marker.
     :param show: new visibility
     """
     if show:

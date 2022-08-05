@@ -33,7 +33,7 @@ Custom handler for drawing Anki's bottom bar.
 
                 def leech_link_handler(url):
                     """
-                Custom link handler that adds functionality for the leech-browse button's link.
+                Custom link handler that adds functionality for the leech_update-browse button's link.
                     :param url: passed url string to handle
                     """
                     if url == String.LEECHES_URL:

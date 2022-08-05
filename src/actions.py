@@ -45,7 +45,7 @@ class LeechActionManager:
         self.user_config = user_conf
 
     # Leech actions json: action: {enabled: bool, key: val}
-    def leech(self, card: anki.cards.Card, debug=False):
+    def leech_update(self, card: anki.cards.Card, debug=False):
         updated_card = card.col.get_card(card.id)
         leech_actions = self.user_config[Config.LEECH_ACTIONS]
 
