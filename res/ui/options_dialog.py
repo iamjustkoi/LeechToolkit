@@ -360,7 +360,7 @@ class Ui_OptionsDialog(object):
         self.forgetCheckbox.setText(_translate("OptionsDialog", "Forget"))
         self.forgetOnRadio.setText(_translate("OptionsDialog", "On"))
         self.forgetOffRadio.setText(_translate("OptionsDialog", "Off"))
-        self.forgetRestorePosCheckbox.setText(_translate("OptionsDialog", "Restore import position where possible"))
+        self.forgetRestorePosCheckbox.setText(_translate("OptionsDialog", "Restore imported position where possible"))
         self.forgetResetCheckbox.setText(_translate("OptionsDialog", "Reset total reviews and lapses"))
         self.editFieldsCheckbox.setText(_translate("OptionsDialog", "Edit Field(s)"))
         self.addFieldButton.setText(_translate("OptionsDialog", "Add New..."))
