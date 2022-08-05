@@ -10,7 +10,7 @@ import anki.cards
 import aqt.reviewer
 from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_REV, QUEUE_TYPE_NEW
 
-from .consts import Config, Action, Macro, LEECH_TAG, CARD_TYPE_STR, ActionEdit
+from .consts import Config, Action, Macro, LEECH_TAG, CARD_TYPE_STR, EditAction
 
 
 # do_leech (Card):
@@ -78,28 +78,28 @@ class LeechActionManager:
             updated_card.odue = 0 if forget_input[1] else updated_card.odue
             updated_card.reps, updated_card.lapses = (0, 0) if forget_input[2] else (updated_card.reps, updated_card.lapses)
 
-        # if leech_actions[Action.EDIT_FIELDS][Action.ENABLED]:
-        #     inputs: list[str] = leech_actions[Action.EDIT_FIELDS][Action.INPUT]
-        #     for filtered_nid in inputs:
-        #         nid = int(filtered_nid.split('.')[0])
-        #         if card.note_type()['id'] == nid:
-        #             print(f'conf_meta: {leech_actions[Action.EDIT_FIELDS][Action.INPUT][filtered_nid]}')
-        #             conf_meta = leech_actions[Action.EDIT_FIELDS][Action.INPUT][filtered_nid]
-        #
-        #             new_text = conf_meta[ActionEdit.TEXT]
-        #             card_field = card.note().fields[conf_meta[ActionEdit.FIELD]]
-        #
-        #             if conf_meta[ActionEdit.METHOD] == ActionEdit.APPEND_METHOD:
-        #                 card_field += new_text
-        #             if conf_meta[ActionEdit.METHOD] == ActionEdit.PREPEND_METHOD:
-        #                 card_field = new_text + card_field
-        #             if conf_meta[ActionEdit.METHOD] == ActionEdit.REPLACE_METHOD:
-        #                 card_field = card_field.replace(conf_meta[ActionEdit.REPL])
-        #                 pass
-        #             if conf_meta[ActionEdit.METHOD] == ActionEdit.REGEX_METHOD:
-        #                 pass
-        #
-        #             card.note().fields[conf_meta[ActionEdit.FIELD]] = card_field
+        if leech_actions[Action.EDIT_FIELDS][Action.ENABLED]:
+            inputs: list[str] = leech_actions[Action.EDIT_FIELDS][Action.INPUT]
+            for filtered_nid in inputs:
+                nid = int(filtered_nid.split('.')[0])
+                if card.note_type()['id'] == nid:
+                    print(f'conf_meta: {leech_actions[Action.EDIT_FIELDS][Action.INPUT][filtered_nid]}')
+                    conf_meta = leech_actions[Action.EDIT_FIELDS][Action.INPUT][filtered_nid]
+
+                    new_text = conf_meta[EditAction.TEXT]
+                    card_field = card.note().fields[conf_meta[EditAction.FIELD]]
+
+                    if conf_meta[EditAction.METHOD] == EditAction.APPEND_METHOD:
+                        card_field += new_text
+                    if conf_meta[EditAction.METHOD] == EditAction.PREPEND_METHOD:
+                        card_field = new_text + card_field
+                    if conf_meta[EditAction.METHOD] == EditAction.REPLACE_METHOD:
+                        card_field = card_field.replace(conf_meta[EditAction.REPL])
+                        pass
+                    if conf_meta[EditAction.METHOD] == EditAction.REGEX_METHOD:
+                        pass
+
+                    card.note().fields[conf_meta[EditAction.FIELD]] = card_field
 
 
         return updated_card
