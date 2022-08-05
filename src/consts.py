@@ -20,7 +20,7 @@ REV_RESET = ReverseType(1)
 
 CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
 
-LEECH_TAG = 'leech'
+LEECH_TAG = 'leech_update'
 
 REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
 
@@ -103,7 +103,7 @@ class Config:
         LEECH_ACTIONS: {
             Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
             Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
-            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech'},
+            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'leech_update'},
             Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
             Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
             Action.EDIT_FIELDS: {
