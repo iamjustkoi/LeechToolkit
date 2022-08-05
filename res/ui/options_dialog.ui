@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -39,8 +39,8 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
-            <width>380</width>
+            <y>-46</y>
+            <width>446</width>
             <height>415</height>
            </rect>
           </property>
@@ -211,12 +211,31 @@
                 <item>
                  <widget class="QLabel" name="reverseThresholdLabel">
                   <property name="text">
-                   <string>Reverse Leech Threshold</string>
+                   <string>Reverse Threshold</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="useLeechThresholdCheckbox">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Same as Leech Threshold</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QSpinBox" name="reverseThreshold">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="toolTip">
                    <string>Un-leeches any cards with a lapse count below this value.</string>
                   </property>
