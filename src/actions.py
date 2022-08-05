@@ -45,7 +45,7 @@ class LeechActionManager:
         self.user_config = user_conf
 
     # Leech actions json: action: {enabled: bool, key: val}
-    def run_leech_actions(self, card: anki.cards.Card):
+    def run_leech_actions(self, card: anki.cards.Card, debug=False):
         leech_actions = self.user_config[Config.LEECH_ACTIONS]
 
         for action in leech_actions:
@@ -80,39 +80,48 @@ class LeechActionManager:
                         else:
                             card.note().remove_tag(formatted_tag)
 
-            if action == Action.EDIT_FIELDS:
-                if leech_actions[Action.EDIT_FIELDS][Action.ENABLED]:
-                    for data in leech_actions[Action.EDIT_FIELDS][Action.INPUT]:
-                        for filtered_nid in data:
-                            field = data[filtered_nid]
-                            nid = str(filtered_nid).split('.')[0]
-                            # if card.nid == nid:
-                            #     if field[field[Action.Fields.METHOD]] == Action.Fields.
-                            #     card.note().fields[field[Action.Fields.FIELD]].replace()
-                            # self.add_note_item(
-                            #     nid=int(nid),
-                            #     field_idx=field[Action.Fields.FIELD],
-                            #     method_idx=field[Action.Fields.METHOD],
-                            #     repl=field[Action.Fields.REPL],
-                            #     input_text=field[Action.Fields.TEXT]
-                            # )
+            # if action == Action.EDIT_FIELDS:
+            #     if leech_actions[Action.EDIT_FIELDS][Action.ENABLED]:
+            #         for filtered_nid in leech_actions[Action.EDIT_FIELDS][Action.INPUT]:
+            #             print(f'filtered_nid: {filtered_nid}')
+            #             nid = str(filtered_nid).split('.')[0]
+            #             print(f'{card.note().id} == {nid}')
+            #             from anki.models import NotetypeId
+            #             print(f' all ids: {aqt.mw.col.models.nids(NotetypeId())}')
+            #             # TODO nid incorrect/mismatched with saved nid
+            #             if card.note().id == nid:
+            #
+            #                 meta = leech_actions[Action.EDIT_FIELDS][Action.INPUT][filtered_nid]
+            #                 print(f'meta: {meta}')
+            #
+            #                 if meta[Action.Fields.METHOD] == Action.Fields.APPEND:
+            #                     print(f'pre-card: {card.note().fields[Action.Fields.FIELD]}')
+            #                     card.note().fields[Action.Fields.FIELD] += meta[Action.Fields.FIELD]
+            #                     print(f'post-card: {card.note().fields[Action.Fields.FIELD]}')
 
-        card.flush()
-        card.note().flush()
+        if not debug:
+            card.flush()
+            card.note().flush()
 
-        if leech_actions[Action.FORGET][Action.ENABLED]:
-            forget_inputs = leech_actions[Action.FORGET][Action.INPUT]
-            if forget_inputs[0]:
-                attributes = [
-                    'odid=0',
-                    f'queue={QUEUE_TYPE_NEW if card.queue != QUEUE_TYPE_SUSPENDED else card.queue}'
-                ]
+        forget_input = leech_actions[Action.FORGET][Action.INPUT]
+        if leech_actions[Action.FORGET][Action.ENABLED] and forget_input[0]:
+            forget_card(card, reset_pos=forget_input[1], reset_reviews=forget_input[2])
 
-                if forget_inputs[1]:
-                    attributes.append('odue=0')
-                if forget_inputs[2]:
-                    attributes.append('reps=0, lapses=0')
 
-                cmd = f'''UPDATE cards SET {", ".join(attributes)} WHERE id in ({card.id})'''
-                # print(f'cmd: {cmd}')
-                card.col.db.all(cmd)
+def forget_card(card: anki.cards.Card, reset_pos=False, reset_reviews=False):
+    """
+Forgets the card via a database call. Mimics Anki's methods without using its generated code.
+    :param card: card to forget
+    :param reset_pos: if the card's position should try to be reset to its original import position
+    :param reset_reviews: if the card's lapse/review count should try to be reset back to 0
+    """
+    attributes = [
+        'odid=0',
+        f'queue={QUEUE_TYPE_NEW if card.queue != QUEUE_TYPE_SUSPENDED else card.queue}'
+    ]
+    if reset_pos:
+        attributes.append('odue=0')
+    if reset_reviews:
+        attributes.append('reps=0, lapses=0')
+    cmd = f'''UPDATE cards SET {", ".join(attributes)} WHERE id in ({card.id})'''
+    card.col.db.all(cmd)
