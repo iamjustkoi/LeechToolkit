@@ -64,13 +64,12 @@ def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewe
         user_conf = LeechToolkitConfigManager(mw).config
         action_manager = LeechActionManager(context, mw.col.decks.get_current_id(), user_conf)
 
-        append_marker_html(content)
-
         gui_hooks.reviewer_did_show_question.append(on_show_front)
         gui_hooks.reviewer_did_show_answer.append(on_show_back)
         gui_hooks.reviewer_did_answer_card.append(on_answer)
-        # hooks.card_did_leech.append(action_manager.run_leech_actions)
-        hooks.card_did_leech.append(update_leech)
+        hooks.card_did_leech.append(mark_leeched)
+
+        append_marker_html(content)
 
 
 def remove_hooks():
@@ -78,13 +77,12 @@ def remove_hooks():
     gui_hooks.reviewer_did_show_answer.remove(on_show_back)
     gui_hooks.reviewer_did_answer_card.remove(on_answer)
     try:
-        hooks.card_did_leech.remove(update_leech)
-        # hooks.card_did_leech.remove(action_manager.run_leech_actions)
+        hooks.card_did_leech.remove(mark_leeched)
     except NameError:
         print(f'Action manager not defined yet.')
 
 
-def update_leech(card: anki.cards.Card):
+def mark_leeched(card: anki.cards.Card):
     setattr(card, was_leech_attr, True)
     print(f'update_leech')
 
@@ -100,12 +98,12 @@ def on_show_back(card: cards.Card):
     if user_conf[Config.REVERSE_ENABLED]:
         setattr(card, prev_type_attr, card.type)
     update_marker(card, False)
-    # # @DEBUG
-    # action_manager.run_leech_actions(card, debug=True)
 
 
 def on_show_front(card: cards.Card):
     update_marker(card, True)
+    # @DEBUG
+    action_manager.run_leech_actions(card, debug=True)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
@@ -136,36 +134,36 @@ Retrieves all reviews that were correct without any "again" answers.
 def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
     print(f'on_answer')
     if hasattr(card, prev_type_attr):
-        tooltip = ''
+        # tooltip = ''
 
         if user_conf[Config.REVERSE_ENABLED]:
-            prev_type = card.__getattribute__(prev_type_attr)
+            reverse_updates(card, ease)
 
-            # Card reverse functions
-            if card_has_consecutive_correct(card, user_conf[Config.REVERSE_CONS_ANS]):
-                if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
-                    if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
-                        card.lapses -= 1
-                        tooltip += String.LAPSES_DECREASED
-                    elif user_conf[Config.REVERSE_METHOD] == REV_RESET:
-                        card.lapses = 0
-                        tooltip += String.LAPSES_RESET
-                    card.flush()
-
-            if user_conf[Config.REVERSE_THRESHOLD] > card.lapses:
-                if ease > 1 and card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
-                    card.note().remove_tag(LEECH_TAG)
-                    card.note().flush()
-                    tooltip += f'<br>Card Un-Leeched' if tooltip else f'Card Un-leeched'
-
-        if TOOLTIP_ENABLED and tooltip:
-            utils.tooltip(tooltip, period=TOOLTIP_TIME, y_offset=200, x_offset=600)
+        # if TOOLTIP_ENABLED and tooltip:
+        #     utils.tooltip(tooltip, period=TOOLTIP_TIME, y_offset=200, x_offset=600)
 
         delattr(card, prev_type_attr)
 
     if hasattr(card, was_leech_attr):
         action_manager.run_leech_actions(card)
         delattr(card, was_leech_attr)
+
+
+def reverse_updates(card: anki.cards.Card, ease: int):
+    prev_type = card.__getattribute__(prev_type_attr)
+
+    if card_has_consecutive_correct(card, user_conf[Config.REVERSE_CONS_ANS]):
+        if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
+            if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
+                card.lapses -= 1
+            elif user_conf[Config.REVERSE_METHOD] == REV_RESET:
+                card.lapses = 0
+            card.flush()
+
+    if user_conf[Config.REVERSE_THRESHOLD] > card.lapses:
+        if ease > 1 and card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
+            card.note().remove_tag(LEECH_TAG)
+            card.note().flush()
 
 
 def set_marker_color(color: str):
