@@ -28,7 +28,7 @@ from aqt.qt import (
 )
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH
+from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction
 from ..res.ui.options_dialog import Ui_OptionsDialog
 from ..res.ui.edit_field_item import Ui_FieldWidgetItem
 
@@ -302,13 +302,13 @@ class OptionsDialog(QDialog):
             nid = str(filtered_nid).split('.')[0]
             self.add_note_item(
                 nid=int(nid),
-                field_idx=field[Action.Fields.FIELD],
-                method_idx=field[Action.Fields.METHOD],
-                repl=field[Action.Fields.REPL],
-                input_text=field[Action.Fields.TEXT]
+                field_idx=field[EditAction.FIELD],
+                method_idx=field[EditAction.METHOD],
+                repl=field[EditAction.REPL],
+                input_text=field[EditAction.TEXT]
             )
 
-    def add_note_item(self, nid: int, field_idx: int = -1, method_idx=Action.Fields.EditMethod(-1), repl='', input_text=''):
+    def add_note_item(self, nid: int, field_idx: int = -1, method_idx=EditAction.EditMethod(-1), repl='', input_text=''):
         note_item = NoteItem(self, nid, field_idx, method_idx, repl, input_text)
         list_item = QListWidgetItem(self.ui.editFieldsList)
         list_item.setSizeHint(note_item.sizeHint())
@@ -331,7 +331,7 @@ class NoteItem(QWidget):
             dialog: OptionsDialog,
             nid: int,
             field_idx: int = -1,
-            method_idx=Action.Fields.EditMethod(-1),
+            method_idx=EditAction.EditMethod(-1),
             repl: str = None,
             text: str = None
     ):
@@ -351,7 +351,7 @@ NoteItem used for the field edit list.
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
         def refresh_replace_input(index: int):
-            self.widget.replaceEdit.setVisible(index in (Action.Fields.REPLACE_METHOD, Action.Fields.REGEX_METHOD))
+            self.widget.replaceEdit.setVisible(index in (EditAction.REPLACE_METHOD, EditAction.REGEX_METHOD))
 
         self.widget.methodDropdown.currentIndexChanged.connect(refresh_replace_input)
 
@@ -367,7 +367,7 @@ NoteItem used for the field edit list.
     def update_forms(
             self,
             field_idx: int = -1,
-            method_idx=Action.Fields.EditMethod(-1),
+            method_idx=EditAction.EditMethod(-1),
             repl: str = None,
             text: str = None
     ):
@@ -393,8 +393,8 @@ Retrieves the current, relevant data held in this list item.
         :return: Tuple(note id, field index, method index, find text, input text)
         """
         return {
-            str(Action.Fields.FIELD): self.widget.fieldDropdown.currentIndex(),
-            str(Action.Fields.METHOD): self.widget.methodDropdown.currentIndex(),
-            str(Action.Fields.REPL): self.widget.replaceEdit.text(),
-            str(Action.Fields.TEXT): self.widget.inputEdit.text()
+            str(EditAction.FIELD): self.widget.fieldDropdown.currentIndex(),
+            str(EditAction.METHOD): self.widget.methodDropdown.currentIndex(),
+            str(EditAction.REPL): self.widget.replaceEdit.text(),
+            str(EditAction.TEXT): self.widget.inputEdit.text()
         }
