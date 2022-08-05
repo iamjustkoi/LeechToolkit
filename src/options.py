@@ -351,7 +351,7 @@ NoteItem used for the field edit list.
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
         def refresh_replace_input(index: int):
-            self.widget.replaceEdit.setVisible(index in (Action.Fields.REPLACE, Action.Fields.REGEX))
+            self.widget.replaceEdit.setVisible(index in (Action.Fields.REPLACE_METHOD, Action.Fields.REGEX_METHOD))
 
         self.widget.methodDropdown.currentIndexChanged.connect(refresh_replace_input)
 
