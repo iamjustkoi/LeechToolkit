@@ -42,19 +42,20 @@ class String:
     LEECHES_URL = 'viewleeches'
 
 
+class ActionEdit:
+    FIELD = 'field'
+    METHOD = 'method'
+    REPL = 'repl'
+    TEXT = 'text'
+    EditMethod = NewType('EditMethod', int)
+    APPEND_METHOD = EditMethod(0)
+    PREPEND_METHOD = EditMethod(1)
+    REPLACE_METHOD = EditMethod(2)
+    REGEX_METHOD = EditMethod(3)
+
+
 class Action:
     EDIT_FIELDS = 'editFields'
-
-    class Fields:
-        FIELD = 'field'
-        METHOD = 'method'
-        REPL = 'repl'
-        TEXT = 'text'
-        EditMethod = NewType('EditMethod', int)
-        APPEND = EditMethod(0)
-        PREPEND = EditMethod(1)
-        REPLACE = EditMethod(2)
-        REGEX = EditMethod(3)
 
     FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'

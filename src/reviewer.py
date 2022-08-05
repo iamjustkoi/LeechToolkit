@@ -13,7 +13,7 @@ from anki import cards, hooks
 
 from .actions import LeechActionManager
 from .config import LeechToolkitConfigManager
-from .consts import Config, String, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET
+from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET
 
 conf: dict
 max_fails: int
