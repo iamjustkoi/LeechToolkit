@@ -6,6 +6,7 @@ from typing import Literal
 
 import anki.cards
 import aqt.reviewer
+from anki.collection import OpChanges
 from anki.consts import CardType
 from aqt import reviewer, webview, gui_hooks, utils, mw
 from anki import cards, hooks
@@ -103,8 +104,8 @@ def on_show_back(card: cards.Card):
 
 def on_show_front(card: cards.Card):
     update_marker(card, True)
-    # @DEBUG
-    updated_card = action_manager.leech_update(card, debug=True)
+    # # @DEBUG
+    # action_manager.leech_update(card, debug=True)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
@@ -145,8 +146,14 @@ def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         updated_card = action_manager.leech_update(card)
         delattr(card, was_leech_attr)
 
-    if was_card_updated(updated_card, card):
-        card.col.update_card(updated_card)
+    if was_card_updated(card, updated_card):
+        update_card(updated_card)
+
+
+def update_card(card: anki.cards.Card) -> OpChanges:
+    card.flush()
+    card.note().flush()
+    return aqt.reviewer.OpChanges(card=True, note=True)
 
 
 def reverse_update(card: anki.cards.Card, ease: int, prev_type: CardType):
@@ -167,7 +174,7 @@ def reverse_update(card: anki.cards.Card, ease: int, prev_type: CardType):
 
 def was_card_updated(original_card, updated_card):
     changed_items = [item for item in original_card.__dict__.items() if item[1] != updated_card.__dict__.get(item[0])]
-    return original_card if changed_items else updated_card
+    return changed_items is not None
 
 
 def set_marker_color(color: str):
