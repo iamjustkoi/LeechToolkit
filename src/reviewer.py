@@ -6,6 +6,7 @@ from typing import Literal
 
 import anki.cards
 import aqt.reviewer
+from anki.consts import CardType
 from aqt import reviewer, webview, gui_hooks, utils, mw
 from anki import cards, hooks
 
@@ -103,7 +104,7 @@ def on_show_back(card: cards.Card):
 def on_show_front(card: cards.Card):
     update_marker(card, True)
     # @DEBUG
-    action_manager.run_leech_actions(card, debug=True)
+    action_manager.leech(card, debug=True)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
@@ -133,37 +134,40 @@ Retrieves all reviews that were correct without any "again" answers.
 
 def on_answer(context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
     print(f'on_answer')
+
+    updated_card = card.col.get_card(card.id)
+
     if hasattr(card, prev_type_attr):
-        # tooltip = ''
-
-        if user_conf[Config.REVERSE_ENABLED]:
-            reverse_updates(card, ease)
-
-        # if TOOLTIP_ENABLED and tooltip:
-        #     utils.tooltip(tooltip, period=TOOLTIP_TIME, y_offset=200, x_offset=600)
-
+        updated_card = reverse_update(card, ease, card.__getattribute__(prev_type_attr))
         delattr(card, prev_type_attr)
 
     if hasattr(card, was_leech_attr):
-        action_manager.run_leech_actions(card)
+        updated_card = action_manager.leech(card)
         delattr(card, was_leech_attr)
 
+    if was_card_updated(updated_card, card):
+        card.col.update_card(updated_card)
 
-def reverse_updates(card: anki.cards.Card, ease: int):
-    prev_type = card.__getattribute__(prev_type_attr)
 
-    if card_has_consecutive_correct(card, user_conf[Config.REVERSE_CONS_ANS]):
-        if ease > 1 and card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
-            if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
-                card.lapses -= 1
-            elif user_conf[Config.REVERSE_METHOD] == REV_RESET:
-                card.lapses = 0
-            card.flush()
+def reverse_update(card: anki.cards.Card, ease: int, prev_type: CardType):
+    updated_card = card.col.get_card(card.id)
+    if user_conf[Config.REVERSE_ENABLED]:
+        if card_has_consecutive_correct(updated_card, user_conf[Config.REVERSE_CONS_ANS]):
+            if ease > 1 and updated_card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
+                if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
+                    updated_card.lapses -= 1
+                elif user_conf[Config.REVERSE_METHOD] == REV_RESET:
+                    updated_card.lapses = 0
 
-    if user_conf[Config.REVERSE_THRESHOLD] > card.lapses:
-        if ease > 1 and card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
-            card.note().remove_tag(LEECH_TAG)
-            card.note().flush()
+        if user_conf[Config.REVERSE_THRESHOLD] > updated_card.lapses:
+            if ease > 1 and updated_card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
+                updated_card.note().remove_tag(LEECH_TAG)
+    return updated_card
+
+
+def was_card_updated(original_card, updated_card):
+    changed_items = [item for item in original_card.__dict__.items() if item[1] != updated_card.__dict__.get(item[0])]
+    return original_card if changed_items else updated_card
 
 
 def set_marker_color(color: str):
