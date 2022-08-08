@@ -191,7 +191,7 @@
         </sizepolicy>
        </property>
        <property name="placeholderText">
-        <string>Output</string>
+        <string>Text</string>
        </property>
       </widget>
      </item>
