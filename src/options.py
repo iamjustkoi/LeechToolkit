@@ -313,7 +313,7 @@ class OptionsDialog(QDialog):
 
         # DECK MOVE
         action_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
-        action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id_for_name(self.ui.deckMoveLine.text())
+        action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(self.ui.deckMoveLine.text())
 
         # Write
         self.manager.write_config()
