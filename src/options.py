@@ -161,7 +161,7 @@ class OptionsDialog(QDialog):
         self.ui.browseButtonOverviewCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_OVERVIEW])
 
         self.ui.reverseCheckbox.setChecked(self.config[Config.REVERSE_ENABLED])
-        self.ui.useLeechThresholdCheckbox.setChecked(self.config[Config.REVERSE_USE_LEECH])
+        self.ui.useLeechThresholdCheckbox.setChecked(self.config[Config.REVERSE_USE_LEECH_THRESHOLD])
         self.ui.reverseMethodDropdown.setCurrentIndex(self.config[Config.REVERSE_METHOD])
         self.ui.reverseThreshold.setValue(self.config[Config.REVERSE_THRESHOLD])
         self.ui.consAnswerSpinbox.setValue(self.config[Config.REVERSE_CONS_ANS])
@@ -232,7 +232,7 @@ class OptionsDialog(QDialog):
 
         self.config[Config.REVERSE_ENABLED] = self.ui.reverseCheckbox.isChecked()
         self.config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
-        self.config[Config.REVERSE_USE_LEECH] = self.ui.useLeechThresholdCheckbox.isChecked()
+        self.config[Config.REVERSE_USE_LEECH_THRESHOLD] = self.ui.useLeechThresholdCheckbox.isChecked()
         self.config[Config.REVERSE_THRESHOLD] = self.ui.reverseThreshold.value()
         self.config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
 
