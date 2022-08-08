@@ -83,6 +83,7 @@ class Config:
 
     REVERSE_ENABLED = 'reverseEnabled'
     REVERSE_METHOD = 'reverseType'
+    REVERSE_USE_LEECH = 'reverseUseLeechThreshold'
     REVERSE_THRESHOLD = 'reverseThreshold'
     REVERSE_CONS_ANS = 'reverseConsecutiveAnswers'
 
@@ -98,6 +99,7 @@ class Config:
         BROWSE_BUTTON_ON_BROWSER: True,
         BROWSE_BUTTON_ON_OVERVIEW: True,
         REVERSE_ENABLED: True,
+        REVERSE_USE_LEECH: True,
         REVERSE_THRESHOLD: 4,
         REVERSE_CONS_ANS: 2,
         REVERSE_METHOD: 0,
