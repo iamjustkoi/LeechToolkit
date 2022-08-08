@@ -320,7 +320,8 @@ class OptionsDialog(QDialog):
 
         # DECK MOVE
         action_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
-        action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(self.ui.deckMoveLine.text())
+        stored_did = self.ui.deckMoveLine.text()
+        action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else None
 
         # RESCHEDULE
         reschedule_input = action_config[Action.RESCHEDULE][Action.INPUT]
