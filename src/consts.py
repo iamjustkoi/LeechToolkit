@@ -57,7 +57,14 @@ class EditAction:
     REGEX_METHOD = EditMethod(3)
 
 
+class RescheduleAction:
+    FROM = 'from'
+    TO = 'to'
+    RESET = 'resetInterval'
+
+
 class Action:
+    RESCHEDULE = 'reschedule'
     MOVE_TO_DECK = 'moveToDeck'
     EDIT_FIELDS = 'editFields'
     FORGET = 'forget'
@@ -116,6 +123,14 @@ class Config:
                 Action.ENABLED: False,
                 Action.INPUT: {}
             },
-            Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''}
+            Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''},
+            Action.RESCHEDULE: {
+                Action.ENABLED: False,
+                Action.INPUT: {
+                    RescheduleAction.FROM: 0,
+                    RescheduleAction.TO: 7,
+                    RescheduleAction.RESET: True,
+                }
+            },
         }
     }
