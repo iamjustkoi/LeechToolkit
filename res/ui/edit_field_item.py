@@ -107,7 +107,7 @@ class Ui_FieldWidgetItem(object):
         self.methodDropdown.setItemText(3, _translate("FieldWidgetItem", "Replace (Regex)"))
         self.replaceEdit.setToolTip(_translate("FieldWidgetItem", "Text to search for and replace."))
         self.replaceEdit.setPlaceholderText(_translate("FieldWidgetItem", "Find"))
-        self.inputEdit.setPlaceholderText(_translate("FieldWidgetItem", "Output"))
+        self.inputEdit.setPlaceholderText(_translate("FieldWidgetItem", "Text"))
 from .forms import ElidingLabel
 
 
