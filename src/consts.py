@@ -33,6 +33,8 @@ class Macro:
 
 
 class String:
+    OUTPUT_TEXT = 'Text'
+    REPLACE_WITH = 'Replace With'
     TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
     VIEW_LEECHES = 'Leech Cards'
     BUTTON_SHORTCUT_HINT = 'Shortcut key'

@@ -303,7 +303,6 @@ class OptionsDialog(QDialog):
         fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
 
     def add_edit_items(self, data: {str: {str: int or str}}):
-        print(f'data {data}')
         for filtered_nid in data:
             field = data[filtered_nid]
             nid = str(filtered_nid).split('.')[0]
@@ -315,7 +314,8 @@ class OptionsDialog(QDialog):
                 input_text=field[EditAction.TEXT]
             )
 
-    def add_edit_item(self, nid: int, field_idx: int = -1, method_idx=EditAction.EditMethod(-1), repl='', input_text=''):
+    def add_edit_item(self, nid: int, field_idx: int = -1, method_idx=EditAction.EditMethod(0), repl='',
+                      input_text=''):
         edit_item = EditFieldItem(self, nid, field_idx, method_idx, repl, input_text)
         list_item = QListWidgetItem(self.ui.editFieldsList)
         list_item.setSizeHint(edit_item.sizeHint())
@@ -326,11 +326,16 @@ class OptionsDialog(QDialog):
 
 
 class EditFieldItem(QWidget):
-    # model: Models
     note: aqt.models.NotetypeDict
 
     @staticmethod
     def from_list_widget(edit_fields_list: QListWidget, item: QListWidgetItem) -> "EditFieldItem":
+        """
+    Returns an EditFieldItem using a base QListWidgetItem.
+        :param edit_fields_list: reference list
+        :param item: QListWidgetItem object located in the referenced list
+        :return: an EditFieldItem object
+        """
         return edit_fields_list.itemWidget(item)
 
     def __init__(
@@ -338,7 +343,7 @@ class EditFieldItem(QWidget):
             dialog: OptionsDialog,
             nid: int,
             field_idx: int = -1,
-            method_idx=EditAction.EditMethod(-1),
+            method_idx=EditAction.EditMethod(0),
             repl: str = None,
             text: str = None
     ):
@@ -353,38 +358,53 @@ NoteItem used for the field edit list.
         self.widget = Ui_FieldWidgetItem()
         self.widget.setupUi(FieldWidgetItem=self)
 
-        self.set_note(nid)
-        self.update_forms(field_idx=field_idx, method_idx=method_idx, repl=repl, text=text)
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
-        def refresh_replace_input(index: int):
-            self.widget.replaceEdit.setVisible(index in (EditAction.REPLACE_METHOD, EditAction.REGEX_METHOD))
+        self.set_note(nid)
+        self.update_forms(field_idx=field_idx, method_idx=method_idx, repl=repl, text=text)
 
-        self.widget.methodDropdown.currentIndexChanged.connect(refresh_replace_input)
-
-        def remove(_):
+        def remove_self(_):
+            """
+        Removes the current item from its list widget.
+            :param _: placeholder argument given by QAction calls
+            """
             for i in range(self.dialog.ui.editFieldsList.count()):
                 item = self.dialog.ui.editFieldsList.item(i)
                 if self == self.from_list_widget(self.dialog.ui.editFieldsList, item):
                     self.dialog.ui.editFieldsList.takeItem(i)
                     self.dialog.redraw_list()
 
-        self.widget.removeButton.clicked.connect(remove)
+        self.widget.removeButton.clicked.connect(remove_self)
+        self.widget.methodDropdown.currentIndexChanged.connect(self.refresh_method_forms)
+
+    def refresh_method_forms(self, method_idx: int):
+        is_replace = method_idx in (EditAction.REPLACE_METHOD, EditAction.REGEX_METHOD)
+        self.widget.replaceEdit.setVisible(is_replace)
+        self.widget.inputEdit.setPlaceholderText(String.REPLACE_WITH if is_replace else String.OUTPUT_TEXT)
 
     def update_forms(
             self,
             field_idx: int = -1,
-            method_idx=EditAction.EditMethod(-1),
+            method_idx=EditAction.EditMethod(0),
             repl: str = None,
             text: str = None
     ):
+        """
+Updates the item's forms to the input values.
+        :param field_idx: index of the current note's fields to modify
+        :param method_idx: index/EditMethod object of the method to use
+        :param repl: text to try and replace
+        :param text: text to use for appending/prepending/replacing
+        """
         note_fields = mw.col.models.get(self.note['id']).get('flds')
 
         self.widget.fieldDropdown.addItems([field['name'] for field in note_fields])
+
         if field_idx >= 0:
             self.widget.fieldDropdown.setCurrentIndex(field_idx)
         if method_idx >= 0:
             self.widget.methodDropdown.setCurrentIndex(method_idx)
+            self.refresh_method_forms(method_idx)
         if repl:
             self.widget.replaceEdit.setText(repl)
         if text:
