@@ -20,7 +20,7 @@ REV_RESET = ReverseType(1)
 
 CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
 
-LEECH_TAG = 'leech_update'
+LEECH_TAG = 'leech'
 
 REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
 
@@ -36,8 +36,9 @@ class String:
     TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
     VIEW_LEECHES = 'Leech Cards'
     BUTTON_SHORTCUT_HINT = 'Shortcut key'
-    LAPSES_DECREASED = r"Card's lapses decreased"
-    LAPSES_RESET = r"Card's lapses reset"
+    LAPSES_DECREASED = r"Lapses decreased!"
+    LAPSES_RESET = r"Lapses reset!"
+    LEECH_REVERSED = r"Leech reversed!"
 
     LEECHES_URL = 'viewleeches'
 
@@ -83,7 +84,7 @@ class Config:
 
     REVERSE_ENABLED = 'reverseEnabled'
     REVERSE_METHOD = 'reverseType'
-    REVERSE_USE_LEECH = 'reverseUseLeechThreshold'
+    REVERSE_USE_LEECH_THRESHOLD = 'reverseUseLeechThreshold'
     REVERSE_THRESHOLD = 'reverseThreshold'
     REVERSE_CONS_ANS = 'reverseConsecutiveAnswers'
 
@@ -99,7 +100,7 @@ class Config:
         BROWSE_BUTTON_ON_BROWSER: True,
         BROWSE_BUTTON_ON_OVERVIEW: True,
         REVERSE_ENABLED: True,
-        REVERSE_USE_LEECH: True,
+        REVERSE_USE_LEECH_THRESHOLD: True,
         REVERSE_THRESHOLD: 4,
         REVERSE_CONS_ANS: 2,
         REVERSE_METHOD: 0,

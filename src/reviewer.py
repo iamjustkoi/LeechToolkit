@@ -13,7 +13,7 @@ from anki import cards, hooks
 
 from .actions import LeechActionManager
 from .config import LeechToolkitConfigManager
-from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET
+from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET, String
 
 conf: dict
 max_fails: int
@@ -162,18 +162,37 @@ def update_card(card: anki.cards.Card) -> OpChanges:
 
 
 def reverse_update(card: anki.cards.Card, ease: int, prev_type: CardType):
+    """
+Runs reverse leech updates to the input card and returns an updated card object.
+    :param card: Card to update
+    :param ease: review-answer input
+    :param prev_type: previous type of the current card used for determining changes
+    :return: updated card object
+    """
     updated_card = card.col.get_card(card.id)
+    tooltip_items = []
+
     if user_conf[Config.REVERSE_ENABLED]:
+        deck_config = card.col.decks.config_dict_for_deck_id(card.current_deck_id())
+        use_leech_threshold = user_conf[Config.REVERSE_USE_LEECH_THRESHOLD]
+        threshold = deck_config['lapse']['leechFails'] if use_leech_threshold else user_conf[Config.REVERSE_THRESHOLD]
+
         if card_has_consecutive_correct(updated_card, user_conf[Config.REVERSE_CONS_ANS]):
             if ease > 1 and updated_card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
                 if user_conf[Config.REVERSE_METHOD] == REV_DECREASE:
                     updated_card.lapses -= 1
+                    tooltip_items.append(String.LAPSES_DECREASED)
                 elif user_conf[Config.REVERSE_METHOD] == REV_RESET:
                     updated_card.lapses = 0
+                    tooltip_items.append(String.LAPSES_RESET)
 
-        if user_conf[Config.REVERSE_THRESHOLD] > updated_card.lapses:
+        if threshold > updated_card.lapses:
             if ease > 1 and updated_card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
                 updated_card.note().remove_tag(LEECH_TAG)
+                tooltip_items.append(String.LEECH_REVERSED)
+
+        if TOOLTIP_ENABLED and len(tooltip_items) > 0:
+            aqt.utils.tooltip('\n\n'.join(tooltip_items))
     return updated_card
 
 
