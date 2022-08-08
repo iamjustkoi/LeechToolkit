@@ -196,10 +196,9 @@ class OptionsDialog(QDialog):
         # TAGS
         suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
         self.add_completer.set_list([suggestion for suggestion in suggestions if suggestion != Macro.REGEX])
-        self.remove_completer.set_list(suggestions)
-
         # tags.focusInEvent = lambda: show_completer_with_focus(evt, self.ui.tags)
         # tags.textEdited.connect(lambda: self.ui.tags.setFocus())
+        self.remove_completer.set_list(suggestions)
 
         # ADD TAGS
         self.ui.addTagsCheckbox.setChecked(action_config[Action.ADD_TAGS][Action.ENABLED])
@@ -218,10 +217,24 @@ class OptionsDialog(QDialog):
         self.ui.forgetRestorePosCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][1])
         self.ui.forgetResetCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][2])
 
-        # # FIELDS
+        # FIELDS
         self.ui.editFieldsCheckbox.setChecked(action_config[Action.EDIT_FIELDS][Action.ENABLED])
         self.add_edit_items(action_config[Action.EDIT_FIELDS][Action.INPUT])
         self.redraw_list()
+
+        # DECK MOVE
+        self.ui.deckMoveCheckbox.setChecked(action_config[Action.MOVE_TO_DECK][Action.ENABLED])
+
+        deck_names = mw.col.decks.all_names()
+        deck_name = mw.col.decks.name_if_exists(action_config[Action.MOVE_TO_DECK][Action.INPUT])
+        deck_index = deck_names.index(deck_name) if deck_name in deck_names else 0
+
+        print(f'deck_names: {deck_names}')
+        print(f'deck_name: {deck_name}')
+        print(f'deck_index: {deck_index}')
+
+        self.ui.deckMoveDropdown.addItems(deck_names)
+        self.ui.deckMoveDropdown.setCurrentIndex(deck_index)
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -277,6 +290,11 @@ class OptionsDialog(QDialog):
             if note_id in action_config[Action.EDIT_FIELDS][Action.INPUT]:
                 note_id += f'.{self.get_same_notes_count(note_id)}'
             action_config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
+
+        # DECK MOVE
+        action_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
+        deck_name = self.ui.deckMoveDropdown.itemText(self.ui.deckMoveDropdown.currentIndex())
+        action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id_for_name(deck_name)
 
         # Write
         self.manager.write_config()
