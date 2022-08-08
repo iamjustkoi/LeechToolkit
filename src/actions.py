@@ -2,6 +2,8 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+import datetime
+import random
 import re
 from datetime import date
 from typing import Any
@@ -10,7 +12,7 @@ import anki.cards
 import aqt.reviewer
 from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_REV, QUEUE_TYPE_NEW
 
-from .consts import Config, Action, Macro, LEECH_TAG, CARD_TYPE_STR, EditAction
+from .consts import Config, Action, Macro, LEECH_TAG, CARD_TYPE_STR, EditAction, RescheduleAction
 
 
 # do_leech (Card):
@@ -117,6 +119,27 @@ class LeechActionManager:
                 updated_card.odue = 0
 
             updated_card.did = int(leech_actions[Action.MOVE_TO_DECK][Action.INPUT])
+
+        if leech_actions[Action.RESCHEDULE][Action.ENABLED]:
+            pass
+            # from_days = leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.FROM]
+            # to_days = leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.TO]
+            # delta = datetime.timedelta(days=random.randrange(from_days, to_days))
+            # new_date = datetime.datetime.now() + delta
+            # updated_card.due = new_date.second * 1000
+            # updated_card.ivl = delta.seconds * 1000
+            #
+            # print(f'from_days: {from_days}')
+            # print(f'to_days: {to_days}')
+            # print(f'delta: {delta}')
+            # print(f'delta: {delta.days}')
+            #
+            # # if leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.RESET]:
+            # #     updated_card.ivl = updated_card.due
+            #
+            # print(f'updated_card.due: {updated_card.due}')
+            # print(f'updated_card.col.sched.nextIvl(card, 1): {updated_card.col.sched.nextIvl(updated_card, 1)}')
+            # print(f'updated_card.ivl: {updated_card.ivl}')
 
         return updated_card
 
