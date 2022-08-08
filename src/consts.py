@@ -58,8 +58,8 @@ class EditAction:
 
 
 class Action:
+    MOVE_TO_DECK = 'moveToDeck'
     EDIT_FIELDS = 'editFields'
-
     FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'
     FLAG = 'flag'
@@ -114,14 +114,8 @@ class Config:
             Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
             Action.EDIT_FIELDS: {
                 Action.ENABLED: False,
-                Action.INPUT: {
-                    # Action.Fields.NOTE_ID: {
-                    #     Action.Fields.FIELD: 0,
-                    #     Action.Fields.METHOD: 0,
-                    #     Action.Fields.FIND: 'repl',
-                    #     Action.Fields.TEXT: 'input'
-                    # }
-                }
-            }
+                Action.INPUT: {}
+            },
+            Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''}
         }
     }
