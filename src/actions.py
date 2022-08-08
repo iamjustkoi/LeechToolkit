@@ -108,6 +108,16 @@ class LeechActionManager:
 
                     updated_card.note().fields[conf_meta[EditAction.FIELD]] = card_field
 
+        if leech_actions[Action.MOVE_TO_DECK][Action.ENABLED]:
+
+            # If the card was also in a cram/custom study deck, set it back to its original deck and due date:
+            updated_card.odid = 0
+            if updated_card.odue:
+                updated_card.due = updated_card.odue
+                updated_card.odue = 0
+
+            updated_card.did = int(leech_actions[Action.MOVE_TO_DECK][Action.INPUT])
+
         return updated_card
 
 
