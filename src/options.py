@@ -69,18 +69,17 @@ def _bind_tools_options(*args):
                 mw.form.menuTools.removeAction(action)
 
 
-class TagCompleter(QCompleter):
+class CustomCompleter(QCompleter):
     def __init__(
             self,
             parent: aqt.qt.QLineEdit
     ) -> None:
         QCompleter.__init__(self, aqt.qt.QStringListModel(), parent)
-        self.matches: list[str] = []
+        self.current_items: list[str] = []
         self.edit = parent
         self.cursor_pos: int or None = None
         self.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.setFilterMode(Qt.MatchContains)
-        # self.setCompletionPrefix(' ')
 
         def focus_event(event):
             default_callback(event)
@@ -96,41 +95,47 @@ class TagCompleter(QCompleter):
         """
     Split line path into individual items and return the current string being compared.
         :param path: path to compare against
-        :return: the string being used to return completion results
+        :return: the string being used to query completion results
         """
         formatted_path = re.sub("  +", " ", path.strip())
-        self.matches = formatted_path.split(' ')
+        self.current_items = formatted_path.split(' ')
 
         if path.endswith(' ') or len(path) == 0:
-            self.matches.append('')
-        if formatted_path.endswith('%'):
-            self.matches.append(self.matches.pop(-1).removesuffix('%'))
-            self.matches.append('%')
-
-        print(f'self.matches: {self.matches}')
+            self.current_items.append('')
 
         pos = self.edit.cursorPosition()
-        self.cursor_pos = len(self.matches) - 1 if path.endswith((" ", '%')) else formatted_path.count(" ", 0, pos)
+        self.cursor_pos = len(self.current_items) - 1 if pos == len(path) else formatted_path.count(' ', 0, pos)
 
-        return [self.matches[self.cursor_pos]]
+        current_item = self.current_items[self.cursor_pos]
+        last_macro_call_pos = current_item.rfind('%', 1)
+        if last_macro_call_pos > 0:
+            current_item = current_item[last_macro_call_pos:]
+
+        return [current_item]
 
     def pathFromIndex(self, idx: aqt.qt.QModelIndex) -> str:
         if self.cursor_pos is None:
             return self.edit.text()
-        ret = QCompleter.pathFromIndex(self, idx)
-        self.matches[self.cursor_pos] = ret
+        suggestion = QCompleter.pathFromIndex(self, idx)
+
+        current_item = self.current_items[self.cursor_pos]
+        last_macro_call_pos = current_item.rfind('%', 1)
+        if last_macro_call_pos > 0:
+            suggestion = current_item[0:last_macro_call_pos] + suggestion
+
+        self.current_items[self.cursor_pos] = suggestion
 
         # Remove empty strings
-        if "" in self.matches:
-            self.matches.remove("")
+        if "" in self.current_items:
+            self.current_items.remove("")
 
-        return f"{' '.join(self.matches)} "
+        return f"{' '.join(self.current_items)} "
 
 
 class OptionsDialog(QDialog):
-    add_completer: TagCompleter
-    remove_completer: TagCompleter
-    deck_completer: TagCompleter
+    add_completer: CustomCompleter
+    remove_completer: CustomCompleter
+    deck_completer: CustomCompleter
 
     def __init__(self, manager: LeechToolkitConfigManager):
         super().__init__(flags=manager.mw.windowFlags())
@@ -141,9 +146,9 @@ class OptionsDialog(QDialog):
 
         self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
 
-        self.add_completer = TagCompleter(self.ui.addTagsLine)
-        self.remove_completer = TagCompleter(self.ui.removeTagsLine)
-        self.deck_completer = TagCompleter(self.ui.deckMoveLine)
+        self.add_completer = CustomCompleter(self.ui.addTagsLine)
+        self.remove_completer = CustomCompleter(self.ui.removeTagsLine)
+        self.deck_completer = CustomCompleter(self.ui.deckMoveLine)
 
         def handle_note_selected(dialog: Models):
             dialog.close()
