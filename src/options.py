@@ -24,7 +24,8 @@ from aqt.qt import (
     QWidget,
     QMenu,
     QListWidgetItem,
-    QListWidget
+    QListWidget,
+    QLineEdit
 )
 
 from .config import LeechToolkitConfigManager
@@ -74,36 +75,62 @@ class TagCompleter(QCompleter):
             parent: aqt.qt.QLineEdit
     ) -> None:
         QCompleter.__init__(self, aqt.qt.QStringListModel(), parent)
-        self.tags: list[str] = []
+        self.matches: list[str] = []
         self.edit = parent
         self.cursor_pos: int or None = None
+        self.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.setFilterMode(Qt.MatchContains)
+        # self.setCompletionPrefix(' ')
+
+        def focus_event(event):
+            default_callback(event)
+            self.complete()
+
+        default_callback = self.edit.focusInEvent
+        self.edit.focusInEvent = focus_event
 
     def set_list(self, suggestions: list):
         self.setModel(aqt.qt.QStringListModel(suggestions))
 
-    def splitPath(self, tags_path: str) -> list[str]:
-        stripped_tags = re.sub("  +", " ", tags_path.strip())
-        self.tags = mw.col.tags.split(stripped_tags)
-        # self.tags.append("")
+    def splitPath(self, path: str) -> list[str]:
+        """
+    Split line path into individual items and return the current string being compared.
+        :param path: path to compare against
+        :return: the string being used to return completion results
+        """
+        formatted_path = re.sub("  +", " ", path.strip())
+        self.matches = formatted_path.split(' ')
+
+        if path.endswith(' ') or len(path) == 0:
+            self.matches.append('')
+        if formatted_path.endswith('%'):
+            self.matches.append(self.matches.pop(-1).removesuffix('%'))
+            self.matches.append('%')
+
+        print(f'self.matches: {self.matches}')
+
         pos = self.edit.cursorPosition()
-        self.cursor_pos = len(self.tags) - 1 if tags_path.endswith("  ") else stripped_tags.count(" ", 0, pos)
-        return [self.tags[self.cursor_pos]]
+        self.cursor_pos = len(self.matches) - 1 if path.endswith((" ", '%')) else formatted_path.count(" ", 0, pos)
+
+        return [self.matches[self.cursor_pos]]
 
     def pathFromIndex(self, idx: aqt.qt.QModelIndex) -> str:
         if self.cursor_pos is None:
             return self.edit.text()
         ret = QCompleter.pathFromIndex(self, idx)
-        self.tags[self.cursor_pos] = ret
-        try:
-            self.tags.remove("")
-        except ValueError:
-            pass
-        return f"{' '.join(self.tags)} "
+        self.matches[self.cursor_pos] = ret
+
+        # Remove empty strings
+        if "" in self.matches:
+            self.matches.remove("")
+
+        return f"{' '.join(self.matches)} "
 
 
 class OptionsDialog(QDialog):
     add_completer: TagCompleter
     remove_completer: TagCompleter
+    deck_completer: TagCompleter
 
     def __init__(self, manager: LeechToolkitConfigManager):
         super().__init__(flags=manager.mw.windowFlags())
@@ -112,13 +139,11 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
-        self.add_completer = TagCompleter(self.ui.addTagsLine)
-        self.add_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        self.add_completer.setFilterMode(Qt.MatchContains)
+        self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
 
+        self.add_completer = TagCompleter(self.ui.addTagsLine)
         self.remove_completer = TagCompleter(self.ui.removeTagsLine)
-        self.remove_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        self.remove_completer.setFilterMode(Qt.MatchContains)
+        self.deck_completer = TagCompleter(self.ui.deckMoveLine)
 
         def handle_note_selected(dialog: Models):
             dialog.close()
@@ -140,8 +165,6 @@ class OptionsDialog(QDialog):
             qconnect(dialog.form.modelsList.itemDoubleClicked, lambda _: handle_note_selected(dialog))
 
         self.ui.addFieldButton.clicked.connect(open_note_selection)
-
-        self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
 
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(
             lambda checked:
@@ -196,8 +219,6 @@ class OptionsDialog(QDialog):
         # TAGS
         suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
         self.add_completer.set_list([suggestion for suggestion in suggestions if suggestion != Macro.REGEX])
-        # tags.focusInEvent = lambda: show_completer_with_focus(evt, self.ui.tags)
-        # tags.textEdited.connect(lambda: self.ui.tags.setFocus())
         self.remove_completer.set_list(suggestions)
 
         # ADD TAGS
@@ -224,17 +245,11 @@ class OptionsDialog(QDialog):
 
         # DECK MOVE
         self.ui.deckMoveCheckbox.setChecked(action_config[Action.MOVE_TO_DECK][Action.ENABLED])
-
         deck_names = mw.col.decks.all_names()
         deck_name = mw.col.decks.name_if_exists(action_config[Action.MOVE_TO_DECK][Action.INPUT])
-        deck_index = deck_names.index(deck_name) if deck_name in deck_names else 0
-
-        print(f'deck_names: {deck_names}')
-        print(f'deck_name: {deck_name}')
-        print(f'deck_index: {deck_index}')
-
-        self.ui.deckMoveDropdown.addItems(deck_names)
-        self.ui.deckMoveDropdown.setCurrentIndex(deck_index)
+        self.deck_completer.set_list(deck_names)
+        self.ui.deckMoveLine.setCompleter(self.deck_completer)
+        self.ui.deckMoveLine.setText(deck_name)
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -293,8 +308,7 @@ class OptionsDialog(QDialog):
 
         # DECK MOVE
         action_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
-        deck_name = self.ui.deckMoveDropdown.itemText(self.ui.deckMoveDropdown.currentIndex())
-        action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id_for_name(deck_name)
+        action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id_for_name(self.ui.deckMoveLine.text())
 
         # Write
         self.manager.write_config()
