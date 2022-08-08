@@ -347,9 +347,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
+            <y>-33</y>
             <width>446</width>
-            <height>379</height>
+            <height>402</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -645,7 +645,7 @@
                 <item row="9" column="0">
                  <widget class="QCheckBox" name="rescheduleCheckbox">
                   <property name="text">
-                   <string>Reschedule</string>
+                   <string>Set Due Date</string>
                   </property>
                  </widget>
                 </item>
@@ -722,6 +722,16 @@
                      </spacer>
                     </item>
                    </layout>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="rescheduleResetCheckbox">
+                    <property name="toolTip">
+                     <string>Updates the card's interval using the time between the current day and the updated date.</string>
+                    </property>
+                    <property name="text">
+                     <string>Update interval</string>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </item>
