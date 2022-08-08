@@ -29,7 +29,7 @@ from aqt.qt import (
 )
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction
+from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction
 from ..res.ui.options_dialog import Ui_OptionsDialog
 from ..res.ui.edit_field_item import Ui_FieldWidgetItem
 
@@ -256,6 +256,13 @@ class OptionsDialog(QDialog):
         self.ui.deckMoveLine.setCompleter(self.deck_completer)
         self.ui.deckMoveLine.setText(deck_name)
 
+        # RESCHEDULE
+        reschedule_input = action_config[Action.RESCHEDULE][Action.INPUT]
+        self.ui.rescheduleCheckbox.setChecked(action_config[Action.RESCHEDULE][Action.ENABLED])
+        self.ui.rescheduleFromDays.setValue(reschedule_input[RescheduleAction.FROM])
+        self.ui.rescheduleToDays.setValue(reschedule_input[RescheduleAction.TO])
+        self.ui.rescheduleResetCheckbox.setChecked(reschedule_input[RescheduleAction.RESET])
+
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
@@ -314,6 +321,13 @@ class OptionsDialog(QDialog):
         # DECK MOVE
         action_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
         action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(self.ui.deckMoveLine.text())
+
+        # RESCHEDULE
+        reschedule_input = action_config[Action.RESCHEDULE][Action.INPUT]
+        action_config[Action.RESCHEDULE][Action.ENABLED] = self.ui.rescheduleCheckbox.isChecked()
+        reschedule_input[RescheduleAction.FROM] = self.ui.rescheduleFromDays.value()
+        reschedule_input[RescheduleAction.TO] = self.ui.rescheduleToDays.value()
+        reschedule_input[RescheduleAction.RESET] = self.ui.rescheduleResetCheckbox.isChecked()
 
         # Write
         self.manager.write_config()
