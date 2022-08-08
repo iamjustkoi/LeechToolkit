@@ -229,7 +229,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSpinBox" name="reverseThreshold">
+                 <widget class="QSpinBox" name="reverseThresholdSpinbox">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -349,7 +349,7 @@
             <x>0</x>
             <y>0</y>
             <width>463</width>
-            <height>325</height>
+            <height>323</height>
            </rect>
           </property>
           <property name="sizePolicy">
