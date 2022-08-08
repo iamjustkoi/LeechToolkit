@@ -308,9 +308,9 @@ class Ui_OptionsDialog(object):
         self.editFieldsList.setObjectName("editFieldsList")
         self.verticalLayout_8.addWidget(self.editFieldsList)
         self.leechActionsLayout.setLayout(7, QtWidgets.QFormLayout.FieldRole, self.verticalLayout_8)
-        self.deckMoveLabel = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
-        self.deckMoveLabel.setObjectName("deckMoveLabel")
-        self.leechActionsLayout.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.deckMoveLabel)
+        self.deckMoveCheckbox = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
+        self.deckMoveCheckbox.setObjectName("deckMoveCheckbox")
+        self.leechActionsLayout.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.deckMoveCheckbox)
         self.deckMoveDropdown = QtWidgets.QComboBox(self.collapsibleLeechActionsGroup)
         self.deckMoveDropdown.setObjectName("deckMoveDropdown")
         self.leechActionsLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.deckMoveDropdown)
@@ -385,7 +385,7 @@ class Ui_OptionsDialog(object):
         self.editFieldsCheckbox.setText(_translate("OptionsDialog", "Edit Field(s)"))
         self.addFieldButton.setText(_translate("OptionsDialog", "Add New..."))
         self.editFieldsList.setSortingEnabled(True)
-        self.deckMoveLabel.setText(_translate("OptionsDialog", "Move to Deck"))
+        self.deckMoveCheckbox.setText(_translate("OptionsDialog", "Move to Deck"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
 
 
