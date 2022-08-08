@@ -123,7 +123,7 @@ class OptionsDialog(QDialog):
         def handle_note_selected(dialog: Models):
             dialog.close()
             selected = dialog.form.modelsList.currentRow()
-            self.add_note_item(dialog.models[selected].id)
+            self.add_edit_item(dialog.models[selected].id)
             self.redraw_list()
 
         def open_note_selection():
@@ -220,7 +220,7 @@ class OptionsDialog(QDialog):
 
         # # FIELDS
         self.ui.editFieldsCheckbox.setChecked(action_config[Action.EDIT_FIELDS][Action.ENABLED])
-        self.add_note_items(action_config[Action.EDIT_FIELDS][Action.INPUT])
+        self.add_edit_items(action_config[Action.EDIT_FIELDS][Action.INPUT])
         self.redraw_list()
 
     def _save(self):
@@ -272,7 +272,7 @@ class OptionsDialog(QDialog):
         action_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
         action_config[Action.EDIT_FIELDS][Action.INPUT] = {}
         for i in range(self.ui.editFieldsList.count()):
-            item = NoteItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
+            item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
             note_id = str(item.note['id'])
             if note_id in action_config[Action.EDIT_FIELDS][Action.INPUT]:
                 note_id += f'.{self.get_same_notes_count(note_id)}'
@@ -302,12 +302,12 @@ class OptionsDialog(QDialog):
         fields_list.setMinimumWidth(fields_list.sizeHintForColumn(0))
         fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
 
-    def add_note_items(self, data: {str: {str: int or str}}):
+    def add_edit_items(self, data: {str: {str: int or str}}):
         print(f'data {data}')
         for filtered_nid in data:
             field = data[filtered_nid]
             nid = str(filtered_nid).split('.')[0]
-            self.add_note_item(
+            self.add_edit_item(
                 nid=int(nid),
                 field_idx=field[EditAction.FIELD],
                 method_idx=field[EditAction.METHOD],
@@ -315,22 +315,22 @@ class OptionsDialog(QDialog):
                 input_text=field[EditAction.TEXT]
             )
 
-    def add_note_item(self, nid: int, field_idx: int = -1, method_idx=EditAction.EditMethod(-1), repl='', input_text=''):
-        note_item = NoteItem(self, nid, field_idx, method_idx, repl, input_text)
+    def add_edit_item(self, nid: int, field_idx: int = -1, method_idx=EditAction.EditMethod(-1), repl='', input_text=''):
+        edit_item = EditFieldItem(self, nid, field_idx, method_idx, repl, input_text)
         list_item = QListWidgetItem(self.ui.editFieldsList)
-        list_item.setSizeHint(note_item.sizeHint())
+        list_item.setSizeHint(edit_item.sizeHint())
         list_item.setFlags(Qt.NoItemFlags)
 
         self.ui.editFieldsList.addItem(list_item)
-        self.ui.editFieldsList.setItemWidget(list_item, note_item)
+        self.ui.editFieldsList.setItemWidget(list_item, edit_item)
 
 
-class NoteItem(QWidget):
+class EditFieldItem(QWidget):
     # model: Models
     note: aqt.models.NotetypeDict
 
     @staticmethod
-    def from_list_widget(edit_fields_list: QListWidget, item: QListWidgetItem) -> "NoteItem":
+    def from_list_widget(edit_fields_list: QListWidget, item: QListWidgetItem) -> "EditFieldItem":
         return edit_fields_list.itemWidget(item)
 
     def __init__(
