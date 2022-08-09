@@ -63,6 +63,13 @@ class RescheduleAction:
     RESET = 'resetInterval'
 
 
+class QueueAction:
+    FROM_INDEX = 'fromIndex'
+    FROM_VAL = 'fromValue'
+    TO_INDEX = 'toIndex'
+    TO_VAL = 'toValue'
+
+
 class Action:
     ADD_TO_QUEUE = 'addToQueue'
     RESCHEDULE = 'reschedule'
@@ -132,5 +139,14 @@ class Config:
                     RescheduleAction.RESET: True,
                 }
             },
+            Action.ADD_TO_QUEUE: {
+                Action.ENABLED: False,
+                Action.INPUT: {
+                    QueueAction.FROM_INDEX: 0,
+                    QueueAction.FROM_VAL: 0,
+                    QueueAction.TO_INDEX: 1,
+                    QueueAction.TO_VAL: 0
+                }
+            }
         }
     }
