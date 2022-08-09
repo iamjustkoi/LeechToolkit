@@ -145,13 +145,11 @@ class LeechActionManager:
             from_pos = get_inserted_pos(queue_inputs[QueueAction.FROM_INDEX], queue_inputs[QueueAction.FROM_VAL])
             to_pos = get_inserted_pos(queue_inputs[QueueAction.TO_INDEX], queue_inputs[QueueAction.TO_VAL])
 
+            # Swaps positions if values are inverted/will result in a non-positive range
             from_pos, to_pos = to_pos, from_pos if from_pos > to_pos else (from_pos, to_pos)
-
-            print(f'{from_pos} - {to_pos}')
+            # print(f'{from_pos} - {to_pos}')
 
             updated_card.queue = QUEUE_TYPE_NEW
             updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
-
-            print(f'res: {updated_card.due}')
 
         return updated_card
