@@ -72,7 +72,6 @@ class LeechActionManager:
                     # Replace "everything" character with the "no spaces" character
                     reg_match = re.search(f'((?<=^\")(.*)(?=\"$))|(^(?!\")(.*))', reg_cmd)
                     reg_string = reg_match.group(0).replace(f'.', r'\S')
-                    # result_tags = re.sub(fr'(?<!\S){reg_string}(?!\S)', '', updated_card.note().string_tags()).strip()
                     # Remove tags from the tags string
                     result_tags = ''.join(re.split(reg_string, updated_card.note().string_tags())).strip()
                     updated_card.note().set_tags_from_str(result_tags)
@@ -111,7 +110,6 @@ class LeechActionManager:
                     updated_card.note().fields[conf_meta[EditAction.FIELD]] = card_field
 
         if leech_actions[Action.MOVE_TO_DECK][Action.ENABLED]:
-
             # If the card was also in a cram/custom study deck, set it back to its original deck and due date:
             updated_card.odid = 0
             if updated_card.odue:
@@ -121,33 +119,13 @@ class LeechActionManager:
             updated_card.did = int(leech_actions[Action.MOVE_TO_DECK][Action.INPUT])
 
         if leech_actions[Action.RESCHEDULE][Action.ENABLED]:
-            pass
-            # from_days = leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.FROM]
-            # to_days = leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.TO]
-            # delta = datetime.timedelta(days=random.randrange(from_days, to_days))
-            # new_date = datetime.datetime.now() + delta
-            # updated_card.due = new_date.second * 1000
-            # updated_card.ivl = delta.seconds * 1000
-            #
-            # print(f'from_days: {from_days}')
-            # print(f'to_days: {to_days}')
-            # print(f'delta: {delta}')
-            # print(f'delta: {delta.days}')
-            #
-            # # if leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.RESET]:
-            # #     updated_card.ivl = updated_card.due
-            #
-            # print(f'updated_card.due: {updated_card.due}')
-            # print(f'updated_card.col.sched.nextIvl(card, 1): {updated_card.col.sched.nextIvl(updated_card, 1)}')
-            # print(f'updated_card.ivl: {updated_card.ivl}')
+            from_days = leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.FROM]
+            to_days = leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.TO]
+            days = random.randrange(from_days, to_days) if from_days < to_days else random.randrange(to_days, from_days)
+            delta = datetime.timedelta(days=days)
+            updated_card.due = int((datetime.datetime.now() + delta).timestamp())
+
+            if leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.RESET]:
+                updated_card.ivl = delta.days
 
         return updated_card
-
-
-def forget_card(card: anki.cards.Card, reset_pos=False, reset_reviews=False):
-    """
-Forgets the card via a database call. Mimics Anki's methods without using its generated code.
-    :param card: card to forget
-    :param reset_pos: if the card's position should try to be reset to its original import position
-    :param reset_reviews: if the card's lapse/review count should try to be reset back to 0
-    """
