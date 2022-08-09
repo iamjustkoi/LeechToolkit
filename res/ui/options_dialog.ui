@@ -763,10 +763,10 @@
                 <item row="13" column="0">
                  <widget class="QCheckBox" name="queueCheckbox">
                   <property name="toolTip">
-                   <string>Adds tje leeched card to the new queue.</string>
+                   <string>Adds the card to the new queue using the specified range.</string>
                   </property>
                   <property name="text">
-                   <string>Add to Queue</string>
+                   <string>Add to New</string>
                   </property>
                  </widget>
                 </item>
