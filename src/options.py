@@ -353,6 +353,7 @@ class OptionsDialog(QDialog):
         fields_list = self.ui.editFieldsList
         fields_list.setMinimumWidth(fields_list.sizeHintForColumn(0))
         fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
+        fields_list.setVisible(fields_list.count() != 0)
 
     def add_edit_items(self, data: {str: {str: int or str}}):
         for filtered_nid in data:
