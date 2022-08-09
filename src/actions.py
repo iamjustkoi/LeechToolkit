@@ -10,9 +10,9 @@ from typing import Any
 
 import anki.cards
 import aqt.reviewer
-from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_REV, QUEUE_TYPE_NEW
+from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW
 
-from .consts import Config, Action, Macro, LEECH_TAG, CARD_TYPE_STR, EditAction, RescheduleAction
+from .consts import Config, Action, Macro, EditAction, RescheduleAction, QueueAction
 
 
 # do_leech (Card):
@@ -127,5 +127,25 @@ class LeechActionManager:
 
             if leech_actions[Action.RESCHEDULE][Action.INPUT][RescheduleAction.RESET]:
                 updated_card.ivl = delta.days
+
+        if leech_actions[Action.ADD_TO_QUEUE][Action.ENABLED]:
+            queue_inputs = leech_actions[Action.ADD_TO_QUEUE][Action.INPUT]
+
+            top, bottom = card.col.db.first(
+                f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
+            )
+
+            def get_inserted_pos(insert_type, input_pos):
+                if insert_type == QueueAction.POS:
+                    return input_pos
+
+                queue_pos = top if insert_type == QueueAction.TOP else bottom
+                return queue_pos + input_pos if (queue_pos + input_pos > 0) else queue_pos
+
+            from_pos = get_inserted_pos(queue_inputs[QueueAction.FROM_INDEX], queue_inputs[QueueAction.FROM_VAL])
+            to_pos = get_inserted_pos(queue_inputs[QueueAction.TO_INDEX], queue_inputs[QueueAction.TO_VAL])
+
+            updated_card.queue = QUEUE_TYPE_NEW
+            updated_card.due = random.randrange(from_pos, to_pos)
 
         return updated_card
