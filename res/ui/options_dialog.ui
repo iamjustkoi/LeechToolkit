@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>462</height>
+    <width>540</width>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,8 +39,8 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-46</y>
-            <width>446</width>
+            <y>0</y>
+            <width>496</width>
             <height>415</height>
            </rect>
           </property>
@@ -347,9 +347,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-33</y>
-            <width>446</width>
-            <height>402</height>
+            <y>0</y>
+            <width>496</width>
+            <height>471</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -446,6 +446,51 @@
                   </property>
                  </widget>
                 </item>
+                <item row="1" column="1">
+                 <widget class="QFrame" name="suspendFrame">
+                  <layout class="QHBoxLayout" name="horizontalLayout_2">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QRadioButton" name="suspendOnButton">
+                     <property name="text">
+                      <string>On</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="suspendOffButton">
+                     <property name="text">
+                      <string>Off</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_4">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
                 <item row="2" column="0">
                  <widget class="QCheckBox" name="addTagsCheckbox">
                   <property name="text">
@@ -478,38 +523,6 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QFrame" name="suspendFrame">
-                  <layout class="QHBoxLayout" name="horizontalLayout_2">
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QRadioButton" name="suspendOnButton">
-                     <property name="text">
-                      <string>On</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="suspendOffButton">
-                     <property name="text">
-                      <string>Off</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
                  </widget>
                 </item>
                 <item row="4" column="0">
@@ -553,6 +566,19 @@
                       <string>Off</string>
                      </property>
                     </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_5">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
                  </widget>
@@ -650,90 +676,321 @@
                  </widget>
                 </item>
                 <item row="9" column="1">
-                 <layout class="QVBoxLayout" name="verticalLayout_9">
+                 <layout class="QHBoxLayout" name="horizontalLayout_5">
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_5">
-                    <item>
-                     <widget class="QLabel" name="rescheduleText1">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="text">
-                       <string>Between</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QSpinBox" name="rescheduleFromDays">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="maximum">
-                       <number>9999</number>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="rescheduleText2">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="text">
-                       <string>and</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QSpinBox" name="rescheduleToDays">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="suffix">
-                       <string> days</string>
-                      </property>
-                      <property name="maximum">
-                       <number>9999</number>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <spacer name="horizontalSpacer">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>40</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <widget class="QCheckBox" name="rescheduleResetCheckbox">
-                    <property name="toolTip">
-                     <string>Updates the card's interval using the time between the current day and the updated date.</string>
+                   <widget class="QLabel" name="rescheduleText1">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
                     </property>
                     <property name="text">
-                     <string>Update interval</string>
+                     <string>Between</string>
                     </property>
                    </widget>
                   </item>
+                  <item>
+                   <widget class="QSpinBox" name="rescheduleFromDays">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximum">
+                     <number>9999</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="rescheduleText2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>and</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="rescheduleToDays">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="suffix">
+                     <string> days</string>
+                    </property>
+                    <property name="maximum">
+                     <number>9999</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
                  </layout>
+                </item>
+                <item row="10" column="1">
+                 <widget class="QCheckBox" name="rescheduleResetCheckbox">
+                  <property name="toolTip">
+                   <string>Updates the card's interval using the time between the current day and the updated date.</string>
+                  </property>
+                  <property name="text">
+                   <string>Update interval</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="11" column="1">
+                 <layout class="QVBoxLayout" name="verticalLayout_9"/>
+                </item>
+                <item row="13" column="0">
+                 <widget class="QCheckBox" name="queueCheckbox">
+                  <property name="toolTip">
+                   <string>Adds tje leeched card to the new queue.</string>
+                  </property>
+                  <property name="text">
+                   <string>Add to Queue</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="13" column="1">
+                 <widget class="QFrame" name="frame">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_12">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_11">
+                     <property name="sizeConstraint">
+                      <enum>QLayout::SetFixedSize</enum>
+                     </property>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_11">
+                       <item>
+                        <spacer name="horizontalSpacer_2">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>0</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="queueLabelTop">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="text">
+                          <string>Top:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="queueLabelTopPos">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="text">
+                          <string>0</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="queueLabelBottom">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="text">
+                          <string>Bottom</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="queueLabelBottomPos">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="text">
+                          <string>0</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_3">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>0</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_10">
+                       <item>
+                        <widget class="QComboBox" name="queueFromDropdown">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="sizeAdjustPolicy">
+                          <enum>QComboBox::AdjustToContents</enum>
+                         </property>
+                         <item>
+                          <property name="text">
+                           <string>Top</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Bottom</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Position</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Random</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QSpinBox" name="queueFromSpinbox">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="maximum">
+                          <number>9999999</number>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="queueTilda">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="text">
+                          <string>～</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QComboBox" name="queueToDropdown">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="sizeAdjustPolicy">
+                          <enum>QComboBox::AdjustToContents</enum>
+                         </property>
+                         <item>
+                          <property name="text">
+                           <string>Top</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Bottom</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Position</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Random</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QSpinBox" name="queueToSpinbox">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="maximum">
+                          <number>9999999</number>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
                 </item>
                </layout>
               </item>
