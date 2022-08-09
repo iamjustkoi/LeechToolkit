@@ -69,6 +69,10 @@ class QueueAction:
     TO_INDEX = 'toIndex'
     TO_VAL = 'toValue'
 
+    TOP = 0
+    BOTTOM = 1
+    POS = 2
+
 
 class Action:
     ADD_TO_QUEUE = 'addToQueue'
