@@ -146,6 +146,6 @@ class LeechActionManager:
             to_pos = get_inserted_pos(queue_inputs[QueueAction.TO_INDEX], queue_inputs[QueueAction.TO_VAL])
 
             updated_card.queue = QUEUE_TYPE_NEW
-            updated_card.due = random.randrange(from_pos, to_pos)
+            updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
 
         return updated_card
