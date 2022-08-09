@@ -921,6 +921,9 @@
                            <verstretch>0</verstretch>
                           </sizepolicy>
                          </property>
+                         <property name="minimum">
+                          <number>-9999999</number>
+                         </property>
                          <property name="maximum">
                           <number>9999999</number>
                          </property>
@@ -979,6 +982,9 @@
                            <horstretch>0</horstretch>
                            <verstretch>0</verstretch>
                           </sizepolicy>
+                         </property>
+                         <property name="minimum">
+                          <number>-9999999</number>
                          </property>
                          <property name="maximum">
                           <number>9999999</number>

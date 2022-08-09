@@ -5,9 +5,8 @@ Full license text available in "LICENSE" file packaged with the program.
 import re
 from pathlib import Path
 
-import anki.models
 import aqt.flags
-from anki.models import NotetypeNameIdUseCount
+from anki.consts import CARD_TYPE_NEW
 from anki.notes import NoteId
 from aqt import mw
 from aqt.models import Models
@@ -25,13 +24,13 @@ from aqt.qt import (
     QMenu,
     QListWidgetItem,
     QListWidget,
-    QLineEdit
+    QGraphicsOpacityEffect
 )
 
 from .config import LeechToolkitConfigManager
 from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction
-from ..res.ui.options_dialog import Ui_OptionsDialog
 from ..res.ui.edit_field_item import Ui_FieldWidgetItem
+from ..res.ui.options_dialog import Ui_OptionsDialog
 
 
 def bind_actions():
@@ -145,6 +144,8 @@ class OptionsDialog(QDialog):
         self.ui.setupUi(OptionsDialog=self)
 
         self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
+        self.ui.queueLabelBottom.setGraphicsEffect(QGraphicsOpacityEffect())
+        self.ui.queueLabelTop.setGraphicsEffect(QGraphicsOpacityEffect())
 
         self.add_completer = CustomCompleter(self.ui.addTagsLine)
         self.remove_completer = CustomCompleter(self.ui.removeTagsLine)
@@ -270,6 +271,11 @@ class OptionsDialog(QDialog):
         self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
         self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
         self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
+        (top, bottom) = mw.col.db.first(
+            f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
+        )
+        self.ui.queueLabelTopPos.setText(str(top))
+        self.ui.queueLabelBottomPos.setText(str(bottom))
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
