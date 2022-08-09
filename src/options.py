@@ -179,14 +179,19 @@ class OptionsDialog(QDialog):
         )
 
         def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
-            spinbox.setPrefix('+' if insert_method in (0, 1) and spinbox.value() >= 0 else '')
+            spinbox.setPrefix('+' if insert_method in (0, 1) and spinbox.value() > 0 else '')
 
         self.ui.queueFromDropdown.currentIndexChanged.connect(
             lambda index: refresh_queue_spinbox(self.ui.queueFromSpinbox, index)
         )
-
+        self.ui.queueFromSpinbox.valueChanged.connect(
+            lambda: refresh_queue_spinbox(self.ui.queueFromSpinbox, self.ui.queueFromDropdown.currentIndex())
+        )
         self.ui.queueToDropdown.currentIndexChanged.connect(
             lambda index: refresh_queue_spinbox(self.ui.queueToSpinbox, index)
+        )
+        self.ui.queueToSpinbox.valueChanged.connect(
+            lambda: refresh_queue_spinbox(self.ui.queueToSpinbox, self.ui.queueToDropdown.currentIndex())
         )
 
         self._load()
