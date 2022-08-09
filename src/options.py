@@ -24,7 +24,8 @@ from aqt.qt import (
     QMenu,
     QListWidgetItem,
     QListWidget,
-    QGraphicsOpacityEffect
+    QGraphicsOpacityEffect,
+    QSpinBox,
 )
 
 from .config import LeechToolkitConfigManager
@@ -177,6 +178,17 @@ class OptionsDialog(QDialog):
             self.ui.reverseThresholdSpinbox.setEnabled(not checked)
         )
 
+        def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
+            spinbox.setPrefix('+' if insert_method in (0, 1) and spinbox.value() >= 0 else '')
+
+        self.ui.queueFromDropdown.currentIndexChanged.connect(
+            lambda index: refresh_queue_spinbox(self.ui.queueFromSpinbox, index)
+        )
+
+        self.ui.queueToDropdown.currentIndexChanged.connect(
+            lambda index: refresh_queue_spinbox(self.ui.queueToSpinbox, index)
+        )
+
         self._load()
 
         # Just in case
@@ -271,7 +283,7 @@ class OptionsDialog(QDialog):
         self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
         self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
         self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
-        (top, bottom) = mw.col.db.first(
+        top, bottom = mw.col.db.first(
             f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
         )
         self.ui.queueLabelTopPos.setText(str(top))

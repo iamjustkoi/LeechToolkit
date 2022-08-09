@@ -906,11 +906,6 @@
                            <string>Position</string>
                           </property>
                          </item>
-                         <item>
-                          <property name="text">
-                           <string>Random</string>
-                          </property>
-                         </item>
                         </widget>
                        </item>
                        <item>
@@ -966,11 +961,6 @@
                          <item>
                           <property name="text">
                            <string>Position</string>
-                          </property>
-                         </item>
-                         <item>
-                          <property name="text">
-                           <string>Random</string>
                           </property>
                          </item>
                         </widget>
