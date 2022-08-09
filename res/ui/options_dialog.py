@@ -434,7 +434,6 @@ class Ui_OptionsDialog(object):
         self.queueFromDropdown.addItem("")
         self.queueFromDropdown.addItem("")
         self.queueFromDropdown.addItem("")
-        self.queueFromDropdown.addItem("")
         self.horizontalLayout_10.addWidget(self.queueFromDropdown)
         self.queueFromSpinbox = QtWidgets.QSpinBox(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
@@ -462,7 +461,6 @@ class Ui_OptionsDialog(object):
         self.queueToDropdown.setSizePolicy(sizePolicy)
         self.queueToDropdown.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
         self.queueToDropdown.setObjectName("queueToDropdown")
-        self.queueToDropdown.addItem("")
         self.queueToDropdown.addItem("")
         self.queueToDropdown.addItem("")
         self.queueToDropdown.addItem("")
@@ -567,12 +565,10 @@ class Ui_OptionsDialog(object):
         self.queueFromDropdown.setItemText(0, _translate("OptionsDialog", "Top"))
         self.queueFromDropdown.setItemText(1, _translate("OptionsDialog", "Bottom"))
         self.queueFromDropdown.setItemText(2, _translate("OptionsDialog", "Position"))
-        self.queueFromDropdown.setItemText(3, _translate("OptionsDialog", "Random"))
         self.queueTilda.setText(_translate("OptionsDialog", "～"))
         self.queueToDropdown.setItemText(0, _translate("OptionsDialog", "Top"))
         self.queueToDropdown.setItemText(1, _translate("OptionsDialog", "Bottom"))
         self.queueToDropdown.setItemText(2, _translate("OptionsDialog", "Position"))
-        self.queueToDropdown.setItemText(3, _translate("OptionsDialog", "Random"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
 
 
