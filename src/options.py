@@ -29,7 +29,7 @@ from aqt.qt import (
 )
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction
+from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction
 from ..res.ui.options_dialog import Ui_OptionsDialog
 from ..res.ui.edit_field_item import Ui_FieldWidgetItem
 
@@ -263,6 +263,14 @@ class OptionsDialog(QDialog):
         self.ui.rescheduleToDays.setValue(reschedule_input[RescheduleAction.TO])
         self.ui.rescheduleResetCheckbox.setChecked(reschedule_input[RescheduleAction.RESET])
 
+        # ADD TO QUEUE
+        queue_input = action_config[Action.ADD_TO_QUEUE][Action.INPUT]
+        self.ui.queueCheckbox.setChecked(action_config[Action.ADD_TO_QUEUE][Action.ENABLED])
+        self.ui.queueFromDropdown.setCurrentIndex(queue_input[QueueAction.FROM_INDEX])
+        self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
+        self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
+        self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
+
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
@@ -329,6 +337,14 @@ class OptionsDialog(QDialog):
         reschedule_input[RescheduleAction.FROM] = self.ui.rescheduleFromDays.value()
         reschedule_input[RescheduleAction.TO] = self.ui.rescheduleToDays.value()
         reschedule_input[RescheduleAction.RESET] = self.ui.rescheduleResetCheckbox.isChecked()
+
+        # ADD TO QUEUE
+        queue_input = action_config[Action.ADD_TO_QUEUE][Action.INPUT]
+        action_config[Action.ADD_TO_QUEUE][Action.ENABLED] = self.ui.queueCheckbox.isChecked()
+        queue_input[QueueAction.FROM_INDEX] = self.ui.queueFromDropdown.currentIndex()
+        queue_input[QueueAction.TO_INDEX] = self.ui.queueToDropdown.currentIndex()
+        queue_input[QueueAction.FROM_VAL] = self.ui.queueFromSpinbox.value()
+        queue_input[QueueAction.TO_VAL] = self.ui.queueToSpinbox.value()
 
         # Write
         self.manager.write_config()
