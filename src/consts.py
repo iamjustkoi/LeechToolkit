@@ -64,6 +64,7 @@ class RescheduleAction:
 
 
 class Action:
+    ADD_TO_QUEUE = 'addToQueue'
     RESCHEDULE = 'reschedule'
     MOVE_TO_DECK = 'moveToDeck'
     EDIT_FIELDS = 'editFields'
@@ -76,7 +77,6 @@ class Action:
 
     ENABLED = 'enabled'
     INPUT = 'input'
-    EXTRA = 'extra'
 
 
 class Config:
