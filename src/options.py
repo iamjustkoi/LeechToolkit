@@ -163,10 +163,10 @@ class OptionsDialog(QDialog):
             dialog.form.buttonBox.clear()
             dialog.form.modelsList.itemDoubleClicked.disconnect()
 
-            select_button = dialog.form.buttonBox.addButton('Select', QDialogButtonBox.ButtonRole.ActionRole)
+            select_button = dialog.form.buttonBox.addButton('Select', QDialogButtonBox.ActionRole)
             qconnect(select_button.clicked, lambda _: handle_note_selected(dialog))
 
-            cancel_button = dialog.form.buttonBox.addButton('Cancel', QDialogButtonBox.ButtonRole.ActionRole)
+            cancel_button = dialog.form.buttonBox.addButton('Cancel', QDialogButtonBox.ActionRole)
             qconnect(cancel_button.clicked, lambda _: dialog.reject())
 
             qconnect(dialog.form.modelsList.itemDoubleClicked, lambda _: handle_note_selected(dialog))
@@ -179,7 +179,14 @@ class OptionsDialog(QDialog):
         )
 
         def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
-            spinbox.setPrefix('+' if insert_method in (0, 1) and spinbox.value() > 0 else '')
+            ref_methods = (0, 1)
+            curr_val = spinbox.value()
+
+            if curr_val < 0 and insert_method not in ref_methods:
+                spinbox.setValue(abs(curr_val))
+
+            spinbox.setPrefix('+' if insert_method in ref_methods and curr_val > 0 else '')
+            spinbox.setMinimum(0 if insert_method not in ref_methods else -9999999)
 
         self.ui.queueFromDropdown.currentIndexChanged.connect(
             lambda index: refresh_queue_spinbox(self.ui.queueFromSpinbox, index)
@@ -444,7 +451,7 @@ NoteItem used for the field edit list.
         :param text: string value to use for the label of the list item
         :param dialog: reference to the base class to use for context menu actions
         """
-        super().__init__()
+        super().__init__(flags=mw.windowFlags())
         self.context_menu = QMenu(self)
         self.dialog = dialog
         self.widget = Ui_FieldWidgetItem()
