@@ -484,12 +484,21 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_11.addLayout(self.horizontalLayout_11)
         self.horizontalLayout_12.addLayout(self.verticalLayout_11)
         self.leechActionsLayout.setWidget(12, QtWidgets.QFormLayout.FieldRole, self.frame)
+<<<<<<< HEAD
         self.queueSimilarCheckbox = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
         self.queueSimilarCheckbox.setObjectName("queueSimilarCheckbox")
         self.leechActionsLayout.setWidget(13, QtWidgets.QFormLayout.FieldRole, self.queueSimilarCheckbox)
         self.queueSiblingCheckbox = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
         self.queueSiblingCheckbox.setObjectName("queueSiblingCheckbox")
         self.leechActionsLayout.setWidget(15, QtWidgets.QFormLayout.FieldRole, self.queueSiblingCheckbox)
+=======
+        self.checkBox = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
+        self.checkBox.setObjectName("checkBox")
+        self.leechActionsLayout.setWidget(13, QtWidgets.QFormLayout.FieldRole, self.checkBox)
+        self.checkBox_2 = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
+        self.checkBox_2.setObjectName("checkBox_2")
+        self.leechActionsLayout.setWidget(15, QtWidgets.QFormLayout.FieldRole, self.checkBox_2)
+>>>>>>> refs/rewritten/private-main-2
         self.pushButton = QtWidgets.QPushButton(self.collapsibleLeechActionsGroup)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -590,12 +599,21 @@ class Ui_OptionsDialog(object):
         self.queueLabelTopPos.setText(_translate("OptionsDialog", "0"))
         self.queueLabelBottom.setText(_translate("OptionsDialog", "Bottom:"))
         self.queueLabelBottomPos.setText(_translate("OptionsDialog", "0"))
+<<<<<<< HEAD
         self.queueSimilarCheckbox.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
 "Place the card next to another one if the other card matches a preset filter."))
         self.queueSimilarCheckbox.setText(_translate("OptionsDialog", "Place near similar cards"))
         self.queueSiblingCheckbox.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
 "Place the card next to another one if they\'re each siblings of the same note-type."))
         self.queueSiblingCheckbox.setText(_translate("OptionsDialog", "Place near sibling cards"))
+=======
+        self.checkBox.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
+"Place the card next to another one if the other card matches a preset filter."))
+        self.checkBox.setText(_translate("OptionsDialog", "Place near similar cards"))
+        self.checkBox_2.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
+"Place the card next to another one if they\'re each siblings of the same note-type."))
+        self.checkBox_2.setText(_translate("OptionsDialog", "Place near sibling cards"))
+>>>>>>> refs/rewritten/private-main-2
         self.pushButton.setText(_translate("OptionsDialog", "Filters..."))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
 
