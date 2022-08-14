@@ -163,10 +163,10 @@ class OptionsDialog(QDialog):
             dialog.form.buttonBox.clear()
             dialog.form.modelsList.itemDoubleClicked.disconnect()
 
-            select_button = dialog.form.buttonBox.addButton('Select', QDialogButtonBox.ButtonRole.ActionRole)
+            select_button = dialog.form.buttonBox.addButton('Select', QDialogButtonBox.ActionRole)
             qconnect(select_button.clicked, lambda _: handle_note_selected(dialog))
 
-            cancel_button = dialog.form.buttonBox.addButton('Cancel', QDialogButtonBox.ButtonRole.ActionRole)
+            cancel_button = dialog.form.buttonBox.addButton('Cancel', QDialogButtonBox.ActionRole)
             qconnect(cancel_button.clicked, lambda _: dialog.reject())
 
             qconnect(dialog.form.modelsList.itemDoubleClicked, lambda _: handle_note_selected(dialog))
@@ -179,7 +179,14 @@ class OptionsDialog(QDialog):
         )
 
         def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
-            spinbox.setPrefix('+' if insert_method in (0, 1) and spinbox.value() > 0 else '')
+            ref_methods = (0, 1)
+            curr_val = spinbox.value()
+
+            if curr_val < 0 and insert_method not in ref_methods:
+                spinbox.setValue(abs(curr_val))
+
+            spinbox.setPrefix('+' if insert_method in ref_methods and curr_val > 0 else '')
+            spinbox.setMinimum(0 if insert_method not in ref_methods else -9999999)
 
         self.ui.queueFromDropdown.currentIndexChanged.connect(
             lambda index: refresh_queue_spinbox(self.ui.queueFromSpinbox, index)
@@ -293,6 +300,8 @@ class OptionsDialog(QDialog):
         )
         self.ui.queueLabelTopPos.setText(str(top))
         self.ui.queueLabelBottomPos.setText(str(bottom))
+        self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
+        self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -368,6 +377,8 @@ class OptionsDialog(QDialog):
         queue_input[QueueAction.TO_INDEX] = self.ui.queueToDropdown.currentIndex()
         queue_input[QueueAction.FROM_VAL] = self.ui.queueFromSpinbox.value()
         queue_input[QueueAction.TO_VAL] = self.ui.queueToSpinbox.value()
+        queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
+        queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
 
         # Write
         self.manager.write_config()
@@ -444,7 +455,7 @@ NoteItem used for the field edit list.
         :param text: string value to use for the label of the list item
         :param dialog: reference to the base class to use for context menu actions
         """
-        super().__init__()
+        super().__init__(flags=mw.windowFlags())
         self.context_menu = QMenu(self)
         self.dialog = dialog
         self.widget = Ui_FieldWidgetItem()

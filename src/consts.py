@@ -64,6 +64,8 @@ class RescheduleAction:
 
 
 class QueueAction:
+    NEAR_SIMILAR = 'nearSimilar'
+    NEAR_SIBLING = 'nearSameNote'
     FROM_INDEX = 'fromIndex'
     FROM_VAL = 'fromValue'
     TO_INDEX = 'toIndex'
@@ -149,7 +151,9 @@ class Config:
                     QueueAction.FROM_INDEX: 0,
                     QueueAction.FROM_VAL: 0,
                     QueueAction.TO_INDEX: 1,
-                    QueueAction.TO_VAL: 0
+                    QueueAction.TO_VAL: 0,
+                    QueueAction.NEAR_SIBLING: False,
+                    QueueAction.NEAR_SIMILAR: False
                 }
             }
         }

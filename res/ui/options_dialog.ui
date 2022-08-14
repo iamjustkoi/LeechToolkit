@@ -40,7 +40,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>496</width>
+            <width>331</width>
             <height>415</height>
            </rect>
           </property>
@@ -1024,7 +1024,7 @@
                  </widget>
                 </item>
                 <item row="13" column="1">
-                 <widget class="QCheckBox" name="checkBox">
+                 <widget class="QCheckBox" name="queueSimilarCheckbox">
                   <property name="toolTip">
                    <string>Using the given range:
 Place the card next to another one if the other card matches a preset filter.</string>
@@ -1035,7 +1035,7 @@ Place the card next to another one if the other card matches a preset filter.</s
                  </widget>
                 </item>
                 <item row="15" column="1">
-                 <widget class="QCheckBox" name="checkBox_2">
+                 <widget class="QCheckBox" name="queueSiblingCheckbox">
                   <property name="toolTip">
                    <string>Using the given range:
 Place the card next to another one if they're each siblings of the same note-type.</string>
