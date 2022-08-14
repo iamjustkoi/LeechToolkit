@@ -131,25 +131,36 @@ class LeechActionManager:
         if leech_actions[Action.ADD_TO_QUEUE][Action.ENABLED]:
             queue_inputs = leech_actions[Action.ADD_TO_QUEUE][Action.INPUT]
 
-            top, bottom = card.col.db.first(
-                f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
-            )
-
             def get_inserted_pos(insert_type, input_pos):
-                if insert_type == QueueAction.POS:
-                    return input_pos
-
-                queue_pos = top if insert_type == QueueAction.TOP else bottom
-                return queue_pos + input_pos if (queue_pos + input_pos > 0) else queue_pos
+                if insert_type != QueueAction.POS:
+                    queue_cmd = f'SELECT min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0'
+                    top, bottom = card.col.db.first(queue_cmd)
+                    queue_pos = top if insert_type == QueueAction.TOP else bottom
+                    return queue_pos + input_pos if (queue_pos + input_pos > 0) else queue_pos
+                return input_pos
 
             from_pos = get_inserted_pos(queue_inputs[QueueAction.FROM_INDEX], queue_inputs[QueueAction.FROM_VAL])
             to_pos = get_inserted_pos(queue_inputs[QueueAction.TO_INDEX], queue_inputs[QueueAction.TO_VAL])
 
             # Swaps positions if values are inverted/will result in a non-positive range
             from_pos, to_pos = (to_pos, from_pos) if from_pos > to_pos else (from_pos, to_pos)
-            # print(f'{from_pos} - {to_pos}')
 
             updated_card.queue = QUEUE_TYPE_NEW
-            updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
+
+            filtered_positions = []
+            if queue_inputs[QueueAction.NEAR_SIBLING]:
+                cmd = f"""
+                    select due from cards 
+                    WHERE nid = {updated_card.nid} 
+                    AND id != {updated_card.id}
+                    AND queue = {QUEUE_TYPE_NEW} 
+                    AND due BETWEEN {from_pos} AND {to_pos} 
+                """
+                filtered_positions = card.col.db.list(cmd)
+
+            if len(filtered_positions) > 0:
+                updated_card.due = random.choice(filtered_positions)
+            else:
+                updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
 
         return updated_card
