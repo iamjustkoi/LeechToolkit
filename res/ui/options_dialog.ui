@@ -977,7 +977,7 @@
                      <widget class="QCheckBox" name="queueSimilarCheckbox">
                       <property name="toolTip">
                        <string>Using the given range:
-Place the card next to another one if the other card matches a preset filter.</string>
+Places the card near another one in the queue based on how similar they are.</string>
                       </property>
                       <property name="text">
                        <string>Place near similar cards</string>
@@ -987,7 +987,7 @@ Place the card next to another one if the other card matches a preset filter.</s
                     <item>
                      <widget class="QGroupBox" name="groupBox_4">
                       <property name="title">
-                       <string>Exclusions</string>
+                       <string>Exclude</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
