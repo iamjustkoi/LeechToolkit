@@ -172,9 +172,8 @@ class LeechActionManager:
                     pass
 
                 filtered_positions = card.col.db.list(cmd)
-
-            if len(filtered_positions) > 0:
                 updated_card.due = random.choice(filtered_positions)
+
             else:
                 updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
 
