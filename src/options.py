@@ -44,15 +44,17 @@ def on_options_called(result=False):
     options.exec()
 
 
-def _bind_config_options():
-    mw.addonManager.setConfigAction(__name__, on_options_called)
-
-
 def get_colored_icon(path, color):
     icon = QIcon(path)
     pixmap = icon.pixmap()
     pixmap.fill(color)
     return QIcon(pixmap)
+
+
+def redraw_list(fields_list: QListWidget):
+    fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
+    fields_list.setVisible(fields_list.count() != 0)
+    fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
 
 
 def _bind_tools_options(*args):
@@ -67,6 +69,10 @@ def _bind_tools_options(*args):
         for action in mw.form.menuTools.actions():
             if action.text() == String.TOOLBAR_OPTIONS:
                 mw.form.menuTools.removeAction(action)
+
+
+def _bind_config_options():
+    mw.addonManager.setConfigAction(__name__, on_options_called)
 
 
 class CustomCompleter(QCompleter):
@@ -156,7 +162,7 @@ class OptionsDialog(QDialog):
             dialog.close()
             selected = dialog.form.modelsList.currentRow()
             self.add_edit_item(dialog.models[selected].id)
-            self.redraw_list()
+            redraw_list(self.ui.editFieldsList)
 
         def open_note_selection():
             dialog = Models(mw, self, fromMain=False)
@@ -271,7 +277,7 @@ class OptionsDialog(QDialog):
         # FIELDS
         self.ui.editFieldsCheckbox.setChecked(action_config[Action.EDIT_FIELDS][Action.ENABLED])
         self.add_edit_items(action_config[Action.EDIT_FIELDS][Action.INPUT])
-        self.redraw_list()
+        redraw_list(self.ui.editFieldsList)
 
         # DECK MOVE
         self.ui.deckMoveCheckbox.setChecked(action_config[Action.MOVE_TO_DECK][Action.ENABLED])
@@ -399,12 +405,6 @@ class OptionsDialog(QDialog):
         bind_actions()
         mw.reset()
 
-    def redraw_list(self):
-        fields_list = self.ui.editFieldsList
-        fields_list.setMinimumWidth(fields_list.sizeHintForColumn(0))
-        fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
-        fields_list.setVisible(fields_list.count() != 0)
-
     def add_edit_items(self, data: {str: {str: int or str}}):
         for filtered_nid in data:
             field = data[filtered_nid]
@@ -475,7 +475,7 @@ NoteItem used for the field edit list.
                 item = self.dialog.ui.editFieldsList.item(i)
                 if self == self.from_list_widget(self.dialog.ui.editFieldsList, item):
                     self.dialog.ui.editFieldsList.takeItem(i)
-                    self.dialog.redraw_list()
+                    redraw_list(self.dialog.ui.editFieldsList)
 
         self.widget.removeButton.clicked.connect(remove_self)
         self.widget.methodDropdown.currentIndexChanged.connect(self.refresh_method_forms)
