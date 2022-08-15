@@ -676,9 +676,9 @@ class Ui_OptionsDialog(object):
         self.queueLabelBottomPos.setText(_translate("OptionsDialog", "0"))
 <<<<<<< HEAD
         self.queueSimilarCheckbox.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
-"Place the card next to another one if the other card matches a preset filter."))
+"Places the card near another one in the queue based on how similar they are."))
         self.queueSimilarCheckbox.setText(_translate("OptionsDialog", "Place near similar cards"))
-        self.groupBox_4.setTitle(_translate("OptionsDialog", "Exclusions"))
+        self.groupBox_4.setTitle(_translate("OptionsDialog", "Exclude"))
         self.groupBox_2.setTitle(_translate("OptionsDialog", "Fields"))
         self.groupBox_3.setTitle(_translate("OptionsDialog", "Text"))
         self.queueSiblingCheckbox.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
