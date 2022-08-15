@@ -159,6 +159,16 @@ class LeechActionManager:
 
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
                     # cmd += f'''\nAND card.field contains...'''
+
+                    # >> > from difflib import SequenceMatcher as SM
+                    # >> > s1 = ' It was a dark and stormy night.
+                    #  I was all alone sitting on a red chair. I was not completely alone as I had three cats.'
+                    # >> > s2 = ' It was a murky and stormy night.
+                    #  I was all alone sitting on a crimson chair. I was not completely alone as I had three felines.'
+                    # >> > SM(None, s1, s2).ratio()
+                    # 0.9112903225806451
+                    # https://stackoverflow.com/questions/10383044/fuzzy-string-comparison
+
                     pass
 
                 filtered_positions = card.col.db.list(cmd)
