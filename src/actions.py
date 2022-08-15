@@ -148,14 +148,19 @@ class LeechActionManager:
             updated_card.queue = QUEUE_TYPE_NEW
 
             filtered_positions = []
-            if queue_inputs[QueueAction.NEAR_SIBLING]:
+            if queue_inputs[QueueAction.NEAR_SIBLING] or queue_inputs[QueueAction.NEAR_SIMILAR]:
                 cmd = f"""
-                    select due from cards 
-                    WHERE nid = {updated_card.nid} 
-                    AND id != {updated_card.id}
-                    AND queue = {QUEUE_TYPE_NEW} 
-                    AND due BETWEEN {from_pos} AND {to_pos} 
-                """
+                    SELECT due FROM cards
+                    WHERE id != {updated_card.id}
+                    AND due BETWEEN {from_pos} AND {to_pos}"""
+
+                if queue_inputs[QueueAction.NEAR_SIBLING]:
+                    cmd += f'''\nAND nid = {updated_card.nid} AND queue = {QUEUE_TYPE_NEW}'''
+
+                if queue_inputs[QueueAction.NEAR_SIMILAR]:
+                    # cmd += f'''\nAND card.field contains...'''
+                    pass
+
                 filtered_positions = card.col.db.list(cmd)
 
             if len(filtered_positions) > 0:
