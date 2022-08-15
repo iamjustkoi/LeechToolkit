@@ -64,6 +64,8 @@ class RescheduleAction:
 
 
 class QueueAction:
+    EXCLUDED_FIELDS = 'excludedFields'
+    EXCLUDED_TEXT = 'excludedText'
     NEAR_SIMILAR = 'nearSimilar'
     NEAR_SIBLING = 'nearSameNote'
     FROM_INDEX = 'fromIndex'
@@ -153,7 +155,9 @@ class Config:
                     QueueAction.TO_INDEX: 1,
                     QueueAction.TO_VAL: 0,
                     QueueAction.NEAR_SIBLING: False,
-                    QueueAction.NEAR_SIMILAR: False
+                    QueueAction.NEAR_SIMILAR: False,
+                    QueueAction.EXCLUDED_FIELDS: '',
+                    QueueAction.EXCLUDED_TEXT: '',
                 }
             }
         }
