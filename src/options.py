@@ -26,6 +26,7 @@ from aqt.qt import (
     QListWidget,
     QGraphicsOpacityEffect,
     QSpinBox,
+    QTextEdit,
 )
 
 from .config import LeechToolkitConfigManager
@@ -207,6 +208,17 @@ class OptionsDialog(QDialog):
             lambda: refresh_queue_spinbox(self.ui.queueToSpinbox, self.ui.queueToDropdown.currentIndex())
         )
 
+        def updateTextSize(text_box: QTextEdit):
+            doc_height = text_box.document().size().height()
+            max_height, min_height = 256, 24
+            if doc_height <= max_height:
+                text_box.setFixedHeight(min_height if doc_height <= min_height else doc_height + 5)
+            else:
+                text_box.setFixedHeight(max_height)
+
+        self.ui.queueExcludeTextEdit.textChanged.connect(lambda: updateTextSize(self.ui.queueExcludeTextEdit))
+        self.ui.queueExcludeFieldEdit.textChanged.connect(lambda: updateTextSize(self.ui.queueExcludeFieldEdit))
+
         self._load()
 
         # Just in case
@@ -309,6 +321,9 @@ class OptionsDialog(QDialog):
         self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
+        self.ui.queueExcludeFieldEdit.setText(queue_input[QueueAction.EXCLUDED_FIELDS])
+        self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
+
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
@@ -385,6 +400,9 @@ class OptionsDialog(QDialog):
         queue_input[QueueAction.TO_VAL] = self.ui.queueToSpinbox.value()
         queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
         queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
+
+        queue_input[QueueAction.EXCLUDED_FIELDS] = self.ui.queueExcludeFieldEdit.toPlainText()
+        queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
 
         # Write
         self.manager.write_config()
