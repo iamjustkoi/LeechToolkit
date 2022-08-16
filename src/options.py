@@ -7,6 +7,7 @@ from pathlib import Path
 
 import aqt.flags
 from anki.consts import CARD_TYPE_NEW
+from anki.models import NotetypeId
 from anki.notes import NoteId
 from aqt import mw
 from aqt.models import Models
@@ -319,10 +320,13 @@ class OptionsDialog(QDialog):
                 action.setData(note_type['id'])
                 sub_menu.addAction(action)
 
+        for note_dict in queue_input[QueueAction.EXCLUDED_FIELDS]:
+            note_type_id = list(note_dict)[0]
+            for field_ord in list(note_dict.values()):
+                note = mw.col.models.get(NotetypeId(int(note_type_id)))
+                self.add_excluded_field(note_type_id, mw.col.models.field_names(note)[field_ord])
         redraw_list(self.ui.queueExcludedFieldList)
 
-        for note_field in queue_input[QueueAction.EXCLUDED_FIELDS]:
-            print(f'note_field: {note_field}')
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
 
     def _save(self):
@@ -402,6 +406,13 @@ class OptionsDialog(QDialog):
         queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
         queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
 
+        queue_input[QueueAction.EXCLUDED_FIELDS] = []
+        for i in range(self.ui.queueExcludedFieldList.count()):
+            item = self.ui.queueExcludedFieldList.item(i)
+            field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
+            field_dict = field_item.get_model_field_dict()
+            queue_input[QueueAction.EXCLUDED_FIELDS].append(field_dict)
+
         queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
 
         # Write
@@ -448,8 +459,11 @@ class OptionsDialog(QDialog):
     def add_excluded_field(self, mid: int, text=''):
         for i in range(0, self.ui.queueExcludedFieldList.count()):
             item = self.ui.queueExcludedFieldList.item(i)
+
             field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
-            if field_item.get_model_and_field_name() == (mid, text):
+            fields_names = mw.col.models.field_names(mw.col.models.get(mid))
+
+            if field_item.get_model_field_dict() == {f'{mid}': fields_names.index(text)}:
                 return
 
         field_item = ExcludedFieldItem(self, mid=mid, field_name=text)
@@ -497,6 +511,11 @@ class ExcludedFieldItem(QWidget):
 
     def get_model_and_field_name(self):
         return self.mid, self.widget.fieldLabel.text()
+
+    def get_model_field_dict(self):
+        fields_names = mw.col.models.field_names(mw.col.models.get(self.mid))
+        # return {f'{self.mid}': fields_names.index(self.widget.fieldLabel.text())}
+        return {f'{self.mid}': fields_names.index(self.widget.fieldLabel.text())}
 
 
 class EditFieldItem(QWidget):
