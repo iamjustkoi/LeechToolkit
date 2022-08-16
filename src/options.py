@@ -446,7 +446,13 @@ class OptionsDialog(QDialog):
         self.ui.editFieldsList.setItemWidget(list_item, edit_item)
 
     def add_excluded_field(self, mid: int, text=''):
-        field_item = ExcludedFieldItem(self, model_id=mid, field_name=text)
+        for i in range(0, self.ui.queueExcludedFieldList.count()):
+            item = self.ui.queueExcludedFieldList.item(i)
+            field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
+            if field_item.get_model_and_field_name() == (mid, text):
+                return
+
+        field_item = ExcludedFieldItem(self, mid=mid, field_name=text)
         list_item = QListWidgetItem(self.ui.queueExcludedFieldList)
         list_item.setSizeHint(field_item.sizeHint())
         list_item.setFlags(Qt.NoItemFlags)
@@ -467,16 +473,15 @@ class ExcludedFieldItem(QWidget):
         """
         return field_list.itemWidget(item)
 
-    def __init__(self, dialog: OptionsDialog, model_id: int, field_name: str):
+    def __init__(self, dialog: OptionsDialog, mid: int, field_name: str):
         super().__init__(flags=mw.windowFlags())
         self.dialog = dialog
-        self.mid = model_id
+        self.mid = mid
         self.widget = Ui_ExcludedFieldItem()
         self.widget.setupUi(ExcludedFieldItem=self)
         self.widget.fieldLabel.setText(field_name)
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
-
-        self.widget.fieldLabel.setToolTip(f'{mw.col.models.get(NoteId(model_id))["name"]}')
+        self.widget.fieldLabel.setToolTip(f'{mw.col.models.get(NoteId(self.mid))["name"]}')
 
         def remove_self(_):
             """
@@ -488,8 +493,10 @@ class ExcludedFieldItem(QWidget):
                 if self == self.from_list_widget(self.dialog.ui.queueExcludedFieldList, item):
                     self.dialog.ui.queueExcludedFieldList.takeItem(i)
                     redraw_list(self.dialog.ui.queueExcludedFieldList)
-
         self.widget.removeButton.clicked.connect(remove_self)
+
+    def get_model_and_field_name(self):
+        return self.mid, self.widget.fieldLabel.text()
 
 
 class EditFieldItem(QWidget):
