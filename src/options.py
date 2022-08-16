@@ -205,7 +205,7 @@ class OptionsDialog(QDialog):
         )
 
         self.ui.queueAddFieldButton.menu().triggered.connect(
-            lambda action: self.add_excluded_field(action.text())
+            lambda action: self.add_excluded_field(action.data(), action.text())
         )
 
         self._load()
@@ -313,7 +313,9 @@ class OptionsDialog(QDialog):
         for note_type in mw.col.models.all():
             sub_menu = self.ui.queueAddFieldButton.menu().addMenu(f'{note_type["name"]}')
             for field in mw.col.models.field_names(note_type):
-                sub_menu.addAction(QAction(f'{field}', self))
+                action = QAction(f'{field}', self)
+                action.setData(note_type['id'])
+                sub_menu.addAction(action)
 
         redraw_list(self.ui.queueExcludedFieldList)
 
@@ -441,18 +443,26 @@ class OptionsDialog(QDialog):
         self.ui.editFieldsList.addItem(list_item)
         self.ui.editFieldsList.setItemWidget(list_item, edit_item)
 
-    def add_excluded_field(self, text=''):
-        # field_item = ExcludedFieldItem()
-        self.ui.queueExcludedFieldList.addItem(text)
-        redraw_list(self.ui.queueExcludedFieldList)
+    def add_excluded_field(self, mid: int, text=''):
+        field_item = ExcludedFieldItem(model_id=mid, field_name=text)
+        list_item = QListWidgetItem(self.ui.queueExcludedFieldList)
+        list_item.setSizeHint(field_item.sizeHint())
+        list_item.setFlags(Qt.NoItemFlags)
+
+        self.ui.queueExcludedFieldList.addItem(list_item)
+        self.ui.editFieldsList.setItemWidget(list_item, field_item)
 
 
 class ExcludedFieldItem(QWidget):
 
-    def __int__(self):
+    def __init__(self, model_id: int, field_name: str):
         super().__init__(flags=mw.windowFlags())
         self.widget = Ui_ExcludedFieldItem()
         self.widget.setupUi(ExcludedFieldItem=self)
+        self.mid = model_id
+        self.field_name = field_name
+
+        print(self.__dict__.items())
 
 
 class EditFieldItem(QWidget):
