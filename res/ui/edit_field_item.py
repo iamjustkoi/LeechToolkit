@@ -21,7 +21,7 @@ class Ui_EditFieldItem(object):
         sizePolicy.setHeightForWidth(EditFieldItem.sizePolicy().hasHeightForWidth())
         EditFieldItem.setSizePolicy(sizePolicy)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(EditFieldItem)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 9)
+        self.verticalLayout_2.setContentsMargins(-1, 0, -1, 9)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setSpacing(6)

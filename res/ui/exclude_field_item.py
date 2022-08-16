@@ -14,10 +14,17 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ExcludedFieldItem(object):
     def setupUi(self, ExcludedFieldItem):
         ExcludedFieldItem.setObjectName("ExcludedFieldItem")
-        ExcludedFieldItem.resize(100, 42)
+        ExcludedFieldItem.resize(100, 24)
         self.horizontalLayout = QtWidgets.QHBoxLayout(ExcludedFieldItem)
+        self.horizontalLayout.setContentsMargins(-1, 6, -1, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.fieldLabel = QtWidgets.QLabel(ExcludedFieldItem)
+        self.fieldLabel = ElidingLabel(ExcludedFieldItem)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.fieldLabel.sizePolicy().hasHeightForWidth())
+        self.fieldLabel.setSizePolicy(sizePolicy)
+        self.fieldLabel.setMinimumSize(QtCore.QSize(0, 0))
         self.fieldLabel.setObjectName("fieldLabel")
         self.horizontalLayout.addWidget(self.fieldLabel)
         self.removeButton = QtWidgets.QPushButton(ExcludedFieldItem)
@@ -41,6 +48,7 @@ class Ui_ExcludedFieldItem(object):
         _translate = QtCore.QCoreApplication.translate
         ExcludedFieldItem.setWindowTitle(_translate("ExcludedFieldItem", "Form"))
         self.fieldLabel.setText(_translate("ExcludedFieldItem", "SampleText"))
+from .forms import ElidingLabel
 
 
 if __name__ == "__main__":
