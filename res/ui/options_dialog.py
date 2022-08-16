@@ -180,7 +180,7 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -175, 479, 685))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 479, 701))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -366,7 +366,7 @@ class Ui_OptionsDialog(object):
         self.queueFromDropdown.addItem("")
         self.queueFromDropdown.addItem("")
         self.horizontalLayout_10.addWidget(self.queueFromDropdown)
-        self.queueFromSpinbox = QtWidgets.QSpinBox(self.frame)
+        self.queueFromSpinbox = QueueSpinBox(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -396,7 +396,7 @@ class Ui_OptionsDialog(object):
         self.queueToDropdown.addItem("")
         self.queueToDropdown.addItem("")
         self.horizontalLayout_10.addWidget(self.queueToDropdown)
-        self.queueToSpinbox = QtWidgets.QSpinBox(self.frame)
+        self.queueToSpinbox = QueueSpinBox(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -703,6 +703,7 @@ class Ui_OptionsDialog(object):
         self.addFieldButton.setText(_translate("OptionsDialog", "Add..."))
 >>>>>>> df3bb70 (Added queue exclusions with auto-height updates)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
+from .forms import QueueSpinBox
 
 
 if __name__ == "__main__":

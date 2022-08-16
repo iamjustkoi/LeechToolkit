@@ -347,9 +347,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-175</y>
+            <y>0</y>
             <width>479</width>
-            <height>685</height>
+            <height>701</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -770,7 +770,7 @@
                         </widget>
                        </item>
                        <item>
-                        <widget class="QSpinBox" name="queueFromSpinbox">
+                        <widget class="QueueSpinBox" name="queueFromSpinbox">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -827,7 +827,7 @@
                         </widget>
                        </item>
                        <item>
-                        <widget class="QSpinBox" name="queueToSpinbox">
+                        <widget class="QueueSpinBox" name="queueToSpinbox">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -1209,6 +1209,13 @@ Place the card next to another one if they're each siblings of the same note-typ
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QueueSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>.forms.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
