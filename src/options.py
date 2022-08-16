@@ -34,6 +34,9 @@ from ..res.ui.edit_field_item import Ui_EditFieldItem
 from ..res.ui.exclude_field_item import Ui_ExcludedFieldItem
 from ..res.ui.options_dialog import Ui_OptionsDialog
 
+max_fields_height = 572
+max_queue_height = 256
+
 
 def bind_actions():
     _bind_config_options()
@@ -52,10 +55,11 @@ def get_colored_icon(path, color):
     return QIcon(pixmap)
 
 
-def redraw_list(fields_list: QListWidget):
-    fields_list.setMinimumHeight(fields_list.sizeHintForRow(0) * fields_list.count())
-    fields_list.setVisible(fields_list.count() != 0)
+def redraw_list(fields_list: QListWidget, max_height=256):
+    data_height = fields_list.sizeHintForRow(0) * fields_list.count()
+    fields_list.setFixedHeight(data_height if data_height < max_height else fields_list.maximumHeight())
     fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
+    fields_list.setVisible(fields_list.count() != 0)
 
 
 def _bind_tools_options(*args):
@@ -155,7 +159,7 @@ class OptionsDialog(QDialog):
             dialog.close()
             selected = dialog.form.modelsList.currentRow()
             self.add_edit_item(dialog.models[selected].id)
-            redraw_list(self.ui.editFieldsList)
+            redraw_list(self.ui.editFieldsList, max_fields_height)
 
         def open_note_selection():
             dialog = Models(mw, self, fromMain=False)
@@ -192,12 +196,6 @@ class OptionsDialog(QDialog):
         self.ui.editAddFieldButton.clicked.connect(open_note_selection)
 
         self.ui.queueAddFieldButton.setMenu(QMenu(self.ui.queueAddFieldButton))
-        # self.ui.queueAddFieldButton.menu().setMaximumHeight(256)
-
-        for note_type in mw.col.models.all():
-            sub_menu = self.ui.queueAddFieldButton.menu().addMenu(f'{note_type["name"]}')
-            for field in mw.col.models.field_names(note_type):
-                sub_menu.addAction(QAction(f'{field}', self))
 
         self.ui.queueFromDropdown.currentIndexChanged.connect(lambda _: self.ui.queueFromSpinbox.refresh())
         self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
@@ -280,7 +278,7 @@ class OptionsDialog(QDialog):
         # FIELDS
         self.ui.editFieldsCheckbox.setChecked(action_config[Action.EDIT_FIELDS][Action.ENABLED])
         self.add_edit_items(action_config[Action.EDIT_FIELDS][Action.INPUT])
-        redraw_list(self.ui.editFieldsList)
+        redraw_list(self.ui.editFieldsList, max_fields_height)
 
         # DECK MOVE
         self.ui.deckMoveCheckbox.setChecked(action_config[Action.MOVE_TO_DECK][Action.ENABLED])
@@ -311,6 +309,13 @@ class OptionsDialog(QDialog):
         self.ui.queueLabelBottomPos.setText(str(bottom))
         self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
+
+        for note_type in mw.col.models.all():
+            sub_menu = self.ui.queueAddFieldButton.menu().addMenu(f'{note_type["name"]}')
+            for field in mw.col.models.field_names(note_type):
+                sub_menu.addAction(QAction(f'{field}', self))
+
+        redraw_list(self.ui.queueExcludedFieldList)
 
         for note_field in queue_input[QueueAction.EXCLUDED_FIELDS]:
             print(f'note_field: {note_field}')
