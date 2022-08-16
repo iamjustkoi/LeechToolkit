@@ -30,7 +30,8 @@ from aqt.qt import (
 
 from .config import LeechToolkitConfigManager
 from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction
-from ..res.ui.edit_field_item import Ui_FieldWidgetItem
+from ..res.ui.edit_field_item import Ui_EditFieldItem
+from ..res.ui.exclude_field_item import Ui_ExcludedFieldItem
 from ..res.ui.options_dialog import Ui_OptionsDialog
 
 
@@ -188,14 +189,25 @@ class OptionsDialog(QDialog):
         self.remove_completer = CustomCompleter(self.ui.removeTagsLine)
         self.deck_completer = CustomCompleter(self.ui.deckMoveLine)
 
-        self.ui.addFieldButton.clicked.connect(open_note_selection)
+        self.ui.editAddFieldButton.clicked.connect(open_note_selection)
+
+        self.ui.queueAddFieldButton.setMenu(QMenu(self.ui.queueAddFieldButton))
+        # self.ui.queueAddFieldButton.menu().setMaximumHeight(256)
+
+        for note_type in mw.col.models.all():
+            sub_menu = self.ui.queueAddFieldButton.menu().addMenu(f'{note_type["name"]}')
+            for field in mw.col.models.field_names(note_type):
+                sub_menu.addAction(QAction(f'{field}', self))
 
         self.ui.queueFromDropdown.currentIndexChanged.connect(lambda _: self.ui.queueFromSpinbox.refresh())
         self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
         self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
-        self.ui.queueExcludeFieldEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeFieldEdit))
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(
             lambda c: self.ui.reverseThresholdSpinbox.setEnabled(not c)
+        )
+
+        self.ui.queueAddFieldButton.menu().triggered.connect(
+            lambda action: self.add_excluded_field(action.text())
         )
 
         self._load()
@@ -302,7 +314,6 @@ class OptionsDialog(QDialog):
 
         for note_field in queue_input[QueueAction.EXCLUDED_FIELDS]:
             print(f'note_field: {note_field}')
-        # self.ui.queueExcludeFieldEdit.setText(queue_input[QueueAction.EXCLUDED_FIELDS])
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
 
     def _save(self):
@@ -382,7 +393,6 @@ class OptionsDialog(QDialog):
         queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
         queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
 
-        # queue_input[QueueAction.EXCLUDED_FIELDS] = self.ui.queueExcludeFieldEdit.toPlainText()
         queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
 
         # Write
@@ -426,6 +436,19 @@ class OptionsDialog(QDialog):
         self.ui.editFieldsList.addItem(list_item)
         self.ui.editFieldsList.setItemWidget(list_item, edit_item)
 
+    def add_excluded_field(self, text=''):
+        # field_item = ExcludedFieldItem()
+        self.ui.queueExcludedFieldList.addItem(text)
+        redraw_list(self.ui.queueExcludedFieldList)
+
+
+class ExcludedFieldItem(QWidget):
+
+    def __int__(self):
+        super().__init__(flags=mw.windowFlags())
+        self.widget = Ui_ExcludedFieldItem()
+        self.widget.setupUi(ExcludedFieldItem=self)
+
 
 class EditFieldItem(QWidget):
     note: aqt.models.NotetypeDict
@@ -457,8 +480,8 @@ NoteItem used for the field edit list.
         super().__init__(flags=mw.windowFlags())
         self.context_menu = QMenu(self)
         self.dialog = dialog
-        self.widget = Ui_FieldWidgetItem()
-        self.widget.setupUi(FieldWidgetItem=self)
+        self.widget = Ui_EditFieldItem()
+        self.widget.setupUi(EditFieldItem=self)
 
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
