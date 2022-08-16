@@ -347,7 +347,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-316</y>
+            <y>-180</y>
             <width>479</width>
             <height>854</height>
            </rect>
@@ -1013,10 +1013,16 @@ Places the card near another one in the queue based on how similar they are.</st
                             <item>
                              <widget class="QListWidget" name="queueExcludedFieldList">
                               <property name="sizePolicy">
-                               <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                                 <horstretch>0</horstretch>
                                 <verstretch>0</verstretch>
                                </sizepolicy>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>16777215</width>
+                                <height>256</height>
+                               </size>
                               </property>
                               <property name="frameShape">
                                <enum>QFrame::NoFrame</enum>
@@ -1032,6 +1038,9 @@ Places the card near another one in the queue based on how similar they are.</st
                               </property>
                               <property name="selectionMode">
                                <enum>QAbstractItemView::NoSelection</enum>
+                              </property>
+                              <property name="verticalScrollMode">
+                               <enum>QAbstractItemView::ScrollPerPixel</enum>
                               </property>
                               <property name="itemAlignment">
                                <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -1214,6 +1223,9 @@ Place the card next to another one if they're each siblings of the same note-typ
                      </property>
                      <property name="selectionMode">
                       <enum>QAbstractItemView::NoSelection</enum>
+                     </property>
+                     <property name="verticalScrollMode">
+                      <enum>QAbstractItemView::ScrollPerPixel</enum>
                      </property>
                      <property name="itemAlignment">
                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
