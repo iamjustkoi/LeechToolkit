@@ -12,7 +12,7 @@ from aqt.qt import (
     QComboBox,
 )
 
-from src.consts import QueueAction
+from ...src.consts import QueueAction
 
 
 class ElidingLabel(QLabel):
