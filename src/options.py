@@ -150,14 +150,6 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
-        self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
-        self.ui.queueLabelBottom.setGraphicsEffect(QGraphicsOpacityEffect())
-        self.ui.queueLabelTop.setGraphicsEffect(QGraphicsOpacityEffect())
-
-        self.add_completer = CustomCompleter(self.ui.addTagsLine)
-        self.remove_completer = CustomCompleter(self.ui.removeTagsLine)
-        self.deck_completer = CustomCompleter(self.ui.deckMoveLine)
-
         def handle_note_selected(dialog: Models):
             dialog.close()
             selected = dialog.form.modelsList.currentRow()
@@ -177,51 +169,7 @@ class OptionsDialog(QDialog):
 
             qconnect(dialog.form.modelsList.itemDoubleClicked, lambda _: handle_note_selected(dialog))
 
-        self.ui.addFieldButton.clicked.connect(open_note_selection)
-
-        self.ui.useLeechThresholdCheckbox.stateChanged.connect(
-            lambda checked:
-            self.ui.reverseThresholdSpinbox.setEnabled(not checked)
-        )
-
-        # def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
-        #     ref_methods = (0, 1)
-        #     curr_val = spinbox.value()
-        #
-        #     if curr_val < 0 and insert_method not in ref_methods:
-        #         spinbox.setValue(abs(curr_val))
-        #
-        #     spinbox.textFromValue = text_from_val
-        #     # spinbox.setPrefix('+' if insert_method in ref_methods and curr_val > 0 else '')
-        #     spinbox.setMinimum(0 if insert_method not in ref_methods else -9999999)
-
-        self.ui.queueFromSpinbox.dropdown = self.ui.queueFromDropdown
-        self.ui.queueToSpinbox.dropdown = self.ui.queueToDropdown
-
-        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda _: self.ui.queueFromSpinbox.refresh())
-        self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
-
-        # def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
-        #     spinbox.set
-
-        # self.ui.queueFromDropdown.currentIndexChanged.connect(
-        #     lambda index: refresh_queue_spinbox(self.ui.queueFromSpinbox, index)
-        # )
-        # self.ui.queueFromSpinbox.valueChanged.connect(
-        #     lambda: refresh_queue_spinbox(self.ui.queueFromSpinbox, self.ui.queueFromDropdown.currentIndex())
-        # )
-        # self.ui.queueToDropdown.currentIndexChanged.connect(
-        #     lambda index: refresh_queue_spinbox(self.ui.queueToSpinbox, index)
-        # )
-        # self.ui.queueToSpinbox.valueChanged.connect(
-        #     lambda: refresh_queue_spinbox(self.ui.queueToSpinbox, self.ui.queueToDropdown.currentIndex())
-        # )
-
-        # self.ui.queueToSpinbox.textFromValue = text_from_val
-        # self.ui.queueToSpinbox.valueChanged.connect()
-        # self.ui.queueFromSpinbox.textFromValue = text_from_val
-
-        def updateTextSize(text_box: QTextEdit):
+        def update_text_size(text_box: QTextEdit):
             doc_height = text_box.document().size().height()
             max_height, min_height = 256, 24
             if doc_height <= max_height:
@@ -229,8 +177,26 @@ class OptionsDialog(QDialog):
             else:
                 text_box.setFixedHeight(max_height)
 
-        self.ui.queueExcludeTextEdit.textChanged.connect(lambda: updateTextSize(self.ui.queueExcludeTextEdit))
-        self.ui.queueExcludeFieldEdit.textChanged.connect(lambda: updateTextSize(self.ui.queueExcludeFieldEdit))
+        self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
+        self.ui.queueLabelBottom.setGraphicsEffect(QGraphicsOpacityEffect())
+        self.ui.queueLabelTop.setGraphicsEffect(QGraphicsOpacityEffect())
+
+        self.ui.queueFromSpinbox.dropdown = self.ui.queueFromDropdown
+        self.ui.queueToSpinbox.dropdown = self.ui.queueToDropdown
+
+        self.add_completer = CustomCompleter(self.ui.addTagsLine)
+        self.remove_completer = CustomCompleter(self.ui.removeTagsLine)
+        self.deck_completer = CustomCompleter(self.ui.deckMoveLine)
+
+        self.ui.addFieldButton.clicked.connect(open_note_selection)
+
+        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda _: self.ui.queueFromSpinbox.refresh())
+        self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
+        self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
+        self.ui.queueExcludeFieldEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeFieldEdit))
+        self.ui.useLeechThresholdCheckbox.stateChanged.connect(
+            lambda c: self.ui.reverseThresholdSpinbox.setEnabled(not c)
+        )
 
         self._load()
 
@@ -336,7 +302,7 @@ class OptionsDialog(QDialog):
 
         for note_field in queue_input[QueueAction.EXCLUDED_FIELDS]:
             print(f'note_field: {note_field}')
-        self.ui.queueExcludeFieldEdit.setText(queue_input[QueueAction.EXCLUDED_FIELDS])
+        # self.ui.queueExcludeFieldEdit.setText(queue_input[QueueAction.EXCLUDED_FIELDS])
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
 
     def _save(self):
@@ -416,7 +382,7 @@ class OptionsDialog(QDialog):
         queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
         queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
 
-        queue_input[QueueAction.EXCLUDED_FIELDS] = self.ui.queueExcludeFieldEdit.toPlainText()
+        # queue_input[QueueAction.EXCLUDED_FIELDS] = self.ui.queueExcludeFieldEdit.toPlainText()
         queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
 
         # Write
