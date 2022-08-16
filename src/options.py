@@ -182,7 +182,13 @@ class OptionsDialog(QDialog):
             else:
                 text_box.setFixedHeight(max_height)
 
+        def handle_field_selected(action: QAction):
+            self.add_excluded_field(action.data(), action.text())
+            redraw_list(self.ui.queueExcludedFieldList)
+
         self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
+
+        self.ui.queueExcludedFieldList.setStyleSheet('#editFieldsList {background-color: transparent;}')
         self.ui.queueLabelBottom.setGraphicsEffect(QGraphicsOpacityEffect())
         self.ui.queueLabelTop.setGraphicsEffect(QGraphicsOpacityEffect())
 
@@ -200,14 +206,10 @@ class OptionsDialog(QDialog):
         self.ui.queueFromDropdown.currentIndexChanged.connect(lambda _: self.ui.queueFromSpinbox.refresh())
         self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
         self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
+        self.ui.queueAddFieldButton.menu().triggered.connect(lambda action: handle_field_selected(action))
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(
             lambda c: self.ui.reverseThresholdSpinbox.setEnabled(not c)
         )
-
-        self.ui.queueAddFieldButton.menu().triggered.connect(
-            lambda action: self.add_excluded_field(action.data(), action.text())
-        )
-
         self._load()
 
         # Just in case
@@ -444,25 +446,50 @@ class OptionsDialog(QDialog):
         self.ui.editFieldsList.setItemWidget(list_item, edit_item)
 
     def add_excluded_field(self, mid: int, text=''):
-        field_item = ExcludedFieldItem(model_id=mid, field_name=text)
+        field_item = ExcludedFieldItem(self, model_id=mid, field_name=text)
         list_item = QListWidgetItem(self.ui.queueExcludedFieldList)
         list_item.setSizeHint(field_item.sizeHint())
         list_item.setFlags(Qt.NoItemFlags)
 
         self.ui.queueExcludedFieldList.addItem(list_item)
-        self.ui.editFieldsList.setItemWidget(list_item, field_item)
+        self.ui.queueExcludedFieldList.setItemWidget(list_item, field_item)
 
 
 class ExcludedFieldItem(QWidget):
 
-    def __init__(self, model_id: int, field_name: str):
+    @staticmethod
+    def from_list_widget(field_list: QListWidget, item: QListWidgetItem) -> "ExcludedFieldItem":
+        """
+    Returns an ExcludedFieldItem using a base QListWidgetItem.
+        :param field_list: reference list
+        :param item: QListWidgetItem object located in the referenced list
+        :return: an ExcludedFieldItem object
+        """
+        return field_list.itemWidget(item)
+
+    def __init__(self, dialog: OptionsDialog, model_id: int, field_name: str):
         super().__init__(flags=mw.windowFlags())
+        self.dialog = dialog
+        self.mid = model_id
         self.widget = Ui_ExcludedFieldItem()
         self.widget.setupUi(ExcludedFieldItem=self)
-        self.mid = model_id
-        self.field_name = field_name
+        self.widget.fieldLabel.setText(field_name)
+        self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
-        print(self.__dict__.items())
+        self.widget.fieldLabel.setToolTip(f'{mw.col.models.get(NoteId(model_id))["name"]}')
+
+        def remove_self(_):
+            """
+        Removes the current item from its list widget.
+            :param _: placeholder argument given by QAction calls
+            """
+            for i in range(self.dialog.ui.queueExcludedFieldList.count()):
+                item = self.dialog.ui.queueExcludedFieldList.item(i)
+                if self == self.from_list_widget(self.dialog.ui.queueExcludedFieldList, item):
+                    self.dialog.ui.queueExcludedFieldList.takeItem(i)
+                    redraw_list(self.dialog.ui.queueExcludedFieldList)
+
+        self.widget.removeButton.clicked.connect(remove_self)
 
 
 class EditFieldItem(QWidget):
@@ -497,7 +524,6 @@ NoteItem used for the field edit list.
         self.dialog = dialog
         self.widget = Ui_EditFieldItem()
         self.widget.setupUi(EditFieldItem=self)
-
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
         self.set_note(nid)
