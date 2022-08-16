@@ -141,11 +141,8 @@ class LeechActionManager:
 
             from_pos = get_inserted_pos(queue_inputs[QueueAction.FROM_INDEX], queue_inputs[QueueAction.FROM_VAL])
             to_pos = get_inserted_pos(queue_inputs[QueueAction.TO_INDEX], queue_inputs[QueueAction.TO_VAL])
-
             # Swaps positions if values are inverted/will result in a non-positive range
             from_pos, to_pos = (to_pos, from_pos) if from_pos > to_pos else (from_pos, to_pos)
-
-            updated_card.queue = QUEUE_TYPE_NEW
 
             filtered_positions = []
             if queue_inputs[QueueAction.NEAR_SIBLING] or queue_inputs[QueueAction.NEAR_SIMILAR]:
@@ -158,22 +155,49 @@ class LeechActionManager:
                     cmd += f'''\nAND nid = {updated_card.nid} AND queue = {QUEUE_TYPE_NEW}'''
 
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
-                    # cmd += f'''\nAND card.field contains...'''
-
-                    # >> > from difflib import SequenceMatcher as SM
-                    # >> > s1 = ' It was a dark and stormy night.
-                    #  I was all alone sitting on a red chair. I was not completely alone as I had three cats.'
-                    # >> > s2 = ' It was a murky and stormy night.
-                    #  I was all alone sitting on a crimson chair. I was not completely alone as I had three felines.'
-                    # >> > SM(None, s1, s2).ratio()
-                    # 0.9112903225806451
                     # https://stackoverflow.com/questions/10383044/fuzzy-string-comparison
+                    # from difflib import SequenceMatcher
+                    excluded_fields = queue_inputs[QueueAction.EXCLUDED_FIELDS].split('\n')
+                    # queued_cards = [card.col.get_card(cid) for cid in card.col.decks.cids(updated_card.did, True)]
 
-                    pass
+                    # queued_cids = card.col.decks.cids(updated_card.did, True)
+                    # SELECT id, "field data" FROM cards WHERE did in {queued_cids}
+
+                    card.col.db.all(f'')
+
+                    leech_items = [item for item in updated_card.note().items() if item[0] not in excluded_fields]
+                    print(f'\nleech_items: {leech_items}')
+                    print(f'\nupdated_card.note().items: {updated_card.note().items()}')
+
+                    # similar_cids: list[int]
+                    # excluded_fields = queue_inputs[QueueAction.EXCLUDED_FIELDS].split('\n')
+                    # leech_items = [item for item in updated_card.note().items() if item[0] not in excluded_fields]
+                    # for queued_card in queued_cards:
+                    #     queued_card_items = []
+                    #     for item in queued_card.note().items():
+                    #         if item[0] not in excluded_fields:
+                    #             queued_card_items.append(item)
+                    #
+                    #
+                    #     for excluded_field in queue_inputs[QueueAction.EXCLUDED_FIELDS].split('\n'):
+                    #         # card_data.replace(excluded_field, '')
+                    #         # leech_data.replace(excluded_field, '')
+                    #
+                    #
+                    #     # ratio = SequenceMatcher(a=card_data, b=leech_data).ratio()
+                    #     # 0.9112903225806451
+                    #     print(f'card_data: {card_data}')
+
+                    print()
+
+                    # cmd += f'\nAND id IN {similar_cids}'
 
                 filtered_positions = card.col.db.list(cmd)
-                updated_card.due = random.choice(filtered_positions)
 
+            updated_card.queue = QUEUE_TYPE_NEW
+            updated_card.type = CARD_TYPE_NEW
+            if len(filtered_positions) > 0:
+                updated_card.due = random.choice(filtered_positions)
             else:
                 updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
 
