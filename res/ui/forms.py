@@ -7,8 +7,12 @@ from aqt.qt import (
     QTextLayout,
     QTextLine,
     QPaintEvent,
-    QSizePolicy
+    QSizePolicy,
+    QSpinBox,
+    QComboBox,
 )
+
+from src.consts import QueueAction
 
 
 class ElidingLabel(QLabel):
@@ -24,8 +28,7 @@ QLabel with automatic elision based on the label's minimum size.
         :param text: label text
         :param mode: QTextElideMode used for positioning label ellipses
         """
-        super().__init__(**kwargs)
-
+        super().__init__()
         self._mode = mode
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.setText(text)
@@ -68,3 +71,32 @@ QLabel with automatic elision based on the label's minimum size.
         if did_elide != self.is_elided:
             self.is_elided = did_elide
             self.elision_changed.emit(did_elide)
+
+
+class QueueSpinBox(QSpinBox):
+    _ref_methods = (QueueAction.TOP, QueueAction.BOTTOM)
+    dropdown = QComboBox()
+
+    def __int__(self, *args):
+        super.__init__(*args)
+
+    def textFromValue(self, val):
+        if self.dropdown.currentIndex() in self._ref_methods:
+            return f'{"+" if val > 0 else ""}{val}'
+        else:
+            return str(abs(val))
+
+    def stepBy(self, step):
+        new_step = step
+        if self.dropdown.currentIndex() == QueueAction.POS:
+            if self.value() < 0:
+                new_step = -step
+            if self.value() == 0 and step < 0:
+                new_step = 0
+        return super(QueueSpinBox, self).stepBy(new_step)
+
+    def formatted_value(self):
+        return self.value() if self.dropdown.currentIndex() in self._ref_methods else abs(self.value())
+
+    def refresh(self):
+        self.setValue(self.value())
