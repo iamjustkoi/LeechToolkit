@@ -25,7 +25,6 @@ from aqt.qt import (
     QListWidgetItem,
     QListWidget,
     QGraphicsOpacityEffect,
-    QSpinBox,
     QTextEdit,
 )
 
@@ -185,28 +184,42 @@ class OptionsDialog(QDialog):
             self.ui.reverseThresholdSpinbox.setEnabled(not checked)
         )
 
-        def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
-            ref_methods = (0, 1)
-            curr_val = spinbox.value()
+        # def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
+        #     ref_methods = (0, 1)
+        #     curr_val = spinbox.value()
+        #
+        #     if curr_val < 0 and insert_method not in ref_methods:
+        #         spinbox.setValue(abs(curr_val))
+        #
+        #     spinbox.textFromValue = text_from_val
+        #     # spinbox.setPrefix('+' if insert_method in ref_methods and curr_val > 0 else '')
+        #     spinbox.setMinimum(0 if insert_method not in ref_methods else -9999999)
 
-            if curr_val < 0 and insert_method not in ref_methods:
-                spinbox.setValue(abs(curr_val))
+        self.ui.queueFromSpinbox.dropdown = self.ui.queueFromDropdown
+        self.ui.queueToSpinbox.dropdown = self.ui.queueToDropdown
 
-            spinbox.setPrefix('+' if insert_method in ref_methods and curr_val > 0 else '')
-            spinbox.setMinimum(0 if insert_method not in ref_methods else -9999999)
+        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda _: self.ui.queueFromSpinbox.refresh())
+        self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
 
-        self.ui.queueFromDropdown.currentIndexChanged.connect(
-            lambda index: refresh_queue_spinbox(self.ui.queueFromSpinbox, index)
-        )
-        self.ui.queueFromSpinbox.valueChanged.connect(
-            lambda: refresh_queue_spinbox(self.ui.queueFromSpinbox, self.ui.queueFromDropdown.currentIndex())
-        )
-        self.ui.queueToDropdown.currentIndexChanged.connect(
-            lambda index: refresh_queue_spinbox(self.ui.queueToSpinbox, index)
-        )
-        self.ui.queueToSpinbox.valueChanged.connect(
-            lambda: refresh_queue_spinbox(self.ui.queueToSpinbox, self.ui.queueToDropdown.currentIndex())
-        )
+        # def refresh_queue_spinbox(spinbox: QSpinBox, insert_method: int):
+        #     spinbox.set
+
+        # self.ui.queueFromDropdown.currentIndexChanged.connect(
+        #     lambda index: refresh_queue_spinbox(self.ui.queueFromSpinbox, index)
+        # )
+        # self.ui.queueFromSpinbox.valueChanged.connect(
+        #     lambda: refresh_queue_spinbox(self.ui.queueFromSpinbox, self.ui.queueFromDropdown.currentIndex())
+        # )
+        # self.ui.queueToDropdown.currentIndexChanged.connect(
+        #     lambda index: refresh_queue_spinbox(self.ui.queueToSpinbox, index)
+        # )
+        # self.ui.queueToSpinbox.valueChanged.connect(
+        #     lambda: refresh_queue_spinbox(self.ui.queueToSpinbox, self.ui.queueToDropdown.currentIndex())
+        # )
+
+        # self.ui.queueToSpinbox.textFromValue = text_from_val
+        # self.ui.queueToSpinbox.valueChanged.connect()
+        # self.ui.queueFromSpinbox.textFromValue = text_from_val
 
         def updateTextSize(text_box: QTextEdit):
             doc_height = text_box.document().size().height()
@@ -321,6 +334,8 @@ class OptionsDialog(QDialog):
         self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
+        for note_field in queue_input[QueueAction.EXCLUDED_FIELDS]:
+            print(f'note_field: {note_field}')
         self.ui.queueExcludeFieldEdit.setText(queue_input[QueueAction.EXCLUDED_FIELDS])
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
 
@@ -396,8 +411,8 @@ class OptionsDialog(QDialog):
         action_config[Action.ADD_TO_QUEUE][Action.ENABLED] = self.ui.queueCheckbox.isChecked()
         queue_input[QueueAction.FROM_INDEX] = self.ui.queueFromDropdown.currentIndex()
         queue_input[QueueAction.TO_INDEX] = self.ui.queueToDropdown.currentIndex()
-        queue_input[QueueAction.FROM_VAL] = self.ui.queueFromSpinbox.value()
-        queue_input[QueueAction.TO_VAL] = self.ui.queueToSpinbox.value()
+        queue_input[QueueAction.FROM_VAL] = self.ui.queueFromSpinbox.formatted_value()
+        queue_input[QueueAction.TO_VAL] = self.ui.queueToSpinbox.formatted_value()
         queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
         queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
 
