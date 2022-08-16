@@ -11,22 +11,22 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_FieldWidgetItem(object):
-    def setupUi(self, FieldWidgetItem):
-        FieldWidgetItem.setObjectName("FieldWidgetItem")
-        FieldWidgetItem.resize(271, 67)
+class Ui_EditFieldItem(object):
+    def setupUi(self, EditFieldItem):
+        EditFieldItem.setObjectName("EditFieldItem")
+        EditFieldItem.resize(271, 67)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(FieldWidgetItem.sizePolicy().hasHeightForWidth())
-        FieldWidgetItem.setSizePolicy(sizePolicy)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(FieldWidgetItem)
+        sizePolicy.setHeightForWidth(EditFieldItem.sizePolicy().hasHeightForWidth())
+        EditFieldItem.setSizePolicy(sizePolicy)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(EditFieldItem)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 9)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.noteLabel = ElidingLabel(FieldWidgetItem)
+        self.noteLabel = ElidingLabel(EditFieldItem)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -36,7 +36,7 @@ class Ui_FieldWidgetItem(object):
         self.noteLabel.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.noteLabel.setObjectName("noteLabel")
         self.horizontalLayout.addWidget(self.noteLabel)
-        self.fieldDropdown = QtWidgets.QComboBox(FieldWidgetItem)
+        self.fieldDropdown = QtWidgets.QComboBox(EditFieldItem)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -45,7 +45,7 @@ class Ui_FieldWidgetItem(object):
         self.fieldDropdown.setMaximumSize(QtCore.QSize(128, 16777215))
         self.fieldDropdown.setObjectName("fieldDropdown")
         self.horizontalLayout.addWidget(self.fieldDropdown)
-        self.methodDropdown = QtWidgets.QComboBox(FieldWidgetItem)
+        self.methodDropdown = QtWidgets.QComboBox(EditFieldItem)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -61,7 +61,7 @@ class Ui_FieldWidgetItem(object):
         self.horizontalLayout.addWidget(self.methodDropdown)
         spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.removeButton = QtWidgets.QPushButton(FieldWidgetItem)
+        self.removeButton = QtWidgets.QPushButton(EditFieldItem)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -78,7 +78,7 @@ class Ui_FieldWidgetItem(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.replaceEdit = QtWidgets.QLineEdit(FieldWidgetItem)
+        self.replaceEdit = QtWidgets.QLineEdit(EditFieldItem)
         self.replaceEdit.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -88,7 +88,7 @@ class Ui_FieldWidgetItem(object):
         self.replaceEdit.setMinimumSize(QtCore.QSize(24, 24))
         self.replaceEdit.setObjectName("replaceEdit")
         self.horizontalLayout_2.addWidget(self.replaceEdit)
-        self.inputEdit = QtWidgets.QLineEdit(FieldWidgetItem)
+        self.inputEdit = QtWidgets.QLineEdit(EditFieldItem)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -98,27 +98,27 @@ class Ui_FieldWidgetItem(object):
         self.horizontalLayout_2.addWidget(self.inputEdit)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
-        self.retranslateUi(FieldWidgetItem)
-        QtCore.QMetaObject.connectSlotsByName(FieldWidgetItem)
+        self.retranslateUi(EditFieldItem)
+        QtCore.QMetaObject.connectSlotsByName(EditFieldItem)
 
-    def retranslateUi(self, FieldWidgetItem):
+    def retranslateUi(self, EditFieldItem):
         _translate = QtCore.QCoreApplication.translate
-        self.noteLabel.setText(_translate("FieldWidgetItem", "sample sample sample sample sample "))
-        self.methodDropdown.setItemText(0, _translate("FieldWidgetItem", "Append"))
-        self.methodDropdown.setItemText(1, _translate("FieldWidgetItem", "Prepend"))
-        self.methodDropdown.setItemText(2, _translate("FieldWidgetItem", "Replace"))
-        self.methodDropdown.setItemText(3, _translate("FieldWidgetItem", "Replace (Regex)"))
-        self.replaceEdit.setToolTip(_translate("FieldWidgetItem", "Text to search for and replace."))
-        self.replaceEdit.setPlaceholderText(_translate("FieldWidgetItem", "Find"))
-        self.inputEdit.setPlaceholderText(_translate("FieldWidgetItem", "Text"))
+        self.noteLabel.setText(_translate("EditFieldItem", "sample sample sample sample sample "))
+        self.methodDropdown.setItemText(0, _translate("EditFieldItem", "Append"))
+        self.methodDropdown.setItemText(1, _translate("EditFieldItem", "Prepend"))
+        self.methodDropdown.setItemText(2, _translate("EditFieldItem", "Replace"))
+        self.methodDropdown.setItemText(3, _translate("EditFieldItem", "Replace (Regex)"))
+        self.replaceEdit.setToolTip(_translate("EditFieldItem", "Text to search for and replace."))
+        self.replaceEdit.setPlaceholderText(_translate("EditFieldItem", "Find"))
+        self.inputEdit.setPlaceholderText(_translate("EditFieldItem", "Text"))
 from .forms import ElidingLabel
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    FieldWidgetItem = QtWidgets.QWidget()
-    ui = Ui_FieldWidgetItem()
-    ui.setupUi(FieldWidgetItem)
-    FieldWidgetItem.show()
+    EditFieldItem = QtWidgets.QWidget()
+    ui = Ui_EditFieldItem()
+    ui.setupUi(EditFieldItem)
+    EditFieldItem.show()
     sys.exit(app.exec_())
