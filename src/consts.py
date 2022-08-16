@@ -136,7 +136,9 @@ class Config:
             Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
             Action.EDIT_FIELDS: {
                 Action.ENABLED: False,
-                Action.INPUT: {}
+                Action.INPUT: {
+                    # 'model-id': {field_index, method_index, 'repl', 'ref'},
+                }
             },
             Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''},
             Action.RESCHEDULE: {
@@ -156,7 +158,9 @@ class Config:
                     QueueAction.TO_VAL: 0,
                     QueueAction.NEAR_SIBLING: False,
                     QueueAction.NEAR_SIMILAR: False,
-                    QueueAction.EXCLUDED_FIELDS: '',
+                    QueueAction.EXCLUDED_FIELDS: {
+                        # 'model-id': field_index,
+                    },
                     QueueAction.EXCLUDED_TEXT: '',
                 }
             }
