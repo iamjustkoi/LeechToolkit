@@ -457,12 +457,15 @@ class OptionsDialog(QDialog):
         self.ui.editFieldsList.setItemWidget(list_item, edit_item)
 
     def add_excluded_field(self, mid: int, text=''):
+        """
+    Inserts a new excluded field item to the excluded fields list if not already present.
+        :param mid: Model ID of the note/field
+        :param text: text string of the field's name/title
+        """
         for i in range(0, self.ui.queueExcludedFieldList.count()):
             item = self.ui.queueExcludedFieldList.item(i)
-
             field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
             fields_names = mw.col.models.field_names(mw.col.models.get(mid))
-
             if field_item.get_model_field_dict() == {f'{mid}': fields_names.index(text)}:
                 return
 
