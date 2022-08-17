@@ -13,6 +13,15 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#ExcudedFieldItem {
+  transition: transform .3s ease-out;
+}
+
+#ExcudedFieldItem:hover {
+  transform: translate(10px, 15px);
+}</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="topMargin">
     <number>6</number>
@@ -34,16 +43,8 @@
        <height>0</height>
       </size>
      </property>
-     <property name="styleSheet">
-      <string notr="true">#fieldLabel {	
-	padding: 6px  !important;
-    text-align: center !important;
-}
-
-#fieldLabel:hover {
-	background-color:rgba(138, 138, 138, 0.314);
-	border-radius: 8px;
-}</string>
+     <property name="cursor">
+      <cursorShape>WhatsThisCursor</cursorShape>
      </property>
      <property name="text">
       <string>SampleText</string>
@@ -62,7 +63,12 @@
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">:active { border-style: outset;}</string>
+      <string notr="true">:active { border-style: outset;}
+
+:hover {
+	background-color:rgba(138, 138, 138, 0.314);
+	border-radius: 2px;
+}</string>
      </property>
      <property name="icon">
       <iconset>
