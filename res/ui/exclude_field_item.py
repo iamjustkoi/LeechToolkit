@@ -14,17 +14,27 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ExcludedFieldItem(object):
     def setupUi(self, ExcludedFieldItem):
         ExcludedFieldItem.setObjectName("ExcludedFieldItem")
-        ExcludedFieldItem.resize(100, 24)
+        ExcludedFieldItem.resize(115, 31)
         self.horizontalLayout = QtWidgets.QHBoxLayout(ExcludedFieldItem)
         self.horizontalLayout.setContentsMargins(-1, 6, -1, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.fieldLabel = ElidingLabel(ExcludedFieldItem)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fieldLabel.sizePolicy().hasHeightForWidth())
         self.fieldLabel.setSizePolicy(sizePolicy)
         self.fieldLabel.setMinimumSize(QtCore.QSize(0, 0))
+        self.fieldLabel.setStyleSheet("#fieldLabel {    \n"
+"    padding: 6px  !important;\n"
+"    text-align: center !important;\n"
+"}\n"
+"\n"
+"#fieldLabel:hover {\n"
+"    background-color:rgba(138, 138, 138, 0.314);\n"
+"    border-radius: 8px;\n"
+"}")
+        self.fieldLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.fieldLabel.setObjectName("fieldLabel")
         self.horizontalLayout.addWidget(self.fieldLabel)
         self.removeButton = QtWidgets.QPushButton(ExcludedFieldItem)
