@@ -45,6 +45,10 @@ QLabel with automatic elision based on the label's minimum size.
         return self._elided_text
 
     def paintEvent(self, event: QPaintEvent):
+        """
+    Redraw label object to place ellipses and shorten label size to scalar.
+        :param event: default event flag, used for super call
+        """
         super().paintEvent(event)
         did_elide = False
         painter = QPainter(self)
@@ -54,6 +58,7 @@ QLabel with automatic elision based on the label's minimum size.
         text_layout = QTextLayout(self._contents, painter.font())
         text_layout.beginLayout()
 
+        # Casting just to see calls a little easier and not get any psuedo-warnings
         line: QTextLine = text_layout.createLine()
         while line.isValid():
             line.setLineWidth(self.width())
