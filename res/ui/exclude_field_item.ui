@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>100</width>
-    <height>24</height>
+    <width>115</width>
+    <height>31</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
    <item>
     <widget class="ElidingLabel" name="fieldLabel">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -34,8 +34,22 @@
        <height>0</height>
       </size>
      </property>
+     <property name="styleSheet">
+      <string notr="true">#fieldLabel {	
+	padding: 6px  !important;
+    text-align: center !important;
+}
+
+#fieldLabel:hover {
+	background-color:rgba(138, 138, 138, 0.314);
+	border-radius: 8px;
+}</string>
+     </property>
      <property name="text">
       <string>SampleText</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
