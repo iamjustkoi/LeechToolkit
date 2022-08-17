@@ -326,6 +326,7 @@ class OptionsDialog(QDialog):
                 note = mw.col.models.get(NotetypeId(int(note_type_id)))
                 self.add_excluded_field(note_type_id, mw.col.models.field_names(note)[field_ord])
         redraw_list(self.ui.queueExcludedFieldList)
+        self.ui.queueExcludedFieldList.sortItems()
 
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
 
@@ -470,7 +471,7 @@ class OptionsDialog(QDialog):
                 return
 
         field_item = ExcludedFieldItem(self, mid=mid, field_name=text)
-        list_item = QListWidgetItem(self.ui.queueExcludedFieldList)
+        list_item = ExcludedFieldItem.ExcludedFieldListItem(self.ui.queueExcludedFieldList)
         list_item.setSizeHint(field_item.sizeHint())
         list_item.setFlags(Qt.NoItemFlags)
 
@@ -515,6 +516,17 @@ class ExcludedFieldItem(QWidget):
     def get_model_field_dict(self):
         fields_names = mw.col.models.field_names(mw.col.models.get(self.mid))
         return {f'{self.mid}': fields_names.index(self.widget.fieldLabel.text())}
+
+    class ExcludedFieldListItem(QListWidgetItem):
+        def __lt__(self, other):
+            this_item = ExcludedFieldItem.from_list_widget(self.listWidget(), self)
+            other_item = ExcludedFieldItem.from_list_widget(other.listWidget(), other)
+            if other_item is None:
+                return False
+            else:
+                this_data = f'{this_item.mid}{this_item.widget.fieldLabel.text()}'
+                other_data = f'{other_item.mid}{other_item.widget.fieldLabel.text()}'
+                return this_data < other_data
 
 
 class EditFieldItem(QWidget):
