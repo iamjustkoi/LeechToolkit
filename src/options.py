@@ -512,12 +512,8 @@ class ExcludedFieldItem(QWidget):
                     redraw_list(self.dialog.ui.queueExcludedFieldList)
         self.widget.removeButton.clicked.connect(remove_self)
 
-    def get_model_and_field_name(self):
-        return self.mid, self.widget.fieldLabel.text()
-
     def get_model_field_dict(self):
         fields_names = mw.col.models.field_names(mw.col.models.get(self.mid))
-        # return {f'{self.mid}': fields_names.index(self.widget.fieldLabel.text())}
         return {f'{self.mid}': fields_names.index(self.widget.fieldLabel.text())}
 
 
