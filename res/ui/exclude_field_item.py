@@ -15,6 +15,13 @@ class Ui_ExcludedFieldItem(object):
     def setupUi(self, ExcludedFieldItem):
         ExcludedFieldItem.setObjectName("ExcludedFieldItem")
         ExcludedFieldItem.resize(115, 31)
+        ExcludedFieldItem.setStyleSheet("#ExcudedFieldItem {\n"
+"  transition: transform .3s ease-out;\n"
+"}\n"
+"\n"
+"#ExcudedFieldItem:hover {\n"
+"  transform: translate(10px, 15px);\n"
+"}")
         self.horizontalLayout = QtWidgets.QHBoxLayout(ExcludedFieldItem)
         self.horizontalLayout.setContentsMargins(-1, 6, -1, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -25,15 +32,7 @@ class Ui_ExcludedFieldItem(object):
         sizePolicy.setHeightForWidth(self.fieldLabel.sizePolicy().hasHeightForWidth())
         self.fieldLabel.setSizePolicy(sizePolicy)
         self.fieldLabel.setMinimumSize(QtCore.QSize(0, 0))
-        self.fieldLabel.setStyleSheet("#fieldLabel {    \n"
-"    padding: 6px  !important;\n"
-"    text-align: center !important;\n"
-"}\n"
-"\n"
-"#fieldLabel:hover {\n"
-"    background-color:rgba(138, 138, 138, 0.314);\n"
-"    border-radius: 8px;\n"
-"}")
+        self.fieldLabel.setCursor(QtGui.QCursor(QtCore.Qt.WhatsThisCursor))
         self.fieldLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.fieldLabel.setObjectName("fieldLabel")
         self.horizontalLayout.addWidget(self.fieldLabel)
@@ -43,7 +42,12 @@ class Ui_ExcludedFieldItem(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.removeButton.sizePolicy().hasHeightForWidth())
         self.removeButton.setSizePolicy(sizePolicy)
-        self.removeButton.setStyleSheet(":active { border-style: outset;}")
+        self.removeButton.setStyleSheet(":active { border-style: outset;}\n"
+"\n"
+":hover {\n"
+"    background-color:rgba(138, 138, 138, 0.314);\n"
+"    border-radius: 2px;\n"
+"}")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../img/remove_icon.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.removeButton.setIcon(icon)
