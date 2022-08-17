@@ -165,7 +165,7 @@ class LeechActionManager:
                 # Gets the string output of each card's data currently in the new queue and compares to the leech
                 #  using a ratio/fuzzy comparison.
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
-                    to_strip = ' \\()`\'";:.,?!&\n[]{}'
+                    to_strip = queue_inputs[QueueAction.EXCLUDED_TEXT]
                     similar_ratio = .5
 
                     excluded_fields: list[str] = []
