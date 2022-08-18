@@ -312,6 +312,7 @@ class OptionsDialog(QDialog):
         self.ui.queueLabelBottomPos.setText(str(bottom))
         self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
+        self.ui.queueIncludeFieldsCheckbox.setChecked(queue_input[QueueAction.INCLUSIVE_FIELDS])
 
         for note_type in mw.col.models.all():
             sub_menu = self.ui.queueAddFieldButton.menu().addMenu(f'{note_type["name"]}')
@@ -320,7 +321,7 @@ class OptionsDialog(QDialog):
                 action.setData(note_type['id'])
                 sub_menu.addAction(action)
 
-        for note_dict in queue_input[QueueAction.EXCLUDED_FIELDS]:
+        for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
             note_type_id = list(note_dict)[0]
             for field_ord in list(note_dict.values()):
                 note = mw.col.models.get(NotetypeId(int(note_type_id)))
@@ -406,13 +407,14 @@ class OptionsDialog(QDialog):
         queue_input[QueueAction.TO_VAL] = self.ui.queueToSpinbox.formatted_value()
         queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
         queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
+        queue_input[QueueAction.INCLUSIVE_FIELDS] = self.ui.queueIncludeFieldsCheckbox.isChecked()
 
-        queue_input[QueueAction.EXCLUDED_FIELDS] = []
+        queue_input[QueueAction.FILTERED_FIELDS] = []
         for i in range(self.ui.queueExcludedFieldList.count()):
             item = self.ui.queueExcludedFieldList.item(i)
             field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
             field_dict = field_item.get_model_field_dict()
-            queue_input[QueueAction.EXCLUDED_FIELDS].append(field_dict)
+            queue_input[QueueAction.FILTERED_FIELDS].append(field_dict)
 
         queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
 
