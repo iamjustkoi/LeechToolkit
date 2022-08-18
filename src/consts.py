@@ -64,8 +64,8 @@ class RescheduleAction:
 
 
 class QueueAction:
-    EXCLUDE = 'shouldExclude'
-    EXCLUDED_FIELDS = 'excludedFields'
+    INCLUSIVE_FIELDS = 'shouldExcludeFields'
+    FILTERED_FIELDS = 'filteredFields'
     EXCLUDED_TEXT = 'excludedText'
     NEAR_SIMILAR = 'nearSimilar'
     NEAR_SIBLING = 'nearSameNote'
@@ -159,8 +159,8 @@ class Config:
                     QueueAction.TO_VAL: 0,
                     QueueAction.NEAR_SIBLING: False,
                     QueueAction.NEAR_SIMILAR: False,
-                    QueueAction.EXCLUDE: True,
-                    QueueAction.EXCLUDED_FIELDS: {
+                    QueueAction.INCLUSIVE_FIELDS: True,
+                    QueueAction.FILTERED_FIELDS: {
                         # {'model-id': 'field_ord'},
                     },
                     QueueAction.EXCLUDED_TEXT: ' \\()`\'";:.,?!&[]{}',
