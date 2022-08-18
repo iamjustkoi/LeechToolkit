@@ -159,7 +159,7 @@ class Config:
                     QueueAction.TO_VAL: 0,
                     QueueAction.NEAR_SIBLING: False,
                     QueueAction.NEAR_SIMILAR: False,
-                    QueueAction.EXCLUDE: TRUE,
+                    QueueAction.EXCLUDE: True,
                     QueueAction.EXCLUDED_FIELDS: {
                         # {'model-id': 'field_ord'},
                     },
