@@ -12,12 +12,11 @@ from typing import Any
 import anki.cards
 import aqt.reviewer
 from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW
+from anki.models import NotetypeId
 
 from .consts import Config, Action, Macro, EditAction, RescheduleAction, QueueAction
 
-
-# do_leech (Card):
-# do_reverse (Card):
+RATIO_FOR_SIMILAR = .25
 
 
 def get_formatted_tag(card: anki.cards.Card, tag: str):
@@ -148,6 +147,7 @@ class LeechActionManager:
 
             filtered_ids, filtered_positions = [], []
             if queue_inputs[QueueAction.NEAR_SIBLING] or queue_inputs[QueueAction.NEAR_SIMILAR]:
+
                 cmd = f'''
                     SELECT id, due FROM cards
                     WHERE id != {updated_card.id}
@@ -166,32 +166,41 @@ class LeechActionManager:
                 #  using a ratio/fuzzy comparison.
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
                     to_strip = queue_inputs[QueueAction.EXCLUDED_TEXT]
-                    similar_ratio = .5
 
-                    excluded_fields: list[str] = []
-                    for note_dict in queue_inputs[QueueAction.EXCLUDED_FIELDS]:
+                    filtered_fields: list[str] = []
+                    for note_dict in queue_inputs[QueueAction.FILTERED_FIELDS]:
                         note_type_id = int(list(note_dict)[0])
                         if note_type_id == updated_card.note().mid:
-                            excluded_fields += list(note_dict.keys())
+                            for key in list(note_dict.keys()):
+                                field_map = card.col.models.field_names(card.col.models.get(NotetypeId(note_type_id)))
+                                filtered_fields.append(field_map[note_dict[key]])
 
-                    leech_field_data = [item[1] for item in updated_card.note().items() if item[0] not in
-                                        excluded_fields]
+                    def get_filtered_items(items: list[(str, str)]):
+                        filtered_items = []
+                        for item in items:
+                            if not queue_inputs[QueueAction.INCLUSIVE_FIELDS] and item[0] not in filtered_fields:
+                                filtered_items.append(item[1])
+                            if queue_inputs[QueueAction.INCLUSIVE_FIELDS] and item[0] in filtered_fields:
+                                filtered_items.append(item[1])
+                        return filtered_items
+
+                    leech_field_data = get_filtered_items(updated_card.note().items())
+                    leech_data_str = ''.join(char for char in str(leech_field_data) if char not in to_strip)
 
                     for cid in filtered_ids:
                         new_card = card.col.get_card(cid)
-                        if new_card.note_type()['id'] != updated_card.note().mid:
-                            filtered_positions.remove(new_card.due)
-                        else:
-                            new_field_data = [
-                                item[1] for item in new_card.note().items() if item[0] not in excluded_fields
-                            ]
+                        is_similar_card = False
 
-                            leech_data_str = ''.join(char for char in str(leech_field_data) if char not in to_strip)
+                        if new_card.note_type()['id'] == updated_card.note().mid:
+                            new_field_data = get_filtered_items(new_card.note().items())
                             new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
 
-                            # Not similar enough
-                            if SequenceMatcher(None, leech_data_str, new_data_str).ratio() < similar_ratio:
-                                filtered_positions.remove(new_card.due)
+                            ratio = SequenceMatcher(None, leech_data_str, new_data_str).ratio()
+                            if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= RATIO_FOR_SIMILAR:
+                                is_similar_card = True
+
+                        if not is_similar_card:
+                            filtered_positions.remove(new_card.due)
 
             updated_card.queue = QUEUE_TYPE_NEW
             updated_card.type = CARD_TYPE_NEW
