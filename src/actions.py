@@ -195,7 +195,6 @@ class LeechActionManager:
                             new_field_data = get_filtered_items(new_card.note().items())
                             new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
 
-                            ratio = SequenceMatcher(None, leech_data_str, new_data_str).ratio()
                             if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= RATIO_FOR_SIMILAR:
                                 is_similar_card = True
 
