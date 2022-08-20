@@ -1,3 +1,4 @@
+import aqt
 from aqt import Qt
 from aqt.qt import (
     QLabel,
@@ -10,13 +11,18 @@ from aqt.qt import (
     QSizePolicy,
     QSpinBox,
     QComboBox,
+    QSlider,
+    QToolTip,
+    QStyle,
+    QStyleOptionSlider,
+    QMouseEvent,
+    QRect,
 )
 
 from ...src.consts import QueueAction
 
 
 class ElidingLabel(QLabel):
-
     _contents: str
     _elided_text: str
     elision_changed = pyqtSignal(bool)
@@ -75,7 +81,6 @@ QLabel with automatic elision based on the label's minimum size.
 
         if did_elide != self.is_elided:
             self.is_elided = did_elide
-            self.elision_changed.emit(did_elide)
 
 
 class QueueSpinBox(QSpinBox):
@@ -105,3 +110,33 @@ class QueueSpinBox(QSpinBox):
 
     def refresh(self):
         self.setValue(self.value())
+
+
+class TipSlider(QSlider):
+
+    def __init__(self, *args, tip_offset=45):
+        super(QSlider, self).__init__(*args)
+        style: QStyle = aqt.mw.style()
+        opt = QStyleOptionSlider()
+
+        self.global_pos = QPoint(0, 0)
+
+        def show_tip():
+            rect_handle: QRect = style.subControlRect(style.CC_Slider, opt, style.SC_SliderHandle)
+            # pos = self.mapToGlobal(rect_handle.topLeft() + tip_offset)
+            # pos = self.mapTo(self, rect_handle.topLeft() + tip_offset)
+            x = self.global_pos.x()
+            y = self.y() + self.window().y()
+            pos = self.mapTo(self, QPoint(x, y))
+
+            print(f'cood({x}, {y})')
+
+            QToolTip.showText(pos, str(self.value()), self)
+
+        self.valueChanged.connect(show_tip)
+        # self.enterEvent = self.show_tip
+        # self.mouseReleaseEvent = self.show_tip
+
+    def mouseMoveEvent(self, evt: QMouseEvent):
+        super().mouseMoveEvent(evt)
+        self.global_pos = evt.globalPos()
