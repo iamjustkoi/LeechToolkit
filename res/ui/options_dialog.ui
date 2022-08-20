@@ -347,9 +347,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-214</y>
+            <y>-279</y>
             <width>479</width>
-            <height>729</height>
+            <height>771</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -1255,6 +1255,47 @@ Place the card next to another one if they're each siblings of the same note-typ
                   </layout>
                  </widget>
                 </item>
+                <item row="15" column="1">
+                 <widget class="QFrame" name="frame_3">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Raised</enum>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_7">
+                   <item>
+                    <widget class="QLabel" name="label_2">
+                     <property name="text">
+                      <string>Similarity</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="TipSlider" name="queueRatioSlider">
+                     <property name="toolTip">
+                      <string>Controls how similar a card's fields must be for it to be considered &quot;similar&quot;.</string>
+                     </property>
+                     <property name="minimum">
+                      <number>0</number>
+                     </property>
+                     <property name="maximum">
+                      <number>100</number>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
                </layout>
               </item>
              </layout>
@@ -1285,6 +1326,11 @@ Place the card next to another one if they're each siblings of the same note-typ
    <class>QueueSpinBox</class>
    <extends>QSpinBox</extends>
    <header>.forms.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TipSlider</class>
+   <extends>QSlider</extends>
+   <header location="global">.forms.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

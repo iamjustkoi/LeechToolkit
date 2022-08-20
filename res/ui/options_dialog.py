@@ -180,7 +180,7 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -214, 479, 729))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -279, 479, 771))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -610,7 +610,27 @@ class Ui_OptionsDialog(object):
         self.editAddFieldButton.setObjectName("editAddFieldButton")
         self.verticalLayout_8.addWidget(self.editAddFieldButton)
         self.leechActionsLayout.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.editFieldsGroup)
+<<<<<<< HEAD
 >>>>>>> df3bb70 (Added queue exclusions with auto-height updates)
+=======
+        self.frame_3 = QtWidgets.QFrame(self.collapsibleLeechActionsGroup)
+        self.frame_3.setMinimumSize(QtCore.QSize(0, 20))
+        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_3.setObjectName("frame_3")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame_3)
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.label_2 = QtWidgets.QLabel(self.frame_3)
+        self.label_2.setObjectName("label_2")
+        self.horizontalLayout_7.addWidget(self.label_2)
+        self.queueRatioSlider = TipSlider(self.frame_3)
+        self.queueRatioSlider.setMinimum(0)
+        self.queueRatioSlider.setMaximum(100)
+        self.queueRatioSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.queueRatioSlider.setObjectName("queueRatioSlider")
+        self.horizontalLayout_7.addWidget(self.queueRatioSlider)
+        self.leechActionsLayout.setWidget(15, QtWidgets.QFormLayout.FieldRole, self.frame_3)
+>>>>>>> 2780ab1 (Implemented similarity slider and some performance improvements)
         self.verticalLayout_7.addLayout(self.leechActionsLayout)
         self.verticalLayout_6.addWidget(self.collapsibleLeechActionsGroup)
         self.ActionsScrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -735,9 +755,14 @@ class Ui_OptionsDialog(object):
 >>>>>>> df3bb70 (Added queue exclusions with auto-height updates)
 =======
         self.editAddFieldButton.setText(_translate("OptionsDialog", "Add..."))
+<<<<<<< HEAD
 >>>>>>> 7ea230d (Added context menu to queue options for adding excluded fields)
+=======
+        self.label_2.setText(_translate("OptionsDialog", "Similarity"))
+        self.queueRatioSlider.setToolTip(_translate("OptionsDialog", "Controls how similar a card\'s fields must be for it to be considered \"similar\"."))
+>>>>>>> 2780ab1 (Implemented similarity slider and some performance improvements)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
-from .forms import QueueSpinBox
+from .forms import QueueSpinBox, TipSlider
 
 
 if __name__ == "__main__":

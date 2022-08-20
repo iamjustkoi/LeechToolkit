@@ -123,6 +123,6 @@ class TipSlider(QSlider):
             y = rect_handle.top() + y_offset
             global_pos = self.mapToGlobal(QPoint(x, y))
 
-            QToolTip.showText(global_pos, str(self.value()))
+            QToolTip.showText(global_pos, f'{self.value()}%')
 
         self.valueChanged.connect(show_tip)
