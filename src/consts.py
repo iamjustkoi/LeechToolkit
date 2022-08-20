@@ -64,6 +64,7 @@ class RescheduleAction:
 
 
 class QueueAction:
+    SIMILAR_RATIO = 'similarityRatio'
     INCLUSIVE_FIELDS = 'shouldExcludeFields'
     FILTERED_FIELDS = 'filteredFields'
     EXCLUDED_TEXT = 'excludedText'
@@ -159,6 +160,7 @@ class Config:
                     QueueAction.TO_VAL: 0,
                     QueueAction.NEAR_SIBLING: False,
                     QueueAction.NEAR_SIMILAR: False,
+                    QueueAction.SIMILAR_RATIO: 0.25,
                     QueueAction.INCLUSIVE_FIELDS: True,
                     QueueAction.FILTERED_FIELDS: {
                         # {'model-id': 'field_ord'},
