@@ -149,7 +149,7 @@ class LeechActionManager:
             if queue_inputs[QueueAction.NEAR_SIBLING] or queue_inputs[QueueAction.NEAR_SIMILAR]:
 
                 cmd = f'''
-                    SELECT id, due FROM cards
+                    SELECT {{get}} FROM cards
                     WHERE id != {updated_card.id}
                     AND due BETWEEN {from_pos} AND {to_pos}
                 '''
@@ -157,15 +157,14 @@ class LeechActionManager:
                 if queue_inputs[QueueAction.NEAR_SIBLING]:
                     cmd += f'''    AND nid = {updated_card.nid} AND queue = {QUEUE_TYPE_NEW}'''
 
-                filtered_data = card.col.db.all(cmd)
-                for row in filtered_data:
-                    filtered_ids.append(row[0])
-                    filtered_positions.append(row[1])
+                filtered_ids = card.col.db.list(cmd.format(get='id'))
+                filtered_positions = card.col.db.list(cmd.format(get='due'))
 
                 # Gets the string output of each card's data currently in the new queue and compares to the leech
                 #  using a ratio/fuzzy comparison.
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
                     to_strip = queue_inputs[QueueAction.EXCLUDED_TEXT]
+                    min_ratio = queue_inputs[QueueAction.SIMILAR_RATIO]
 
                     filtered_fields: list[str] = []
                     for note_dict in queue_inputs[QueueAction.FILTERED_FIELDS]:
@@ -195,7 +194,8 @@ class LeechActionManager:
                             new_field_data = get_filtered_items(new_card.note().items())
                             new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
 
-                            if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= RATIO_FOR_SIMILAR:
+                            if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= min_ratio:
+                                ratio = SequenceMatcher(None, leech_data_str, new_data_str).ratio()
                                 is_similar_card = True
 
                         if not is_similar_card:

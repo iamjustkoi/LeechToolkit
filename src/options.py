@@ -211,6 +211,7 @@ class OptionsDialog(QDialog):
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(
             lambda c: self.ui.reverseThresholdSpinbox.setEnabled(not c)
         )
+
         self._load()
 
         # Just in case
@@ -330,6 +331,7 @@ class OptionsDialog(QDialog):
         self.ui.queueExcludedFieldList.sortItems()
 
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
+        self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -415,8 +417,9 @@ class OptionsDialog(QDialog):
             field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
             field_dict = field_item.get_model_field_dict()
             queue_input[QueueAction.FILTERED_FIELDS].append(field_dict)
-
         queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
+
+        queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
 
         # Write
         self.manager.write_config()
@@ -513,6 +516,7 @@ class ExcludedFieldItem(QWidget):
                 if self == self.from_list_widget(self.dialog.ui.queueExcludedFieldList, item):
                     self.dialog.ui.queueExcludedFieldList.takeItem(i)
                     redraw_list(self.dialog.ui.queueExcludedFieldList)
+
         self.widget.removeButton.clicked.connect(remove_self)
 
     def get_model_field_dict(self):
