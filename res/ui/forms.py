@@ -13,10 +13,7 @@ from aqt.qt import (
     QComboBox,
     QSlider,
     QToolTip,
-    QStyle,
     QStyleOptionSlider,
-    QMouseEvent,
-    QRect,
 )
 
 from ...src.consts import QueueAction
@@ -114,29 +111,18 @@ class QueueSpinBox(QSpinBox):
 
 class TipSlider(QSlider):
 
-    def __init__(self, *args, tip_offset=45):
+    def __init__(self, *args):
         super(QSlider, self).__init__(*args)
-        style: QStyle = aqt.mw.style()
-        opt = QStyleOptionSlider()
-
-        self.global_pos = QPoint(0, 0)
+        self.style = aqt.mw.style()
+        self.opt = QStyleOptionSlider()
 
         def show_tip():
-            rect_handle: QRect = style.subControlRect(style.CC_Slider, opt, style.SC_SliderHandle)
-            # pos = self.mapToGlobal(rect_handle.topLeft() + tip_offset)
-            # pos = self.mapTo(self, rect_handle.topLeft() + tip_offset)
-            x = self.global_pos.x()
-            y = self.y() + self.window().y()
-            pos = self.mapTo(self, QPoint(x, y))
+            rect_handle = self.style.subControlRect(self.style.CC_Slider, self.opt, self.style.SC_SliderHandle)
+            x_offset, y_offset = ((rect_handle.width() * 1.5) * -1), -30
+            x = rect_handle.right() + (self.sliderPosition() * self.rect().width() / 101) + x_offset
+            y = rect_handle.top() + y_offset
+            global_pos = self.mapToGlobal(QPoint(x, y))
 
-            print(f'cood({x}, {y})')
-
-            QToolTip.showText(pos, str(self.value()), self)
+            QToolTip.showText(global_pos, str(self.value()))
 
         self.valueChanged.connect(show_tip)
-        # self.enterEvent = self.show_tip
-        # self.mouseReleaseEvent = self.show_tip
-
-    def mouseMoveEvent(self, evt: QMouseEvent):
-        super().mouseMoveEvent(evt)
-        self.global_pos = evt.globalPos()
