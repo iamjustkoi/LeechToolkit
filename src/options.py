@@ -111,13 +111,7 @@ class CustomCompleter(QCompleter):
         :return: the string being used to query completion results
         """
         formatted_path = re.sub("  +", " ", path.strip())
-        print(f'p: {formatted_path}')
-        print(f'pre-split items: {self.current_items}')
         self.current_items = formatted_path.split(' ')
-        print(f'split items: {self.current_items}')
-
-        if path.endswith(' ') or len(path) == 0:
-            self.current_items.append('')
 
         pos = self.edit.cursorPosition()
         self.cursor_pos = len(self.current_items) - 1 if pos == len(path) else formatted_path.count(' ', 0, pos)
@@ -133,7 +127,6 @@ class CustomCompleter(QCompleter):
         if self.cursor_pos is None:
             return self.edit.text()
         suggestion = QCompleter.pathFromIndex(self, idx)
-        print(f'items: {self.current_items}')
         current_item = self.current_items[self.cursor_pos]
         last_macro_call_pos = current_item.rfind('%', 1)
         if last_macro_call_pos > 0:
