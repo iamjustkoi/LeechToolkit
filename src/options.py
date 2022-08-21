@@ -29,6 +29,7 @@ from aqt.qt import (
     QTextEdit,
 )
 
+from . import reviewer
 from .config import LeechToolkitConfigManager
 from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction
 from ..res.ui.edit_field_item import Ui_EditFieldItem
@@ -110,7 +111,10 @@ class CustomCompleter(QCompleter):
         :return: the string being used to query completion results
         """
         formatted_path = re.sub("  +", " ", path.strip())
+        print(f'p: {formatted_path}')
+        print(f'pre-split items: {self.current_items}')
         self.current_items = formatted_path.split(' ')
+        print(f'split items: {self.current_items}')
 
         if path.endswith(' ') or len(path) == 0:
             self.current_items.append('')
@@ -129,7 +133,7 @@ class CustomCompleter(QCompleter):
         if self.cursor_pos is None:
             return self.edit.text()
         suggestion = QCompleter.pathFromIndex(self, idx)
-
+        print(f'items: {self.current_items}')
         current_item = self.current_items[self.cursor_pos]
         last_macro_call_pos = current_item.rfind('%', 1)
         if last_macro_call_pos > 0:
@@ -423,6 +427,8 @@ class OptionsDialog(QDialog):
 
         # Write
         self.manager.write_config()
+        if mw.state == 'review':
+            reviewer.refresh_action_manager(mw.reviewer)
 
     def get_same_notes_count(self, nid):
         filtered_nids = self.config[Config.LEECH_ACTIONS][Action.EDIT_FIELDS][Action.INPUT]
