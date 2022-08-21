@@ -2,14 +2,14 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-from typing import Literal
+from typing import Any
 
 import anki.cards
 import aqt.reviewer
+from anki import cards, hooks
 from anki.collection import OpChanges
 from anki.consts import CardType
-from aqt import reviewer, webview, gui_hooks, utils, mw
-from anki import cards, hooks
+from aqt import reviewer, webview, gui_hooks, mw
 
 from .actions import LeechActionManager
 from .config import LeechToolkitConfigManager
@@ -57,14 +57,20 @@ def build_hooks():
     )
 
 
+def refresh_action_manager(context: aqt.reviewer.Reviewer, new_config: dict[str, Any] = None):
+    if not mw.col.decks.is_filtered(mw.col.decks.get_current_id()):
+        global action_manager, user_conf
+        user_conf = new_config if new_config else LeechToolkitConfigManager(mw).config
+        action_manager = LeechActionManager(context, mw.col.decks.get_current_id(), user_conf)
+
+
 def on_will_start(content: aqt.webview.WebContent, context: aqt.reviewer.Reviewer):
     remove_hooks()
     if not mw.col.decks.is_filtered(mw.col.decks.get_current_id()):
-        global conf, max_fails, user_conf, action_manager
+        global conf, max_fails
         conf = mw.col.decks.config_dict_for_deck_id(mw.col.decks.get_current_id())
         max_fails = conf['lapse']['leechFails']
-        user_conf = LeechToolkitConfigManager(mw).config
-        action_manager = LeechActionManager(context, mw.col.decks.get_current_id(), user_conf)
+        refresh_action_manager(context)
 
         gui_hooks.reviewer_did_show_question.append(on_show_front)
         gui_hooks.reviewer_did_show_answer.append(on_show_back)
@@ -105,12 +111,7 @@ def on_show_back(card: cards.Card):
 def on_show_front(card: cards.Card):
     update_marker(card, True)
     # @DEBUG
-    # updated_card = card.col.get_card(card.id)
-    # print(f'orig card:\n    {updated_card.note().fields}\n   {updated_card.__dict__.items()}')
-    # print(f'\n        {updated_card.note().tags}')
-    # updated_card = action_manager.leech_update(updated_card)
-    # print(f'updt card:\n    {updated_card.note().fields}\n    {updated_card.__dict__.items()}')
-    # print(f'\n        {updated_card.note().tags}')
+    # action_manager.leech_update(card)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
@@ -176,6 +177,11 @@ Runs reverse leech updates to the input card and returns an updated card object.
         deck_config = card.col.decks.config_dict_for_deck_id(card.current_deck_id())
         use_leech_threshold = user_conf[Config.REVERSE_USE_LEECH_THRESHOLD]
         threshold = deck_config['lapse']['leechFails'] if use_leech_threshold else user_conf[Config.REVERSE_THRESHOLD]
+
+        print(f'le    {len(tooltip_items)}')
+        print(f'ea    {ease}')
+        print(f'la    {updated_card.lapses}')
+        print(f'pr    {prev_type}')
 
         if card_has_consecutive_correct(updated_card, user_conf[Config.REVERSE_CONS_ANS]):
             if ease > 1 and updated_card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
