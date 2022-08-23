@@ -83,62 +83,236 @@ def _bind_config_options():
 
 
 class CustomCompleter(QCompleter):
-    def __init__(
-            self,
-            parent: aqt.qt.QLineEdit
-    ) -> None:
-        QCompleter.__init__(self, aqt.qt.QStringListModel(), parent)
-        self.current_items: list[str] = []
-        self.edit = parent
-        self.cursor_pos: int or None = None
+
+    def __init__(self, parent_line_edit: aqt.qt.QLineEdit) -> None:
+        QCompleter.__init__(self, aqt.qt.QStringListModel(), parent_line_edit)
+
+        self.current_data: list[str] = []
+        self.cursor_index: int or None = None
+        self.cursor_item_pos: int or None = None
+
+        self.line_edit = parent_line_edit
+
         self.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.setFilterMode(Qt.MatchContains)
+        self.setCompletionPrefix(' ')
 
         def focus_event(event):
-            default_callback(event)
+            default_focus_evt(event)
             self.complete()
 
-        default_callback = self.edit.focusInEvent
-        self.edit.focusInEvent = focus_event
+        def release_event(event):
+            default_release_evt(event)
+            self.complete()
 
-    def set_list(self, suggestions: list):
-        self.setModel(aqt.qt.QStringListModel(suggestions))
+        default_focus_evt = self.line_edit.focusInEvent
+        default_release_evt = self.line_edit.mouseReleaseEvent
+        self.line_edit.focusInEvent = focus_event
+        self.line_edit.mouseReleaseEvent = release_event
+
+    def set_list(self, data: list[str]):
+        self.setModel(aqt.qt.QStringListModel(data))
 
     def splitPath(self, path: str) -> list[str]:
-        """
-    Split line path into individual items and return the current string being compared.
-        :param path: path to compare against
-        :return: the string being used to query completion results
-        """
-        formatted_path = re.sub("  +", " ", path.strip())
-        self.current_items = formatted_path.split(' ')
+        formatted_path = re.sub('  +', ' ', path).strip()
+        cursor_pos = self.line_edit.cursorPosition()
+        self.cursor_index = formatted_path.count(' ', 0, cursor_pos)
+        self.current_data = path.strip().split(' ')
 
-        pos = self.edit.cursorPosition()
-        self.cursor_pos = len(self.current_items) - 1 if pos == len(path) else formatted_path.count(' ', 0, pos)
+        if path.endswith(' ') and cursor_pos >= len(path):
+            self.current_data.append('')
+            self.cursor_index += 1
+            return ['']
 
-        current_item = self.current_items[self.cursor_pos]
-        last_macro_call_pos = current_item.rfind('%', 1)
-        if last_macro_call_pos > 0:
-            current_item = current_item[last_macro_call_pos:]
+        self.cursor_item_pos = cursor_pos - sum([len(item) for item in self.current_data[:self.cursor_index]])
 
-        return [current_item]
+        if not path[:cursor_pos].endswith(' '):
 
-    def pathFromIndex(self, idx: aqt.qt.QModelIndex) -> str:
-        if self.cursor_pos is None:
-            return self.edit.text()
-        suggestion = QCompleter.pathFromIndex(self, idx)
-        current_item = self.current_items[self.cursor_pos]
-        last_macro_call_pos = current_item.rfind('%', 1)
-        if last_macro_call_pos > 0:
-            suggestion = current_item[0:last_macro_call_pos] + suggestion
+            item_macro_pos = self.current_data[self.cursor_index].rfind('%', 1)
+            if self.cursor_item_pos > item_macro_pos > 0:
+                return [self.current_data[self.cursor_index][item_macro_pos:]]
 
-        self.current_items[self.cursor_pos] = suggestion
+        return [self.current_data[self.cursor_index]]
 
-        # Remove empty strings
-        if "" in self.current_items:
-            self.current_items.remove("")
+    def pathFromIndex(self, index: aqt.qt.QModelIndex) -> str:
+        if self.cursor_index is None:
+            return self.line_edit.text()
 
-        return f"{' '.join(self.current_items)} "
+        current_item = self.current_data[self.cursor_index]
+
+        item_macro_pos = self.current_data[self.cursor_index].rfind('%', 1)
+        if self.cursor_item_pos > item_macro_pos > 0:
+            self.current_data[self.cursor_index] = current_item[:item_macro_pos] + index.data()
+        else:
+            self.current_data[self.cursor_index] = index.data()
+
+        return ' '.join(self.current_data)
+
+
+# class CustomCompleter(QCompleter):
+#     ConcatenationRole = Qt.UserRole + 1
+#
+#     def __init__(
+#             self,
+#             parent: aqt.qt.QLineEdit
+#     ) -> None:
+#         QCompleter.__init__(self, aqt.qt.QStringListModel(), parent)
+#         self.current_items: list[str] = []
+#         self.edit = parent
+#         self.cursor_pos: int or None = None
+#         self.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+#         self.setFilterMode(Qt.MatchContains)
+#
+#         def focus_event(event):
+#             default_focus_evt(event)
+#             self.complete()
+#
+#         def release_event(event):
+#             default_release_evt(event)
+#             self.complete()
+#
+#         default_focus_evt = self.edit.focusInEvent
+#         default_release_evt = self.edit.mouseReleaseEvent
+#         self.edit.focusInEvent = focus_event
+#         self.edit.mouseReleaseEvent = release_event
+#
+#         self.edit.returnPressed.connect(self.return_pressed)
+#
+#
+#     def return_pressed(self):
+#         line_input = self.edit.text()
+#
+#
+#     def setModel(self, data: list):
+#         self.setModel(aqt.qt.QStringListModel(data))
+#
+#     def splitPath(self, path: str) -> list[str]:
+#         """
+#     Split line path into individual items and return the current string being compared.
+#         :param path: path to compare against
+#         :return: the string being used to query completion results
+#         """
+#         formatted_path = re.sub("  +", " ", path.strip())
+#         self.current_items = formatted_path.split(' ')
+#
+#         if path.endswith(' '):
+#             self.current_items.append('')
+#
+#         pos = self.edit.cursorPosition()
+#         self.cursor_pos = len(self.current_items) - 1 if pos == len(path) else formatted_path.count(' ', 0, pos)
+#
+#         current_item = self.current_items[self.cursor_pos]
+#         last_macro_call_pos = current_item.rfind('%', 1)
+#         if last_macro_call_pos > 0:
+#             current_item = current_item[last_macro_call_pos:]
+#
+#         print(f'current_items: {self.current_items}')
+#         print(f'current_item: {current_item}')
+#
+#         return [current_item]
+#
+#     def pathFromIndex(self, idx: aqt.qt.QModelIndex) -> str:
+#         if self.cursor_pos is None:
+#             return self.edit.text()
+#         suggestion = QCompleter.pathFromIndex(self, idx)
+#         print(f'suggestion: {suggestion}')
+#         current_item = self.current_items[self.cursor_pos]
+#         print(f'current_item: {current_item}')
+#         last_macro_call_pos = current_item.rfind('%', 1)
+#         print(f'last_macro_call_pos: {last_macro_call_pos}')
+#         if last_macro_call_pos > 0:
+#             suggestion = current_item[0:last_macro_call_pos] + suggestion
+#
+#         self.current_items[self.cursor_pos] = suggestion
+#         print(f'current_items: {self.current_items[self.cursor_pos]}')
+#
+#         # Remove empty strings
+#         if "" in self.current_items:
+#             self.current_items.remove("")
+#
+#         return f"{' '.join(self.current_items)} "
+
+non = 0
+
+# class CustomCompleter(QCompleter):
+#     ConcatenationRole = Qt.UserRole + 1
+#
+#     def __init__(
+#             self,
+#             parent_line: aqt.qt.QLineEdit
+#     ) -> None:
+#         QCompleter.__init__(self, aqt.qt.QStringListModel(), parent_line)
+#
+#         self.current_items: list[str] = []
+#         self.edit = parent_line
+#         self.cursor_pos: int or None = None
+#         self.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+#         self.setFilterMode(Qt.MatchContains)
+#
+#         def focus_event(event):
+#             default_focus_evt(event)
+#             self.complete()
+#
+#         def release_event(event):
+#             default_release_evt(event)
+#             self.complete()
+#
+#         default_focus_evt = self.edit.focusInEvent
+#         default_release_evt = self.edit.mouseReleaseEvent
+#         self.edit.focusInEvent = focus_event
+#         self.edit.mouseReleaseEvent = release_event
+#
+#     def setModel(self, data: list):
+#
+#         def addItems(parent, elements, pre=""):
+#             for text in elements:
+#                 item = QStandardItem(text)
+#                 suggestions = pre + " " + text if pre else text
+#                 item.setData(suggestions, CustomCompleter.ConcatenationRole)
+#                 parent.appendRow(item)
+#                 # if children:
+#                 #     addItems(item, children, suggestions)
+#
+#         model = QStandardItemModel(self)
+#         addItems(model, data)
+#         self.setModel(model)
+
+#     # def splitPath(self, path: str) -> list[str]:
+#     #     formatted_path = re.sub("  +", " ", path.strip())
+#     #     self.current_items = formatted_path.split(' ')
+#     #
+#     #     if path.endswith(' '):
+#     #         self.current_items.append('')
+#     #
+#     #     pos = self.edit.cursorPosition()
+#     #     self.cursor_pos = len(self.current_items) - 1 if pos == len(path) else formatted_path.count(' ', 0, pos)
+#     #
+#     #     current_item = self.current_items[self.cursor_pos]
+#     #     last_macro_call_pos = current_item.rfind('%', 1)
+#     #     if last_macro_call_pos > 0:
+#     #         current_item = current_item[last_macro_call_pos:]
+#     #
+#     #     return [current_item]
+
+    # def pathFromIndex(self, idx: aqt.qt.QModelIndex) -> str:
+    #     if self.cursor_pos is None:
+    #         return self.edit.text()
+    #     suggestion = QCompleter.pathFromIndex(self, idx)
+    #     print(f'suggestion: {suggestion}')
+    #     current_item = self.current_items[self.cursor_pos]
+    #     print(f'current_item: {current_item}')
+    #     last_macro_call_pos = current_item.rfind('%', 1)
+    #     print(f'last_macro_call_pos: {last_macro_call_pos}')
+    #     if last_macro_call_pos > 0:
+    #         suggestion = current_item[0:last_macro_call_pos] + suggestion
+
+#     #     self.current_items[self.cursor_pos] = suggestion
+#     #     print(f'current_items: {self.current_items[self.cursor_pos]}')
+
+#     #     # Remove empty strings
+#     #     if "" in self.current_items:
+#     #         self.current_items.remove("")
+#     #     return f"{' '.join(self.current_items)} "
 
 
 class OptionsDialog(QDialog):
