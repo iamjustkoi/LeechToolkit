@@ -116,13 +116,13 @@ class TipSlider(QSlider):
         self.style = aqt.mw.style()
         self.opt = QStyleOptionSlider()
 
-        def show_tip():
-            rect_handle = self.style.subControlRect(self.style.CC_Slider, self.opt, self.style.SC_SliderHandle)
-            x_offset, y_offset = ((rect_handle.width() * 1.5) * -1), -30
-            x = rect_handle.right() + (self.sliderPosition() * self.rect().width() / 101) + x_offset
-            y = rect_handle.top() + y_offset
-            global_pos = self.mapToGlobal(QPoint(x, y))
+        self.valueChanged.connect(self.show_tip)
+        self.sliderPressed.connect(self.show_tip)
 
-            QToolTip.showText(global_pos, f'{self.value()}%')
-
-        self.valueChanged.connect(show_tip)
+    def show_tip(self):
+        rect_handle = self.style.subControlRect(self.style.CC_Slider, self.opt, self.style.SC_SliderHandle)
+        x_offset, y_offset = ((rect_handle.width() * 1.5) * -1), -30
+        x = rect_handle.right() + (self.sliderPosition() * self.rect().width() / 101) + x_offset
+        y = rect_handle.top() + y_offset
+        global_pos = self.mapToGlobal(QPoint(x, y))
+        QToolTip.showText(global_pos, f'{self.value()}%')
