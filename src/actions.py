@@ -24,7 +24,7 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
 
     macro = Macro.DATE
     if re.search(fr'(?<!%){macro}', tag):
-        result = result.replace(macro, date.today().strftime('%x'))
+        result = result.replace(macro, str(date.today()))
 
     macro = Macro.REVIEWS
     if re.search(fr'(?<!%){macro}', tag):
