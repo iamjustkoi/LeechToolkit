@@ -522,13 +522,10 @@ class Ui_ActionsWidget(object):
         self.label_4.setText(_translate("ActionsWidget", "Similarity"))
         self.queueRatioSlider.setToolTip(_translate("ActionsWidget",
                                                     "Controls how similar a card\'s fields must be for it to be considered \"similar\"."))
-
-
 from .forms import ExpandoWidget, QueueSpinBox, TipSlider
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     ActionsWidget = QtWidgets.QWidget()
     ui = Ui_ActionsWidget()
