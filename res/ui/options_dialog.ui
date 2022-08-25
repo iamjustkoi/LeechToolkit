@@ -343,13 +343,13 @@
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents">
+         <widget class="QWidget" name="ActionsScrollWidget">
           <property name="geometry">
            <rect>
             <x>0</x>
             <y>0</y>
             <width>479</width>
-            <height>771</height>
+            <height>952</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -359,954 +359,1033 @@
            </sizepolicy>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="bottomMargin">
+            <number>200</number>
+           </property>
            <item>
-            <widget class="QGroupBox" name="collapsibleLeechActionsGroup">
+            <widget class="QFrame" name="actionsScrollFrame">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="title">
-              <string>Leech Actions</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-             <property name="flat">
+             <property name="mouseTracking">
               <bool>true</bool>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
               <property name="leftMargin">
                <number>0</number>
               </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
               <property name="rightMargin">
                <number>0</number>
               </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <item>
-               <layout class="QFormLayout" name="leechActionsLayout">
-                <item row="0" column="0">
-                 <widget class="QCheckBox" name="flagCheckbox">
-                  <property name="text">
-                   <string>Set Flag</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QComboBox" name="flagDropdown">
-                  <property name="sizeAdjustPolicy">
-                   <enum>QComboBox::AdjustToContents</enum>
-                  </property>
-                  <item>
+               <widget class="ExpandoWidget" name="leechActionExpandoWidget" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::StrongFocus</enum>
+                </property>
+                <layout class="QHBoxLayout" name="leechActionsExpandoLayout">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QToolButton" name="leechExpandoButton">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">border: none;</string>
+                   </property>
                    <property name="text">
-                    <string>No Flag</string>
+                    <string>Leech Actions</string>
                    </property>
-                  </item>
-                  <item>
+                   <property name="toolButtonStyle">
+                    <enum>Qt::ToolButtonTextBesideIcon</enum>
+                   </property>
+                   <property name="arrowType">
+                    <enum>Qt::RightArrow</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="Line" name="leechExpandoLine">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="leechActionFrame">
+                <layout class="QFormLayout" name="leechActionsLayout">
+                 <property name="leftMargin">
+                  <number>12</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QCheckBox" name="flagCheckbox">
                    <property name="text">
-                    <string>Red</string>
+                    <string>Set Flag</string>
                    </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Orange</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Green</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Blue</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Pink</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Turquise</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Purple</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QCheckBox" name="suspendCheckbox">
-                  <property name="text">
-                   <string>Suspend</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QFrame" name="suspendFrame">
-                  <layout class="QHBoxLayout" name="horizontalLayout_2">
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QComboBox" name="flagDropdown">
+                   <property name="sizeAdjustPolicy">
+                    <enum>QComboBox::AdjustToContents</enum>
                    </property>
                    <item>
-                    <widget class="QRadioButton" name="suspendOnButton">
-                     <property name="text">
-                      <string>On</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="suspendOffButton">
-                     <property name="text">
-                      <string>Off</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="horizontalSpacer_4">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QCheckBox" name="addTagsCheckbox">
-                  <property name="text">
-                   <string>Add Tag(s)</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QLineEdit" name="addTagsLine">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="clearButtonEnabled">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QCheckBox" name="removeTagsCheckbox">
-                  <property name="text">
-                   <string>Remove Tag(s)</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1">
-                 <widget class="QLineEdit" name="removeTagsLine">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="clearButtonEnabled">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QCheckBox" name="forgetCheckbox">
-                  <property name="text">
-                   <string>Forget</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1">
-                 <widget class="QFrame" name="forgetFrame">
-                  <property name="frameShape">
-                   <enum>QFrame::NoFrame</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Raised</enum>
-                  </property>
-                  <layout class="QHBoxLayout" name="horizontalLayout_3">
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QRadioButton" name="forgetOnRadio">
-                     <property name="text">
-                      <string>On</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="forgetOffRadio">
-                     <property name="text">
-                      <string>Off</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="horizontalSpacer_5">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="5" column="1">
-                 <widget class="QCheckBox" name="forgetRestorePosCheckbox">
-                  <property name="text">
-                   <string>Restore imported position where possible</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1">
-                 <widget class="QCheckBox" name="forgetResetCheckbox">
-                  <property name="text">
-                   <string>Reset total reviews and lapses</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="7" column="0">
-                 <widget class="QCheckBox" name="editFieldsCheckbox">
-                  <property name="text">
-                   <string>Edit Field(s)</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="0">
-                 <widget class="QCheckBox" name="deckMoveCheckbox">
-                  <property name="text">
-                   <string>Move to Deck</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="8" column="1">
-                 <widget class="QLineEdit" name="deckMoveLine">
-                  <property name="clearButtonEnabled">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="9" column="0">
-                 <widget class="QCheckBox" name="rescheduleCheckbox">
-                  <property name="text">
-                   <string>Set Due Date</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="9" column="1">
-                 <layout class="QHBoxLayout" name="horizontalLayout_5">
-                  <item>
-                   <widget class="QLabel" name="rescheduleText1">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
                     <property name="text">
-                     <string>Between</string>
+                     <string>No Flag</string>
                     </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QSpinBox" name="rescheduleFromDays">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximum">
-                     <number>9999</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="rescheduleText2">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="text">
-                     <string>and</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QSpinBox" name="rescheduleToDays">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="suffix">
-                     <string> days</string>
-                    </property>
-                    <property name="maximum">
-                     <number>9999</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item row="10" column="1">
-                 <widget class="QCheckBox" name="rescheduleResetCheckbox">
-                  <property name="toolTip">
-                   <string>Updates the card's interval using the time between the current day and the updated date.</string>
-                  </property>
-                  <property name="text">
-                   <string>Update interval</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="12" column="0">
-                 <widget class="QCheckBox" name="queueCheckbox">
-                  <property name="toolTip">
-                   <string>Adds the card to the new queue using the specified range.</string>
-                  </property>
-                  <property name="text">
-                   <string>Add to New</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="12" column="1">
-                 <widget class="QFrame" name="frame">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <layout class="QHBoxLayout" name="horizontalLayout_12">
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_11">
-                     <property name="sizeConstraint">
-                      <enum>QLayout::SetFixedSize</enum>
-                     </property>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_10">
-                       <item>
-                        <widget class="QComboBox" name="queueFromDropdown">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="sizeAdjustPolicy">
-                          <enum>QComboBox::AdjustToContents</enum>
-                         </property>
-                         <item>
-                          <property name="text">
-                           <string>Top</string>
-                          </property>
-                         </item>
-                         <item>
-                          <property name="text">
-                           <string>Bottom</string>
-                          </property>
-                         </item>
-                         <item>
-                          <property name="text">
-                           <string>Position</string>
-                          </property>
-                         </item>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QueueSpinBox" name="queueFromSpinbox">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimum">
-                          <number>-9999999</number>
-                         </property>
-                         <property name="maximum">
-                          <number>9999999</number>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="queueTilda">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="text">
-                          <string>～</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QComboBox" name="queueToDropdown">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="sizeAdjustPolicy">
-                          <enum>QComboBox::AdjustToContents</enum>
-                         </property>
-                         <item>
-                          <property name="text">
-                           <string>Top</string>
-                          </property>
-                         </item>
-                         <item>
-                          <property name="text">
-                           <string>Bottom</string>
-                          </property>
-                         </item>
-                         <item>
-                          <property name="text">
-                           <string>Position</string>
-                          </property>
-                         </item>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QueueSpinBox" name="queueToSpinbox">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimum">
-                          <number>-9999999</number>
-                         </property>
-                         <property name="maximum">
-                          <number>9999999</number>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </item>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_11">
-                       <item>
-                        <widget class="QLabel" name="label">
-                         <property name="text">
-                          <string>(Current)</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="queueLabelTop">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="text">
-                          <string>Top:</string>
-                         </property>
-                         <property name="textInteractionFlags">
-                          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="queueLabelTopPos">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="text">
-                          <string>0</string>
-                         </property>
-                         <property name="textInteractionFlags">
-                          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="horizontalSpacer_2">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeType">
-                          <enum>QSizePolicy::Maximum</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>6</width>
-                           <height>0</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="queueLabelBottom">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="text">
-                          <string>Bottom:</string>
-                         </property>
-                         <property name="textInteractionFlags">
-                          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="queueLabelBottomPos">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="text">
-                          <string>0</string>
-                         </property>
-                         <property name="textInteractionFlags">
-                          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="horizontalSpacer_3">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>0</width>
-                           <height>0</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
                    </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="14" column="1">
-                 <layout class="QHBoxLayout" name="horizontalLayout_6">
-                  <item>
-                   <layout class="QVBoxLayout" name="verticalLayout_10">
+                   <item>
+                    <property name="text">
+                     <string>Red</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Orange</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Green</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Blue</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Pink</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Turquise</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Purple</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QCheckBox" name="suspendCheckbox">
+                   <property name="text">
+                    <string>Suspend</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QFrame" name="suspendFrame">
+                   <layout class="QHBoxLayout" name="horizontalLayout_9">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
                     <item>
-                     <widget class="QCheckBox" name="queueSimilarCheckbox">
-                      <property name="toolTip">
-                       <string>Using the given range:
-Places the card near another one in the queue based on how similar they are.</string>
-                      </property>
+                     <widget class="QRadioButton" name="suspendOnButton">
                       <property name="text">
-                       <string>Place near similar cards</string>
+                       <string>On</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QFrame" name="frame_4">
-                      <layout class="QVBoxLayout" name="verticalLayout_9" stretch="0">
-                       <property name="topMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>0</number>
-                       </property>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_8">
-                         <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_14">
-                           <item>
-                            <widget class="QGroupBox" name="groupBox_3">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="title">
-                              <string>Ignored Text</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                             </property>
-                             <layout class="QVBoxLayout" name="verticalLayout_12">
-                              <item>
-                               <widget class="QTextEdit" name="queueExcludeTextEdit">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>0</width>
-                                  <height>0</height>
-                                 </size>
-                                </property>
-                                <property name="sizeAdjustPolicy">
-                                 <enum>QAbstractScrollArea::AdjustToContents</enum>
-                                </property>
-                                <property name="tabChangesFocus">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="lineWrapMode">
-                                 <enum>QTextEdit::NoWrap</enum>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="verticalSpacer_2">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>0</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_13">
-                           <item>
-                            <widget class="QGroupBox" name="groupBox_2">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="title">
-                              <string>Filtered Fields</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                             </property>
-                             <layout class="QVBoxLayout" name="_2">
-                              <item>
-                               <widget class="QCheckBox" name="queueIncludeFieldsCheckbox">
-                                <property name="toolTip">
-                                 <string>Filters to only match the following fields instead of filtering them out.</string>
-                                </property>
-                                <property name="text">
-                                 <string>Inclusive</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QListWidget" name="queueExcludedFieldList">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>16777215</width>
-                                  <height>256</height>
-                                 </size>
-                                </property>
-                                <property name="frameShape">
-                                 <enum>QFrame::NoFrame</enum>
-                                </property>
-                                <property name="sizeAdjustPolicy">
-                                 <enum>QAbstractScrollArea::AdjustToContents</enum>
-                                </property>
-                                <property name="editTriggers">
-                                 <set>QAbstractItemView::NoEditTriggers</set>
-                                </property>
-                                <property name="showDropIndicator" stdset="0">
-                                 <bool>false</bool>
-                                </property>
-                                <property name="selectionMode">
-                                 <enum>QAbstractItemView::NoSelection</enum>
-                                </property>
-                                <property name="verticalScrollMode">
-                                 <enum>QAbstractItemView::ScrollPerPixel</enum>
-                                </property>
-                                <property name="itemAlignment">
-                                 <set>Qt::AlignHCenter|Qt::AlignTop</set>
-                                </property>
-                                <property name="sortingEnabled">
-                                 <bool>true</bool>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QFrame" name="frame_2">
-                                <property name="frameShape">
-                                 <enum>QFrame::NoFrame</enum>
-                                </property>
-                                <property name="frameShadow">
-                                 <enum>QFrame::Plain</enum>
-                                </property>
-                                <layout class="QHBoxLayout" name="_3">
-                                 <property name="leftMargin">
-                                  <number>0</number>
-                                 </property>
-                                 <property name="topMargin">
-                                  <number>0</number>
-                                 </property>
-                                 <property name="rightMargin">
-                                  <number>0</number>
-                                 </property>
-                                 <property name="bottomMargin">
-                                  <number>0</number>
-                                 </property>
-                                 <item>
-                                  <widget class="QToolButton" name="queueAddFieldButton">
-                                   <property name="sizePolicy">
-                                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                                     <horstretch>0</horstretch>
-                                     <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                   </property>
-                                   <property name="minimumSize">
-                                    <size>
-                                     <width>64</width>
-                                     <height>24</height>
-                                    </size>
-                                   </property>
-                                   <property name="text">
-                                    <string>Add</string>
-                                   </property>
-                                   <property name="popupMode">
-                                    <enum>QToolButton::InstantPopup</enum>
-                                   </property>
-                                   <property name="toolButtonStyle">
-                                    <enum>Qt::ToolButtonTextOnly</enum>
-                                   </property>
-                                   <property name="arrowType">
-                                    <enum>Qt::NoArrow</enum>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                </layout>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="verticalSpacer">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>0</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
+                     <widget class="QRadioButton" name="suspendOffButton">
+                      <property name="text">
+                       <string>Off</string>
+                      </property>
                      </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_6">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                     </spacer>
                     </item>
                    </layout>
-                  </item>
-                 </layout>
-                </item>
-                <item row="16" column="1">
-                 <widget class="QCheckBox" name="queueSiblingCheckbox">
-                  <property name="toolTip">
-                   <string>Using the given range:
-Place the card next to another one if they're each siblings of the same note-type.</string>
-                  </property>
-                  <property name="text">
-                   <string>Place near sibling cards</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="7" column="1">
-                 <widget class="QGroupBox" name="editFieldsGroup">
-                  <property name="title">
-                   <string>Fields</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_8">
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QCheckBox" name="addTagsCheckbox">
+                   <property name="text">
+                    <string>Add Tag(s)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLineEdit" name="addTagsLine">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QCheckBox" name="removeTagsCheckbox">
+                   <property name="text">
+                    <string>Remove Tag(s)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLineEdit" name="removeTagsLine">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QCheckBox" name="forgetCheckbox">
+                   <property name="text">
+                    <string>Forget</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QFrame" name="forgetFrame">
+                   <property name="frameShape">
+                    <enum>QFrame::NoFrame</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_13">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QRadioButton" name="forgetOnRadio">
+                      <property name="text">
+                       <string>On</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QRadioButton" name="forgetOffRadio">
+                      <property name="text">
+                       <string>Off</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_7">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item row="5" column="1">
+                  <widget class="QCheckBox" name="forgetRestorePosCheckbox">
+                   <property name="text">
+                    <string>Restore imported position where possible</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="1">
+                  <widget class="QCheckBox" name="forgetResetCheckbox">
+                   <property name="text">
+                    <string>Reset total reviews and lapses</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0">
+                  <widget class="QCheckBox" name="editFieldsCheckbox">
+                   <property name="text">
+                    <string>Edit Field(s)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="0">
+                  <widget class="QCheckBox" name="deckMoveCheckbox">
+                   <property name="text">
+                    <string>Move to Deck</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="1">
+                  <widget class="QLineEdit" name="deckMoveLine">
+                   <property name="clearButtonEnabled">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="0">
+                  <widget class="QCheckBox" name="rescheduleCheckbox">
+                   <property name="text">
+                    <string>Set Due Date</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="1">
+                  <layout class="QHBoxLayout" name="horizontalLayout_14">
                    <item>
-                    <widget class="QListWidget" name="editFieldsList">
-                     <property name="frameShape">
-                      <enum>QFrame::NoFrame</enum>
+                    <widget class="QLabel" name="rescheduleText1">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="verticalScrollBarPolicy">
-                      <enum>Qt::ScrollBarAsNeeded</enum>
-                     </property>
-                     <property name="horizontalScrollBarPolicy">
-                      <enum>Qt::ScrollBarAlwaysOff</enum>
-                     </property>
-                     <property name="sizeAdjustPolicy">
-                      <enum>QAbstractScrollArea::AdjustToContents</enum>
-                     </property>
-                     <property name="editTriggers">
-                      <set>QAbstractItemView::NoEditTriggers</set>
-                     </property>
-                     <property name="showDropIndicator" stdset="0">
-                      <bool>false</bool>
-                     </property>
-                     <property name="selectionMode">
-                      <enum>QAbstractItemView::NoSelection</enum>
-                     </property>
-                     <property name="verticalScrollMode">
-                      <enum>QAbstractItemView::ScrollPerPixel</enum>
-                     </property>
-                     <property name="itemAlignment">
-                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                     </property>
-                     <property name="sortingEnabled">
-                      <bool>true</bool>
+                     <property name="text">
+                      <string>Between</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="editAddFieldButton">
+                    <widget class="QSpinBox" name="rescheduleFromDays">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
-                     <property name="text">
-                      <string>Add...</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item row="15" column="1">
-                 <widget class="QFrame" name="frame_3">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Raised</enum>
-                  </property>
-                  <layout class="QHBoxLayout" name="horizontalLayout_7">
-                   <item>
-                    <widget class="QLabel" name="label_2">
-                     <property name="text">
-                      <string>Similarity</string>
+                     <property name="maximum">
+                      <number>9999</number>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="TipSlider" name="queueRatioSlider">
-                     <property name="toolTip">
-                      <string>Controls how similar a card's fields must be for it to be considered &quot;similar&quot;.</string>
+                    <widget class="QLabel" name="rescheduleText2">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="minimum">
-                      <number>0</number>
+                     <property name="text">
+                      <string>and</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="rescheduleToDays">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="suffix">
+                      <string>days</string>
                      </property>
                      <property name="maximum">
-                      <number>100</number>
+                      <number>9999</number>
                      </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_8">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
                      </property>
-                    </widget>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
-                 </widget>
-                </item>
-               </layout>
+                 </item>
+                 <item row="10" column="1">
+                  <widget class="QCheckBox" name="rescheduleResetCheckbox">
+                   <property name="toolTip">
+                    <string>Updates the card's interval using the time between the current day and the updated date.
+                    </string>
+                   </property>
+                   <property name="text">
+                    <string>Update interval</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="0">
+                  <widget class="QCheckBox" name="queueCheckbox">
+                   <property name="toolTip">
+                    <string>Adds the card to the new queue using the specified range.</string>
+                   </property>
+                   <property name="text">
+                    <string>Add to New</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="1">
+                  <widget class="QFrame" name="frame_6">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_15">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <layout class="QVBoxLayout" name="verticalLayout_15">
+                      <property name="sizeConstraint">
+                       <enum>QLayout::SetFixedSize</enum>
+                      </property>
+                      <item>
+                       <layout class="QHBoxLayout" name="horizontalLayout_16">
+                        <item>
+                         <widget class="QComboBox" name="queueFromDropdown">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="sizeAdjustPolicy">
+                           <enum>QComboBox::AdjustToContents</enum>
+                          </property>
+                          <item>
+                           <property name="text">
+                            <string>Top</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>Bottom</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>Position</string>
+                           </property>
+                          </item>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QueueSpinBox" name="queueFromSpinbox">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="minimum">
+                           <number>-9999999</number>
+                          </property>
+                          <property name="maximum">
+                           <number>9999999</number>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="queueTilda">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="text">
+                           <string>～</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QComboBox" name="queueToDropdown">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="sizeAdjustPolicy">
+                           <enum>QComboBox::AdjustToContents</enum>
+                          </property>
+                          <item>
+                           <property name="text">
+                            <string>Top</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>Bottom</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>Position</string>
+                           </property>
+                          </item>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QueueSpinBox" name="queueToSpinbox">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="minimum">
+                           <number>-9999999</number>
+                          </property>
+                          <property name="maximum">
+                           <number>9999999</number>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                      <item>
+                       <layout class="QHBoxLayout" name="horizontalLayout_17">
+                        <item>
+                         <widget class="QLabel" name="label_3">
+                          <property name="text">
+                           <string>(Current)</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="queueLabelTop">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="text">
+                           <string>Top:</string>
+                          </property>
+                          <property name="textInteractionFlags">
+                           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="queueLabelTopPos">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="text">
+                           <string>0</string>
+                          </property>
+                          <property name="textInteractionFlags">
+                           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <spacer name="horizontalSpacer_9">
+                          <property name="orientation">
+                           <enum>Qt::Horizontal</enum>
+                          </property>
+                          <property name="sizeType">
+                           <enum>QSizePolicy::Maximum</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                           <size>
+                            <width>6</width>
+                            <height>0</height>
+                           </size>
+                          </property>
+                         </spacer>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="queueLabelBottom">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="text">
+                           <string>Bottom:</string>
+                          </property>
+                          <property name="textInteractionFlags">
+                           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="queueLabelBottomPos">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="text">
+                           <string>0</string>
+                          </property>
+                          <property name="textInteractionFlags">
+                           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <spacer name="horizontalSpacer_10">
+                          <property name="orientation">
+                           <enum>Qt::Horizontal</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                           <size>
+                            <width>0</width>
+                            <height>0</height>
+                           </size>
+                          </property>
+                         </spacer>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item row="14" column="1">
+                  <layout class="QHBoxLayout" name="horizontalLayout_18">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_16">
+                     <item>
+                      <widget class="QCheckBox" name="queueSimilarCheckbox">
+                       <property name="toolTip">
+                        <string>Using the given range:
+                         Places the card near another one in the queue based on how similar they are.
+                        </string>
+                       </property>
+                       <property name="text">
+                        <string>Place near similar cards</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QFrame" name="frame_7">
+                       <layout class="QVBoxLayout" name="verticalLayout_17" stretch="0">
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <layout class="QHBoxLayout" name="horizontalLayout_19">
+                          <item>
+                           <layout class="QVBoxLayout" name="verticalLayout_18">
+                            <item>
+                             <widget class="QGroupBox" name="groupBox_4">
+                              <property name="sizePolicy">
+                               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                               </sizepolicy>
+                              </property>
+                              <property name="title">
+                               <string>Ignored Text</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_19">
+                               <item>
+                                <widget class="QTextEdit" name="queueExcludeTextEdit">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="sizeAdjustPolicy">
+                                  <enum>QAbstractScrollArea::AdjustToContents</enum>
+                                 </property>
+                                 <property name="tabChangesFocus">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="lineWrapMode">
+                                  <enum>QTextEdit::NoWrap</enum>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="verticalSpacer_3">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>0</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                           </layout>
+                          </item>
+                          <item>
+                           <layout class="QVBoxLayout" name="verticalLayout_20">
+                            <item>
+                             <widget class="QGroupBox" name="groupBox_5">
+                              <property name="sizePolicy">
+                               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                               </sizepolicy>
+                              </property>
+                              <property name="title">
+                               <string>Filtered Fields</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                              </property>
+                              <layout class="QVBoxLayout" name="_4">
+                               <item>
+                                <widget class="QCheckBox" name="queueIncludeFieldsCheckbox">
+                                 <property name="toolTip">
+                                  <string>Filters to only match the following fields instead of filtering them out.
+                                  </string>
+                                 </property>
+                                 <property name="text">
+                                  <string>Inclusive</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QListWidget" name="queueExcludedFieldList">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>256</height>
+                                  </size>
+                                 </property>
+                                 <property name="frameShape">
+                                  <enum>QFrame::NoFrame</enum>
+                                 </property>
+                                 <property name="sizeAdjustPolicy">
+                                  <enum>QAbstractScrollArea::AdjustToContents</enum>
+                                 </property>
+                                 <property name="editTriggers">
+                                  <set>QAbstractItemView::NoEditTriggers</set>
+                                 </property>
+                                 <property name="showDropIndicator" stdset="0">
+                                  <bool>false</bool>
+                                 </property>
+                                 <property name="selectionMode">
+                                  <enum>QAbstractItemView::NoSelection</enum>
+                                 </property>
+                                 <property name="verticalScrollMode">
+                                  <enum>QAbstractItemView::ScrollPerPixel</enum>
+                                 </property>
+                                 <property name="itemAlignment">
+                                  <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                                 </property>
+                                 <property name="sortingEnabled">
+                                  <bool>true</bool>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QFrame" name="frame_8">
+                                 <property name="frameShape">
+                                  <enum>QFrame::NoFrame</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Plain</enum>
+                                 </property>
+                                 <layout class="QHBoxLayout" name="_5">
+                                  <property name="leftMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="topMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="rightMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="bottomMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <item>
+                                   <widget class="QToolButton" name="queueAddFieldButton">
+                                    <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>64</width>
+                                      <height>24</height>
+                                     </size>
+                                    </property>
+                                    <property name="text">
+                                     <string>Add</string>
+                                    </property>
+                                    <property name="popupMode">
+                                     <enum>QToolButton::InstantPopup</enum>
+                                    </property>
+                                    <property name="toolButtonStyle">
+                                     <enum>Qt::ToolButtonTextOnly</enum>
+                                    </property>
+                                    <property name="arrowType">
+                                     <enum>Qt::NoArrow</enum>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="verticalSpacer_4">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>0</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                           </layout>
+                          </item>
+                         </layout>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="16" column="1">
+                  <widget class="QCheckBox" name="queueSiblingCheckbox">
+                   <property name="toolTip">
+                    <string>Using the given range:
+                     Place the card next to another one if they're each siblings of the same note-type.
+                    </string>
+                   </property>
+                   <property name="text">
+                    <string>Place near sibling cards</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="1">
+                  <widget class="QGroupBox" name="editFieldsGroup">
+                   <property name="title">
+                    <string>Fields</string>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_21">
+                    <item>
+                     <widget class="QListWidget" name="editFieldsList">
+                      <property name="frameShape">
+                       <enum>QFrame::NoFrame</enum>
+                      </property>
+                      <property name="verticalScrollBarPolicy">
+                       <enum>Qt::ScrollBarAsNeeded</enum>
+                      </property>
+                      <property name="horizontalScrollBarPolicy">
+                       <enum>Qt::ScrollBarAlwaysOff</enum>
+                      </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QAbstractScrollArea::AdjustToContents</enum>
+                      </property>
+                      <property name="editTriggers">
+                       <set>QAbstractItemView::NoEditTriggers</set>
+                      </property>
+                      <property name="showDropIndicator" stdset="0">
+                       <bool>false</bool>
+                      </property>
+                      <property name="selectionMode">
+                       <enum>QAbstractItemView::NoSelection</enum>
+                      </property>
+                      <property name="verticalScrollMode">
+                       <enum>QAbstractItemView::ScrollPerPixel</enum>
+                      </property>
+                      <property name="itemAlignment">
+                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                      </property>
+                      <property name="sortingEnabled">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="editAddFieldButton">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="text">
+                       <string>Add...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item row="15" column="1">
+                  <widget class="QFrame" name="frame_9">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_20">
+                    <item>
+                     <widget class="QLabel" name="label_4">
+                      <property name="text">
+                       <string>Similarity</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="TipSlider" name="queueRatioSlider">
+                      <property name="toolTip">
+                       <string>Controls how similar a card's fields must be for it to be considered
+                        &quot;similar&quot;.
+                       </string>
+                      </property>
+                      <property name="minimum">
+                       <number>0</number>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -1335,12 +1414,18 @@ Place the card next to another one if they're each siblings of the same note-typ
   <customwidget>
    <class>QueueSpinBox</class>
    <extends>QSpinBox</extends>
-   <header>.forms.h</header>
+   <header location="global">.forms.h</header>
   </customwidget>
   <customwidget>
    <class>TipSlider</class>
    <extends>QSlider</extends>
    <header location="global">.forms.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ExpandoWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">.forms.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
