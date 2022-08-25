@@ -14,6 +14,7 @@ from aqt.qt import (
     QSlider,
     QToolTip,
     QStyleOptionSlider,
+    QWidget,
 )
 
 from ...src.consts import QueueAction
@@ -126,3 +127,18 @@ class TipSlider(QSlider):
         y = rect_handle.top() + y_offset
         global_pos = self.mapToGlobal(QPoint(x, y))
         QToolTip.showText(global_pos, f'{self.value()}%')
+
+
+class ExpandoWidget(QWidget):
+    click_function = None
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def set_click_function(self, function: callable):
+        self.click_function = function
+
+    def mousePressEvent(self, event: aqt.qt.QMouseEvent) -> None:
+        super(ExpandoWidget, self).mousePressEvent(event)
+        if self.click_function:
+            self.click_function()
