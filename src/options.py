@@ -122,9 +122,9 @@ class CustomCompleter(QCompleter):
 
     def splitPath(self, path: str) -> list[str]:
         """
-        Splits the line edit's path based on a variety of filters, updates the current cursor position variables,
-        and outputs a list with a single item to use as
-        auto-completion suggestions.
+    Splits the line edit's path based on a variety of filters, updates the current cursor position variables,
+    and outputs a list with a single item to use as
+    auto-completion suggestions.
         :param path: the current path to split/filter
         :return: a list containing a single string to use as a reference for completer suggestions
         """
@@ -153,7 +153,7 @@ class CustomCompleter(QCompleter):
 
     def pathFromIndex(self, index: aqt.qt.QModelIndex) -> str:
         """
-        Retrieves the line edit's path from the given index data.
+    Retrieves the line edit's path from the given index data.
         :param index: QModelIndex used as a reference for what to insert
         :return: the string output of the given path result
         """
@@ -627,7 +627,7 @@ class EditFieldItem(QWidget):
             text: str = None
     ):
         """
-NoteItem used for the field edit list.
+    NoteItem used for the field edit list.
         :param text: string value to use for the label of the list item
         :param actions_dialog: reference to the base class to use for context menu actions
         """
@@ -668,7 +668,7 @@ NoteItem used for the field edit list.
             text: str = None
     ):
         """
-Updates the item's forms to the input values.
+    Updates the item's forms to the input values.
         :param field_idx: index of the current note's fields to modify
         :param method_idx: index/EditMethod object of the method to use
         :param repl: text to try and replace

@@ -188,7 +188,7 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollWidget.setSizePolicy(sizePolicy)
         self.ActionsScrollWidget.setObjectName("ActionsScrollWidget")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.ActionsScrollWidget)
-        self.verticalLayout_6.setContentsMargins(-1, -1, -1, 200)
+        self.verticalLayout_6.setContentsMargins(0, -1, 0, 200)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.actionsScrollFrame = QtWidgets.QFrame(self.ActionsScrollWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
@@ -199,6 +199,7 @@ class Ui_OptionsDialog(object):
         self.actionsScrollFrame.setMouseTracking(True)
         self.actionsScrollFrame.setObjectName("actionsScrollFrame")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
+        self.verticalLayout_7.setContentsMargins(0, -1, 0, -1)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
 <<<<<<< HEAD
         self.leechActionExpandoWidget = ExpandoWidget(self.actionsScrollFrame)
@@ -719,7 +720,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
