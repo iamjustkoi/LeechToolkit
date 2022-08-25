@@ -259,7 +259,7 @@ class OptionsDialog(QDialog):
 
 
 class ActionsWidget(QWidget):
-    def __init__(self, options: OptionsDialog, actions_type: str, parent=None):
+    def __init__(self, options: OptionsDialog, actions_type: str, parent=None, expanded=True):
         super().__init__(parent)
         self.ui = Ui_ActionsWidget()
         self.dialog = options
@@ -327,7 +327,7 @@ class ActionsWidget(QWidget):
 
         self.ui.expandoWidget.set_click_function(lambda: self.toggle_expando(self.ui.expandoButton))
         self.ui.expandoButton.pressed.connect(lambda: self.toggle_expando(self.ui.expandoButton))
-        self.toggle_expando(self.ui.expandoButton, False)
+        self.toggle_expando(self.ui.expandoButton, expanded)
 
     def load(self):
         # FLAG
