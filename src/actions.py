@@ -12,7 +12,6 @@ from typing import Any
 import anki.cards
 import aqt.reviewer
 from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW
-from anki.models import NotetypeId
 
 from .consts import Config, Action, Macro, EditAction, RescheduleAction, QueueAction
 
@@ -132,16 +131,20 @@ class LeechActionManager:
             queue_inputs = leech_actions[Action.ADD_TO_QUEUE][Action.INPUT]
 
             def get_inserted_pos(insert_type, input_pos):
+                """
+            Retrieves the position for the given insert type.
+                :param insert_type: type of insertion to use to determine the position output
+                :param input_pos: extra position value to add to/insert with the position value returned
+                :return: retrieved position number
+                """
                 if insert_type != QueueAction.POS:
                     queue_cmd = f'SELECT min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0'
                     top, bottom = card.col.db.first(queue_cmd)
                     queue_pos = top if insert_type == QueueAction.TOP else bottom
                     return queue_pos + input_pos if (queue_pos + input_pos > 0) else queue_pos
                 return input_pos
-
             from_pos = get_inserted_pos(queue_inputs[QueueAction.FROM_INDEX], queue_inputs[QueueAction.FROM_VAL])
             to_pos = get_inserted_pos(queue_inputs[QueueAction.TO_INDEX], queue_inputs[QueueAction.TO_VAL])
-
             # Swap positions if values are inverted/will result in a non-positive range
             from_pos, to_pos = (to_pos, from_pos) if from_pos > to_pos else (from_pos, to_pos)
 
@@ -167,36 +170,44 @@ class LeechActionManager:
                     min_ratio = queue_inputs[QueueAction.SIMILAR_RATIO]
 
                     filtered_fields: list[str] = []
+                    filtered_field_ords: list[int] = []  # new
                     for note_dict in queue_inputs[QueueAction.FILTERED_FIELDS]:
                         note_type_id = int(list(note_dict)[0])
                         if note_type_id == updated_card.note().mid:
                             for key in list(note_dict.keys()):
-                                field_map = card.col.models.field_names(card.col.models.get(NotetypeId(note_type_id)))
-                                filtered_fields.append(field_map[note_dict[key]])
+                                # field_map = card.col.models.field_names(card.col.models.get(NotetypeId(note_type_id)))
+                                # filtered_fields.append(field_map[note_dict[key]])
+                                filtered_field_ords.append(int(note_dict[key]))  # new
 
-                    def get_filtered_items(items: list[(str, str)]):
+                    def get_filtered_card_data(items: list[(str, str)]):
+                        # for item in items:
                         filtered_items = []
-                        for item in items:
-                            if not queue_inputs[QueueAction.INCLUSIVE_FIELDS] and item[0] not in filtered_fields:
-                                filtered_items.append(item[1])
-                            if queue_inputs[QueueAction.INCLUSIVE_FIELDS] and item[0] in filtered_fields:
-                                filtered_items.append(item[1])
+
+                        # INCLUDE
+                        if queue_inputs[QueueAction.INCLUSIVE_FIELDS]:
+                            for field_ord in filtered_field_ords:
+                                filtered_items.append(items[field_ord][1])
+
+                        # EXCLUDE
+                        if not queue_inputs[QueueAction.INCLUSIVE_FIELDS]:
+                            for item in items:
+                                if item[0] not in filtered_field_ords:
+                                    filtered_items.append(item[1])
                         return filtered_items
 
-                    leech_field_data = get_filtered_items(updated_card.note().items())
+                    leech_field_data = get_filtered_card_data(updated_card.note().items())
                     leech_data_str = ''.join(char for char in str(leech_field_data) if char not in to_strip)
 
                     for cid in filtered_ids:
                         new_card = card.col.get_card(cid)
                         is_similar_card = False
 
-                        if new_card.note_type()['id'] == updated_card.note().mid:
-                            new_field_data = get_filtered_items(new_card.note().items())
-                            new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
-
-                            if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= min_ratio:
-                                ratio = SequenceMatcher(None, leech_data_str, new_data_str).ratio()
-                                is_similar_card = True
+                        if new_card.nid != updated_card.nid:
+                            if new_card.note_type()['id'] == updated_card.note().mid:
+                                new_field_data = get_filtered_card_data(new_card.note().items())
+                                new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
+                                if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= min_ratio:
+                                    is_similar_card = True
 
                         if not is_similar_card:
                             filtered_positions.remove(new_card.due)
