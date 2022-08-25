@@ -111,7 +111,7 @@ def on_show_back(card: cards.Card):
 def on_show_front(card: cards.Card):
     update_marker(card, True)
     # @DEBUG
-    reverse_update(card, 2, anki.cards.CARD_TYPE_REV)
+    # reverse_update(card, 2, anki.cards.CARD_TYPE_REV)
 
 
 def card_has_consecutive_correct(card: cards.Card, num_correct: int):
