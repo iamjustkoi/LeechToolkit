@@ -32,6 +32,7 @@ from aqt.qt import (
 from . import reviewer
 from .config import LeechToolkitConfigManager
 from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction
+from ..res.ui.actions_widget import Ui_ActionsWidget
 from ..res.ui.edit_field_item import Ui_EditFieldItem
 from ..res.ui.exclude_field_item import Ui_ExcludedFieldItem
 from ..res.ui.options_dialog import Ui_OptionsDialog
@@ -189,9 +190,86 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
+        self.leech_actions = ActionsWidget(self, Config.LEECH_ACTIONS, self.ui.actionsScrollFrame)
+        self.ui.actionsScrollFrame.layout().addWidget(self.leech_actions)
+
+        self.reverse_actions = ActionsWidget(self, Config.REVERSE_ACTIONS, self.ui.actionsScrollFrame)
+        self.ui.actionsScrollFrame.layout().addWidget(self.reverse_actions)
+
+        self.ui.useLeechThresholdCheckbox.stateChanged.connect(
+            lambda c: self.ui.reverseThresholdSpinbox.setEnabled(not c)
+        )
+
+        self._load()
+
+        # Just in case
+        self.ui.tabWidget.setCurrentIndex(0)
+
+    def _load(self):
+        self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
+
+        self.ui.showMarkerChecbkbox.setChecked(self.config[Config.SHOW_LEECH_MARKER])
+        self.ui.almostCheckbox.setChecked(self.config[Config.USE_ALMOST_MARKER])
+        self.ui.almostPosDropdown.setCurrentIndex(self.config[Config.MARKER_POSITION])
+        self.ui.almostBackCheckbox.setChecked(self.config[Config.ONLY_SHOW_BACK_MARKER])
+
+        self.ui.browseButtonCheckbox.setChecked(self.config[Config.SHOW_BROWSE_BUTTON])
+        self.ui.browseButtonBrowserCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_BROWSER])
+        self.ui.browseButtonOverviewCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_OVERVIEW])
+
+        self.ui.reverseCheckbox.setChecked(self.config[Config.REVERSE_ENABLED])
+        self.ui.useLeechThresholdCheckbox.setChecked(self.config[Config.REVERSE_USE_LEECH_THRESHOLD])
+        self.ui.reverseMethodDropdown.setCurrentIndex(self.config[Config.REVERSE_METHOD])
+        self.ui.reverseThresholdSpinbox.setValue(self.config[Config.REVERSE_THRESHOLD])
+        self.ui.consAnswerSpinbox.setValue(self.config[Config.REVERSE_CONS_ANS])
+        self.leech_actions.load()
+        self.reverse_actions.load()
+
+    def _save(self):
+        self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
+
+        self.config[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerChecbkbox.isChecked()
+        self.config[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
+        self.config[Config.MARKER_POSITION] = self.ui.almostPosDropdown.currentIndex()
+        self.config[Config.ONLY_SHOW_BACK_MARKER] = self.ui.almostBackCheckbox.isChecked()
+
+        self.config[Config.SHOW_BROWSE_BUTTON] = self.ui.browseButtonCheckbox.isChecked()
+        self.config[Config.BROWSE_BUTTON_ON_BROWSER] = self.ui.browseButtonBrowserCheckbox.isChecked()
+        self.config[Config.BROWSE_BUTTON_ON_OVERVIEW] = self.ui.browseButtonOverviewCheckbox.isChecked()
+
+        self.config[Config.REVERSE_ENABLED] = self.ui.reverseCheckbox.isChecked()
+        self.config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
+        self.config[Config.REVERSE_USE_LEECH_THRESHOLD] = self.ui.useLeechThresholdCheckbox.isChecked()
+        self.config[Config.REVERSE_THRESHOLD] = self.ui.reverseThresholdSpinbox.value()
+        self.config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
+
+        self.leech_actions.save()
+        self.reverse_actions.save()
+
+        # Write
+        self.manager.write_config()
+        if mw.state == 'review':
+            reviewer.refresh_action_manager(mw.reviewer)
+
+    def accept(self) -> None:
+        self._save()
+        super().accept()
+        bind_actions()
+        mw.reset()
+
+
+class ActionsWidget(QWidget):
+    def __init__(self, options: OptionsDialog, actions_type: str, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_ActionsWidget()
+        self.dialog = options
+        self.ui.setupUi(ActionsWidget=self)
+        self.config = self.dialog.config[actions_type]
+
         def handle_note_selected(dialog: Models):
             dialog.close()
             selected = dialog.form.modelsList.currentRow()
+            self.parent
             self.add_edit_item(dialog.models[selected].id)
             redraw_list(self.ui.editFieldsList, max_fields_height)
 
@@ -220,6 +298,11 @@ class OptionsDialog(QDialog):
             self.add_excluded_field(action.data(), action.text())
             redraw_list(self.ui.queueExcludedFieldList)
 
+        if actions_type == Config.LEECH_ACTIONS:
+            self.ui.expandoButton.setText(String.LEECH_ACTIONS)
+        if actions_type == Config.REVERSE_ACTIONS:
+            self.ui.expandoButton.setText(String.LEECH_REVERSE_ACTIONS)
+
         self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
 
         self.ui.queueExcludedFieldList.setStyleSheet('#editFieldsList {background-color: transparent;}')
@@ -241,43 +324,15 @@ class OptionsDialog(QDialog):
         self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
         self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
         self.ui.queueAddFieldButton.menu().triggered.connect(lambda action: handle_field_selected(action))
-        self.ui.useLeechThresholdCheckbox.stateChanged.connect(
-            lambda c: self.ui.reverseThresholdSpinbox.setEnabled(not c)
-        )
 
-        self.ui.leechActionExpandoWidget.set_click_function(lambda: self.toggle_expando(self.ui.leechExpandoButton))
-        self.ui.leechExpandoButton.pressed.connect(lambda: self.toggle_expando(self.ui.leechExpandoButton))
-        self.toggle_expando(self.ui.leechExpandoButton, False)
+        self.ui.expandoWidget.set_click_function(lambda: self.toggle_expando(self.ui.expandoButton))
+        self.ui.expandoButton.pressed.connect(lambda: self.toggle_expando(self.ui.expandoButton))
+        self.toggle_expando(self.ui.expandoButton, False)
 
-        self._load()
-
-        # Just in case
-        self.ui.tabWidget.setCurrentIndex(0)
-
-    def _load(self):
-        self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
-
-        self.ui.showMarkerChecbkbox.setChecked(self.config[Config.SHOW_LEECH_MARKER])
-        self.ui.almostCheckbox.setChecked(self.config[Config.USE_ALMOST_MARKER])
-        self.ui.almostPosDropdown.setCurrentIndex(self.config[Config.MARKER_POSITION])
-        self.ui.almostBackCheckbox.setChecked(self.config[Config.ONLY_SHOW_BACK_MARKER])
-
-        self.ui.browseButtonCheckbox.setChecked(self.config[Config.SHOW_BROWSE_BUTTON])
-        self.ui.browseButtonBrowserCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_BROWSER])
-        self.ui.browseButtonOverviewCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_OVERVIEW])
-
-        self.ui.reverseCheckbox.setChecked(self.config[Config.REVERSE_ENABLED])
-        self.ui.useLeechThresholdCheckbox.setChecked(self.config[Config.REVERSE_USE_LEECH_THRESHOLD])
-        self.ui.reverseMethodDropdown.setCurrentIndex(self.config[Config.REVERSE_METHOD])
-        self.ui.reverseThresholdSpinbox.setValue(self.config[Config.REVERSE_THRESHOLD])
-        self.ui.consAnswerSpinbox.setValue(self.config[Config.REVERSE_CONS_ANS])
-
-        # Leech Actions
-        action_config = self.config[Config.LEECH_ACTIONS]
-
+    def load(self):
         # FLAG
-        self.ui.flagCheckbox.setChecked(action_config[Action.FLAG][Action.ENABLED])
-        self.ui.flagDropdown.setCurrentIndex(action_config[Action.FLAG][Action.INPUT])
+        self.ui.flagCheckbox.setChecked(self.config[Action.FLAG][Action.ENABLED])
+        self.ui.flagDropdown.setCurrentIndex(self.config[Action.FLAG][Action.INPUT])
 
         flag_manager = aqt.flags.FlagManager(mw)
         for index in range(1, self.ui.flagDropdown.count()):
@@ -290,9 +345,9 @@ class OptionsDialog(QDialog):
             self.ui.flagDropdown.setItemText(index, f'{flag.label}')
 
         # SUSPEND
-        self.ui.suspendCheckbox.setChecked(action_config[Action.SUSPEND][Action.ENABLED])
-        self.ui.suspendOnButton.setChecked(action_config[Action.SUSPEND][Action.INPUT])
-        self.ui.suspendOffButton.setChecked(not action_config[Action.SUSPEND][Action.INPUT])
+        self.ui.suspendCheckbox.setChecked(self.config[Action.SUSPEND][Action.ENABLED])
+        self.ui.suspendOnButton.setChecked(self.config[Action.SUSPEND][Action.INPUT])
+        self.ui.suspendOffButton.setChecked(not self.config[Action.SUSPEND][Action.INPUT])
 
         # TAGS
         suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
@@ -300,45 +355,45 @@ class OptionsDialog(QDialog):
         self.remove_completer.set_list(suggestions)
 
         # ADD TAGS
-        self.ui.addTagsCheckbox.setChecked(action_config[Action.ADD_TAGS][Action.ENABLED])
-        self.ui.addTagsLine.setText(action_config[Action.ADD_TAGS][Action.INPUT])
+        self.ui.addTagsCheckbox.setChecked(self.config[Action.ADD_TAGS][Action.ENABLED])
+        self.ui.addTagsLine.setText(self.config[Action.ADD_TAGS][Action.INPUT])
         self.ui.addTagsLine.setCompleter(self.add_completer)
 
         # REMOVE TAGS
-        self.ui.removeTagsCheckbox.setChecked(action_config[Action.REMOVE_TAGS][Action.ENABLED])
-        self.ui.removeTagsLine.setText(action_config[Action.REMOVE_TAGS][Action.INPUT])
+        self.ui.removeTagsCheckbox.setChecked(self.config[Action.REMOVE_TAGS][Action.ENABLED])
+        self.ui.removeTagsLine.setText(self.config[Action.REMOVE_TAGS][Action.INPUT])
         self.ui.removeTagsLine.setCompleter(self.remove_completer)
 
         # FORGET
-        self.ui.forgetCheckbox.setChecked(action_config[Action.FORGET][Action.ENABLED])
-        self.ui.forgetOnRadio.setChecked(action_config[Action.FORGET][Action.INPUT][0])
-        self.ui.forgetOffRadio.setChecked(not action_config[Action.FORGET][Action.INPUT][0])
-        self.ui.forgetRestorePosCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][1])
-        self.ui.forgetResetCheckbox.setChecked(action_config[Action.FORGET][Action.INPUT][2])
+        self.ui.forgetCheckbox.setChecked(self.config[Action.FORGET][Action.ENABLED])
+        self.ui.forgetOnRadio.setChecked(self.config[Action.FORGET][Action.INPUT][0])
+        self.ui.forgetOffRadio.setChecked(not self.config[Action.FORGET][Action.INPUT][0])
+        self.ui.forgetRestorePosCheckbox.setChecked(self.config[Action.FORGET][Action.INPUT][1])
+        self.ui.forgetResetCheckbox.setChecked(self.config[Action.FORGET][Action.INPUT][2])
 
         # FIELDS
-        self.ui.editFieldsCheckbox.setChecked(action_config[Action.EDIT_FIELDS][Action.ENABLED])
-        self.add_edit_items(action_config[Action.EDIT_FIELDS][Action.INPUT])
+        self.ui.editFieldsCheckbox.setChecked(self.config[Action.EDIT_FIELDS][Action.ENABLED])
+        self.add_edit_items(self.config[Action.EDIT_FIELDS][Action.INPUT])
         redraw_list(self.ui.editFieldsList, max_fields_height)
 
         # DECK MOVE
-        self.ui.deckMoveCheckbox.setChecked(action_config[Action.MOVE_TO_DECK][Action.ENABLED])
+        self.ui.deckMoveCheckbox.setChecked(self.config[Action.MOVE_TO_DECK][Action.ENABLED])
         deck_names = mw.col.decks.all_names()
-        deck_name = mw.col.decks.name_if_exists(action_config[Action.MOVE_TO_DECK][Action.INPUT])
+        deck_name = mw.col.decks.name_if_exists(self.config[Action.MOVE_TO_DECK][Action.INPUT])
         self.deck_completer.set_list(deck_names)
         self.ui.deckMoveLine.setCompleter(self.deck_completer)
         self.ui.deckMoveLine.setText(deck_name)
 
         # RESCHEDULE
-        reschedule_input = action_config[Action.RESCHEDULE][Action.INPUT]
-        self.ui.rescheduleCheckbox.setChecked(action_config[Action.RESCHEDULE][Action.ENABLED])
+        reschedule_input = self.config[Action.RESCHEDULE][Action.INPUT]
+        self.ui.rescheduleCheckbox.setChecked(self.config[Action.RESCHEDULE][Action.ENABLED])
         self.ui.rescheduleFromDays.setValue(reschedule_input[RescheduleAction.FROM])
         self.ui.rescheduleToDays.setValue(reschedule_input[RescheduleAction.TO])
         self.ui.rescheduleResetCheckbox.setChecked(reschedule_input[RescheduleAction.RESET])
 
         # ADD TO QUEUE
-        queue_input = action_config[Action.ADD_TO_QUEUE][Action.INPUT]
-        self.ui.queueCheckbox.setChecked(action_config[Action.ADD_TO_QUEUE][Action.ENABLED])
+        queue_input = self.config[Action.ADD_TO_QUEUE][Action.INPUT]
+        self.ui.queueCheckbox.setChecked(self.config[Action.ADD_TO_QUEUE][Action.ENABLED])
         self.ui.queueFromDropdown.setCurrentIndex(queue_input[QueueAction.FROM_INDEX])
         self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
         self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
@@ -370,76 +425,56 @@ class OptionsDialog(QDialog):
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
         self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
 
-    def _save(self):
-        self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
-
-        self.config[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerChecbkbox.isChecked()
-        self.config[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
-        self.config[Config.MARKER_POSITION] = self.ui.almostPosDropdown.currentIndex()
-        self.config[Config.ONLY_SHOW_BACK_MARKER] = self.ui.almostBackCheckbox.isChecked()
-
-        self.config[Config.SHOW_BROWSE_BUTTON] = self.ui.browseButtonCheckbox.isChecked()
-        self.config[Config.BROWSE_BUTTON_ON_BROWSER] = self.ui.browseButtonBrowserCheckbox.isChecked()
-        self.config[Config.BROWSE_BUTTON_ON_OVERVIEW] = self.ui.browseButtonOverviewCheckbox.isChecked()
-
-        self.config[Config.REVERSE_ENABLED] = self.ui.reverseCheckbox.isChecked()
-        self.config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
-        self.config[Config.REVERSE_USE_LEECH_THRESHOLD] = self.ui.useLeechThresholdCheckbox.isChecked()
-        self.config[Config.REVERSE_THRESHOLD] = self.ui.reverseThresholdSpinbox.value()
-        self.config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
-
-        # Leech Actions
-        action_config = self.config[Config.LEECH_ACTIONS]
-
+    def save(self):
         # FLAG
-        action_config[Action.FLAG][Action.ENABLED] = self.ui.flagCheckbox.isChecked()
-        action_config[Action.FLAG][Action.INPUT] = self.ui.flagDropdown.currentIndex()
+        self.config[Action.FLAG][Action.ENABLED] = self.ui.flagCheckbox.isChecked()
+        self.config[Action.FLAG][Action.INPUT] = self.ui.flagDropdown.currentIndex()
 
         # SUSPEND
-        action_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
-        action_config[Action.SUSPEND][Action.INPUT] = self.ui.suspendOnButton.isChecked()
+        self.config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
+        self.config[Action.SUSPEND][Action.INPUT] = self.ui.suspendOnButton.isChecked()
 
         # ADD TAGS
-        action_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
-        action_config[Action.ADD_TAGS][Action.INPUT] = \
+        self.config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
+        self.config[Action.ADD_TAGS][Action.INPUT] = \
             mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
 
         # REMOVE TAGS
-        action_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
-        action_config[Action.REMOVE_TAGS][Action.INPUT] = \
+        self.config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
+        self.config[Action.REMOVE_TAGS][Action.INPUT] = \
             mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
 
         # FORGET
-        action_config[Action.FORGET][Action.ENABLED] = self.ui.forgetCheckbox.isChecked()
-        action_config[Action.FORGET][Action.INPUT][0] = self.ui.forgetOnRadio.isChecked()
-        action_config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
-        action_config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
+        self.config[Action.FORGET][Action.ENABLED] = self.ui.forgetCheckbox.isChecked()
+        self.config[Action.FORGET][Action.INPUT][0] = self.ui.forgetOnRadio.isChecked()
+        self.config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
+        self.config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
 
         # FIELDS
-        action_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
-        action_config[Action.EDIT_FIELDS][Action.INPUT] = {}
+        self.config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
+        self.config[Action.EDIT_FIELDS][Action.INPUT] = {}
         for i in range(self.ui.editFieldsList.count()):
             item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
             note_id = str(item.note['id'])
-            if note_id in action_config[Action.EDIT_FIELDS][Action.INPUT]:
+            if note_id in self.config[Action.EDIT_FIELDS][Action.INPUT]:
                 note_id += f'.{self.get_same_notes_count(note_id)}'
-            action_config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
+            self.config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
 
         # DECK MOVE
-        action_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
+        self.config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
         stored_did = self.ui.deckMoveLine.text()
-        action_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else None
+        self.config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else None
 
         # RESCHEDULE
-        reschedule_input = action_config[Action.RESCHEDULE][Action.INPUT]
-        action_config[Action.RESCHEDULE][Action.ENABLED] = self.ui.rescheduleCheckbox.isChecked()
+        reschedule_input = self.config[Action.RESCHEDULE][Action.INPUT]
+        self.config[Action.RESCHEDULE][Action.ENABLED] = self.ui.rescheduleCheckbox.isChecked()
         reschedule_input[RescheduleAction.FROM] = self.ui.rescheduleFromDays.value()
         reschedule_input[RescheduleAction.TO] = self.ui.rescheduleToDays.value()
         reschedule_input[RescheduleAction.RESET] = self.ui.rescheduleResetCheckbox.isChecked()
 
         # ADD TO QUEUE
-        queue_input = action_config[Action.ADD_TO_QUEUE][Action.INPUT]
-        action_config[Action.ADD_TO_QUEUE][Action.ENABLED] = self.ui.queueCheckbox.isChecked()
+        queue_input = self.config[Action.ADD_TO_QUEUE][Action.INPUT]
+        self.config[Action.ADD_TO_QUEUE][Action.ENABLED] = self.ui.queueCheckbox.isChecked()
         queue_input[QueueAction.FROM_INDEX] = self.ui.queueFromDropdown.currentIndex()
         queue_input[QueueAction.TO_INDEX] = self.ui.queueToDropdown.currentIndex()
         queue_input[QueueAction.FROM_VAL] = self.ui.queueFromSpinbox.formatted_value()
@@ -458,19 +493,14 @@ class OptionsDialog(QDialog):
 
         queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
 
-        # Write
-        self.manager.write_config()
-        if mw.state == 'review':
-            reviewer.refresh_action_manager(mw.reviewer)
-
     def toggle_expando(self, button: aqt.qt.QToolButton, toggle: bool = None):
-        toggle = not self.ui.leechActionFrame.isVisible() if toggle is None else toggle
+        toggle = not self.ui.actionsFrame.isVisible() if toggle is None else toggle
         button.setArrowType(arrow_types[toggle])
-        if button == self.ui.leechExpandoButton:
-            self.ui.leechActionFrame.setVisible(toggle)
+        if button == self.ui.expandoButton:
+            self.ui.actionsFrame.setVisible(toggle)
 
     def get_same_notes_count(self, nid):
-        filtered_nids = self.config[Config.LEECH_ACTIONS][Action.EDIT_FIELDS][Action.INPUT]
+        filtered_nids = self.dialog.config[Config.LEECH_ACTIONS][Action.EDIT_FIELDS][Action.INPUT]
         return len(
             [
                 filtered_nid
@@ -478,12 +508,6 @@ class OptionsDialog(QDialog):
                 if str(filtered_nid).find(str(nid)) >= 0
             ]
         )
-
-    def accept(self) -> None:
-        self._save()
-        super().accept()
-        bind_actions()
-        mw.reset()
 
     def add_edit_items(self, data: {str: {str: int or str}}):
         for filtered_nid in data:
@@ -541,9 +565,9 @@ class ExcludedFieldItem(QWidget):
         """
         return field_list.itemWidget(item)
 
-    def __init__(self, dialog: OptionsDialog, mid: int, field_name: str):
+    def __init__(self, actions_dialog: ActionsWidget, mid: int, field_name: str):
         super().__init__(flags=mw.windowFlags())
-        self.dialog = dialog
+        self.dialog = actions_dialog
         self.mid = mid
         self.widget = Ui_ExcludedFieldItem()
         self.widget.setupUi(ExcludedFieldItem=self)
@@ -595,7 +619,7 @@ class EditFieldItem(QWidget):
 
     def __init__(
             self,
-            dialog: OptionsDialog,
+            actions_dialog: ActionsWidget,
             nid: int,
             field_idx: int = -1,
             method_idx=EditAction.EditMethod(0),
@@ -605,11 +629,11 @@ class EditFieldItem(QWidget):
         """
 NoteItem used for the field edit list.
         :param text: string value to use for the label of the list item
-        :param dialog: reference to the base class to use for context menu actions
+        :param actions_dialog: reference to the base class to use for context menu actions
         """
         super().__init__(flags=mw.windowFlags())
         self.context_menu = QMenu(self)
-        self.dialog = dialog
+        self.dialog = actions_dialog
         self.widget = Ui_EditFieldItem()
         self.widget.setupUi(EditFieldItem=self)
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
