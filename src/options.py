@@ -38,6 +38,7 @@ from ..res.ui.options_dialog import Ui_OptionsDialog
 
 max_fields_height = 572
 max_queue_height = 256
+arrow_types = [Qt.RightArrow, Qt.DownArrow]
 
 
 def bind_actions():
@@ -243,6 +244,10 @@ class OptionsDialog(QDialog):
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(
             lambda c: self.ui.reverseThresholdSpinbox.setEnabled(not c)
         )
+
+        self.ui.leechActionExpandoWidget.set_click_function(lambda: self.toggle_expando(self.ui.leechExpandoButton))
+        self.ui.leechExpandoButton.pressed.connect(lambda: self.toggle_expando(self.ui.leechExpandoButton))
+        self.toggle_expando(self.ui.leechExpandoButton, False)
 
         self._load()
 
@@ -457,6 +462,12 @@ class OptionsDialog(QDialog):
         self.manager.write_config()
         if mw.state == 'review':
             reviewer.refresh_action_manager(mw.reviewer)
+
+    def toggle_expando(self, button: aqt.qt.QToolButton, toggle: bool = None):
+        toggle = not self.ui.leechActionFrame.isVisible() if toggle is None else toggle
+        button.setArrowType(arrow_types[toggle])
+        if button == self.ui.leechExpandoButton:
+            self.ui.leechActionFrame.setVisible(toggle)
 
     def get_same_notes_count(self, nid):
         filtered_nids = self.config[Config.LEECH_ACTIONS][Action.EDIT_FIELDS][Action.INPUT]
