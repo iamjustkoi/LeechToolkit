@@ -2,10 +2,10 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-from aqt.toolbar import BottomBar
+from aqt import dialogs, mw
 from aqt.deckbrowser import DeckBrowserBottomBar
 from aqt.overview import OverviewBottomBar
-from aqt import dialogs, mw
+from aqt.toolbar import BottomBar
 
 from .config import LeechToolkitConfigManager
 from .consts import String, Config, LEECH_TAG
@@ -33,7 +33,7 @@ Custom handler for drawing Anki's bottom bar.
 
                 def leech_link_handler(url):
                     """
-                Custom link handler that adds functionality for the leech_update-browse button's link.
+                Custom link handler that adds functionality for the run_actions-browse button's link.
                     :param url: passed url string to handle
                     """
                     if url == String.LEECHES_URL:
