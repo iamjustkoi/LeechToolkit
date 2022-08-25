@@ -15,7 +15,7 @@ class Ui_OptionsDialog(object):
     def setupUi(self, OptionsDialog):
         OptionsDialog.setObjectName("OptionsDialog")
         OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
-        OptionsDialog.resize(540, 585)
+        OptionsDialog.resize(540, 511)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(OptionsDialog)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabWidget = QtWidgets.QTabWidget(OptionsDialog)
@@ -180,7 +180,7 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 479, 952))
+        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 496, 227))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -199,8 +199,8 @@ class Ui_OptionsDialog(object):
         self.actionsScrollFrame.setMouseTracking(True)
         self.actionsScrollFrame.setObjectName("actionsScrollFrame")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
+<<<<<<< HEAD
         self.leechActionExpandoWidget = ExpandoWidget(self.actionsScrollFrame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
@@ -704,6 +704,8 @@ class Ui_OptionsDialog(object):
         self.horizontalLayout_20.addWidget(self.queueRatioSlider)
         self.leechActionsLayout.setWidget(15, QtWidgets.QFormLayout.FieldRole, self.frame_9)
         self.verticalLayout_7.addWidget(self.leechActionFrame)
+=======
+>>>>>>> a2aa2d5 (Changed how actions are appended to options and added reverse leech expando)
         self.verticalLayout_6.addWidget(self.actionsScrollFrame)
         self.ActionsScrollArea.setWidget(self.ActionsScrollWidget)
 >>>>>>> 3c6e0cb (Add expando function to leech actions)
@@ -752,6 +754,7 @@ class Ui_OptionsDialog(object):
         self.reverseMethodDropdown.setItemText(0, _translate("OptionsDialog", "Decrease card\'s total lapse count"))
         self.reverseMethodDropdown.setItemText(1, _translate("OptionsDialog", "Reset card\'s total lapse count"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.generalTab), _translate("OptionsDialog", "General"))
+<<<<<<< HEAD
         self.leechExpandoButton.setText(_translate("OptionsDialog", "Leech Actions"))
         self.flagCheckbox.setText(_translate("OptionsDialog", "Set Flag"))
         self.flagDropdown.setItemText(0, _translate("OptionsDialog", "No Flag"))
@@ -841,10 +844,9 @@ class Ui_OptionsDialog(object):
         self.queueRatioSlider.setToolTip(_translate("OptionsDialog",
                                                     "Controls how similar a card\'s fields must be for it to be considered \"similar\"."))
 >>>>>>> 3c6e0cb (Add expando function to leech actions)
+=======
+>>>>>>> a2aa2d5 (Changed how actions are appended to options and added reverse leech expando)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
-
-
-from .forms import ExpandoWidget, QueueSpinBox, TipSlider
 
 
 if __name__ == "__main__":
