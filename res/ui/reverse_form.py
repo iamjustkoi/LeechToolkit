@@ -38,7 +38,6 @@ class Ui_ReverseForm(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.reverseCheckbox.sizePolicy().hasHeightForWidth())
         self.reverseCheckbox.setSizePolicy(sizePolicy)
-        self.reverseCheckbox.setChecked(True)
         self.reverseCheckbox.setObjectName("reverseCheckbox")
         self.verticalLayout_2.addWidget(self.reverseCheckbox)
         self.reverseThresholdLayout = QtWidgets.QHBoxLayout()

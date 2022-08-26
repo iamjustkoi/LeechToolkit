@@ -500,7 +500,7 @@ class Ui_ActionsWidget(object):
         self.rescheduleCheckbox.setText(_translate("ActionsWidget", "Set Due Date"))
         self.rescheduleText1.setText(_translate("ActionsWidget", "Between"))
         self.rescheduleText2.setText(_translate("ActionsWidget", "and"))
-        self.rescheduleToDays.setSuffix(_translate("ActionsWidget", "days"))
+        self.rescheduleToDays.setSuffix(_translate("ActionsWidget", " days"))
         self.rescheduleResetCheckbox.setToolTip(_translate("ActionsWidget",
                                                            "Updates the card\'s interval using the time between the current day and the updated date."))
         self.rescheduleResetCheckbox.setText(_translate("ActionsWidget", "Update interval"))

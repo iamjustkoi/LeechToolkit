@@ -35,29 +35,26 @@
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
-         <widget class="QWidget" name="OptionsScrollWidget">
-             <property name="geometry">
-                 <rect>
-                     <x>0</x>
-                     <y>0</y>
-                     <width>488</width>
-                     <height>277</height>
-                 </rect>
-             </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <layout class="QVBoxLayout" name="optionsScrollLayout">
-           <item>
-            <widget class="QCheckBox" name="toolsOptionsCheckBox">
-             <property name="text">
+            <widget class="QWidget" name="OptionsScrollWidget">
+                <property name="geometry">
+                    <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>488</width>
+                        <height>277</height>
+                    </rect>
+                </property>
+                <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                    </sizepolicy>
+                </property>
+                <layout class="QVBoxLayout" name="optionsScrollLayout">
+                    <item>
+                        <widget class="QCheckBox" name="toolsOptionsCheckBox">
+                            <property name="text">
               <string>Show options in Tools menu</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -72,18 +69,12 @@
                 <property name="text">
                  <string>Show a marker on leech cards during review</string>
                 </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
                </widget>
               </item>
               <item>
                <widget class="QCheckBox" name="almostBackCheckbox">
                 <property name="text">
                  <string>Only show on back of cards</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -94,9 +85,6 @@
                 </property>
                 <property name="text">
                  <string>Show unique marker for about-to-be-leeched cards</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -153,9 +141,6 @@
                 <property name="text">
                  <string>Enable &quot;Leech Cards&quot; button on bottom bar</string>
                 </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
                </widget>
               </item>
               <item>
@@ -169,18 +154,12 @@
                    <property name="text">
                     <string>Deck Browser</string>
                    </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
                    <property name="text">
                     <string>Deck Overview</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
@@ -243,21 +222,21 @@
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <item>
-               <widget class="QFrame" name="actionsScrollFrame">
-                   <property name="mouseTracking">
-                       <bool>true</bool>
-                   </property>
-                   <layout class="QVBoxLayout" name="actionsScrollLayout">
-                       <property name="topMargin">
-                           <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                           <number>0</number>
-                       </property>
-                   </layout>
-               </widget>
-           </item>
+              <item>
+                  <widget class="QFrame" name="actionsScrollFrame">
+                      <property name="mouseTracking">
+                          <bool>true</bool>
+                      </property>
+                      <layout class="QVBoxLayout" name="actionsScrollLayout">
+                          <property name="topMargin">
+                              <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                              <number>0</number>
+                          </property>
+                      </layout>
+                  </widget>
+              </item>
           </layout>
          </widget>
         </widget>
