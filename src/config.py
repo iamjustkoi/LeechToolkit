@@ -16,7 +16,7 @@ def _init_default_fields(config: dict, default_config: dict):
     """
     for field in default_config:
         if field not in config:
-            print(f'\nField not found: {field}')
+            print(f'Default field added: {field}')
             config[field] = default_config[field]
         elif isinstance(default_config[field], dict):
             _init_default_fields(config[field], default_config[field])
@@ -46,15 +46,15 @@ Writes the config manager's current values to the addon meta file.
         """
         self._mw.addonManager.writeAddonMeta(self._addon, self._meta)
 
-    def config_for_did(self, did: int, init=True):
-        config_id = self._mw.col.decks.config_dict_for_deck_id(did)['id']
+    def config_for_did(self, did: int):
+        config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
+        config: dict = self.config.get(config_id, {})
 
-        config = self.config.get(str(config_id), {})
+        deck_default_conf = {}
+        for key in Config.DECK_DEFAULT_CATEGORIES:
+            deck_default_conf[key] = Config.DEFAULT_CONFIG[key] if key != Config.REVERSE_ENABLED else False
 
-        if init:
-            default_config = Config.DEFAULT_CONFIG
-            default_config[Config.REVERSE_ENABLED] = False
-            _init_default_fields(config, default_config)
+        _init_default_fields(config, deck_default_conf)
 
-        self.config[str(config_id)] = config
+        self.config[config_id] = config
         return config
