@@ -3,10 +3,11 @@ MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjust
 Full license text available in "LICENSE" file packaged with the program.
 """
 from aqt import AnkiQt
+
 from .consts import Config
 
 
-def _init_default_fields(default_config: dict, config: dict):
+def _init_default_fields(config: dict, default_config: dict):
     """
     Recursively initializes config variables using the default config. If a field exists but also has subfields,
     does subsequent checks through each subfield as well.
@@ -37,7 +38,7 @@ Config manager for accessing and writing addon config values.
         self.config = self._meta.get('config', Config.DEFAULT_CONFIG)
         self.decks = self.mw.col.decks if self.mw.col is not None else None
 
-        _init_default_fields(Config.DEFAULT_CONFIG, self.config)
+        _init_default_fields(self.config, Config.DEFAULT_CONFIG)
 
         self._meta['config'] = self.config
 
