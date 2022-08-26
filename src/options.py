@@ -222,6 +222,7 @@ class OptionsDialog(QDialog):
         self.reverse_form.load(self.config)
 
     def _save(self):
+        print(f'options save')
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
         self.config[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerChecbkbox.isChecked()
@@ -372,7 +373,7 @@ class ActionsWidget(QWidget):
 
         # DECK MOVE
         self.ui.deckMoveCheckbox.setChecked(actions_config[Action.MOVE_TO_DECK][Action.ENABLED])
-        deck_names = mw.col.decks.all_names()
+        deck_names = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
         deck_name = mw.col.decks.name_if_exists(actions_config[Action.MOVE_TO_DECK][Action.INPUT])
         self.deck_completer.set_list(deck_names)
         self.ui.deckMoveLine.setCompleter(self.deck_completer)
