@@ -36,8 +36,6 @@ Config manager for accessing and writing addon config values.
         self._meta = self._mw.addonManager.addonMeta(self._addon)
 
         self.config = self._meta.get('config', Config.DEFAULT_CONFIG)
-        self.decks = self._mw.col.decks if self._mw.col is not None else None
-
         _init_default_fields(self.config, Config.DEFAULT_CONFIG)
 
         self._meta['config'] = self.config
@@ -48,8 +46,6 @@ Writes the config manager's current values to the addon meta file.
         """
         self._mw.addonManager.writeAddonMeta(self._addon, self._meta)
 
-    def refresh_config(self):
-        """
-Placeholder for config refreshes/rewrites per-updates, etc.
-        """
-
+    def config_for_did(self, did: int):
+        config_id = self._mw.col.decks.config_dict_for_deck_id(did)['id']
+        return self.config.get(f'{config_id}', Config.DEFAULT_CONFIG)
