@@ -194,10 +194,10 @@ class OptionsDialog(QDialog):
         self.reverse_form = ReverseWidget(mw.windowFlags())
         self.ui.optionsScrollLayout.addWidget(self.reverse_form.ui.reverseGroup)
 
-        self.leech_actions = ActionsWidget(self, Config.LEECH_ACTIONS)
+        self.leech_actions = ActionsWidget(self.config, Config.LEECH_ACTIONS)
         self.ui.actionsScrollLayout.addWidget(self.leech_actions)
 
-        self.reverse_actions = ActionsWidget(self, Config.REVERSE_ACTIONS)
+        self.reverse_actions = ActionsWidget(self.config, Config.REVERSE_ACTIONS)
         self.ui.actionsScrollLayout.addWidget(self.reverse_actions)
 
         self.reverse_form.ui.useLeechThresholdCheckbox.stateChanged.connect(
@@ -264,12 +264,11 @@ class OptionsDialog(QDialog):
 
 
 class ActionsWidget(QWidget):
-    def __init__(self, options: OptionsDialog, actions_type: str, parent=None, expanded=True):
+    def __init__(self, config, actions_type: str, parent=None, expanded=True):
         super().__init__(parent, mw.windowFlags())
         self.ui = Ui_ActionsWidget()
-        self.dialog = options
         self.ui.setupUi(ActionsWidget=self)
-        self.config = self.dialog.config[actions_type]
+        self.config = config[actions_type]
 
         def handle_note_selected(dialog: Models):
             dialog.close()
@@ -505,7 +504,7 @@ class ActionsWidget(QWidget):
             self.ui.actionsFrame.setVisible(toggle)
 
     def get_same_notes_count(self, nid):
-        filtered_nids = self.dialog.config[Config.LEECH_ACTIONS][Action.EDIT_FIELDS][Action.INPUT]
+        filtered_nids = self.config[Config.LEECH_ACTIONS][Action.EDIT_FIELDS][Action.INPUT]
         return len(
             [
                 filtered_nid
