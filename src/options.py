@@ -35,8 +35,8 @@ from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction,
 from ..res.ui.actions_widget import Ui_ActionsWidget
 from ..res.ui.edit_field_item import Ui_EditFieldItem
 from ..res.ui.exclude_field_item import Ui_ExcludedFieldItem
-from ..res.ui.forms import ReverseWidget
 from ..res.ui.options_dialog import Ui_OptionsDialog
+from ..res.ui.reverse_form import Ui_ReverseForm
 
 max_fields_height = 572
 max_queue_height = 256
@@ -556,6 +556,13 @@ class ActionsWidget(QWidget):
 
         self.ui.queueExcludedFieldList.addItem(list_item)
         self.ui.queueExcludedFieldList.setItemWidget(list_item, field_item)
+
+
+class ReverseWidget(QWidget):
+    def __init__(self, flags):
+        super().__init__(flags=flags)
+        self.ui = Ui_ReverseForm()
+        self.ui.setupUi(self)
 
 
 class ExcludedFieldItem(QWidget):
