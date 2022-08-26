@@ -185,7 +185,7 @@ class OptionsDialog(QDialog):
     deck_completer: CustomCompleter
 
     def __init__(self, manager: LeechToolkitConfigManager):
-        super().__init__(flags=manager.mw.windowFlags())
+        super().__init__(flags=mw.windowFlags())
         self.manager = manager
         self.config = manager.config
         self.ui = Ui_OptionsDialog()
