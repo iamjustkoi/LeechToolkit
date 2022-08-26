@@ -253,6 +253,8 @@ class OptionsDialog(QDialog):
 
         # Write
         self.manager.write_config()
+
+        # Refresh reviewer if currently active
         if mw.state == 'review':
             reviewer.refresh_action_manager(mw.reviewer)
 
