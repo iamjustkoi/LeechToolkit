@@ -154,11 +154,14 @@ class ActionsManager:
                 cmd = f'''
                     SELECT {{get}} FROM cards
                     WHERE id != {updated_card.id}
+                    AND did == {updated_card.did}
                     AND due BETWEEN {from_pos} AND {to_pos}
                 '''
 
                 if queue_inputs[QueueAction.NEAR_SIBLING]:
-                    cmd += f'''    AND nid = {updated_card.nid} AND queue = {QUEUE_TYPE_NEW}'''
+                    cmd += f'    AND nid = {updated_card.nid} AND queue = {QUEUE_TYPE_NEW}'
+                else:
+                    cmd += f'    AND nid != {updated_card.nid}'
 
                 filtered_ids = card.col.db.list(cmd.format(get='id'))
                 filtered_positions = card.col.db.list(cmd.format(get='due'))
@@ -202,12 +205,12 @@ class ActionsManager:
                         new_card = card.col.get_card(cid)
                         is_similar_card = False
 
-                        if new_card.nid != updated_card.nid:
-                            if new_card.note_type()['id'] == updated_card.note().mid:
-                                new_field_data = get_filtered_card_data(new_card.note().items())
-                                new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
-                                if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= min_ratio:
-                                    is_similar_card = True
+                        # if new_card.nid != updated_card.nid and new_card.did == updated_card.did:
+                        if new_card.note_type()['id'] == updated_card.note().mid:
+                            new_field_data = get_filtered_card_data(new_card.note().items())
+                            new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
+                            if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= min_ratio:
+                                is_similar_card = True
 
                         if not is_similar_card:
                             filtered_positions.remove(new_card.due)
