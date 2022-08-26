@@ -200,10 +200,6 @@ class OptionsDialog(QDialog):
         self.reverse_actions = ActionsWidget(self.config, Config.REVERSE_ACTIONS)
         self.ui.actionsScrollLayout.addWidget(self.reverse_actions)
 
-        self.reverse_form.ui.useLeechThresholdCheckbox.stateChanged.connect(
-            lambda c: self.reverse_form.ui.reverseThresholdSpinbox.setEnabled(not c)
-        )
-
         self._load()
 
         # Just in case
@@ -429,6 +425,7 @@ class ActionsWidget(QWidget):
         self.ui.queueExcludedFieldList.sortItems()
 
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
+
         self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
 
     def save(self):
@@ -564,6 +561,11 @@ class ReverseWidget(QWidget):
         super().__init__(flags=flags)
         self.ui = Ui_ReverseForm()
         self.ui.setupUi(self)
+
+        def toggle_threshold(checked: bool):
+            self.ui.reverseThresholdSpinbox.setEnabled(checked)
+
+        self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
 
 
 class ExcludedFieldItem(QWidget):
