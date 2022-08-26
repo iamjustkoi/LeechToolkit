@@ -7,10 +7,10 @@
   </property>
   <property name="geometry">
    <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>540</width>
-    <height>511</height>
+       <x>0</x>
+       <y>0</y>
+       <width>532</width>
+       <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,12 +37,12 @@
          </property>
          <widget class="QWidget" name="OptionsScrollWidget">
           <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>496</width>
-            <height>415</height>
-           </rect>
+              <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>488</width>
+                  <height>277</height>
+              </rect>
           </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -190,134 +190,6 @@
              </layout>
             </widget>
            </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox">
-             <property name="title">
-              <string>Leech Reverse</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_2">
-              <item>
-               <widget class="QCheckBox" name="reverseCheckbox">
-                <property name="text">
-                 <string>Enable leech reversing</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="reverseThresholdLayout">
-                <item>
-                 <widget class="QLabel" name="reverseThresholdLabel">
-                  <property name="text">
-                   <string>Reverse Threshold</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="useLeechThresholdCheckbox">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Same as Leech Threshold</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="reverseThresholdSpinbox">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="toolTip">
-                   <string>Un-leeches any cards with a lapse count below this value.</string>
-                  </property>
-                  <property name="maximum">
-                   <number>999</number>
-                  </property>
-                  <property name="value">
-                   <number>4</number>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout">
-                <item>
-                 <widget class="QLabel" name="consPrefixLabel">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Every</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="consAnswerSpinbox">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="suffix">
-                   <string/>
-                  </property>
-                  <property name="prefix">
-                   <string/>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>9999</number>
-                  </property>
-                  <property name="value">
-                   <number>2</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="consSuffixLabel">
-                  <property name="text">
-                   <string>correct answer(s) in a row:</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QComboBox" name="reverseMethodDropdown">
-                <property name="currentText">
-                 <string>Decrease card's total lapse count</string>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>Decrease card's total lapse count</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Reset card's total lapse count</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
           </layout>
          </widget>
         </widget>
@@ -348,7 +220,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>496</width>
+               <width>488</width>
             <height>16</height>
            </rect>
           </property>
@@ -373,23 +245,17 @@
            </property>
            <item>
             <widget class="QFrame" name="actionsScrollFrame">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
              <property name="mouseTracking">
               <bool>true</bool>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_7">
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-             </layout>
+                <layout class="QVBoxLayout" name="actionsScrollLayout">
+                    <property name="topMargin">
+                        <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>0</number>
+                    </property>
+                </layout>
             </widget>
            </item>
           </layout>
