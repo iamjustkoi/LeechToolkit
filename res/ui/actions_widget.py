@@ -485,7 +485,7 @@ class Ui_ActionsWidget(object):
         self.rescheduleCheckbox.setText(_translate("ActionsWidget", "Set Due Date"))
         self.rescheduleText1.setText(_translate("ActionsWidget", "Between"))
         self.rescheduleText2.setText(_translate("ActionsWidget", "and"))
-        self.rescheduleToDays.setSuffix(_translate("ActionsWidget", " days"))
+        self.rescheduleToDays.setSuffix(_translate("ActionsWidget", "days"))
         self.rescheduleResetCheckbox.setToolTip(_translate("ActionsWidget",
                                                            "Updates the card\'s interval using the time between the current day and the updated date."))
         self.rescheduleResetCheckbox.setText(_translate("ActionsWidget", "Update interval"))
@@ -505,7 +505,8 @@ class Ui_ActionsWidget(object):
         self.queueLabelBottom.setText(_translate("ActionsWidget", "Bottom:"))
         self.queueLabelBottomPos.setText(_translate("ActionsWidget", "0"))
         self.queueSimilarCheckbox.setToolTip(_translate("ActionsWidget", "Using the given range:\n"
-                                                                         "Places the card near another one in the queue based on how similar they are."))
+                                                                         "                    Places the card near another one in the queue based on how similar they are.\n"
+                                                                         "                "))
         self.queueSimilarCheckbox.setText(_translate("ActionsWidget", "Place near similar cards"))
         self.groupBox_4.setTitle(_translate("ActionsWidget", "Ignored Text"))
         self.groupBox_5.setTitle(_translate("ActionsWidget", "Filtered Fields"))
@@ -515,7 +516,8 @@ class Ui_ActionsWidget(object):
         self.queueExcludedFieldList.setSortingEnabled(True)
         self.queueAddFieldButton.setText(_translate("ActionsWidget", "Add"))
         self.queueSiblingCheckbox.setToolTip(_translate("ActionsWidget", "Using the given range:\n"
-                                                                         "Place the card next to another one if they\'re each siblings of the same note-type."))
+                                                                         "                Place the card next to another one if they\'re each siblings of the same note-type.\n"
+                                                                         "            "))
         self.queueSiblingCheckbox.setText(_translate("ActionsWidget", "Place near sibling cards"))
         self.editFieldsGroup.setTitle(_translate("ActionsWidget", "Fields"))
         self.editFieldsList.setSortingEnabled(True)
