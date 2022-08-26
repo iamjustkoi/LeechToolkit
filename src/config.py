@@ -46,12 +46,15 @@ Writes the config manager's current values to the addon meta file.
         """
         self._mw.addonManager.writeAddonMeta(self._addon, self._meta)
 
-    def config_for_did(self, did: int):
+    def config_for_did(self, did: int, init=True):
         config_id = self._mw.col.decks.config_dict_for_deck_id(did)['id']
-        config = self.config.get(f'{config_id}')
 
-        if not config:
-            config = Config.DEFAULT_CONFIG
-            config[Config.REVERSE_ENABLED] = False
+        config = self.config.get(str(config_id), {})
 
+        if init:
+            default_config = Config.DEFAULT_CONFIG
+            default_config[Config.REVERSE_ENABLED] = False
+            _init_default_fields(config, default_config)
+
+        self.config[str(config_id)] = config
         return config

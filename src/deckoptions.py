@@ -24,8 +24,6 @@ class DeckOptions(QWidget):
         self.ui.setupUi(DeckOptions=self)
         self.manager = LeechToolkitConfigManager(mw)
 
-        config = self.manager.config_for_did(did)
-
         self.reverse_widget = ReverseWidget(mw.windowFlags())
         self.leech_actions_widget = ActionsWidget(Config.LEECH_ACTIONS, expanded=False)
         self.reverse_actions_widget = ActionsWidget(Config.REVERSE_ACTIONS, expanded=False)
@@ -41,11 +39,10 @@ class DeckOptions(QWidget):
         self.reverse_widget.load(config)
 
     def save(self):
-        config = self.manager.config_for_did(self.did)
-        config.clear()
-        self.leech_actions_widget.save(config)
-        self.reverse_actions_widget.save(config)
-        self.reverse_widget.save(config)
+        config = self.manager.config_for_did(self.did, False)
+        self.leech_actions_widget.save(config, True)
+        self.reverse_actions_widget.save(config, True)
+        self.reverse_widget.save(config, True)
 
         config_id = mw.col.decks.config_dict_for_deck_id(self.did)['id']
         self.manager.config[config_id] = config
@@ -76,7 +73,7 @@ def setup_deck_options(deckconf: DeckConf):
 
 def load_deck_options(deckconf: DeckConf, *args):
     form = deckconf.form
-    form.tab_options.load(True)
+    form.tab_options.load()
 
 
 def save_deck_options(deckconf: DeckConf, *args):
