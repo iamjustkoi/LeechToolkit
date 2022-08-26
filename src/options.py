@@ -191,7 +191,7 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
-        self.reverse_form = ReverseWidget(mw.windowFlags())
+        self.reverse_form = ReverseWidget(mw.windowFlags(), self.config)
         self.ui.optionsScrollLayout.addWidget(self.reverse_form.ui.reverseGroup)
 
         self.leech_actions = ActionsWidget(self.config, Config.LEECH_ACTIONS)
@@ -217,12 +217,6 @@ class OptionsDialog(QDialog):
         self.ui.browseButtonBrowserCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_BROWSER])
         self.ui.browseButtonOverviewCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_OVERVIEW])
 
-        self.reverse_form.ui.reverseCheckbox.setChecked(self.config[Config.REVERSE_ENABLED])
-        self.reverse_form.ui.useLeechThresholdCheckbox.setChecked(self.config[Config.REVERSE_USE_LEECH_THRESHOLD])
-        self.reverse_form.ui.reverseMethodDropdown.setCurrentIndex(self.config[Config.REVERSE_METHOD])
-        self.reverse_form.ui.reverseThresholdSpinbox.setValue(self.config[Config.REVERSE_THRESHOLD])
-        self.reverse_form.ui.consAnswerSpinbox.setValue(self.config[Config.REVERSE_CONS_ANS])
-
         self.leech_actions.load()
         self.reverse_actions.load()
 
@@ -237,12 +231,6 @@ class OptionsDialog(QDialog):
         self.config[Config.SHOW_BROWSE_BUTTON] = self.ui.browseButtonCheckbox.isChecked()
         self.config[Config.BROWSE_BUTTON_ON_BROWSER] = self.ui.browseButtonBrowserCheckbox.isChecked()
         self.config[Config.BROWSE_BUTTON_ON_OVERVIEW] = self.ui.browseButtonOverviewCheckbox.isChecked()
-
-        self.config[Config.REVERSE_ENABLED] = self.reverse_form.ui.reverseCheckbox.isChecked()
-        self.config[Config.REVERSE_METHOD] = self.reverse_form.ui.reverseMethodDropdown.currentIndex()
-        self.config[Config.REVERSE_USE_LEECH_THRESHOLD] = self.reverse_form.ui.useLeechThresholdCheckbox.isChecked()
-        self.config[Config.REVERSE_THRESHOLD] = self.reverse_form.ui.reverseThresholdSpinbox.value()
-        self.config[Config.REVERSE_CONS_ANS] = self.reverse_form.ui.consAnswerSpinbox.value()
 
         self.leech_actions.save()
         self.reverse_actions.save()
@@ -557,15 +545,30 @@ class ActionsWidget(QWidget):
 
 
 class ReverseWidget(QWidget):
-    def __init__(self, flags):
+    def __init__(self, flags, config):
         super().__init__(flags=flags)
         self.ui = Ui_ReverseForm()
         self.ui.setupUi(self)
+        self.config = config
 
         def toggle_threshold(checked: bool):
             self.ui.reverseThresholdSpinbox.setEnabled(checked)
 
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
+
+    def load(self):
+        self.ui.reverseCheckbox.setChecked(self.config[Config.REVERSE_ENABLED])
+        self.ui.useLeechThresholdCheckbox.setChecked(self.config[Config.REVERSE_USE_LEECH_THRESHOLD])
+        self.ui.reverseMethodDropdown.setCurrentIndex(self.config[Config.REVERSE_METHOD])
+        self.ui.reverseThresholdSpinbox.setValue(self.config[Config.REVERSE_THRESHOLD])
+        self.ui.consAnswerSpinbox.setValue(self.config[Config.REVERSE_CONS_ANS])
+
+    def save(self):
+        self.config[Config.REVERSE_ENABLED] = self.ui.reverseCheckbox.isChecked()
+        self.config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
+        self.config[Config.REVERSE_USE_LEECH_THRESHOLD] = self.ui.useLeechThresholdCheckbox.isChecked()
+        self.config[Config.REVERSE_THRESHOLD] = self.ui.reverseThresholdSpinbox.value()
+        self.config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
 
 
 class ExcludedFieldItem(QWidget):
