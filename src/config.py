@@ -19,7 +19,7 @@ def _init_default_fields(config: dict, default_config: dict):
             print(f'\nField not found: {field}')
             config[field] = default_config[field]
         elif isinstance(default_config[field], dict):
-            _init_default_fields(default_config[field], config[field])
+            _init_default_fields(config[field], default_config[field])
 
 
 class LeechToolkitConfigManager:
