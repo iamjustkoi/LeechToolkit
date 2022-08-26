@@ -136,7 +136,7 @@ class Config:
         LEECH_ACTIONS: {
             Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
             Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
-            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'run_actions'},
+            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
             Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
             Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
             Action.EDIT_FIELDS: {
@@ -175,7 +175,7 @@ class Config:
         REVERSE_ACTIONS: {
             Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
             Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
-            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: 'run_actions'},
+            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
             Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
             Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
             Action.EDIT_FIELDS: {
