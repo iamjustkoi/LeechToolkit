@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtWidgets
 class Ui_ActionsWidget(object):
     def setupUi(self, ActionsWidget):
         ActionsWidget.setObjectName("ActionsWidget")
-        ActionsWidget.resize(443, 739)
+        ActionsWidget.resize(649, 739)
         self.verticalLayout = QtWidgets.QVBoxLayout(ActionsWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
