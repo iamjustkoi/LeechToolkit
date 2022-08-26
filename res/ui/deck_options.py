@@ -47,7 +47,6 @@ class Ui_DeckOptions(object):
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     DeckOptions = QtWidgets.QWidget()
     ui = Ui_DeckOptions()
