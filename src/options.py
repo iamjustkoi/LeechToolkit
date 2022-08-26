@@ -219,6 +219,7 @@ class OptionsDialog(QDialog):
 
         self.leech_actions.load(self.config)
         self.reverse_actions.load(self.config)
+        self.reverse_form.load(self.config)
 
     def _save(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -234,6 +235,7 @@ class OptionsDialog(QDialog):
 
         self.leech_actions.save(self.config)
         self.reverse_actions.save(self.config)
+        self.reverse_form.save(self.config)
 
         # Write
         self.manager.write_config()
