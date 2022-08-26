@@ -62,16 +62,16 @@
                      <item>
                          <widget class="QToolButton" name="expandoButton">
                              <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonTextBesideIcon</enum>
-        </property>
-        <property name="arrowType">
-         <enum>Qt::RightArrow</enum>
+                                 <enum>Qt::NoFocus</enum>
+                             </property>
+                             <property name="styleSheet">
+                                 <string notr="true">border: none;</string>
+                             </property>
+                             <property name="toolButtonStyle">
+                                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                             </property>
+                             <property name="arrowType">
+                                 <enum>Qt::RightArrow</enum>
         </property>
        </widget>
       </item>
@@ -85,34 +85,34 @@
      </layout>
     </widget>
    </item>
-   <item>
-       <widget class="QFrame" name="actionsFrame">
-           <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-               </sizepolicy>
-           </property>
-           <layout class="QFormLayout" name="leechActionsLayout">
-               <property name="leftMargin">
-                   <number>12</number>
-               </property>
-               <property name="topMargin">
-                   <number>0</number>
-               </property>
-               <property name="rightMargin">
-                   <number>0</number>
-               </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="flagCheckbox">
-        <property name="text">
-         <string>Set Flag</string>
-        </property>
-       </widget>
-      </item>
+         <item>
+             <widget class="QFrame" name="actionsFrame">
+                 <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                     </sizepolicy>
+                 </property>
+                 <layout class="QFormLayout" name="leechActionsLayout">
+                     <property name="leftMargin">
+                         <number>12</number>
+                     </property>
+                     <property name="topMargin">
+                         <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                         <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                         <number>0</number>
+                     </property>
+                     <item row="0" column="0">
+                         <widget class="QCheckBox" name="flagCheckbox">
+                             <property name="text">
+                                 <string>Set Flag</string>
+                             </property>
+                         </widget>
+                     </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="flagDropdown">
         <property name="sizeAdjustPolicy">
@@ -988,34 +988,34 @@
         </layout>
        </widget>
       </item>
-      <item row="15" column="1">
-          <widget class="QFrame" name="frame_9">
-              <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                  </sizepolicy>
-              </property>
-              <property name="minimumSize">
-                  <size>
-                      <width>0</width>
-                      <height>38</height>
-                  </size>
-              </property>
-              <property name="frameShape">
-                  <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_20">
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Similarity</string>
-           </property>
-          </widget>
-         </item>
+                     <item row="15" column="1">
+                         <widget class="QFrame" name="frame_9">
+                             <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                                     <horstretch>0</horstretch>
+                                     <verstretch>0</verstretch>
+                                 </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                                 <size>
+                                     <width>0</width>
+                                     <height>38</height>
+                                 </size>
+                             </property>
+                             <property name="frameShape">
+                                 <enum>QFrame::StyledPanel</enum>
+                             </property>
+                             <property name="frameShadow">
+                                 <enum>QFrame::Raised</enum>
+                             </property>
+                             <layout class="QHBoxLayout" name="horizontalLayout_20">
+                                 <item>
+                                     <widget class="QLabel" name="label_4">
+                                         <property name="text">
+                                             <string>Similarity</string>
+                                         </property>
+                                     </widget>
+                                 </item>
          <item>
           <widget class="TipSlider" name="queueRatioSlider">
            <property name="toolTip">

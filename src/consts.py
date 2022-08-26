@@ -119,6 +119,16 @@ class Config:
     LEECH_ACTIONS = 'leechActions'
     REVERSE_ACTIONS = 'reverseActions'
 
+    DECK_DEFAULT_CATEGORIES = {
+        REVERSE_ENABLED,
+        REVERSE_USE_LEECH_THRESHOLD,
+        REVERSE_THRESHOLD,
+        REVERSE_CONS_ANS,
+        REVERSE_METHOD,
+        LEECH_ACTIONS,
+        REVERSE_ACTIONS,
+    }
+
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SHOW_LEECH_MARKER: True,

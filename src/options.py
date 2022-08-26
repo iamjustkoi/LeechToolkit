@@ -222,7 +222,6 @@ class OptionsDialog(QDialog):
         self.reverse_form.load(self.config)
 
     def _save(self):
-        print(f'options save')
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
         self.config[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerChecbkbox.isChecked()
@@ -422,7 +421,7 @@ class ActionsWidget(QWidget):
         self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
 
     def save(self, config: dict, additive=False):
-        actions_config = config[self.actions_type]
+        actions_config = config.get(self.actions_type, {})
 
         # FLAG
         flag_enabled = self.ui.flagCheckbox.isChecked()
@@ -511,6 +510,9 @@ class ActionsWidget(QWidget):
             queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
 
             queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
+
+            if additive and len(actions_config) > 0:
+                config[self.actions_type] = actions_config
 
     def toggle_expando(self, button: aqt.qt.QToolButton, toggle: bool = None):
         toggle = not self.ui.actionsFrame.isVisible() if toggle is None else toggle
