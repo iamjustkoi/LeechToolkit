@@ -6,9 +6,15 @@
             <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>625</width>
-                <height>156</height>
+                <width>389</width>
+                <height>150</height>
             </rect>
+        </property>
+        <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+            </sizepolicy>
         </property>
         <property name="windowTitle">
             <string>ReverseForm</string>
@@ -16,6 +22,12 @@
         <layout class="QVBoxLayout" name="verticalLayout">
             <item>
                 <widget class="QGroupBox" name="reverseGroup">
+                    <property name="sizePolicy">
+                        <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
                     <property name="title">
                         <string>Leech Reverse</string>
                     </property>
@@ -25,6 +37,12 @@
                     <layout class="QVBoxLayout" name="verticalLayout_2">
                         <item>
                             <widget class="QCheckBox" name="reverseCheckbox">
+                                <property name="sizePolicy">
+                                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
                                 <property name="text">
                                     <string>Enable leech reversing</string>
                                 </property>
@@ -127,6 +145,12 @@
                         </item>
                         <item>
                             <widget class="QComboBox" name="reverseMethodDropdown">
+                                <property name="sizePolicy">
+                                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
                                 <property name="currentText">
                                     <string>Decrease card's total lapse count</string>
                                 </property>
@@ -144,19 +168,6 @@
                         </item>
                     </layout>
                 </widget>
-            </item>
-            <item>
-                <spacer name="spacer">
-                    <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                        <size>
-                            <width>0</width>
-                            <height>0</height>
-                        </size>
-                    </property>
-                </spacer>
             </item>
         </layout>
     </widget>

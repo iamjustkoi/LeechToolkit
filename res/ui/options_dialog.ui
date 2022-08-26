@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+         <number>0</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -36,14 +36,14 @@
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
          <widget class="QWidget" name="OptionsScrollWidget">
-          <property name="geometry">
-              <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>488</width>
-                  <height>277</height>
-              </rect>
-          </property>
+             <property name="geometry">
+                 <rect>
+                     <x>0</x>
+                     <y>0</y>
+                     <width>488</width>
+                     <height>277</height>
+                 </rect>
+             </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
             <horstretch>0</horstretch>
@@ -244,19 +244,19 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QFrame" name="actionsScrollFrame">
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-                <layout class="QVBoxLayout" name="actionsScrollLayout">
-                    <property name="topMargin">
-                        <number>0</number>
-                    </property>
-                    <property name="bottomMargin">
-                        <number>0</number>
-                    </property>
-                </layout>
-            </widget>
+               <widget class="QFrame" name="actionsScrollFrame">
+                   <property name="mouseTracking">
+                       <bool>true</bool>
+                   </property>
+                   <layout class="QVBoxLayout" name="actionsScrollLayout">
+                       <property name="topMargin">
+                           <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                           <number>0</number>
+                       </property>
+                   </layout>
+               </widget>
            </item>
           </layout>
          </widget>
