@@ -17,6 +17,7 @@ from aqt.qt import (
     QWidget,
 )
 
+from .reverse_form import Ui_ReverseForm
 from ...src.consts import QueueAction
 
 
@@ -142,3 +143,10 @@ class ExpandoWidget(QWidget):
         super(ExpandoWidget, self).mousePressEvent(event)
         if self.click_function:
             self.click_function()
+
+
+class ReverseWidget(QWidget):
+    def __init__(self, flags):
+        super().__init__(flags=flags)
+        self.ui = Ui_ReverseForm()
+        self.ui.setupUi(self)
