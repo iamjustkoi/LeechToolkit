@@ -107,7 +107,6 @@ class Ui_ReverseForm(object):
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     ReverseForm = QtWidgets.QWidget()
     ui = Ui_ReverseForm()
