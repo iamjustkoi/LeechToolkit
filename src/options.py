@@ -53,13 +53,6 @@ def on_options_called(result=False):
     options.exec()
 
 
-def get_colored_icon(path, color):
-    icon = QIcon(path)
-    pixmap = icon.pixmap()
-    pixmap.fill(color)
-    return QIcon(pixmap)
-
-
 def redraw_list(fields_list: QListWidget, max_height=256):
     data_height = fields_list.sizeHintForRow(0) * fields_list.count()
     fields_list.setFixedHeight(data_height if data_height < max_height else fields_list.maximumHeight())
