@@ -85,104 +85,7 @@ def _bind_config_options():
     mw.addonManager.setConfigAction(__name__, on_options_called)
 
 
-class CustomCompleter(QCompleter):
-
-    def __init__(self, parent_line_edit: aqt.qt.QLineEdit) -> None:
-        QCompleter.__init__(self, aqt.qt.QStringListModel(), parent_line_edit)
-
-        self.current_data: list[str] = []
-        self.cursor_index: int or None = None
-        self.cursor_item_pos: int or None = None
-
-        self.line_edit = parent_line_edit
-
-        self.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        self.setFilterMode(Qt.MatchContains)
-        self.setCompletionPrefix(' ')
-
-        def focus_event(event):
-            default_focus_evt(event)
-            if len(self.line_edit.text()) <= 0:
-                self.complete()
-
-        def release_event(event):
-            default_release_evt(event)
-            if len(self.line_edit.text()) <= 0:
-                self.complete()
-
-        default_focus_evt = self.line_edit.focusInEvent
-        default_release_evt = self.line_edit.mouseReleaseEvent
-        self.line_edit.focusInEvent = focus_event
-        self.line_edit.mouseReleaseEvent = release_event
-
-    def set_list(self, data: list[str]):
-        self.setModel(aqt.qt.QStringListModel(data))
-
-    def get_path_pos(self):
-        return sum([len(item) for item in self.current_data[:self.cursor_index]])
-
-    def splitPath(self, path: str) -> list[str]:
-        """
-    Splits the line edit's path based on a variety of filters, updates the current cursor position variables,
-    and outputs a list with a single item to use as
-    auto-completion suggestions.
-        :param path: the current path to split/filter
-        :return: a list containing a single string to use as a reference for completer suggestions
-        """
-        formatted_path = re.sub('  +', ' ', path)
-        stripped_path = formatted_path.strip()
-        cursor_pos = self.line_edit.cursorPosition()
-        self.cursor_index = stripped_path.count(' ', 0, cursor_pos)
-        self.current_data = formatted_path.strip().split(' ')
-        self.cursor_item_pos = cursor_pos - self.get_path_pos()
-
-        if formatted_path.endswith(' ') and cursor_pos >= len(formatted_path):
-            self.current_data.append('')
-            self.cursor_index += 1
-            return ['']
-
-        if cursor_pos == 0:
-            self.current_data.insert(0, '')
-            self.cursor_index = 0
-            return ['']
-
-        item_macro_pos = self.current_data[self.cursor_index].rfind('%', 1)
-        if self.cursor_item_pos > item_macro_pos > 0:
-            return [self.current_data[self.cursor_index][item_macro_pos:]]
-
-        return [self.current_data[self.cursor_index]]
-
-    def pathFromIndex(self, index: aqt.qt.QModelIndex) -> str:
-        """
-    Retrieves the line edit's path from the given index data.
-        :param index: QModelIndex used as a reference for what to insert
-        :return: the string output of the given path result
-        """
-        if self.cursor_index is None:
-            return self.line_edit.text()
-
-        current_item = self.current_data[self.cursor_index]
-        item_macro_pos = self.current_data[self.cursor_index].rfind('%', 1)
-
-        if self.cursor_item_pos > item_macro_pos > 0:
-            self.current_data[self.cursor_index] = current_item[:item_macro_pos] + index.data()
-        else:
-            self.current_data[self.cursor_index] = index.data()
-
-        def update_cursor_pos():
-            raw_pos = self.get_path_pos() + len(self.current_data[:self.cursor_index])
-            self.line_edit.setCursorPosition(len(self.current_data[self.cursor_index]) + raw_pos)
-
-        # Timer to update cursor after completion (delayed)
-        aqt.qt.QTimer(aqt.mw).singleShot(0, update_cursor_pos)
-
-        return ' '.join(self.current_data)
-
-
 class OptionsDialog(QDialog):
-    add_completer: CustomCompleter
-    remove_completer: CustomCompleter
-    deck_completer: CustomCompleter
 
     def __init__(self, manager: LeechToolkitConfigManager):
         super().__init__(flags=mw.windowFlags())
@@ -242,13 +145,41 @@ class OptionsDialog(QDialog):
 
         # Refresh reviewer if currently active
         if mw.state == 'review':
-            reviewer.refresh_action_manager(mw.reviewer)
+            reviewer.load_action_manager(mw.reviewer)
 
     def accept(self) -> None:
         self._save()
         super().accept()
         bind_actions()
         mw.reset()
+
+
+class ReverseWidget(QWidget):
+    def __init__(self, flags):
+        super().__init__(flags=flags)
+        self.ui = Ui_ReverseForm()
+        self.ui.setupUi(self)
+
+        def toggle_threshold(checked: bool):
+            self.ui.reverseThresholdSpinbox.setEnabled(checked)
+
+        self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
+
+    def load(self, config: dict):
+        self.ui.reverseCheckbox.setChecked(config[Config.REVERSE_ENABLED])
+        self.ui.useLeechThresholdCheckbox.setChecked(config[Config.REVERSE_USE_LEECH_THRESHOLD])
+        self.ui.reverseMethodDropdown.setCurrentIndex(config[Config.REVERSE_METHOD])
+        self.ui.reverseThresholdSpinbox.setValue(config[Config.REVERSE_THRESHOLD])
+        self.ui.consAnswerSpinbox.setValue(config[Config.REVERSE_CONS_ANS])
+
+    def save(self, config: dict, additive=False):
+        reverse_enabled = self.ui.reverseCheckbox.isChecked()
+        if (additive and reverse_enabled) or not additive:
+            config[Config.REVERSE_ENABLED] = reverse_enabled
+            config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
+            config[Config.REVERSE_USE_LEECH_THRESHOLD] = self.ui.useLeechThresholdCheckbox.isChecked()
+            config[Config.REVERSE_THRESHOLD] = self.ui.reverseThresholdSpinbox.value()
+            config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
 
 
 class ActionsWidget(QWidget):
@@ -567,32 +498,98 @@ class ActionsWidget(QWidget):
         self.ui.queueExcludedFieldList.setItemWidget(list_item, field_item)
 
 
-class ReverseWidget(QWidget):
-    def __init__(self, flags):
-        super().__init__(flags=flags)
-        self.ui = Ui_ReverseForm()
-        self.ui.setupUi(self)
+class CustomCompleter(QCompleter):
 
-        def toggle_threshold(checked: bool):
-            self.ui.reverseThresholdSpinbox.setEnabled(checked)
+    def __init__(self, parent_line_edit: aqt.qt.QLineEdit) -> None:
+        QCompleter.__init__(self, aqt.qt.QStringListModel(), parent_line_edit)
 
-        self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
+        self.current_data: list[str] = []
+        self.cursor_index: int or None = None
+        self.cursor_item_pos: int or None = None
 
-    def load(self, config: dict):
-        self.ui.reverseCheckbox.setChecked(config[Config.REVERSE_ENABLED])
-        self.ui.useLeechThresholdCheckbox.setChecked(config[Config.REVERSE_USE_LEECH_THRESHOLD])
-        self.ui.reverseMethodDropdown.setCurrentIndex(config[Config.REVERSE_METHOD])
-        self.ui.reverseThresholdSpinbox.setValue(config[Config.REVERSE_THRESHOLD])
-        self.ui.consAnswerSpinbox.setValue(config[Config.REVERSE_CONS_ANS])
+        self.line_edit = parent_line_edit
 
-    def save(self, config: dict, additive=False):
-        reverse_enabled = self.ui.reverseCheckbox.isChecked()
-        if (additive and reverse_enabled) or not additive:
-            config[Config.REVERSE_ENABLED] = reverse_enabled
-            config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
-            config[Config.REVERSE_USE_LEECH_THRESHOLD] = self.ui.useLeechThresholdCheckbox.isChecked()
-            config[Config.REVERSE_THRESHOLD] = self.ui.reverseThresholdSpinbox.value()
-            config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
+        self.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.setFilterMode(Qt.MatchContains)
+        self.setCompletionPrefix(' ')
+
+        def focus_event(event):
+            default_focus_evt(event)
+            if len(self.line_edit.text()) <= 0:
+                self.complete()
+
+        def release_event(event):
+            default_release_evt(event)
+            if len(self.line_edit.text()) <= 0:
+                self.complete()
+
+        default_focus_evt = self.line_edit.focusInEvent
+        default_release_evt = self.line_edit.mouseReleaseEvent
+        self.line_edit.focusInEvent = focus_event
+        self.line_edit.mouseReleaseEvent = release_event
+
+    def set_list(self, data: list[str]):
+        self.setModel(aqt.qt.QStringListModel(data))
+
+    def get_path_pos(self):
+        return sum([len(item) for item in self.current_data[:self.cursor_index]])
+
+    def splitPath(self, path: str) -> list[str]:
+        """
+    Splits the line edit's path based on a variety of filters, updates the current cursor position variables,
+    and outputs a list with a single item to use as
+    auto-completion suggestions.
+        :param path: the current path to split/filter
+        :return: a list containing a single string to use as a reference for completer suggestions
+        """
+        formatted_path = re.sub('  +', ' ', path)
+        stripped_path = formatted_path.strip()
+        cursor_pos = self.line_edit.cursorPosition()
+        self.cursor_index = stripped_path.count(' ', 0, cursor_pos)
+        self.current_data = formatted_path.strip().split(' ')
+        self.cursor_item_pos = cursor_pos - self.get_path_pos()
+
+        if formatted_path.endswith(' ') and cursor_pos >= len(formatted_path):
+            self.current_data.append('')
+            self.cursor_index += 1
+            return ['']
+
+        if cursor_pos == 0:
+            self.current_data.insert(0, '')
+            self.cursor_index = 0
+            return ['']
+
+        item_macro_pos = self.current_data[self.cursor_index].rfind('%', 1)
+        if self.cursor_item_pos > item_macro_pos > 0:
+            return [self.current_data[self.cursor_index][item_macro_pos:]]
+
+        return [self.current_data[self.cursor_index]]
+
+    def pathFromIndex(self, index: aqt.qt.QModelIndex) -> str:
+        """
+    Retrieves the line edit's path from the given index data.
+        :param index: QModelIndex used as a reference for what to insert
+        :return: the string output of the given path result
+        """
+        if self.cursor_index is None:
+            return self.line_edit.text()
+
+        current_item = self.current_data[self.cursor_index]
+        item_macro_pos = self.current_data[self.cursor_index].rfind('%', 1)
+
+        if self.cursor_item_pos > item_macro_pos > 0:
+            self.current_data[self.cursor_index] = current_item[:item_macro_pos] + index.data()
+        else:
+            self.current_data[self.cursor_index] = index.data()
+
+        def update_cursor_pos():
+            raw_pos = self.get_path_pos() + len(self.current_data[:self.cursor_index])
+            self.line_edit.setCursorPosition(len(self.current_data[self.cursor_index]) + raw_pos)
+
+        # Timer to update cursor after completion (delayed)
+        aqt.qt.QTimer(aqt.mw).singleShot(0, update_cursor_pos)
+
+        return ' '.join(self.current_data)
 
 
 class ExcludedFieldItem(QWidget):
