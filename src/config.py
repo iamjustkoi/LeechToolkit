@@ -51,9 +51,10 @@ Writes the config manager's current values to the addon meta file.
         config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
 
         deck_config = self.config.get(config_id, {Config.REVERSE_OPTIONS: {Config.REVERSE_ENABLED: False}})
+        default_copy = Config.DEFAULT_CONFIG.copy()
         merge_fields(
             deck_config,
-            {key: val for key, val in Config.DEFAULT_CONFIG.items() if key in Config.DECK_DEFAULT_CATEGORIES}
+            {key: val for key, val in default_copy.items() if key in Config.DECK_DEFAULT_CATEGORIES}
         )
 
         self.config[config_id] = deck_config
