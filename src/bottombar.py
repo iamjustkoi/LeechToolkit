@@ -8,7 +8,7 @@ from aqt.overview import OverviewBottomBar
 from aqt.toolbar import BottomBar
 
 from .config import LeechToolkitConfigManager
-from .consts import String, Config, LEECH_TAG
+from .consts import String, Config, LEECH_TAG, LEECHES_URL
 
 leech_search_flag = f'tag:{LEECH_TAG}'
 
@@ -36,7 +36,7 @@ Custom handler for drawing Anki's bottom bar.
                 Custom link handler that adds functionality for the run_actions-browse button's link.
                     :param url: passed url string to handle
                     """
-                    if url == String.LEECHES_URL:
+                    if url == LEECHES_URL:
                         dialogs.open("Browser", mw, search=(leech_search_flag, deck_search_flag))
 
                     default_link_handler(url=url)
@@ -48,7 +48,7 @@ Custom handler for drawing Anki's bottom bar.
                     :return: formatted string-buffer with new or removed html elements
                     """
                     config = LeechToolkitConfigManager(mw).config
-                    button_html = BarButton(String.VIEW_LEECHES, String.LEECHES_URL).html
+                    button_html = BarButton(String.VIEW_LEECHES, LEECHES_URL).html
                     if config[Config.SHOW_BROWSE_BUTTON]:
                         if isinstance(web_context, OverviewBottomBar) and config[Config.BROWSE_BUTTON_ON_OVERVIEW]:
                             return '\n'.join([default_buf, button_html])
