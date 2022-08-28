@@ -60,7 +60,6 @@ class Ui_ExcludedFieldItem(object):
 
     def retranslateUi(self, ExcludedFieldItem):
         _translate = QtCore.QCoreApplication.translate
-        ExcludedFieldItem.setWindowTitle(_translate("ExcludedFieldItem", "Form"))
         self.fieldLabel.setText(_translate("ExcludedFieldItem", "SampleText"))
 from .forms import ElidingLabel
 

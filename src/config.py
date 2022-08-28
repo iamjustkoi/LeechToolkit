@@ -46,7 +46,7 @@ Writes the config manager's current values to the addon meta file.
         """
         self._mw.addonManager.writeAddonMeta(self._addon, self._meta)
 
-    def config_for_did(self, did: int):
+    def default_config_for_did(self, did: int):
         config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
         config: dict = self.config.get(config_id, {})
 

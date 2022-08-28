@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'deck_options.ui'
+# Form implementation generated from reading ui file 'deck_options_form.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -11,14 +11,14 @@
 from PyQt5 import QtCore, QtWidgets
 
 
-class Ui_DeckOptions(object):
-    def setupUi(self, DeckOptions):
-        DeckOptions.setObjectName("DeckOptions")
-        DeckOptions.resize(318, 241)
-        self.verticalLayout = QtWidgets.QVBoxLayout(DeckOptions)
+class Ui_DeckOptionsPlaceholder(object):
+    def setupUi(self, DeckOptionsPlaceholder):
+        DeckOptionsPlaceholder.setObjectName("DeckOptionsPlaceholder")
+        DeckOptionsPlaceholder.resize(318, 241)
+        self.verticalLayout = QtWidgets.QVBoxLayout(DeckOptionsPlaceholder)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.scrollArea = QtWidgets.QScrollArea(DeckOptions)
+        self.scrollArea = QtWidgets.QScrollArea(DeckOptionsPlaceholder)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
@@ -37,19 +37,19 @@ class Ui_DeckOptions(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
 
-        self.retranslateUi(DeckOptions)
-        QtCore.QMetaObject.connectSlotsByName(DeckOptions)
+        self.retranslateUi(DeckOptionsPlaceholder)
+        QtCore.QMetaObject.connectSlotsByName(DeckOptionsPlaceholder)
 
-    def retranslateUi(self, DeckOptions):
-        _translate = QtCore.QCoreApplication.translate
-        DeckOptions.setWindowTitle(_translate("DeckOptions", "DeckOptions"))
+    def retranslateUi(self, DeckOptionsPlaceholder):
+        pass
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
-    DeckOptions = QtWidgets.QWidget()
-    ui = Ui_DeckOptions()
-    ui.setupUi(DeckOptions)
-    DeckOptions.show()
+    DeckOptionsPlaceholder = QtWidgets.QWidget()
+    ui = Ui_DeckOptionsPlaceholder()
+    ui.setupUi(DeckOptionsPlaceholder)
+    DeckOptionsPlaceholder.show()
     sys.exit(app.exec_())
