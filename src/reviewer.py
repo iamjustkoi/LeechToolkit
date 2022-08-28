@@ -195,7 +195,7 @@ class ReviewManager:
             delattr(card, prev_type_attr)
 
         if hasattr(card, was_leech_attr):
-            updated_card = run_actions(card, Config.LEECH_ACTIONS)
+            updated_card = run_actions(card, self.toolkit_config[Config.LEECH_ACTIONS])
             delattr(card, was_leech_attr)
 
         if was_card_updated(card, updated_card):
