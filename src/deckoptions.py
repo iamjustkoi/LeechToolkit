@@ -10,10 +10,18 @@ from aqt.qt import (
 )
 
 from .config import LeechToolkitConfigManager
-from .consts import Config
+from .consts import Config, Action
 from .options import ActionsWidget
 from .options import ReverseWidget
 from ..res.ui.deck_options_form import Ui_DeckOptionsPlaceholder
+
+
+def filter_enabled_actions(actions_conf: dict):
+    result = {}
+    for key in actions_conf.keys():
+        if actions_conf[key][Action.ENABLED]:
+            result[key] = actions_conf[key]
+    return result
 
 
 class DeckOptions(QWidget):
@@ -25,7 +33,7 @@ class DeckOptions(QWidget):
 
         self.reverse_form = ReverseWidget(mw.windowFlags())
         self.leech_actions_form = ActionsWidget(Config.LEECH_ACTIONS, expanded=False)
-        self.reverse_actions_form = ActionsWidget(Config.REVERSE_ACTIONS, expanded=False)
+        self.reverse_actions_form = ActionsWidget(Config.UN_LEECH_ACTIONS, expanded=False)
 
         self.ui.scrollAreaLayout.addWidget(self.reverse_form)
         self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
@@ -33,23 +41,30 @@ class DeckOptions(QWidget):
 
     def load(self):
         manager = LeechToolkitConfigManager(mw)
-        deck_config = manager.default_config_for_did(self.did)
+        deck_config = manager.placeholder_config_for_did(self.did)
 
-        self.leech_actions_form.load(deck_config)
-        self.reverse_actions_form.load(deck_config)
-        self.reverse_form.load(deck_config)
+        self.leech_actions_form.load(deck_config[Config.LEECH_ACTIONS])
+        self.reverse_actions_form.load(deck_config[Config.UN_LEECH_ACTIONS])
+        self.reverse_form.load(deck_config[Config.REVERSE_OPTIONS])
 
     def save(self):
-        deck_config = {}
-
-        self.leech_actions_form.save(deck_config, True)
-        self.reverse_actions_form.save(deck_config, True)
-        self.reverse_form.save(deck_config, True)
-
         manager = LeechToolkitConfigManager(mw)
-        config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
+        deck_config = manager.placeholder_config_for_did(self.did)
+
+        self.leech_actions_form.save(deck_config[Config.LEECH_ACTIONS])
+        deck_config[Config.LEECH_ACTIONS] = filter_enabled_actions(deck_config[Config.LEECH_ACTIONS])
+        deck_config.pop(Config.LEECH_ACTIONS, None) if len(deck_config[Config.LEECH_ACTIONS]) <= 0 else None
+
+        self.reverse_actions_form.save(deck_config[Config.UN_LEECH_ACTIONS])
+        deck_config[Config.UN_LEECH_ACTIONS] = filter_enabled_actions(deck_config[Config.UN_LEECH_ACTIONS])
+        deck_config.pop(Config.UN_LEECH_ACTIONS, None) if len(deck_config[Config.UN_LEECH_ACTIONS]) <= 0 else None
+
+        self.reverse_form.save(deck_config[Config.REVERSE_OPTIONS])
+        if not deck_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
+            deck_config.pop(Config.REVERSE_OPTIONS, None)
 
         # Garbage Collection
+        config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
         if len(deck_config) <= 0:
             manager.config.pop(config_id, None)
         else:
@@ -84,7 +99,6 @@ def load_deck_options(deckconf: DeckConf, *args):
 
 
 def save_deck_options(deckconf: DeckConf, *args):
-    print(f'deck save hook')
     form = deckconf.form
     form.tab_options.save()
 
