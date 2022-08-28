@@ -30,7 +30,7 @@ from aqt.qt import (
 from . import reviewer
 from .config import LeechToolkitConfigManager
 from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction
-from ..res.ui.actions_widget import Ui_ActionsWidget
+from ..res.ui.actions_form import Ui_ActionsForm
 from ..res.ui.edit_field_item import Ui_EditFieldItem
 from ..res.ui.exclude_field_item import Ui_ExcludedFieldItem
 from ..res.ui.forms import CustomCompleter
@@ -177,8 +177,8 @@ class ReverseWidget(QWidget):
 class ActionsWidget(QWidget):
     def __init__(self, actions_type: str, parent=None, expanded=True):
         super().__init__(parent, mw.windowFlags())
-        self.ui = Ui_ActionsWidget()
-        self.ui.setupUi(ActionsWidget=self)
+        self.ui = Ui_ActionsForm()
+        self.ui.setupUi(ActionsForm=self)
         self.actions_type = actions_type
 
         def handle_note_selected(dialog: Models):
