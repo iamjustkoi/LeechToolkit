@@ -24,6 +24,8 @@ LEECH_TAG = 'leech'
 
 REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
 
+LEECHES_URL = 'viewleeches'
+
 
 class Macro:
     DATE = '%date'
@@ -41,10 +43,8 @@ class String:
     LAPSES_DECREASED = r"Lapses decreased!"
     LAPSES_RESET = r"Lapses reset!"
     LEECH_REVERSED = r"Leech reversed!"
-
-    LEECHES_URL = 'viewleeches'
     LEECH_ACTIONS = 'Leech Actions'
-    LEECH_REVERSE_ACTIONS = 'Leech Reverse Actions'
+    LEECH_REVERSE_ACTIONS = 'Un-leech Actions'
 
 
 class EditAction:
