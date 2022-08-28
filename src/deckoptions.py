@@ -23,28 +23,28 @@ class DeckOptions(QWidget):
         self.ui = Ui_DeckOptionsPlaceholder()
         self.ui.setupUi(DeckOptionsPlaceholder=self)
 
-        self.reverse_widget = ReverseWidget(mw.windowFlags())
-        self.leech_actions_widget = ActionsWidget(Config.LEECH_ACTIONS, expanded=False)
-        self.reverse_actions_widget = ActionsWidget(Config.REVERSE_ACTIONS, expanded=False)
+        self.reverse_form = ReverseWidget(mw.windowFlags())
+        self.leech_actions_form = ActionsWidget(Config.LEECH_ACTIONS, expanded=False)
+        self.reverse_actions_form = ActionsWidget(Config.REVERSE_ACTIONS, expanded=False)
 
-        self.ui.scrollAreaLayout.addWidget(self.reverse_widget)
-        self.ui.scrollAreaLayout.addWidget(self.leech_actions_widget)
-        self.ui.scrollAreaLayout.addWidget(self.reverse_actions_widget)
+        self.ui.scrollAreaLayout.addWidget(self.reverse_form)
+        self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
+        self.ui.scrollAreaLayout.addWidget(self.reverse_actions_form)
 
     def load(self):
         manager = LeechToolkitConfigManager(mw)
         deck_config = manager.default_config_for_did(self.did)
 
-        self.leech_actions_widget.load(deck_config)
-        self.reverse_actions_widget.load(deck_config)
-        self.reverse_widget.load(deck_config)
+        self.leech_actions_form.load(deck_config)
+        self.reverse_actions_form.load(deck_config)
+        self.reverse_form.load(deck_config)
 
     def save(self):
         deck_config = {}
 
-        self.leech_actions_widget.save(deck_config, True)
-        self.reverse_actions_widget.save(deck_config, True)
-        self.reverse_widget.save(deck_config, True)
+        self.leech_actions_form.save(deck_config, True)
+        self.reverse_actions_form.save(deck_config, True)
+        self.reverse_form.save(deck_config, True)
 
         manager = LeechToolkitConfigManager(mw)
         config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
