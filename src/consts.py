@@ -110,23 +110,20 @@ class Config:
     BROWSE_BUTTON_ON_BROWSER = 'showBrowseButtonOnBrowser'
     BROWSE_BUTTON_ON_OVERVIEW = 'showBrowseButtonOnOverview'
 
-    REVERSE_ENABLED = 'reverseEnabled'
+    REVERSE_ENABLED = 'enabled'
+    REVERSE_OPTIONS = 'reverseOptions'
     REVERSE_METHOD = 'reverseType'
     REVERSE_USE_LEECH_THRESHOLD = 'reverseUseLeechThreshold'
     REVERSE_THRESHOLD = 'reverseThreshold'
     REVERSE_CONS_ANS = 'reverseConsecutiveAnswers'
 
     LEECH_ACTIONS = 'leechActions'
-    REVERSE_ACTIONS = 'reverseActions'
+    UN_LEECH_ACTIONS = 'unLeechActions'
 
     DECK_DEFAULT_CATEGORIES = {
-        REVERSE_ENABLED,
-        REVERSE_USE_LEECH_THRESHOLD,
-        REVERSE_THRESHOLD,
-        REVERSE_CONS_ANS,
-        REVERSE_METHOD,
+        REVERSE_OPTIONS,
         LEECH_ACTIONS,
-        REVERSE_ACTIONS,
+        UN_LEECH_ACTIONS,
     }
 
     DEFAULT_CONFIG = {
@@ -138,11 +135,13 @@ class Config:
         SHOW_BROWSE_BUTTON: True,
         BROWSE_BUTTON_ON_BROWSER: True,
         BROWSE_BUTTON_ON_OVERVIEW: True,
-        REVERSE_ENABLED: True,
-        REVERSE_USE_LEECH_THRESHOLD: True,
-        REVERSE_THRESHOLD: 4,
-        REVERSE_CONS_ANS: 2,
-        REVERSE_METHOD: 0,
+        REVERSE_OPTIONS: {
+            REVERSE_ENABLED: True,
+            REVERSE_USE_LEECH_THRESHOLD: True,
+            REVERSE_THRESHOLD: 4,
+            REVERSE_CONS_ANS: 2,
+            REVERSE_METHOD: 0
+        },
         LEECH_ACTIONS: {
             Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
             Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
@@ -182,7 +181,7 @@ class Config:
                 }
             }
         },
-        REVERSE_ACTIONS: {
+        UN_LEECH_ACTIONS: {
             Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
             Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
             Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
