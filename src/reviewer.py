@@ -64,11 +64,11 @@ def load_action_manager(context: aqt.reviewer.Reviewer):
         max_fails = deck_conf_dict['lapse']['leechFails']
 
         user_conf = LeechToolkitConfigManager(mw).config
-        # deck_conf = user_conf.get(deck_conf_dict['id'], {})
+        deck_conf = user_conf.get(deck_conf_dict['id'], {})
 
-        # for option in deck_conf:
-        #     print(f'    option: {option}')
-        #     user_conf[option] = deck_conf[option]
+        for option in deck_conf:
+            print(f'    option: {option}')
+            user_conf[option] = deck_conf[option]
 
         action_manager = ActionsManager(context, user_conf)
 
