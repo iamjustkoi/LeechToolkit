@@ -64,10 +64,9 @@ def load_action_manager(context: aqt.reviewer.Reviewer):
         max_fails = deck_conf_dict['lapse']['leechFails']
 
         user_conf = LeechToolkitConfigManager(mw).config
-        deck_conf = user_conf.get(deck_conf_dict['id'], {})
+        deck_conf = user_conf.get(str(deck_conf_dict['id']), {})
 
         for option in deck_conf:
-            print(f'    option: {option}')
             user_conf[option] = deck_conf[option]
 
         action_manager = ActionsManager(context, user_conf)
@@ -118,7 +117,6 @@ def on_show_front(card: cards.Card):
     update_marker(card, True)
     # @DEBUG
     # reverse_update(card, 2, anki.cards.CARD_TYPE_REV)
-    # action_manager.run_actions(card, Config.REVERSE_ACTIONS)
     # action_manager.run_actions(card, Config.LEECH_ACTIONS)
 
 
