@@ -39,10 +39,8 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
 
 class ActionsManager:
 
-    def __init__(self, reviewer: aqt.reviewer.Reviewer, deck_id: int, user_conf: dict[str, Any]):
-        # Deck Conf = (Config for Deck's Options Group or None)
+    def __init__(self, reviewer: aqt.reviewer.Reviewer, user_conf: dict[str, Any]):
         self.reviewer = reviewer
-        # self.deck_config = _
         self.user_config = user_conf
 
     # Actions format: actionName: {enabled: bool, key: val}

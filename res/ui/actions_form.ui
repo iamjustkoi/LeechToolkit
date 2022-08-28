@@ -1,77 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ActionsWidget</class>
- <widget class="QWidget" name="ActionsWidget">
-     <property name="geometry">
-         <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>649</width>
-             <height>739</height>
-         </rect>
-     </property>
+ <class>ActionsForm</class>
+ <widget class="QWidget" name="ActionsForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>649</width>
+    <height>739</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="ExpandoWidget" name="expandoWidget" native="true">
      <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-         </sizepolicy>
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="windowTitle">
-         <string>Form</string>
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-         <property name="leftMargin">
-             <number>0</number>
-         </property>
-         <property name="topMargin">
-             <number>0</number>
-         </property>
-         <property name="rightMargin">
-             <number>0</number>
-         </property>
-         <property name="bottomMargin">
-             <number>0</number>
-         </property>
-         <item>
-             <widget class="ExpandoWidget" name="expandoWidget" native="true">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <property name="focusPolicy">
-                     <enum>Qt::StrongFocus</enum>
-                 </property>
-                 <layout class="QHBoxLayout" name="leechActionsExpandoLayout">
-                     <property name="spacing">
-                         <number>0</number>
-                     </property>
-                     <property name="leftMargin">
-                         <number>0</number>
-                     </property>
-                     <property name="topMargin">
-                         <number>0</number>
-                     </property>
-                     <property name="rightMargin">
-                         <number>0</number>
-                     </property>
-                     <property name="bottomMargin">
-                         <number>0</number>
-                     </property>
-                     <item>
-                         <widget class="QToolButton" name="expandoButton">
-                             <property name="focusPolicy">
-                                 <enum>Qt::NoFocus</enum>
-                             </property>
-                             <property name="styleSheet">
-                                 <string notr="true">border: none;</string>
-                             </property>
-                             <property name="toolButtonStyle">
-                                 <enum>Qt::ToolButtonTextBesideIcon</enum>
-                             </property>
-                             <property name="arrowType">
-                                 <enum>Qt::RightArrow</enum>
+     <layout class="QHBoxLayout" name="leechActionsExpandoLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="expandoButton">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;</string>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::RightArrow</enum>
         </property>
        </widget>
       </item>
@@ -85,34 +82,34 @@
      </layout>
     </widget>
    </item>
-         <item>
-             <widget class="QFrame" name="actionsFrame">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <layout class="QFormLayout" name="leechActionsLayout">
-                     <property name="leftMargin">
-                         <number>12</number>
-                     </property>
-                     <property name="topMargin">
-                         <number>0</number>
-                     </property>
-                     <property name="rightMargin">
-                         <number>0</number>
-                     </property>
-                     <property name="bottomMargin">
-                         <number>0</number>
-                     </property>
-                     <item row="0" column="0">
-                         <widget class="QCheckBox" name="flagCheckbox">
-                             <property name="text">
-                                 <string>Set Flag</string>
-                             </property>
-                         </widget>
-                     </item>
+   <item>
+    <widget class="QFrame" name="actionsFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QFormLayout" name="leechActionsLayout">
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="flagCheckbox">
+        <property name="text">
+         <string>Set Flag</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="flagDropdown">
         <property name="sizeAdjustPolicy">
@@ -402,7 +399,7 @@
            </sizepolicy>
           </property>
           <property name="suffix">
-              <string>days</string>
+           <string>days</string>
           </property>
           <property name="maximum">
            <number>9999</number>
@@ -691,7 +688,7 @@
           <item>
            <widget class="QCheckBox" name="queueSimilarCheckbox">
             <property name="toolTip">
-                <string>Using the given range:
+             <string>Using the given range:
                     Places the card near another one in the queue based on how similar they are.
                 </string>
             </property>
@@ -923,7 +920,7 @@
       <item row="16" column="1">
        <widget class="QCheckBox" name="queueSiblingCheckbox">
         <property name="toolTip">
-            <string>Using the given range:
+         <string>Using the given range:
                 Place the card next to another one if they're each siblings of the same note-type.
             </string>
         </property>
@@ -988,34 +985,34 @@
         </layout>
        </widget>
       </item>
-                     <item row="15" column="1">
-                         <widget class="QFrame" name="frame_9">
-                             <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                                     <horstretch>0</horstretch>
-                                     <verstretch>0</verstretch>
-                                 </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                                 <size>
-                                     <width>0</width>
-                                     <height>38</height>
-                                 </size>
-                             </property>
-                             <property name="frameShape">
-                                 <enum>QFrame::StyledPanel</enum>
-                             </property>
-                             <property name="frameShadow">
-                                 <enum>QFrame::Raised</enum>
-                             </property>
-                             <layout class="QHBoxLayout" name="horizontalLayout_20">
-                                 <item>
-                                     <widget class="QLabel" name="label_4">
-                                         <property name="text">
-                                             <string>Similarity</string>
-                                         </property>
-                                     </widget>
-                                 </item>
+      <item row="15" column="1">
+       <widget class="QFrame" name="frame_9">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>38</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_20">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Similarity</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="TipSlider" name="queueRatioSlider">
            <property name="toolTip">

@@ -13,15 +13,15 @@ from .config import LeechToolkitConfigManager
 from .consts import Config
 from .options import ActionsWidget
 from .options import ReverseWidget
-from ..res.ui.deck_options import Ui_DeckOptions
+from ..res.ui.deck_options_form import Ui_DeckOptionsPlaceholder
 
 
 class DeckOptions(QWidget):
     def __init__(self, did: int):
         super().__init__(flags=mw.windowFlags())
         self.did = did
-        self.ui = Ui_DeckOptions()
-        self.ui.setupUi(DeckOptions=self)
+        self.ui = Ui_DeckOptionsPlaceholder()
+        self.ui.setupUi(DeckOptionsPlaceholder=self)
 
         self.reverse_widget = ReverseWidget(mw.windowFlags())
         self.leech_actions_widget = ActionsWidget(Config.LEECH_ACTIONS, expanded=False)
@@ -33,7 +33,7 @@ class DeckOptions(QWidget):
 
     def load(self):
         manager = LeechToolkitConfigManager(mw)
-        deck_config = manager.config_for_did(self.did)
+        deck_config = manager.default_config_for_did(self.did)
 
         self.leech_actions_widget.load(deck_config)
         self.reverse_actions_widget.load(deck_config)
