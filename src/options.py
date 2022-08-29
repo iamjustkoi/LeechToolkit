@@ -27,7 +27,6 @@ from aqt.qt import (
     QTextEdit,
 )
 
-from . import reviewer
 from .config import LeechToolkitConfigManager
 from .consts import String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction
 from ..res.ui.actions_form import Ui_ActionsForm
@@ -134,10 +133,6 @@ class OptionsDialog(QDialog):
 
         # Write
         self.manager.write_config()
-
-        # Refresh reviewer if currently active
-        if mw.state == 'review':
-            reviewer.load_action_manager(mw.reviewer)
 
     def accept(self) -> None:
         self._save()

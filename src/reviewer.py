@@ -52,25 +52,8 @@ def build_hooks():
 
 def on_will_start(content: aqt.webview.WebContent, anki_reviewer: aqt.reviewer.Reviewer):
     if not mw.col.decks.is_filtered(mw.col.decks.get_current_id()):
+        # Attached for garbage collection
         anki_reviewer.toolkit_manager = ReviewManager(content, mw.col.decks.get_current_id())
-        # load_action_manager(context)
-
-        # gui_hooks.reviewer_did_show_question.append(on_show_front)
-        # gui_hooks.reviewer_did_show_answer.append(on_show_back)
-        # gui_hooks.reviewer_did_answer_card.append(on_answer)
-        # hooks.card_did_leech.append(mark_leeched)
-        #
-        # append_marker_html(content)
-
-
-# def remove_hooks():
-#     gui_hooks.reviewer_did_show_question.remove(on_show_front)
-#     gui_hooks.reviewer_did_show_answer.remove(on_show_back)
-#     gui_hooks.reviewer_did_answer_card.remove(on_answer)
-#     try:
-#         hooks.card_did_leech.remove(mark_leeched)
-#     except NameError:
-#         print(f'Action manager not yet defined.')
 
 
 def mark_leeched(card: anki.cards.Card):
@@ -131,23 +114,37 @@ def flush_card(card: anki.cards.Card) -> OpChanges:
 class ReviewManager:
     toolkit_config: dict
     max_fails: int
+    did: DeckId
+    page_content: aqt.webview.WebContent
 
     def __init__(self, content: aqt.webview.WebContent, did: DeckId):
         if not mw.col.decks.is_filtered(did):
-            deck_conf_dict = mw.col.decks.config_dict_for_deck_id(did)
-            self.max_fails = deck_conf_dict['lapse']['leechFails']
+            self.page_content = content
+            self.load_options(did)
 
-            global_conf = LeechToolkitConfigManager(mw).config
-            self.toolkit_config = global_conf.get(str(deck_conf_dict['id']), {})
-            merge_fields(self.toolkit_config, global_conf)
+            print(f'    self.toolkit_config: {self.toolkit_config}')
 
-            self.append_marker_html(content)
-            self.append_hooks()
+    def load_options(self, did: DeckId = None):
+        self.did = did if did else self.did
 
-    def append_marker_html(self, content: aqt.webview.WebContent):
+        deck_conf_dict = mw.col.decks.config_dict_for_deck_id(self.did)
+        self.max_fails = deck_conf_dict['lapse']['leechFails']
+
+        global_conf = LeechToolkitConfigManager(mw).config
+        self.toolkit_config = global_conf.get(str(deck_conf_dict['id']), {})
+
+        merge_fields(self.toolkit_config, global_conf)
+
+        self.append_marker_html()
+        self.append_hooks()
+
+    def append_marker_html(self):
         marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_POSITION]]
-        content.body += mark_html_shell.format(
-            marker_id=marker_id, marker_text=MARKER_TEXT, marker_color=LEECH_COLOR, marker_float=marker_float
+        self.page_content.body += mark_html_shell.format(
+            marker_id=marker_id,
+            marker_text=MARKER_TEXT,
+            marker_color=LEECH_COLOR,
+            marker_float=marker_float,
         )
 
     def append_hooks(self):
@@ -216,7 +213,7 @@ class ReviewManager:
             deck_config = card.col.decks.config_dict_for_deck_id(card.current_deck_id())
             use_leech_threshold = self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_USE_LEECH_THRESHOLD]
             threshold = deck_config['lapse']['leechFails'] if use_leech_threshold else \
-            self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_THRESHOLD]
+                self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_THRESHOLD]
 
             # Lapse updates
             if has_cons_correct(updated_card, self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_CONS_ANS]):
@@ -237,7 +234,7 @@ class ReviewManager:
                     updated_card = run_actions(updated_card, self.toolkit_config[Config.UN_LEECH_ACTIONS], reload=False)
 
             if TOOLTIP_ENABLED and len(tooltip_items) > 0:
-                aqt.utils.tooltip('\n\n'.join(tooltip_items))
+                aqt.utils.tooltip('\n\n'.join(tooltip_items), period=TOOLTIP_TIME)
         return updated_card
 
     def update_marker(self, card: cards.Card, is_front: bool):

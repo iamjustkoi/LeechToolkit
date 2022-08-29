@@ -2,6 +2,8 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+import traceback
+
 from aqt import AnkiQt
 
 from .consts import Config
@@ -46,6 +48,12 @@ Config manager for accessing and writing addon config values.
 Writes the config manager's current values to the addon meta file.
         """
         self._mw.addonManager.writeAddonMeta(self._addon, self._meta)
+
+        # Refresh reviewer if currently active
+        try:
+            self._mw.reviewer.toolkit_manager.load_options() if self._mw.state == 'review' else None
+        except AttributeError:
+            print(f'{traceback.format_exc()}\nToolkit Manager not found in the current Reviewer.')
 
     def placeholder_config_for_did(self, did: int):
         config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
