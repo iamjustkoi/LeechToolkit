@@ -411,9 +411,6 @@ class ActionsWidget(QWidget):
 
         queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
 
-        # if additive and len(actions_config) > 0:
-        #     actions_config[self.actions_type] = actions_config
-
     def toggle_expando(self, button: aqt.qt.QToolButton, toggle: bool = None):
         toggle = not self.ui.actionsFrame.isVisible() if toggle is None else toggle
         button.setArrowType(arrow_types[toggle])
