@@ -16,14 +16,6 @@ from .options import ReverseWidget
 from ..res.ui.deck_options_form import Ui_DeckOptionsPlaceholder
 
 
-def filter_enabled_actions(actions_conf: dict):
-    result = {}
-    for key in actions_conf.keys():
-        if actions_conf[key][Action.ENABLED]:
-            result[key] = actions_conf[key]
-    return result
-
-
 class DeckOptions(QWidget):
     def __init__(self, did: int):
         super().__init__(flags=mw.windowFlags())
@@ -51,6 +43,9 @@ class DeckOptions(QWidget):
         manager = LeechToolkitConfigManager(mw)
         deck_config = manager.placeholder_config_for_did(self.did)
 
+        def filter_enabled_actions(actions_conf: dict):
+            return {key: val for key, val in actions_conf.items() if actions_conf[key][Action.ENABLED]}
+
         self.leech_actions_form.save(deck_config[Config.LEECH_ACTIONS])
         deck_config[Config.LEECH_ACTIONS] = filter_enabled_actions(deck_config[Config.LEECH_ACTIONS])
         deck_config.pop(Config.LEECH_ACTIONS, None) if len(deck_config[Config.LEECH_ACTIONS]) <= 0 else None
@@ -63,13 +58,10 @@ class DeckOptions(QWidget):
         if not deck_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
             deck_config.pop(Config.REVERSE_OPTIONS, None)
 
-        # Garbage Collection
         config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
-        if len(deck_config) <= 0:
-            manager.config.pop(config_id, None)
-        else:
-            manager.config[config_id] = deck_config
 
+        manager.config[config_id] = deck_config
+        manager.config.pop(config_id, None) if len(deck_config) <= 0 else None
         manager.write_config()
 
 
@@ -83,9 +75,9 @@ def build_hooks():
     deck_conf_will_save_config.append(save_deck_options)
 
 
-def setup_deck_options(deckconf: DeckConf):
-    form = deckconf.form
-    form.tab_options = DeckOptions(deckconf.deck['id'])
+def setup_deck_options(deck_conf: DeckConf):
+    form = deck_conf.form
+    form.tab_options = DeckOptions(deck_conf.deck['id'])
 
     tab_widget = form.tabWidget
     for i in range(tab_widget.count()):
@@ -93,13 +85,13 @@ def setup_deck_options(deckconf: DeckConf):
             tab_widget.insertTab(i + 1, form.tab_options, 'Leech Toolkit')
 
 
-def load_deck_options(deckconf: DeckConf, *args):
-    form = deckconf.form
+def load_deck_options(deck_conf: DeckConf, *args):
+    form = deck_conf.form
     form.tab_options.load()
 
 
-def save_deck_options(deckconf: DeckConf, *args):
-    form = deckconf.form
+def save_deck_options(deck_conf: DeckConf, *args):
+    form = deck_conf.form
     form.tab_options.save()
 
 # On Save: Only write to global config if [key]-enabled is true else remove
