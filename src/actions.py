@@ -13,8 +13,6 @@ from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW
 
 from .consts import Action, Macro, EditAction, RescheduleAction, QueueAction
 
-RATIO_FOR_SIMILAR = .25
-
 
 def get_formatted_tag(card: anki.cards.Card, tag: str):
     result = tag
@@ -38,7 +36,6 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
 # Actions format: actionName: {enabled: bool, key: val}
 def run_actions(card: anki.cards.Card, actions_conf: dict, reload=True):
     updated_card = card.col.get_card(card.id) if reload else card
-    # actions = self.user_config[actions_type]
 
     if actions_conf[Action.FLAG][Action.ENABLED]:
         updated_card.set_user_flag(actions_conf[Action.FLAG][Action.INPUT])
@@ -137,7 +134,8 @@ def run_actions(card: anki.cards.Card, actions_conf: dict, reload=True):
 
         from_pos = get_inserted_pos(queue_inputs[QueueAction.FROM_INDEX], queue_inputs[QueueAction.FROM_VAL])
         to_pos = get_inserted_pos(queue_inputs[QueueAction.TO_INDEX], queue_inputs[QueueAction.TO_VAL])
-        # Swap positions if values are inverted/will result in a non-positive range
+
+        # Swap positions if value range non-positive
         from_pos, to_pos = (to_pos, from_pos) if from_pos > to_pos else (from_pos, to_pos)
 
         filtered_ids, filtered_positions = [], []
@@ -164,14 +162,11 @@ def run_actions(card: anki.cards.Card, actions_conf: dict, reload=True):
                 to_strip = queue_inputs[QueueAction.EXCLUDED_TEXT]
                 min_ratio = queue_inputs[QueueAction.SIMILAR_RATIO]
 
-                filtered_fields: list[str] = []
-                filtered_field_ords: list[int] = []  # new
+                filtered_field_ords: list[int] = []
                 for note_dict in queue_inputs[QueueAction.FILTERED_FIELDS]:
                     note_type_id = int(list(note_dict)[0])
                     if note_type_id == updated_card.note().mid:
                         for key in list(note_dict.keys()):
-                            # field_map = card.col.models.field_names(card.col.models.get(NotetypeId(note_type_id)))
-                            # filtered_fields.append(field_map[note_dict[key]])
                             filtered_field_ords.append(int(note_dict[key]))  # new
 
                 def get_filtered_card_data(items: list[(str, str)]):
@@ -203,6 +198,9 @@ def run_actions(card: anki.cards.Card, actions_conf: dict, reload=True):
                         new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
                         if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= min_ratio:
                             is_similar_card = True
+
+                            rat = SequenceMatcher(None, leech_data_str, new_data_str).ratio()
+                            print(f'    "{new_data_str}":({rat}), ')
 
                     if not is_similar_card:
                         filtered_positions.remove(new_card.due)
