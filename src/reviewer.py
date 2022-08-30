@@ -181,8 +181,8 @@ class ReviewManager:
     def on_show_front(self, card: cards.Card):
         self.update_marker(card, True)
         # @DEBUG
-        self.reverse_update(card, 2, anki.cards.CARD_TYPE_REV)
-        run_actions(card, self.toolkit_config[Config.LEECH_ACTIONS])
+        # self.reverse_update(card, 2, anki.cards.CARD_TYPE_REV)
+        # run_actions(card, self.toolkit_config[Config.LEECH_ACTIONS])
 
     def on_answer(self, context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         updated_card = card.col.get_card(card.id)
