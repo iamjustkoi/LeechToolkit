@@ -280,7 +280,7 @@ class ActionsWidget(QWidget):
         self.ui.forgetRestorePosCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][1])
         self.ui.forgetResetCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][2])
 
-        # FIELDS
+        # EDIT FIELD
         self.ui.editFieldsCheckbox.setChecked(actions_config[Action.EDIT_FIELDS][Action.ENABLED])
         self.add_edit_items(actions_config[Action.EDIT_FIELDS][Action.INPUT])
         redraw_list(self.ui.editFieldsList, max_fields_height)
@@ -336,84 +336,94 @@ class ActionsWidget(QWidget):
         self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
 
     def save(self, actions_config: dict):
-        # FLAG
-        actions_config[Action.FLAG][Action.ENABLED] = self.ui.flagCheckbox.isChecked()
-        actions_config[Action.FLAG][Action.INPUT] = self.ui.flagDropdown.currentIndex()
+        def flag():
+            actions_config[Action.FLAG][Action.ENABLED] = self.ui.flagCheckbox.isChecked()
+            actions_config[Action.FLAG][Action.INPUT] = self.ui.flagDropdown.currentIndex()
 
-        # SUSPEND
-        actions_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
-        actions_config[Action.SUSPEND][Action.INPUT] = self.ui.suspendOnButton.isChecked()
+        def suspend():
+            actions_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
+            actions_config[Action.SUSPEND][Action.INPUT] = self.ui.suspendOnButton.isChecked()
 
-        # ADD TAGS
-        actions_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
-        actions_config[Action.ADD_TAGS][Action.INPUT] = \
-            mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
+        def add_tags():
+            actions_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
+            actions_config[Action.ADD_TAGS][Action.INPUT] = \
+                mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
 
-        # REMOVE TAGS
-        actions_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
-        actions_config[Action.REMOVE_TAGS][Action.INPUT] = \
-            mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
+        def remove_tags():
+            actions_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
+            actions_config[Action.REMOVE_TAGS][Action.INPUT] = \
+                mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
 
-        # FORGET
-        actions_config[Action.FORGET][Action.ENABLED] = self.ui.forgetCheckbox.isChecked()
-        actions_config[Action.FORGET][Action.INPUT][0] = self.ui.forgetOnRadio.isChecked()
-        actions_config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
-        actions_config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
+        def forget():
+            actions_config[Action.FORGET][Action.ENABLED] = self.ui.forgetCheckbox.isChecked()
+            actions_config[Action.FORGET][Action.INPUT][0] = self.ui.forgetOnRadio.isChecked()
+            actions_config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
+            actions_config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
 
-        # FIELDS
-        actions_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
-        actions_config[Action.EDIT_FIELDS][Action.INPUT] = {}
+        def edit_fields():
+            actions_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
+            actions_config[Action.EDIT_FIELDS][Action.INPUT] = {}
 
-        filtered_nids = actions_config[Action.EDIT_FIELDS][Action.INPUT]
+            def get_same_notes_count(nid):
+                filtered_nids = actions_config[Action.EDIT_FIELDS][Action.INPUT]
+                return len([filtered_nid for filtered_nid in filtered_nids if str(filtered_nid).find(str(nid)) >= 0])
 
-        for i in range(self.ui.editFieldsList.count()):
-            item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
-            note_id = str(item.note['id'])
-            if note_id in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
-                note_id += f'.{self.get_same_notes_count(note_id, filtered_nids)}'
-            actions_config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
+            for i in range(self.ui.editFieldsList.count()):
+                item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
+                note_id = str(item.note['id'])
+                if note_id in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
+                    note_id += f'.{get_same_notes_count(note_id)}'
+                actions_config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
 
-        # DECK MOVE
-        actions_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
-        stored_did = self.ui.deckMoveLine.text()
-        actions_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else None
+        def deck_move():
+            actions_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
+            stored_did = self.ui.deckMoveLine.text()
+            actions_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else None
 
-        # RESCHEDULE
-        actions_config[Action.RESCHEDULE][Action.ENABLED] = self.ui.rescheduleCheckbox.isChecked()
-        reschedule_input = actions_config[Action.RESCHEDULE][Action.INPUT]
-        reschedule_input[RescheduleAction.FROM] = self.ui.rescheduleFromDays.value()
-        reschedule_input[RescheduleAction.TO] = self.ui.rescheduleToDays.value()
-        reschedule_input[RescheduleAction.RESET] = self.ui.rescheduleResetCheckbox.isChecked()
+        def reschedule():
+            actions_config[Action.RESCHEDULE][Action.ENABLED] = self.ui.rescheduleCheckbox.isChecked()
+            reschedule_input = actions_config[Action.RESCHEDULE][Action.INPUT]
+            reschedule_input[RescheduleAction.FROM] = self.ui.rescheduleFromDays.value()
+            reschedule_input[RescheduleAction.TO] = self.ui.rescheduleToDays.value()
+            reschedule_input[RescheduleAction.RESET] = self.ui.rescheduleResetCheckbox.isChecked()
 
-        # ADD TO QUEUE
-        actions_config[Action.ADD_TO_QUEUE][Action.ENABLED] = self.ui.queueCheckbox.isChecked()
-        queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
-        queue_input[QueueAction.FROM_INDEX] = self.ui.queueFromDropdown.currentIndex()
-        queue_input[QueueAction.TO_INDEX] = self.ui.queueToDropdown.currentIndex()
-        queue_input[QueueAction.FROM_VAL] = self.ui.queueFromSpinbox.formatted_value()
-        queue_input[QueueAction.TO_VAL] = self.ui.queueToSpinbox.formatted_value()
-        queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
-        queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
-        queue_input[QueueAction.INCLUSIVE_FIELDS] = self.ui.queueIncludeFieldsCheckbox.isChecked()
+        def add_to_queue():
+            actions_config[Action.ADD_TO_QUEUE][Action.ENABLED] = self.ui.queueCheckbox.isChecked()
+            queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
+            queue_input[QueueAction.FROM_INDEX] = self.ui.queueFromDropdown.currentIndex()
+            queue_input[QueueAction.TO_INDEX] = self.ui.queueToDropdown.currentIndex()
+            queue_input[QueueAction.FROM_VAL] = self.ui.queueFromSpinbox.formatted_value()
+            queue_input[QueueAction.TO_VAL] = self.ui.queueToSpinbox.formatted_value()
+            queue_input[QueueAction.NEAR_SIMILAR] = self.ui.queueSimilarCheckbox.isChecked()
+            queue_input[QueueAction.NEAR_SIBLING] = self.ui.queueSiblingCheckbox.isChecked()
+            queue_input[QueueAction.INCLUSIVE_FIELDS] = self.ui.queueIncludeFieldsCheckbox.isChecked()
 
-        queue_input[QueueAction.FILTERED_FIELDS] = []
-        for i in range(self.ui.queueExcludedFieldList.count()):
-            item = self.ui.queueExcludedFieldList.item(i)
-            field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
-            field_dict = field_item.get_model_field_dict()
-            queue_input[QueueAction.FILTERED_FIELDS].append(field_dict)
-        queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
+            queue_input[QueueAction.FILTERED_FIELDS] = []
+            for i in range(self.ui.queueExcludedFieldList.count()):
+                item = self.ui.queueExcludedFieldList.item(i)
+                field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
+                field_dict = field_item.get_model_field_dict()
+                queue_input[QueueAction.FILTERED_FIELDS].append(field_dict)
+            queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
 
-        queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
+            queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
+
+        # A little easier to read/debug
+        flag()
+        suspend()
+        add_tags()
+        remove_tags()
+        forget()
+        edit_fields()
+        deck_move()
+        reschedule()
+        add_to_queue()
 
     def toggle_expando(self, button: aqt.qt.QToolButton, toggle: bool = None):
         toggle = not self.ui.actionsFrame.isVisible() if toggle is None else toggle
         button.setArrowType(arrow_types[toggle])
         if button == self.ui.expandoButton:
             self.ui.actionsFrame.setVisible(toggle)
-
-    def get_same_notes_count(self, nid, filtered_nids):
-        return len([filtered_nid for filtered_nid in filtered_nids if str(filtered_nid).find(str(nid)) >= 0])
 
     def add_edit_items(self, data: {str: {str: int or str}}):
         for filtered_nid in data:
