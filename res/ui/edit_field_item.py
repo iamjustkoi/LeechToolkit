@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_EditFieldItem(object):
     def setupUi(self, EditFieldItem):
         EditFieldItem.setObjectName("EditFieldItem")
-        EditFieldItem.resize(271, 67)
+        EditFieldItem.resize(289, 67)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -26,25 +26,13 @@ class Ui_EditFieldItem(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.noteLabel = ElidingLabel(EditFieldItem)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.noteLabel.sizePolicy().hasHeightForWidth())
-        self.noteLabel.setSizePolicy(sizePolicy)
-        self.noteLabel.setMinimumSize(QtCore.QSize(42, 0))
-        self.noteLabel.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.noteLabel.setObjectName("noteLabel")
-        self.horizontalLayout.addWidget(self.noteLabel)
-        self.fieldDropdown = QtWidgets.QComboBox(EditFieldItem)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fieldDropdown.sizePolicy().hasHeightForWidth())
-        self.fieldDropdown.setSizePolicy(sizePolicy)
-        self.fieldDropdown.setMaximumSize(QtCore.QSize(128, 16777215))
-        self.fieldDropdown.setObjectName("fieldDropdown")
-        self.horizontalLayout.addWidget(self.fieldDropdown)
+        self.fieldButtonLabel = QtWidgets.QToolButton(EditFieldItem)
+        self.fieldButtonLabel.setMinimumSize(QtCore.QSize(64, 24))
+        self.fieldButtonLabel.setCursor(QtGui.QCursor(QtCore.Qt.WhatsThisCursor))
+        self.fieldButtonLabel.setPopupMode(QtWidgets.QToolButton.InstantPopup)
+        self.fieldButtonLabel.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.fieldButtonLabel.setObjectName("fieldButtonLabel")
+        self.horizontalLayout.addWidget(self.fieldButtonLabel)
         self.methodDropdown = QtWidgets.QComboBox(EditFieldItem)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -103,7 +91,7 @@ class Ui_EditFieldItem(object):
 
     def retranslateUi(self, EditFieldItem):
         _translate = QtCore.QCoreApplication.translate
-        self.noteLabel.setText(_translate("EditFieldItem", "sample sample sample sample sample "))
+        self.fieldButtonLabel.setText(_translate("EditFieldItem", "sample sample sample"))
         self.methodDropdown.setItemText(0, _translate("EditFieldItem", "Append"))
         self.methodDropdown.setItemText(1, _translate("EditFieldItem", "Prepend"))
         self.methodDropdown.setItemText(2, _translate("EditFieldItem", "Replace"))
@@ -111,7 +99,6 @@ class Ui_EditFieldItem(object):
         self.replaceEdit.setToolTip(_translate("EditFieldItem", "Text to search for and replace."))
         self.replaceEdit.setPlaceholderText(_translate("EditFieldItem", "Find"))
         self.inputEdit.setPlaceholderText(_translate("EditFieldItem", "Text"))
-from .forms import ElidingLabel
 
 
 if __name__ == "__main__":
