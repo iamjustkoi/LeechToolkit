@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>271</width>
+    <width>289</width>
     <height>67</height>
    </rect>
   </property>
@@ -29,42 +29,26 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="ElidingLabel" name="noteLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>42</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="text">
-        <string>sample sample sample sample sample </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="fieldDropdown">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>128</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
+         <widget class="QToolButton" name="fieldButtonLabel">
+             <property name="minimumSize">
+                 <size>
+                     <width>64</width>
+                     <height>24</height>
+                 </size>
+             </property>
+             <property name="cursor">
+                 <cursorShape>WhatsThisCursor</cursorShape>
+             </property>
+             <property name="text">
+                 <string>sample sample sample</string>
+             </property>
+             <property name="popupMode">
+                 <enum>QToolButton::InstantPopup</enum>
+             </property>
+             <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+         </widget>
      </item>
      <item>
       <widget class="QComboBox" name="methodDropdown">
@@ -190,13 +174,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>ElidingLabel</class>
-   <extends>QLabel</extends>
-   <header>.forms.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -240,155 +240,180 @@ class ActionsWidget(QWidget):
 
     def load(self, actions_config: dict):
         # FLAG
-        self.ui.flagCheckbox.setChecked(actions_config[Action.FLAG][Action.ENABLED])
-        self.ui.flagDropdown.setCurrentIndex(actions_config[Action.FLAG][Action.INPUT])
+        def load_flag():
+            self.ui.flagCheckbox.setChecked(actions_config[Action.FLAG][Action.ENABLED])
+            self.ui.flagDropdown.setCurrentIndex(actions_config[Action.FLAG][Action.INPUT])
 
-        flag_manager = aqt.flags.FlagManager(mw)
-        for index in range(1, self.ui.flagDropdown.count()):
-            flag = flag_manager.get_flag(index)
-            pixmap = QPixmap(flag.icon.path)
-            mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
-            pixmap.fill(QColor(flag.icon.current_color(mw.pm.night_mode())))
-            pixmap.setMask(mask)
-            self.ui.flagDropdown.setItemIcon(index, QIcon(pixmap))
-            self.ui.flagDropdown.setItemText(index, f'{flag.label}')
+            flag_manager = aqt.flags.FlagManager(mw)
+            for index in range(1, self.ui.flagDropdown.count()):
+                flag = flag_manager.get_flag(index)
+                pixmap = QPixmap(flag.icon.path)
+                mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
+                pixmap.fill(QColor(flag.icon.current_color(mw.pm.night_mode())))
+                pixmap.setMask(mask)
+                self.ui.flagDropdown.setItemIcon(index, QIcon(pixmap))
+                self.ui.flagDropdown.setItemText(index, f'{flag.label}')
 
         # SUSPEND
-        self.ui.suspendCheckbox.setChecked(actions_config[Action.SUSPEND][Action.ENABLED])
-        self.ui.suspendOnButton.setChecked(actions_config[Action.SUSPEND][Action.INPUT])
-        self.ui.suspendOffButton.setChecked(not actions_config[Action.SUSPEND][Action.INPUT])
+        def load_suspend():
+            self.ui.suspendCheckbox.setChecked(actions_config[Action.SUSPEND][Action.ENABLED])
+            self.ui.suspendOnButton.setChecked(actions_config[Action.SUSPEND][Action.INPUT])
+            self.ui.suspendOffButton.setChecked(not actions_config[Action.SUSPEND][Action.INPUT])
 
         # TAGS
-        suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
-        self.add_completer.set_list([suggestion for suggestion in suggestions if suggestion != Macro.REGEX])
-        self.remove_completer.set_list(suggestions)
+        tag_suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
 
         # ADD TAGS
-        self.ui.addTagsCheckbox.setChecked(actions_config[Action.ADD_TAGS][Action.ENABLED])
-        self.ui.addTagsLine.setText(actions_config[Action.ADD_TAGS][Action.INPUT])
-        self.ui.addTagsLine.setCompleter(self.add_completer)
+        def load_add_tags():
+            self.add_completer.set_list([suggestion for suggestion in tag_suggestions if suggestion != Macro.REGEX])
+            self.ui.addTagsCheckbox.setChecked(actions_config[Action.ADD_TAGS][Action.ENABLED])
+            self.ui.addTagsLine.setText(actions_config[Action.ADD_TAGS][Action.INPUT])
+            self.ui.addTagsLine.setCompleter(self.add_completer)
 
         # REMOVE TAGS
-        self.ui.removeTagsCheckbox.setChecked(actions_config[Action.REMOVE_TAGS][Action.ENABLED])
-        self.ui.removeTagsLine.setText(actions_config[Action.REMOVE_TAGS][Action.INPUT])
-        self.ui.removeTagsLine.setCompleter(self.remove_completer)
+        def load_remove_tags():
+            self.remove_completer.set_list(tag_suggestions)
+            self.ui.removeTagsCheckbox.setChecked(actions_config[Action.REMOVE_TAGS][Action.ENABLED])
+            self.ui.removeTagsLine.setText(actions_config[Action.REMOVE_TAGS][Action.INPUT])
+            self.ui.removeTagsLine.setCompleter(self.remove_completer)
 
         # FORGET
-        self.ui.forgetCheckbox.setChecked(actions_config[Action.FORGET][Action.ENABLED])
-        self.ui.forgetOnRadio.setChecked(actions_config[Action.FORGET][Action.INPUT][0])
-        self.ui.forgetOffRadio.setChecked(not actions_config[Action.FORGET][Action.INPUT][0])
-        self.ui.forgetRestorePosCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][1])
-        self.ui.forgetResetCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][2])
+        def load_forget():
+            self.ui.forgetCheckbox.setChecked(actions_config[Action.FORGET][Action.ENABLED])
+            self.ui.forgetOnRadio.setChecked(actions_config[Action.FORGET][Action.INPUT][0])
+            self.ui.forgetOffRadio.setChecked(not actions_config[Action.FORGET][Action.INPUT][0])
+            self.ui.forgetRestorePosCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][1])
+            self.ui.forgetResetCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][2])
 
         # EDIT FIELD
-        self.ui.editFieldsCheckbox.setChecked(actions_config[Action.EDIT_FIELDS][Action.ENABLED])
-        self.add_edit_items(actions_config[Action.EDIT_FIELDS][Action.INPUT])
-        redraw_list(self.ui.editFieldsList, max_fields_height)
+        def load_edit_field():
+            self.ui.editFieldsCheckbox.setChecked(actions_config[Action.EDIT_FIELDS][Action.ENABLED])
+            for field_item in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
+                mid, item_data = list(field_item.items())[0]
+                note_dict = mw.col.models.get(NotetypeId(mid))
+                field_name = mw.col.models.field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
+                self.add_edit_item(mid, field_name, item_data[1], item_data[2], item_data[3])
+            redraw_list(self.ui.editFieldsList, max_fields_height)
 
         # DECK MOVE
-        self.ui.deckMoveCheckbox.setChecked(actions_config[Action.MOVE_TO_DECK][Action.ENABLED])
-        deck_names = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
-        deck_name = mw.col.decks.name_if_exists(actions_config[Action.MOVE_TO_DECK][Action.INPUT])
-        self.deck_completer.set_list(deck_names)
-        self.ui.deckMoveLine.setCompleter(self.deck_completer)
-        self.ui.deckMoveLine.setText(deck_name)
+        def load_deck_move():
+            self.ui.deckMoveCheckbox.setChecked(actions_config[Action.MOVE_TO_DECK][Action.ENABLED])
+            deck_names = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
+            deck_name = mw.col.decks.name_if_exists(actions_config[Action.MOVE_TO_DECK][Action.INPUT])
+            self.deck_completer.set_list(deck_names)
+            self.ui.deckMoveLine.setCompleter(self.deck_completer)
+            self.ui.deckMoveLine.setText(deck_name)
 
         # RESCHEDULE
-        reschedule_input = actions_config[Action.RESCHEDULE][Action.INPUT]
-        self.ui.rescheduleCheckbox.setChecked(actions_config[Action.RESCHEDULE][Action.ENABLED])
-        self.ui.rescheduleFromDays.setValue(reschedule_input[RescheduleAction.FROM])
-        self.ui.rescheduleToDays.setValue(reschedule_input[RescheduleAction.TO])
-        self.ui.rescheduleResetCheckbox.setChecked(reschedule_input[RescheduleAction.RESET])
+        def load_reschedule():
+            reschedule_input = actions_config[Action.RESCHEDULE][Action.INPUT]
+            self.ui.rescheduleCheckbox.setChecked(actions_config[Action.RESCHEDULE][Action.ENABLED])
+            self.ui.rescheduleFromDays.setValue(reschedule_input[RescheduleAction.FROM])
+            self.ui.rescheduleToDays.setValue(reschedule_input[RescheduleAction.TO])
+            self.ui.rescheduleResetCheckbox.setChecked(reschedule_input[RescheduleAction.RESET])
 
         # ADD TO QUEUE
-        queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
-        self.ui.queueCheckbox.setChecked(actions_config[Action.ADD_TO_QUEUE][Action.ENABLED])
-        self.ui.queueFromDropdown.setCurrentIndex(queue_input[QueueAction.FROM_INDEX])
-        self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
-        self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
-        self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
-        top, bottom = mw.col.db.first(
-            f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
-        )
-        self.ui.queueLabelTopPos.setText(str(top))
-        self.ui.queueLabelBottomPos.setText(str(bottom))
-        self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
-        self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
-        self.ui.queueIncludeFieldsCheckbox.setChecked(queue_input[QueueAction.INCLUSIVE_FIELDS])
+        def load_queue():
+            queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
+            self.ui.queueCheckbox.setChecked(actions_config[Action.ADD_TO_QUEUE][Action.ENABLED])
+            self.ui.queueFromDropdown.setCurrentIndex(queue_input[QueueAction.FROM_INDEX])
+            self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
+            self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
+            self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
+            top, bottom = mw.col.db.first(
+                f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
+            )
+            self.ui.queueLabelTopPos.setText(str(top))
+            self.ui.queueLabelBottomPos.setText(str(bottom))
+            self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
+            self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
+            self.ui.queueIncludeFieldsCheckbox.setChecked(queue_input[QueueAction.INCLUSIVE_FIELDS])
 
-        for note_type in mw.col.models.all():
-            sub_menu = self.ui.queueAddFieldButton.menu().addMenu(f'{note_type["name"]}')
-            for field in mw.col.models.field_names(note_type):
-                action = QAction(f'{field}', self)
-                action.setData(note_type['id'])
-                sub_menu.addAction(action)
+            for note_type in mw.col.models.all():
+                sub_menu = self.ui.queueAddFieldButton.menu().addMenu(f'{note_type["name"]}')
+                for field in mw.col.models.field_names(note_type):
+                    action = QAction(f'{field}', self)
+                    action.setData(note_type['id'])
+                    sub_menu.addAction(action)
 
-        for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
-            note_type_id = list(note_dict)[0]
-            for field_ord in list(note_dict.values()):
-                note = mw.col.models.get(NotetypeId(int(note_type_id)))
-                self.add_excluded_field(note_type_id, mw.col.models.field_names(note)[field_ord])
-        redraw_list(self.ui.queueExcludedFieldList)
-        self.ui.queueExcludedFieldList.sortItems()
+            for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
+                note_type_id = list(note_dict)[0]
+                for field_ord in list(note_dict.values()):
+                    note = mw.col.models.get(NotetypeId(int(note_type_id)))
+                    self.add_excluded_field(note_type_id, mw.col.models.field_names(note)[field_ord])
+            redraw_list(self.ui.queueExcludedFieldList)
+            self.ui.queueExcludedFieldList.sortItems()
 
-        self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
+            self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
 
-        self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
+            self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
+
+        # A little easier to read/debug
+        load_flag()
+        load_suspend()
+        load_add_tags()
+        load_remove_tags()
+        load_forget()
+        load_edit_field()
+        load_deck_move()
+        load_reschedule()
+        load_queue()
 
     def save(self, actions_config: dict):
-        def flag():
+        def save_flag():
             actions_config[Action.FLAG][Action.ENABLED] = self.ui.flagCheckbox.isChecked()
             actions_config[Action.FLAG][Action.INPUT] = self.ui.flagDropdown.currentIndex()
 
-        def suspend():
+        def save_suspend():
             actions_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
             actions_config[Action.SUSPEND][Action.INPUT] = self.ui.suspendOnButton.isChecked()
 
-        def add_tags():
+        def save_add_tags():
             actions_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
             actions_config[Action.ADD_TAGS][Action.INPUT] = \
                 mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
 
-        def remove_tags():
+        def save_remove_tags():
             actions_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
             actions_config[Action.REMOVE_TAGS][Action.INPUT] = \
                 mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
 
-        def forget():
+        def save_forget():
             actions_config[Action.FORGET][Action.ENABLED] = self.ui.forgetCheckbox.isChecked()
             actions_config[Action.FORGET][Action.INPUT][0] = self.ui.forgetOnRadio.isChecked()
             actions_config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
             actions_config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
 
-        def edit_fields():
-            actions_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
-            actions_config[Action.EDIT_FIELDS][Action.INPUT] = {}
+        # def save_edit_fields():
+        #     actions_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
+        #     actions_config[Action.EDIT_FIELDS][Action.INPUT] = {}
+        #
+        #     def get_same_notes_count(nid):
+        #         filtered_nids = actions_config[Action.EDIT_FIELDS][Action.INPUT]
+        #         return len([filtered_nid for filtered_nid in filtered_nids if str(filtered_nid).find(str(nid)) >= 0])
+        #
+        #     for i in range(self.ui.editFieldsList.count()):
+        #         item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
+        #         note_id = str(item.note['id'])
+        #         if note_id in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
+        #             note_id += f'.{get_same_notes_count(note_id)}'
+        #         actions_config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
 
-            def get_same_notes_count(nid):
-                filtered_nids = actions_config[Action.EDIT_FIELDS][Action.INPUT]
-                return len([filtered_nid for filtered_nid in filtered_nids if str(filtered_nid).find(str(nid)) >= 0])
-
-            for i in range(self.ui.editFieldsList.count()):
-                item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
-                note_id = str(item.note['id'])
-                if note_id in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
-                    note_id += f'.{get_same_notes_count(note_id)}'
-                actions_config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
-
-        def deck_move():
+        def save_deck_move():
             actions_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
             stored_did = self.ui.deckMoveLine.text()
             actions_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else None
 
-        def reschedule():
+        def save_reschedule():
             actions_config[Action.RESCHEDULE][Action.ENABLED] = self.ui.rescheduleCheckbox.isChecked()
             reschedule_input = actions_config[Action.RESCHEDULE][Action.INPUT]
             reschedule_input[RescheduleAction.FROM] = self.ui.rescheduleFromDays.value()
             reschedule_input[RescheduleAction.TO] = self.ui.rescheduleToDays.value()
             reschedule_input[RescheduleAction.RESET] = self.ui.rescheduleResetCheckbox.isChecked()
 
-        def add_to_queue():
+        def save_add_to_queue():
             actions_config[Action.ADD_TO_QUEUE][Action.ENABLED] = self.ui.queueCheckbox.isChecked()
+
             queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
             queue_input[QueueAction.FROM_INDEX] = self.ui.queueFromDropdown.currentIndex()
             queue_input[QueueAction.TO_INDEX] = self.ui.queueToDropdown.currentIndex()
@@ -401,23 +426,23 @@ class ActionsWidget(QWidget):
             queue_input[QueueAction.FILTERED_FIELDS] = []
             for i in range(self.ui.queueExcludedFieldList.count()):
                 item = self.ui.queueExcludedFieldList.item(i)
-                field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
+                field_item = ExcludeFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
                 field_dict = field_item.get_model_field_dict()
                 queue_input[QueueAction.FILTERED_FIELDS].append(field_dict)
-            queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
 
+            queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
             queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
 
         # A little easier to read/debug
-        flag()
-        suspend()
-        add_tags()
-        remove_tags()
-        forget()
-        edit_fields()
-        deck_move()
-        reschedule()
-        add_to_queue()
+        save_flag()
+        save_suspend()
+        save_add_tags()
+        save_remove_tags()
+        save_forget()
+        # save_edit_fields()
+        save_deck_move()
+        save_reschedule()
+        save_add_to_queue()
 
     def toggle_expando(self, button: aqt.qt.QToolButton, toggle: bool = None):
         toggle = not self.ui.actionsFrame.isVisible() if toggle is None else toggle
@@ -425,21 +450,8 @@ class ActionsWidget(QWidget):
         if button == self.ui.expandoButton:
             self.ui.actionsFrame.setVisible(toggle)
 
-    def add_edit_items(self, data: {str: {str: int or str}}):
-        for filtered_nid in data:
-            field = data[filtered_nid]
-            nid = str(filtered_nid).split('.')[0]
-            self.add_edit_item(
-                nid=int(nid),
-                field_idx=field[EditAction.FIELD],
-                method_idx=field[EditAction.METHOD],
-                repl=field[EditAction.REPL],
-                input_text=field[EditAction.TEXT]
-            )
-
-    def add_edit_item(self, nid: int, field_idx: int = -1, method_idx=EditAction.EditMethod(0), repl='',
-                      input_text=''):
-        edit_item = EditFieldItem(self, nid, field_idx, method_idx, repl, input_text)
+    def add_edit_item(self, mid: int, field_name: str, method_idx: EditAction.EditMethod, repl: str, text: str):
+        edit_item = EditFieldItem(self.ui.editFieldsList, mid, field_name, method_idx, repl, text)
         list_item = QListWidgetItem(self.ui.editFieldsList)
         list_item.setSizeHint(edit_item.sizeHint())
         list_item.setFlags(Qt.NoItemFlags)
@@ -455,13 +467,13 @@ class ActionsWidget(QWidget):
         """
         for i in range(0, self.ui.queueExcludedFieldList.count()):
             item = self.ui.queueExcludedFieldList.item(i)
-            field_item = ExcludedFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
+            field_item = ExcludeFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
             fields_names = mw.col.models.field_names(mw.col.models.get(mid))
             if field_item.get_model_field_dict() == {f'{mid}': fields_names.index(text)}:
                 return
 
-        field_item = ExcludedFieldItem(self, mid=mid, field_name=text)
-        list_item = ExcludedFieldItem.ExcludedFieldListItem(self.ui.queueExcludedFieldList)
+        field_item = ExcludeFieldItem(self, mid=mid, field_name=text)
+        list_item = ExcludeFieldItem.ExcludedFieldListItem(self.ui.queueExcludedFieldList)
         list_item.setSizeHint(field_item.sizeHint())
         list_item.setFlags(Qt.NoItemFlags)
 
@@ -469,10 +481,10 @@ class ActionsWidget(QWidget):
         self.ui.queueExcludedFieldList.setItemWidget(list_item, field_item)
 
 
-class ExcludedFieldItem(QWidget):
+class ExcludeFieldItem(QWidget):
 
     @staticmethod
-    def from_list_widget(field_list: QListWidget, item: QListWidgetItem) -> "ExcludedFieldItem":
+    def from_list_widget(field_list: QListWidget, item: QListWidgetItem) -> "ExcludeFieldItem":
         """
     Returns an ExcludedFieldItem using a base QListWidgetItem.
         :param field_list: reference list
@@ -510,8 +522,8 @@ class ExcludedFieldItem(QWidget):
 
     class ExcludedFieldListItem(QListWidgetItem):
         def __lt__(self, other):
-            this_item = ExcludedFieldItem.from_list_widget(self.listWidget(), self)
-            other_item = ExcludedFieldItem.from_list_widget(other.listWidget(), other)
+            this_item = ExcludeFieldItem.from_list_widget(self.listWidget(), self)
+            other_item = ExcludeFieldItem.from_list_widget(other.listWidget(), other)
             if other_item is None:
                 return False
             else:
@@ -535,87 +547,65 @@ class EditFieldItem(QWidget):
 
     def __init__(
             self,
-            actions_dialog: ActionsWidget,
-            nid: int,
-            field_idx: int = -1,
+            edit_list: QListWidget,
+            mid: int,
+            field_name: str,
             method_idx=EditAction.EditMethod(0),
             repl: str = None,
             text: str = None
     ):
         """
     NoteItem used for the field edit list.
-        :param text: string value to use for the label of the list item
-        :param actions_dialog: reference to the base class to use for context menu actions
+        :param edit_list:
+        :param mid:
+        :param field_name:
+        :param method_idx:
+        :param repl:
+        :param text:
         """
         super().__init__(flags=mw.windowFlags())
         self.context_menu = QMenu(self)
-        self.dialog = actions_dialog
+        self.list_widget = edit_list
+        self.mid = mid
+
+        self.note_type_dict = mw.col.models.get(NotetypeId(self.mid))
+        self.model_name = self.note_type_dict["name"] if self.note_type_dict else ''
+
         self.widget = Ui_EditFieldItem()
         self.widget.setupUi(EditFieldItem=self)
-        self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
-        self.set_note(nid)
-        self.update_forms(field_idx=field_idx, method_idx=method_idx, repl=repl, text=text)
+        self.widget.fieldButtonLabel.setText(field_name)
+        self.widget.fieldButtonLabel.setToolTip(self.model_name)
+
+        self.refresh_method_fields(method_idx) if method_idx >= 0 else None
+        self.widget.replaceEdit.setText(repl) if repl else None
+        self.widget.inputEdit.setText(text) if text else None
+
+        self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
 
         def remove_self(_):
             """
         Removes the current item from its list widget.
             :param _: placeholder argument given by QAction calls
             """
-            for i in range(self.dialog.ui.editFieldsList.count()):
-                item = self.dialog.ui.editFieldsList.item(i)
-                if self == self.from_list_widget(self.dialog.ui.editFieldsList, item):
-                    self.dialog.ui.editFieldsList.takeItem(i)
-                    redraw_list(self.dialog.ui.editFieldsList)
+            for i in range(self.list_widget.count()):
+                item = self.list_widget.item(i)
+                if self == self.from_list_widget(self.list_widget, item):
+                    self.list_widget.takeItem(i)
+                    redraw_list(self.list_widget)
 
         self.widget.removeButton.clicked.connect(remove_self)
-        self.widget.methodDropdown.currentIndexChanged.connect(self.refresh_method_forms)
+        self.widget.methodDropdown.currentIndexChanged.connect(self.refresh_method_fields)
 
-    def refresh_method_forms(self, method_idx: int):
+    def refresh_method_fields(self, method_idx: int):
+        self.widget.methodDropdown.setCurrentIndex(method_idx)
         is_replace = method_idx in (EditAction.REPLACE_METHOD, EditAction.REGEX_METHOD)
         self.widget.replaceEdit.setVisible(is_replace)
         self.widget.inputEdit.setPlaceholderText(String.REPLACE_WITH if is_replace else String.OUTPUT_TEXT)
 
-    def update_forms(
-            self,
-            field_idx: int = -1,
-            method_idx=EditAction.EditMethod(0),
-            repl: str = None,
-            text: str = None
-    ):
-        """
-    Updates the item's forms to the input values.
-        :param field_idx: index of the current note's fields to modify
-        :param method_idx: index/EditMethod object of the method to use
-        :param repl: text to try and replace
-        :param text: text to use for appending/prepending/replacing
-        """
-        note_fields = mw.col.models.get(self.note['id']).get('flds')
-
-        self.widget.fieldDropdown.addItems([field['name'] for field in note_fields])
-
-        if field_idx >= 0:
-            self.widget.fieldDropdown.setCurrentIndex(field_idx)
-        if method_idx >= 0:
-            self.widget.methodDropdown.setCurrentIndex(method_idx)
-            self.refresh_method_forms(method_idx)
-        if repl:
-            self.widget.replaceEdit.setText(repl)
-        if text:
-            self.widget.inputEdit.setText(text)
-
-    def set_note(self, nid: int):
-        self.note = mw.col.models.get(NoteId(nid))
-        self.widget.noteLabel.setText(mw.col.models.get(nid)['name'])
-
-    def get_data(self):
-        """
-Retrieves the current, relevant data held in this list item.
-        :return: Tuple(note id, field index, method index, find text, input text)
-        """
-        return {
-            str(EditAction.FIELD): self.widget.fieldDropdown.currentIndex(),
-            str(EditAction.METHOD): self.widget.methodDropdown.currentIndex(),
-            str(EditAction.REPL): self.widget.replaceEdit.text(),
-            str(EditAction.TEXT): self.widget.inputEdit.text()
-        }
+    def get_model_field_dict(self):
+        if self.note_type_dict:
+            fields_names = mw.col.models.field_names(self.note_type_dict)
+            return {f'{self.mid}': fields_names.index(self.widget.fieldButtonLabel.text())}
+        else:
+            return {f'{self.mid}': 0}
