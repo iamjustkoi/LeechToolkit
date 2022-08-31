@@ -45,6 +45,7 @@ class String:
     LEECH_REVERSED = r"Leech reversed!"
     LEECH_ACTIONS = 'Leech Actions'
     LEECH_REVERSE_ACTIONS = 'Un-leech Actions'
+    NOTE_NOT_FOUND = 'Missing Note-Type'
 
 
 class EditAction:
@@ -150,9 +151,9 @@ class Config:
             Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
             Action.EDIT_FIELDS: {
                 Action.ENABLED: False,
-                Action.INPUT: {
-                    # 'model-id': {field_index, method_index, 'repl', 'ref'},
-                }
+                Action.INPUT: [
+                    # {'model-id', field_ord, method_index, 'repl', 'ref'}
+                ]
             },
             Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''},
             Action.RESCHEDULE: {
