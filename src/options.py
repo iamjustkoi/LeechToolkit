@@ -166,6 +166,16 @@ class ReverseWidget(QWidget):
         reverse_config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
 
 
+def _fill_menu_fields(add_button: aqt.qt.QToolButton):
+    for note_type in mw.col.models.all():
+        sub_menu = add_button.menu().addMenu(f'{note_type["name"]}')
+
+        for field in mw.col.models.field_names(note_type):
+            action = QAction(f'{field}', add_button)
+            action.setData(note_type['id'])
+            sub_menu.addAction(action)
+
+
 class ActionsWidget(QWidget):
     def __init__(self, actions_type: str, parent=None, expanded=True):
         super().__init__(parent, mw.windowFlags())
@@ -180,13 +190,6 @@ class ActionsWidget(QWidget):
                 text_box.setFixedHeight(min_height if doc_height <= min_height else doc_height + 5)
             else:
                 text_box.setFixedHeight(max_height)
-
-        def handle_field_selected(action: QAction, list_widget: QListWidget):
-            if list_widget.objectName() == self.ui.queueExcludedFieldList.objectName():
-                self.add_excluded_field(action.data(), action.text())
-            elif list_widget.objectName() == self.ui.editFieldsList.objectName():
-                self.add_edit_field(action.data(), action.text())
-            redraw_list(list_widget)
 
         if self.actions_type == Config.LEECH_ACTIONS:
             self.ui.expandoButton.setText(String.LEECH_ACTIONS)
@@ -210,16 +213,14 @@ class ActionsWidget(QWidget):
 
         self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
 
-        # sub_menu = self.ui.queueAddFieldButton.menu().addMenu(f'{note_type["name"]}')
-
         self.ui.queueAddFieldButton.setMenu(QMenu(self.ui.queueAddFieldButton))
         self.ui.queueAddFieldButton.menu().triggered.connect(
-            lambda action: handle_field_selected(action, self.ui.queueExcludedFieldList)
+            lambda action: _handle_list_update(self.ui.queueExcludedFieldList, action, add_excluded_field)
         )
 
         self.ui.editAddFieldButton.setMenu(QMenu(self.ui.editAddFieldButton))
         self.ui.editAddFieldButton.menu().triggered.connect(
-            lambda action: handle_field_selected(action, self.ui.editFieldsList)
+            lambda action: _handle_list_update(self.ui.editFieldsList, action, add_edit_field)
         )
 
         self.ui.expandoWidget.set_click_function(lambda: self.toggle_expando(self.ui.expandoButton))
@@ -227,14 +228,6 @@ class ActionsWidget(QWidget):
         self.toggle_expando(self.ui.expandoButton, expanded)
 
     def load(self, actions_config: dict):
-
-        def fill_menu_fields(add_button: aqt.qt.QToolButton):
-            for note_type in mw.col.models.all():
-                sub_menu = add_button.menu().addMenu(f'{note_type["name"]}')
-                for field in mw.col.models.field_names(note_type):
-                    action = QAction(f'{field}', self)
-                    action.setData(note_type['id'])
-                    sub_menu.addAction(action)
 
         # FLAG
         def load_flag():
@@ -289,10 +282,10 @@ class ActionsWidget(QWidget):
                 mid, item_data = list(field_item.items())[0]
                 note_dict = mw.col.models.get(NotetypeId(mid))
                 field_name = mw.col.models.field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
-                self.add_edit_field(mid, field_name, item_data[1], item_data[2], item_data[3])
+                add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
             redraw_list(self.ui.editFieldsList, max_fields_height)
 
-            fill_menu_fields(self.ui.editAddFieldButton)
+            _fill_menu_fields(self.ui.editAddFieldButton)
 
         # DECK MOVE
         def load_deck_move():
@@ -329,14 +322,16 @@ class ActionsWidget(QWidget):
             self.ui.queueIncludeFieldsCheckbox.setChecked(queue_input[QueueAction.INCLUSIVE_FIELDS])
 
             for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
-                note_type_id = list(note_dict)[0]
+                mid = list(note_dict)[0]
                 for field_ord in list(note_dict.values()):
-                    note = mw.col.models.get(NotetypeId(int(note_type_id)))
-                    self.add_excluded_field(note_type_id, mw.col.models.field_names(note)[field_ord])
+                    note = mw.col.models.get(NotetypeId(int(mid)))
+                    field_name = mw.col.models.field_names(note)[field_ord]
+                    add_excluded_field(self.ui.queueExcludedFieldList, mid, field_name)
+
             self.ui.queueExcludedFieldList.sortItems()
             redraw_list(self.ui.queueExcludedFieldList)
 
-            fill_menu_fields(self.ui.queueAddFieldButton)
+            _fill_menu_fields(self.ui.queueAddFieldButton)
 
             self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
             self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
@@ -443,37 +438,44 @@ class ActionsWidget(QWidget):
         if button == self.ui.expandoButton:
             self.ui.actionsFrame.setVisible(toggle)
 
-    def add_edit_field(self, mid: int, field_name: str, method_idx=EditAction.EditMethod(0), repl='', text=''):
-        edit_item = EditFieldItem(self.ui.editFieldsList, mid, field_name, method_idx, repl, text)
 
-        list_item = QListWidgetItem(self.ui.editFieldsList)
-        list_item.setSizeHint(edit_item.sizeHint())
-        list_item.setFlags(Qt.NoItemFlags)
+def _add_list_item(list_widget: QListWidget, list_item: QListWidgetItem, item_widget: QWidget):
+    list_item.setSizeHint(item_widget.sizeHint())
+    list_item.setFlags(Qt.NoItemFlags)
 
-        self.ui.editFieldsList.addItem(list_item)
-        self.ui.editFieldsList.setItemWidget(list_item, edit_item)
+    list_widget.addItem(list_item)
+    list_widget.setItemWidget(list_item, item_widget)
 
-    def add_excluded_field(self, mid: int, text=''):
-        """
-    Inserts a new excluded field item to the excluded fields list if not already present.
-        :param mid: Model ID of the note/field
-        :param text: text string of the field's name/title
-        """
-        for i in range(0, self.ui.queueExcludedFieldList.count()):
-            item = self.ui.queueExcludedFieldList.item(i)
-            exclude_item = ExcludeFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
-            fields_names = mw.col.models.field_names(mw.col.models.get(mid))
-            if exclude_item.get_model_field_dict() == {f'{mid}': fields_names.index(text)}:
-                return
 
-        exclude_item = ExcludeFieldItem(self, mid=mid, field_name=text)
+def add_edit_field(list_widget: QListWidget, mid: int, field_name: str, method_idx=0, repl='', text=''):
+    edit_item = EditFieldItem(list_widget, mid, field_name, EditAction.EditMethod(method_idx), repl, text)
+    list_item = QListWidgetItem(list_widget)
+    _add_list_item(list_widget, list_item, edit_item)
 
-        list_item = ExcludeFieldItem.ExcludedFieldListItem(self.ui.queueExcludedFieldList)
-        list_item.setSizeHint(exclude_item.sizeHint())
-        list_item.setFlags(Qt.NoItemFlags)
 
-        self.ui.queueExcludedFieldList.addItem(list_item)
-        self.ui.queueExcludedFieldList.setItemWidget(list_item, exclude_item)
+def add_excluded_field(list_widget: QListWidget, mid: int, field_name=''):
+    """
+Inserts a new excluded field item to the excluded fields list if not already present.
+    :param list_widget:
+    :param mid: Model ID of the note/field
+    :param field_name: text string of the field's name/title
+    """
+
+    for i in range(0, list_widget.count()):
+        item = list_widget.item(i)
+        exclude_item = ExcludeFieldItem.from_list_widget(list_widget, item)
+        fields_names = mw.col.models.field_names(mw.col.models.get(mid))
+        if exclude_item.get_model_field_dict() == {f'{mid}': fields_names.index(field_name)}:
+            return
+
+    exclude_item = ExcludeFieldItem(list_widget, mid=mid, field_name=field_name)
+    list_item = ExcludeFieldItem.ExcludedFieldListItem(list_widget)
+    _add_list_item(list_widget, list_item, exclude_item)
+
+
+def _handle_list_update(list_widget: QListWidget, action: QAction, callback):
+    callback(list_widget, action.data(), action.text())
+    redraw_list(list_widget)
 
 
 class ExcludeFieldItem(QWidget):
@@ -488,9 +490,9 @@ class ExcludeFieldItem(QWidget):
         """
         return field_list.itemWidget(item)
 
-    def __init__(self, actions_dialog: ActionsWidget, mid: int, field_name: str):
+    def __init__(self, list_widget: QListWidget, mid: int, field_name: str):
         super().__init__(flags=mw.windowFlags())
-        self.dialog = actions_dialog
+        self.list_widget = list_widget
         self.mid = mid
         self.widget = Ui_ExcludedFieldItem()
         self.widget.setupUi(ExcludedFieldItem=self)
@@ -503,11 +505,11 @@ class ExcludeFieldItem(QWidget):
         Removes the current item from its list widget.
             :param _: placeholder argument given by QAction calls
             """
-            for i in range(self.dialog.ui.queueExcludedFieldList.count()):
-                item = self.dialog.ui.queueExcludedFieldList.item(i)
-                if self == self.from_list_widget(self.dialog.ui.queueExcludedFieldList, item):
-                    self.dialog.ui.queueExcludedFieldList.takeItem(i)
-                    redraw_list(self.dialog.ui.queueExcludedFieldList)
+            for i in range(self.list_widget.count()):
+                item = self.list_widget.item(i)
+                if self.list_widget == self.from_list_widget(self.list_widget, item):
+                    self.list_widget.takeItem(i)
+                    redraw_list(self.list_widget)
 
         self.widget.removeButton.clicked.connect(remove_self)
 
@@ -529,6 +531,11 @@ class ExcludeFieldItem(QWidget):
 
 class EditFieldItem(QWidget):
     note: aqt.models.NotetypeDict
+    mid: int
+    note_type_dict: dict
+    model_name: str
+    field_name: str
+    list_widget: QListWidget
 
     @staticmethod
     def from_list_widget(edit_fields_list: QListWidget, item: QListWidgetItem) -> "EditFieldItem":
@@ -560,21 +567,15 @@ class EditFieldItem(QWidget):
         """
         super().__init__(flags=mw.windowFlags())
         self.context_menu = QMenu(self)
-        self.list_widget = edit_list
-
-        self.mid = mid
-        self.note_type_dict = mw.col.models.get(NotetypeId(self.mid))
-        self.model_name = self.note_type_dict["name"] if self.note_type_dict else ''
-
-        self.field_name = field_name
         self.method_idx = method_idx
         self.repl = repl
         self.text = text
-
         self.widget = Ui_EditFieldItem()
         self.widget.setupUi(EditFieldItem=self)
-
+        self.widget.fieldButtonLabel.setMenu(QMenu(self.widget.fieldButtonLabel))
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
+
+        self.set_model(edit_list, mid, field_name)
 
         def remove_self(_):
             """
@@ -589,13 +590,25 @@ class EditFieldItem(QWidget):
 
         self.widget.removeButton.clicked.connect(remove_self)
         self.widget.methodDropdown.currentIndexChanged.connect(self.update_method_dropdown)
-        self.widget.fieldButtonLabel.clicked.connect()
+        self.widget.fieldButtonLabel.menu().triggered.connect(
+            lambda action: _handle_list_update(self.list_widget, action, self.set_model)
+        )
+        _fill_menu_fields(self.widget.fieldButtonLabel)
 
         self._load()
 
+    def set_model(self, list_widget, mid: int, field_name: str):
+        self.list_widget = list_widget
+        self.mid = mid
+        self.field_name = field_name
+        self._load()
+
     def _load(self):
-        self.widget.fieldButtonLabel.setText(self.field_name)
+        self.note_type_dict = mw.col.models.get(NotetypeId(self.mid))
+        self.model_name = self.note_type_dict["name"] if self.note_type_dict else ''
+
         self.widget.fieldButtonLabel.setToolTip(self.model_name)
+        self.widget.fieldButtonLabel.setText(self.field_name)
         self.update_method_dropdown(self.method_idx)
         self.widget.replaceEdit.setText(self.repl)
         self.widget.inputEdit.setText(self.text)
