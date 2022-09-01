@@ -178,7 +178,7 @@ class Config:
                     QueueAction.FILTERED_FIELDS: {
                         # {'model-id': 'field_ord'},
                     },
-                    QueueAction.EXCLUDED_TEXT: ' \\()`\'";:.,?!&[]{}',
+                    QueueAction.EXCLUDED_TEXT: '\\ ( ) ` \' " ; : . \\, ? ! & [ ] { } \\s'
                 }
             }
         },
