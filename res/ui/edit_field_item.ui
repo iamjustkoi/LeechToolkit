@@ -113,9 +113,15 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="styleSheet">
-        <string notr="true">:active { border-style: outset;}</string>
-       </property>
+          <property name="styleSheet">
+              <string notr="true">:active { border-style: outset;}
+
+                  :hover {
+                  background-color:rgba(138, 138, 138, 0.314);
+                  border-radius: 2px;
+                  }
+              </string>
+          </property>
        <property name="icon">
         <iconset>
          <normaloff>../img/remove_icon.svg</normaloff>../img/remove_icon.svg</iconset>
