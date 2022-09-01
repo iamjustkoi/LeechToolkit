@@ -23,6 +23,7 @@ CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
 LEECH_TAG = 'leech'
 
 REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
+RESTORE_ICON_PATH = '../res/img/restore_icon.svg'
 
 LEECHES_URL = 'viewleeches'
 
@@ -35,6 +36,7 @@ class Macro:
 
 
 class String:
+    RESTORE_DEFAULT_SETTING = 'Restore Default Setting'
     OUTPUT_TEXT = 'Text'
     REPLACE_WITH = 'Replace With'
     TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
