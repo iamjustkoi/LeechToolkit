@@ -45,7 +45,7 @@ class DeckOptions(QWidget):
 
         def write_actions_config(actions_form, config_type):
             actions_conf = deck_config[config_type]
-            actions_form.save(deck_config[config_type])
+            actions_form.save_all(deck_config[config_type])
             deck_config[config_type] = {
                 key: val for key, val in actions_conf.items() if actions_conf[key][Action.ENABLED]
             }
