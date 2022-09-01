@@ -166,8 +166,11 @@ class ReverseWidget(QWidget):
 
 
 def _fill_menu_fields(add_button: aqt.qt.QToolButton):
+    menu: QMenu = add_button.menu()
+    menu.clear()
+
     for note_type in mw.col.models.all():
-        sub_menu = add_button.menu().addMenu(f'{note_type["name"]}')
+        sub_menu = menu.addMenu(f'{note_type["name"]}')
 
         for field in mw.col.models.field_names(note_type):
             action = QAction(f'{field}', add_button)
@@ -503,7 +506,7 @@ class ExcludeFieldItem(QWidget):
             """
             for i in range(self.list_widget.count()):
                 item = self.list_widget.item(i)
-                if self.list_widget == self.from_list_widget(self.list_widget, item):
+                if self == self.from_list_widget(self.list_widget, item):
                     self.list_widget.takeItem(i)
                     redraw_list(self.list_widget)
 
