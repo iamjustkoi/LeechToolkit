@@ -185,14 +185,6 @@ class ActionsWidget(QWidget):
         self.ui.setupUi(ActionsForm=self)
         self.actions_type = actions_type
 
-        def update_text_size(text_box: QTextEdit):
-            doc_height = text_box.document().size().height()
-            max_height, min_height = 256, 24
-            if doc_height <= max_height:
-                text_box.setFixedHeight(min_height if doc_height <= min_height else doc_height + 5)
-            else:
-                text_box.setFixedHeight(max_height)
-
         if self.actions_type == Config.LEECH_ACTIONS:
             self.ui.expandoButton.setText(String.LEECH_ACTIONS)
         if self.actions_type == Config.UN_LEECH_ACTIONS:
@@ -212,6 +204,14 @@ class ActionsWidget(QWidget):
         self.add_completer = CustomCompleter(self.ui.addTagsLine)
         self.remove_completer = CustomCompleter(self.ui.removeTagsLine)
         self.deck_completer = CustomCompleter(self.ui.deckMoveLine)
+
+        def update_text_size(text_box: QTextEdit):
+            doc_height = text_box.document().size().height()
+            max_height, min_height = 256, 24
+            if doc_height <= max_height:
+                text_box.setFixedHeight(min_height if doc_height <= min_height else doc_height + 5)
+            else:
+                text_box.setFixedHeight(max_height)
 
         self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
 

@@ -157,50 +157,51 @@ def run_actions(card: anki.cards.Card, actions_conf: dict, reload=True):
             filtered_positions = card.col.db.list(cmd.format(get='due'))
 
             # Gets the string output of each card's data currently in the new queue and compares to the leech
-            #  using a ratio/fuzzy comparison.
+            #  using ratios/fuzzy comparison.
             if queue_inputs[QueueAction.NEAR_SIMILAR]:
-                to_strip = queue_inputs[QueueAction.EXCLUDED_TEXT]
+                excluded_inputs_str: str = queue_inputs[QueueAction.EXCLUDED_TEXT]
+                excluded_inputs = re.sub('  +', ' ', excluded_inputs_str).replace('\n', ' ').split(' ')
+
                 min_ratio = queue_inputs[QueueAction.SIMILAR_RATIO]
 
                 filtered_field_ords: list[int] = []
                 for note_dict in queue_inputs[QueueAction.FILTERED_FIELDS]:
                     note_type_id = int(list(note_dict)[0])
+
                     if note_type_id == updated_card.note().mid:
-                        for key in list(note_dict.keys()):
-                            filtered_field_ords.append(int(note_dict[key]))  # new
+                        [filtered_field_ords.append(int(note_dict[key])) for key in list(note_dict.keys())]
 
                 def get_filtered_card_data(items: list[(str, str)]):
                     # for item in items:
                     filtered_items = []
-
                     # INCLUDE
                     if queue_inputs[QueueAction.INCLUSIVE_FIELDS]:
                         for field_ord in filtered_field_ords:
                             filtered_items.append(items[field_ord][1])
-
                     # EXCLUDE
                     if not queue_inputs[QueueAction.INCLUSIVE_FIELDS]:
                         for item in items:
                             if item[0] not in filtered_field_ords:
                                 filtered_items.append(item[1])
-                    return filtered_items
 
-                leech_field_data = get_filtered_card_data(updated_card.note().items())
-                leech_data_str = ''.join(char for char in str(leech_field_data) if char not in to_strip)
+                    filtered_str = ''.join(filtered_items)
+                    for excluded_str in excluded_inputs:
+                        excluded_str = ' ' if excluded_str == '\\s' else excluded_str
+                        filtered_str = filtered_str.replace(excluded_str, '')
+
+                    return filtered_str
+
+                leech_data_str = get_filtered_card_data(updated_card.note().items())
 
                 for cid in filtered_ids:
                     new_card = card.col.get_card(cid)
                     is_similar_card = False
 
-                    # if new_card.nid != updated_card.nid and new_card.did == updated_card.did:
                     if new_card.note_type()['id'] == updated_card.note().mid:
-                        new_field_data = get_filtered_card_data(new_card.note().items())
-                        new_data_str = ''.join(char for char in str(new_field_data) if char not in to_strip)
+                        new_data_str = get_filtered_card_data(new_card.note().items())
+
                         if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= min_ratio:
                             is_similar_card = True
-
-                            rat = SequenceMatcher(None, leech_data_str, new_data_str).ratio()
-                            print(f'    "{new_data_str}":({rat}), ')
 
                     if not is_similar_card:
                         filtered_positions.remove(new_card.due)
