@@ -9,7 +9,6 @@ from anki.consts import CARD_TYPE_NEW
 from anki.models import NotetypeId
 from anki.notes import NoteId
 from aqt import mw
-from aqt.models import Models
 from aqt.qt import (
     Qt,
     QAction,
@@ -280,9 +279,12 @@ class ActionsWidget(QWidget):
             self.ui.editFieldsCheckbox.setChecked(actions_config[Action.EDIT_FIELDS][Action.ENABLED])
             for field_item in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
                 mid, item_data = list(field_item.items())[0]
+
                 note_dict = mw.col.models.get(NotetypeId(mid))
                 field_name = mw.col.models.field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
+
                 add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
+
             redraw_list(self.ui.editFieldsList, max_fields_height)
 
             _fill_menu_fields(self.ui.editAddFieldButton)
@@ -372,20 +374,14 @@ class ActionsWidget(QWidget):
             actions_config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
             actions_config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
 
-        # def save_edit_fields():
-        #     actions_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
-        #     actions_config[Action.EDIT_FIELDS][Action.INPUT] = {}
-        #
-        #     def get_same_notes_count(nid):
-        #         filtered_nids = actions_config[Action.EDIT_FIELDS][Action.INPUT]
-        #         return len([filtered_nid for filtered_nid in filtered_nids if str(filtered_nid).find(str(nid)) >= 0])
-        #
-        #     for i in range(self.ui.editFieldsList.count()):
-        #         item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
-        #         note_id = str(item.note['id'])
-        #         if note_id in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
-        #             note_id += f'.{get_same_notes_count(note_id)}'
-        #         actions_config[Action.EDIT_FIELDS][Action.INPUT][note_id] = item.get_data()
+        def save_edit_fields():
+            actions_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
+            edit_input = actions_config[Action.EDIT_FIELDS][Action.INPUT]
+
+            edit_input.clear()
+            for i in range(self.ui.editFieldsList.count()):
+                item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
+                edit_input.append(item.get_field_edit_dict())
 
         def save_deck_move():
             actions_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
@@ -427,7 +423,7 @@ class ActionsWidget(QWidget):
         save_add_tags()
         save_remove_tags()
         save_forget()
-        # save_edit_fields()
+        save_edit_fields()
         save_deck_move()
         save_reschedule()
         save_add_to_queue()
@@ -530,7 +526,6 @@ class ExcludeFieldItem(QWidget):
 
 
 class EditFieldItem(QWidget):
-    note: aqt.models.NotetypeDict
     mid: int
     note_type_dict: dict
     model_name: str
@@ -568,8 +563,9 @@ class EditFieldItem(QWidget):
         super().__init__(flags=mw.windowFlags())
         self.context_menu = QMenu(self)
         self.method_idx = method_idx
-        self.repl = repl
-        self.text = text
+        self._repl = repl
+        self._text = text
+
         self.widget = Ui_EditFieldItem()
         self.widget.setupUi(EditFieldItem=self)
         self.widget.fieldButtonLabel.setMenu(QMenu(self.widget.fieldButtonLabel))
@@ -589,7 +585,7 @@ class EditFieldItem(QWidget):
                     redraw_list(self.list_widget)
 
         self.widget.removeButton.clicked.connect(remove_self)
-        self.widget.methodDropdown.currentIndexChanged.connect(self.update_method_dropdown)
+        self.widget.methodDropdown.currentIndexChanged.connect(self.update_method)
         self.widget.fieldButtonLabel.menu().triggered.connect(
             lambda action: _handle_list_update(self.list_widget, action, self.set_model)
         )
@@ -609,20 +605,25 @@ class EditFieldItem(QWidget):
 
         self.widget.fieldButtonLabel.setToolTip(self.model_name)
         self.widget.fieldButtonLabel.setText(self.field_name)
-        self.update_method_dropdown(self.method_idx)
-        self.widget.replaceEdit.setText(self.repl)
-        self.widget.inputEdit.setText(self.text)
+        self.update_method(self.method_idx)
+        self.widget.replaceEdit.setText(self._repl)
+        self.widget.inputEdit.setText(self._text)
 
-    def update_method_dropdown(self, method_idx: int):
-        if method_idx >= 0:
-            replace_selected = method_idx in (EditAction.REPLACE_METHOD, EditAction.REGEX_METHOD)
-            self.widget.methodDropdown.setCurrentIndex(method_idx)
+    def update_method(self, method_idx: int):
+        self.method_idx = method_idx
+        if self.method_idx >= 0:
+            replace_selected = self.method_idx in (EditAction.REPLACE_METHOD, EditAction.REGEX_METHOD)
+            self.widget.methodDropdown.setCurrentIndex(self.method_idx)
             self.widget.replaceEdit.setVisible(replace_selected)
             self.widget.inputEdit.setPlaceholderText(String.REPLACE_WITH if replace_selected else String.OUTPUT_TEXT)
 
-    def get_model_field_dict(self):
+    def get_field_edit_dict(self):
         if self.note_type_dict:
             fields_names = mw.col.models.field_names(self.note_type_dict)
-            return {f'{self.mid}': fields_names.index(self.widget.fieldButtonLabel.text())}
+            field_idx = fields_names.index(self.widget.fieldButtonLabel.text())
         else:
-            return {f'{self.mid}': 0}
+            field_idx = 0
+        method_idx = self.widget.methodDropdown.currentIndex()
+        repl, text = self.widget.replaceEdit.text(), self.widget.inputEdit.text()
+
+        return {f'{self.mid}': [field_idx, method_idx, repl, text]}
