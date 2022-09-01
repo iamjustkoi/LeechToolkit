@@ -82,7 +82,7 @@
   <customwidget>
    <class>ElidingLabel</class>
    <extends>QLabel</extends>
-   <header>.forms.h</header>
+   <header location="global">.forms.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
