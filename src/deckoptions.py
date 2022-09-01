@@ -43,23 +43,22 @@ class DeckOptions(QWidget):
         manager = LeechToolkitConfigManager(mw)
         deck_config = manager.placeholder_config_for_did(self.did)
 
-        def filter_enabled_actions(actions_conf: dict):
-            return {key: val for key, val in actions_conf.items() if actions_conf[key][Action.ENABLED]}
+        def write_actions_config(actions_form, config_type):
+            actions_conf = deck_config[config_type]
+            actions_form.save(deck_config[config_type])
+            deck_config[config_type] = {
+                key: val for key, val in actions_conf.items() if actions_conf[key][Action.ENABLED]
+            }
+            deck_config.pop(config_type, None) if len(actions_conf) <= 0 else None
 
-        self.leech_actions_form.save(deck_config[Config.LEECH_ACTIONS])
-        deck_config[Config.LEECH_ACTIONS] = filter_enabled_actions(deck_config[Config.LEECH_ACTIONS])
-        deck_config.pop(Config.LEECH_ACTIONS, None) if len(deck_config[Config.LEECH_ACTIONS]) <= 0 else None
-
-        self.reverse_actions_form.save(deck_config[Config.UN_LEECH_ACTIONS])
-        deck_config[Config.UN_LEECH_ACTIONS] = filter_enabled_actions(deck_config[Config.UN_LEECH_ACTIONS])
-        deck_config.pop(Config.UN_LEECH_ACTIONS, None) if len(deck_config[Config.UN_LEECH_ACTIONS]) <= 0 else None
+        write_actions_config(self.leech_actions_form, Config.LEECH_ACTIONS)
+        write_actions_config(self.reverse_actions_form, Config.UN_LEECH_ACTIONS)
 
         self.reverse_form.save(deck_config[Config.REVERSE_OPTIONS])
-        if not deck_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
-            deck_config.pop(Config.REVERSE_OPTIONS, None)
+        reverse_config = deck_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]
+        deck_config.pop(Config.REVERSE_OPTIONS, None) if not reverse_config else None
 
         config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
-
         manager.config[config_id] = deck_config
         manager.config.pop(config_id, None) if len(deck_config) <= 0 else None
         manager.write_config()
