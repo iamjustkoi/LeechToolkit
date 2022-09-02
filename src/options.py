@@ -46,7 +46,7 @@ def bind_actions():
     _bind_tools_options()
 
 
-def on_options_called(result=False):
+def on_options_called(*args):
     options = OptionsDialog(LeechToolkitConfigManager(mw))
     options.exec()
 
@@ -56,6 +56,9 @@ def redraw_list(fields_list: QListWidget, max_height=256):
     fields_list.setFixedHeight(data_height if data_height < max_height else fields_list.maximumHeight())
     fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
     fields_list.setVisible(fields_list.count() != 0)
+
+    fields_list.setCurrentRow(0)
+    print(f'emit')
 
 
 def _bind_tools_options(*args):
@@ -220,12 +223,12 @@ class ActionsWidget(QWidget):
 
         self.ui.queueAddFieldButton.setMenu(QMenu(self.ui.queueAddFieldButton))
         self.ui.queueAddFieldButton.menu().triggered.connect(
-            lambda action: _handle_list_update(self.ui.queueExcludedFieldList, action, add_excluded_field)
+            lambda action: _handle_new_field(self.ui.queueExcludedFieldList, action, add_excluded_field)
         )
 
         self.ui.editAddFieldButton.setMenu(QMenu(self.ui.editAddFieldButton))
         self.ui.editAddFieldButton.menu().triggered.connect(
-            lambda action: _handle_list_update(self.ui.editFieldsList, action, add_edit_field)
+            lambda action: _handle_new_field(self.ui.editFieldsList, action, add_edit_field)
         )
 
         self.ui.expandoWidget.set_click_function(lambda: self.toggle_expando(self.ui.expandoButton))
@@ -261,6 +264,10 @@ class ActionsWidget(QWidget):
 
             # Initial update
             button.setVisible(actions_meta[action] != default_meta[action])
+            print(f'{action}')
+            print(f'    actions_meta: {actions_meta[action]}\n      default_meta: {default_meta[action]}')
+
+            return button
 
         flag_signals = [
             self.ui.flagCheckbox.stateChanged,
@@ -298,8 +305,7 @@ class ActionsWidget(QWidget):
 
         edit_fields_signals = [
             self.ui.editFieldsCheckbox.stateChanged,
-            # self.ui.editFieldsList.currentItemChanged,
-            self.ui.editFieldsList.itemChanged,
+            self.ui.editFieldsList.currentRowChanged,
         ]
         build_default_button(Action.EDIT_FIELDS, edit_fields_signals, self.save_edit_fields, self.ui.editFieldsCheckbox)
 
@@ -324,7 +330,8 @@ class ActionsWidget(QWidget):
             self.ui.queueFromDropdown.currentIndexChanged,
             self.ui.queueToDropdown.currentIndexChanged,
             self.ui.queueSimilarCheckbox.stateChanged,
-            self.ui.queueExcludedFieldList.itemChanged,
+            self.ui.queueIncludeFieldsCheckbox.stateChanged,
+            self.ui.queueExcludedFieldList.currentRowChanged,
             self.ui.queueExcludeTextEdit.textChanged,
             self.ui.queueRatioSlider.valueChanged,
             self.ui.queueSiblingCheckbox.stateChanged,
@@ -333,6 +340,8 @@ class ActionsWidget(QWidget):
 
     def load(self, actions_config: dict, default_config: dict = None):
         default_config = default_config if default_config else Config.DEFAULT_CONFIG[self.actions_type]
+        print(f'self.actions_type: {self.actions_type}')
+        print(f'default_config: {default_config}')
 
         # FLAG
         def load_flag():
@@ -495,7 +504,7 @@ class ActionsWidget(QWidget):
 
     def save_edit_fields(self, actions_config: dict):
         actions_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
-        edit_input = actions_config[Action.EDIT_FIELDS][Action.INPUT]
+        edit_input: list = actions_config[Action.EDIT_FIELDS][Action.INPUT]
 
         edit_input.clear()
         for i in range(self.ui.editFieldsList.count()):
@@ -505,7 +514,7 @@ class ActionsWidget(QWidget):
     def save_deck_move(self, actions_config: dict):
         actions_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
         stored_did = self.ui.deckMoveLine.text()
-        actions_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else None
+        actions_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else ''
 
     def save_reschedule(self, actions_config: dict):
         actions_config[Action.RESCHEDULE][Action.ENABLED] = self.ui.rescheduleCheckbox.isChecked()
@@ -578,7 +587,7 @@ Inserts a new excluded field item to the excluded fields list if not already pre
     _add_list_item(list_widget, list_item, exclude_item)
 
 
-def _handle_list_update(list_widget: QListWidget, action: QAction, callback):
+def _handle_new_field(list_widget: QListWidget, action: QAction, callback):
     callback(list_widget, action.data(), action.text())
     redraw_list(list_widget)
 
@@ -696,7 +705,7 @@ class EditFieldItem(QWidget):
         self.widget.removeButton.clicked.connect(remove_self)
         self.widget.methodDropdown.currentIndexChanged.connect(self.update_method)
         self.widget.fieldButtonLabel.menu().triggered.connect(
-            lambda action: _handle_list_update(self.list_widget, action, self.set_model)
+            lambda action: _handle_new_field(self.list_widget, action, self.set_model)
         )
         _fill_menu_fields(self.widget.fieldButtonLabel)
 
