@@ -233,106 +233,77 @@ class ActionsWidget(QWidget):
         self.ui.expandoButton.pressed.connect(lambda: self.toggle_expando(self.ui.expandoButton))
         self.toggle_expando(self.ui.expandoButton, expanded)
 
-    def load_default_buttons(self, actions_meta: dict, default_meta: dict):
+        self.build_default_button(self.ui.flagCheckbox)
+        self.build_default_button(self.ui.suspendCheckbox)
+        self.build_default_button(self.ui.addTagsCheckbox)
+        self.build_default_button(self.ui.removeTagsCheckbox)
+        self.build_default_button(self.ui.forgetCheckbox)
+        self.build_default_button(self.ui.editFieldsCheckbox)
+        self.build_default_button(self.ui.deckMoveCheckbox)
+        self.build_default_button(self.ui.rescheduleCheckbox)
+        self.build_default_button(self.ui.queueCheckbox)
 
-        def build_default_button(action: str, signals: list[aqt.qt.pyqtBoundSignal], callback, anchor_widget):
-            button = aqt.qt.QPushButton(anchor_widget)
-            button.setMaximumSize(QSize(16, 16))
-            button.setFlat(True)
-            button.setToolTip(String.RESTORE_DEFAULT_SETTING)
-            button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
+    def load_default_button(
+            self,
+            button,
+            signals: list[aqt.qt.pyqtBoundSignal],
+            action: str,
+            actions_conf: dict,
+            defaults_conf: dict,
+            save_callback,
+    ):
 
-            size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-            size_policy.setHorizontalStretch(0)
-            size_policy.setVerticalStretch(0)
-            size_policy.setHeightForWidth(button.sizePolicy().hasHeightForWidth())
+        for signal in signals:
+            def refresh_default_button(*args):
+                save_callback(actions_conf) if save_callback else None
+                button.setVisible(actions_conf[action] != defaults_conf[action])
 
-            button.setSizePolicy(size_policy)
+            signal.connect(refresh_default_button)
 
-            widget_index = self.ui.actionsFrame.layout().indexOf(anchor_widget)
-            widget_row = self.ui.actionsFrame.layout().getItemPosition(widget_index)[0]
-            self.ui.actionsFrame.layout().addWidget(button, widget_row, 4)
+        # Initial update
+        button.setVisible(actions_conf[action] != defaults_conf[action])
 
-            for signal in signals:
-                def refresh_default_button(*args):
-                    callback(actions_meta) if callback else None
-                    button.setVisible(actions_meta[action] != default_meta[action])
+        def restore_defaults(*args):
+            actions_conf[action] = defaults_conf[action]
+            self.load(actions_conf, defaults_conf)
 
-                signal.connect(refresh_default_button)
+        button.clicked.connect(restore_defaults)
 
-            # Initial update
-            button.setVisible(actions_meta[action] != default_meta[action])
+    # def build_default_buttons(self, button, actions_meta: dict, default_meta: dict):
 
-            return button
+    # for signal in signals:
+    #     def refresh_default_button(*args):
+    #         save_callback(actions_meta) if save_callback else None
+    #         button.setVisible(actions_meta[action] != default_meta[action])
+    #     signal.connect(refresh_default_button)
+    #
+    # # Initial update
+    # button.setVisible(actions_meta[action] != default_meta[action])
+    #
+    # def restore_defaults(*args):
+    #     actions_meta[action] = default_meta[action]
+    #     self.load(actions_meta, default_meta)
+    # button.clicked.connect(restore_defaults)
+    #
+    # return button
 
-        flag_signals = [
-            self.ui.flagCheckbox.stateChanged,
-            self.ui.flagDropdown.currentTextChanged,
-        ]
-        build_default_button(Action.FLAG, flag_signals, self.save_flag, self.ui.flagCheckbox)
+    def build_default_button(self, anchor_widget):
+        anchor_widget.button = aqt.qt.QPushButton(anchor_widget)
+        anchor_widget.button.setMaximumSize(QSize(16, 16))
+        anchor_widget.button.setFlat(True)
+        anchor_widget.button.setToolTip(String.RESTORE_DEFAULT_SETTING)
+        anchor_widget.button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
 
-        suspend_signals = [
-            self.ui.suspendCheckbox.stateChanged,
-            self.ui.suspendOnButton.toggled,
-            self.ui.suspendOffButton.toggled,
-        ]
-        build_default_button(Action.SUSPEND, suspend_signals, self.save_suspend, self.ui.suspendCheckbox)
+        size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(anchor_widget.button.sizePolicy().hasHeightForWidth())
 
-        add_tags_signals = [
-            self.ui.addTagsCheckbox.stateChanged,
-            self.ui.addTagsLine.textChanged,
-        ]
-        build_default_button(Action.ADD_TAGS, add_tags_signals, self.save_add_tags, self.ui.addTagsCheckbox)
+        anchor_widget.button.setSizePolicy(size_policy)
 
-        remove_tags_signals = [
-            self.ui.removeTagsCheckbox.stateChanged,
-            self.ui.removeTagsLine.textChanged,
-        ]
-        build_default_button(Action.REMOVE_TAGS, remove_tags_signals, self.save_remove_tags, self.ui.removeTagsCheckbox)
-
-        forget_signals = [
-            self.ui.forgetCheckbox.stateChanged,
-            self.ui.forgetOnRadio.toggled,
-            self.ui.forgetOffRadio.toggled,
-            self.ui.forgetResetCheckbox.stateChanged,
-            self.ui.forgetRestorePosCheckbox.stateChanged,
-        ]
-        build_default_button(Action.FORGET, forget_signals, self.save_forget, self.ui.forgetCheckbox)
-
-        edit_fields_signals = [
-            self.ui.editFieldsCheckbox.stateChanged,
-            self.ui.editFieldsList.currentRowChanged,
-        ]
-        build_default_button(Action.EDIT_FIELDS, edit_fields_signals, self.save_edit_fields, self.ui.editFieldsCheckbox)
-
-        deck_move_signals = [
-            self.ui.deckMoveCheckbox.stateChanged,
-            self.ui.deckMoveLine.textChanged,
-        ]
-        build_default_button(Action.MOVE_TO_DECK, deck_move_signals, self.save_deck_move, self.ui.deckMoveCheckbox)
-
-        reschedule_signals = [
-            self.ui.rescheduleCheckbox.stateChanged,
-            self.ui.rescheduleFromDays.valueChanged,
-            self.ui.rescheduleToDays.valueChanged,
-            self.ui.rescheduleResetCheckbox.stateChanged,
-        ]
-        build_default_button(Action.RESCHEDULE, reschedule_signals, self.save_reschedule, self.ui.rescheduleCheckbox)
-
-        queue_signals = [
-            self.ui.queueCheckbox.stateChanged,
-            self.ui.queueFromSpinbox.valueChanged,
-            self.ui.queueToSpinbox.valueChanged,
-            self.ui.queueFromDropdown.currentIndexChanged,
-            self.ui.queueToDropdown.currentIndexChanged,
-            self.ui.queueSimilarCheckbox.stateChanged,
-            self.ui.queueIncludeFieldsCheckbox.stateChanged,
-            self.ui.queueExcludedFieldList.currentRowChanged,
-            self.ui.queueExcludeTextEdit.textChanged,
-            self.ui.queueRatioSlider.valueChanged,
-            self.ui.queueSiblingCheckbox.stateChanged,
-        ]
-        build_default_button(Action.ADD_TO_QUEUE, queue_signals, self.save_add_to_queue, self.ui.queueCheckbox)
+        widget_index = self.ui.actionsFrame.layout().indexOf(anchor_widget)
+        widget_row = self.ui.actionsFrame.layout().getItemPosition(widget_index)[0]
+        self.ui.actionsFrame.layout().addWidget(anchor_widget.button, widget_row, 4)
 
     def load(self, actions_config: dict, default_config: dict = None):
         default_config = default_config if default_config else Config.DEFAULT_CONFIG[self.actions_type]
@@ -445,6 +416,140 @@ class ActionsWidget(QWidget):
 
             self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
+        def load_default_buttons():
+
+            flag_signals = [
+                self.ui.flagCheckbox.stateChanged,
+                self.ui.flagDropdown.currentTextChanged,
+            ]
+            self.load_default_button(
+                self.ui.flagCheckbox.button,
+                flag_signals,
+                Action.FLAG,
+                actions_config,
+                default_config,
+                self.save_flag
+            )
+
+            suspend_signals = [
+                self.ui.suspendCheckbox.stateChanged,
+                self.ui.suspendOnButton.toggled,
+                self.ui.suspendOffButton.toggled,
+            ]
+            self.load_default_button(
+                self.ui.suspendCheckbox.button,
+                suspend_signals,
+                Action.SUSPEND,
+                actions_config,
+                default_config,
+                self.save_suspend
+            )
+
+            add_tags_signals = [
+                self.ui.addTagsCheckbox.stateChanged,
+                self.ui.addTagsLine.textChanged,
+            ]
+            self.load_default_button(
+                self.ui.addTagsCheckbox.button,
+                add_tags_signals,
+                Action.ADD_TAGS,
+                actions_config,
+                default_config,
+                self.save_add_tags
+            )
+
+            remove_tags_signals = [
+                self.ui.removeTagsCheckbox.stateChanged,
+                self.ui.removeTagsLine.textChanged,
+            ]
+            self.load_default_button(
+                self.ui.removeTagsCheckbox.button,
+                remove_tags_signals,
+                Action.REMOVE_TAGS,
+                actions_config,
+                default_config,
+                self.save_remove_tags
+            )
+
+            forget_signals = [
+                self.ui.forgetCheckbox.stateChanged,
+                self.ui.forgetOnRadio.toggled,
+                self.ui.forgetOffRadio.toggled,
+                self.ui.forgetResetCheckbox.stateChanged,
+                self.ui.forgetRestorePosCheckbox.stateChanged,
+            ]
+            self.load_default_button(
+                self.ui.forgetCheckbox.button,
+                forget_signals,
+                Action.FORGET,
+                actions_config,
+                default_config,
+                self.save_forget
+            )
+
+            edit_fields_signals = [
+                self.ui.editFieldsCheckbox.stateChanged,
+                self.ui.editFieldsList.currentRowChanged,
+            ]
+            self.load_default_button(
+                self.ui.editFieldsCheckbox.button,
+                edit_fields_signals,
+                Action.EDIT_FIELDS,
+                actions_config,
+                default_config,
+                self.save_edit_fields
+            )
+
+            deck_move_signals = [
+                self.ui.deckMoveCheckbox.stateChanged,
+                self.ui.deckMoveLine.textChanged,
+            ]
+            self.load_default_button(
+                self.ui.deckMoveCheckbox.button,
+                deck_move_signals,
+                Action.MOVE_TO_DECK,
+                actions_config,
+                default_config,
+                self.save_deck_move
+            )
+
+            reschedule_signals = [
+                self.ui.rescheduleCheckbox.stateChanged,
+                self.ui.rescheduleFromDays.valueChanged,
+                self.ui.rescheduleToDays.valueChanged,
+                self.ui.rescheduleResetCheckbox.stateChanged,
+            ]
+            self.load_default_button(
+                self.ui.rescheduleCheckbox.button,
+                reschedule_signals,
+                Action.RESCHEDULE,
+                actions_config,
+                default_config,
+                self.save_reschedule
+            )
+
+            queue_signals = [
+                self.ui.queueCheckbox.stateChanged,
+                self.ui.queueFromSpinbox.valueChanged,
+                self.ui.queueToSpinbox.valueChanged,
+                self.ui.queueFromDropdown.currentIndexChanged,
+                self.ui.queueToDropdown.currentIndexChanged,
+                self.ui.queueSimilarCheckbox.stateChanged,
+                self.ui.queueIncludeFieldsCheckbox.stateChanged,
+                self.ui.queueExcludedFieldList.currentRowChanged,
+                self.ui.queueExcludeTextEdit.textChanged,
+                self.ui.queueRatioSlider.valueChanged,
+                self.ui.queueSiblingCheckbox.stateChanged,
+            ]
+            self.load_default_button(
+                self.ui.queueCheckbox.button,
+                queue_signals,
+                Action.ADD_TO_QUEUE,
+                actions_config,
+                default_config,
+                self.save_add_to_queue
+            )
+
         # A little easier to read/debug
         load_flag()
         load_suspend()
@@ -455,8 +560,7 @@ class ActionsWidget(QWidget):
         load_deck_move()
         load_reschedule()
         load_queue()
-
-        self.load_default_buttons(actions_config, default_config)
+        load_default_buttons()
 
     def save_all(self, actions_config: dict):
         # A little easier to read/debug
