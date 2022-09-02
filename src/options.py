@@ -181,16 +181,6 @@ def _fill_menu_fields(add_button: aqt.qt.QToolButton):
             sub_menu.addAction(action)
 
 
-def refresh_default_button(button, actions_meta, default_meta, action, save_callback=None):
-    save_callback(actions_meta) if save_callback else None
-    button.setVisible(actions_meta[action] != default_meta[action])
-    print(f'button: {button}')
-    print(f'action: {action}')
-    print(f'[actions: {actions_meta[action]}], [defaults: {default_meta[action]}]')
-    print(f'==: {actions_meta[action] != default_meta[action]}')
-    print()
-
-
 class ActionsWidget(QWidget):
     def __init__(self, actions_type: str, parent=None, expanded=True):
         super().__init__(parent, mw.windowFlags())
@@ -243,10 +233,9 @@ class ActionsWidget(QWidget):
         self.toggle_expando(self.ui.expandoButton, expanded)
 
     def load_default_buttons(self, actions_meta: dict, default_meta: dict):
-        # TODO: creating only one button, only updating with second call (un-leech actions)
 
         def build_default_button(action: str, signals: list[aqt.qt.pyqtBoundSignal], callback, anchor_widget):
-            button = aqt.qt.QPushButton()
+            button = aqt.qt.QPushButton(anchor_widget)
             button.setMaximumSize(QSize(16, 16))
             button.setFlat(True)
             button.setToolTip(String.RESTORE_DEFAULT_SETTING)
@@ -259,22 +248,44 @@ class ActionsWidget(QWidget):
 
             button.setSizePolicy(size_policy)
 
-            row = self.ui.gridLayout.getItemPosition(self.ui.gridLayout.indexOf(anchor_widget))[1]
-            self.ui.gridLayout.layout().addWidget(button, row, 4)
+            widget_index = self.ui.actionsFrame.layout().indexOf(anchor_widget)
+            widget_row = self.ui.actionsFrame.layout().getItemPosition(widget_index)[0]
+            self.ui.actionsFrame.layout().addWidget(button, widget_row, 4)
 
             for signal in signals:
-                signal.connect(
-                    lambda _: refresh_default_button(button, actions_meta, default_meta, action, callback)
-                )
+                def refresh_default_button(*args):
+                    callback(actions_meta) if callback else None
+                    button.setVisible(actions_meta[action] != default_meta[action])
+
+                signal.connect(refresh_default_button)
 
             # Initial update
-            refresh_default_button(button, actions_meta, default_meta, action, callback)
+            button.setVisible(actions_meta[action] != default_meta[action])
 
         flag_signals = [
             self.ui.flagCheckbox.stateChanged,
             self.ui.flagDropdown.currentTextChanged,
         ]
         build_default_button(Action.FLAG, flag_signals, self.save_flag, self.ui.flagCheckbox)
+
+        suspend_signals = [
+            self.ui.suspendCheckbox.stateChanged,
+            self.ui.suspendOnButton.toggled,
+            self.ui.suspendOffButton.toggled,
+        ]
+        build_default_button(Action.SUSPEND, suspend_signals, self.save_suspend, self.ui.suspendCheckbox)
+
+        add_tags_signals = [
+            self.ui.addTagsCheckbox.stateChanged,
+            self.ui.addTagsLine.textChanged,
+        ]
+        build_default_button(Action.ADD_TAGS, add_tags_signals, self.save_add_tags, self.ui.addTagsCheckbox)
+
+        remove_tags_signals = [
+            self.ui.removeTagsCheckbox.stateChanged,
+            self.ui.removeTagsLine.textChanged,
+        ]
+        build_default_button(Action.REMOVE_TAGS, remove_tags_signals, self.save_remove_tags, self.ui.removeTagsCheckbox)
 
         forget_signals = [
             self.ui.forgetCheckbox.stateChanged,
@@ -284,6 +295,41 @@ class ActionsWidget(QWidget):
             self.ui.forgetRestorePosCheckbox.stateChanged,
         ]
         build_default_button(Action.FORGET, forget_signals, self.save_forget, self.ui.forgetCheckbox)
+
+        edit_fields_signals = [
+            self.ui.editFieldsCheckbox.stateChanged,
+            # self.ui.editFieldsList.currentItemChanged,
+            self.ui.editFieldsList.itemChanged,
+        ]
+        build_default_button(Action.EDIT_FIELDS, edit_fields_signals, self.save_edit_fields, self.ui.editFieldsCheckbox)
+
+        deck_move_signals = [
+            self.ui.deckMoveCheckbox.stateChanged,
+            self.ui.deckMoveLine.textChanged,
+        ]
+        build_default_button(Action.MOVE_TO_DECK, deck_move_signals, self.save_deck_move, self.ui.deckMoveCheckbox)
+
+        reschedule_signals = [
+            self.ui.rescheduleCheckbox.stateChanged,
+            self.ui.rescheduleFromDays.valueChanged,
+            self.ui.rescheduleToDays.valueChanged,
+            self.ui.rescheduleResetCheckbox.stateChanged,
+        ]
+        build_default_button(Action.RESCHEDULE, reschedule_signals, self.save_reschedule, self.ui.rescheduleCheckbox)
+
+        queue_signals = [
+            self.ui.queueCheckbox.stateChanged,
+            self.ui.queueFromSpinbox.valueChanged,
+            self.ui.queueToSpinbox.valueChanged,
+            self.ui.queueFromDropdown.currentIndexChanged,
+            self.ui.queueToDropdown.currentIndexChanged,
+            self.ui.queueSimilarCheckbox.stateChanged,
+            self.ui.queueExcludedFieldList.itemChanged,
+            self.ui.queueExcludeTextEdit.textChanged,
+            self.ui.queueRatioSlider.valueChanged,
+            self.ui.queueSiblingCheckbox.stateChanged,
+        ]
+        build_default_button(Action.ADD_TO_QUEUE, queue_signals, self.save_add_to_queue, self.ui.queueCheckbox)
 
     def load(self, actions_config: dict, default_config: dict = None):
         default_config = default_config if default_config else Config.DEFAULT_CONFIG[self.actions_type]
@@ -454,7 +500,7 @@ class ActionsWidget(QWidget):
         edit_input.clear()
         for i in range(self.ui.editFieldsList.count()):
             item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
-            edit_input.append(item.get_field_edit_dict())
+            edit_input.append(item.get_field_edit_dict()) if item is not None else None
 
     def save_deck_move(self, actions_config: dict):
         actions_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
@@ -484,8 +530,9 @@ class ActionsWidget(QWidget):
         for i in range(self.ui.queueExcludedFieldList.count()):
             item = self.ui.queueExcludedFieldList.item(i)
             field_item = ExcludeFieldItem.from_list_widget(self.ui.queueExcludedFieldList, item)
-            field_dict = field_item.get_model_field_dict()
-            queue_input[QueueAction.FILTERED_FIELDS].append(field_dict)
+            if field_item is not None:
+                field_dict = field_item.get_model_field_dict()
+                queue_input[QueueAction.FILTERED_FIELDS].append(field_dict)
 
         queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
         queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
