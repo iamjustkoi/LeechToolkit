@@ -57,20 +57,20 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QToolButton" name="expandoButton">
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="styleSheet">
-            <string notr="true">border: none;</string>
-        </property>
-           <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextBesideIcon</enum>
-           </property>
-           <property name="arrowType">
-               <enum>Qt::RightArrow</enum>
-           </property>
-       </widget>
+          <widget class="QToolButton" name="expandoButton">
+              <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+                  <string notr="true">border: none;</string>
+              </property>
+              <property name="toolButtonStyle">
+                  <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+              <property name="arrowType">
+                  <enum>Qt::RightArrow</enum>
+              </property>
+          </widget>
       </item>
          <item>
              <widget class="Line" name="expandoLine">
@@ -455,11 +455,6 @@
                                                                                           QAbstractItemView::ScrollPerItem
                                                                                       </enum>
                                                                                   </property>
-                                                                                  <property name="itemAlignment">
-                                                                                      <set>
-                                                                                          Qt::AlignHCenter|Qt::AlignTop
-                                                                                      </set>
-                                                                                  </property>
                                                                                   <property name="sortingEnabled">
                                                                                       <bool>true</bool>
                                                                                   </property>
@@ -602,29 +597,29 @@
                                       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                                           <horstretch>0</horstretch>
                                           <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>and</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="rescheduleToDays">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-             <property name="suffix">
-                 <string>days</string>
-             </property>
-             <property name="maximum">
-                 <number>9999</number>
-             </property>
-         </widget>
-        </item>
+                                      </sizepolicy>
+                                  </property>
+                                  <property name="text">
+                                      <string>and</string>
+                                  </property>
+                              </widget>
+                          </item>
+                          <item>
+                              <widget class="QSpinBox" name="rescheduleToDays">
+                                  <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                                          <horstretch>0</horstretch>
+                                          <verstretch>0</verstretch>
+                                      </sizepolicy>
+                                  </property>
+                                  <property name="suffix">
+                                      <string>days</string>
+                                  </property>
+                                  <property name="maximum">
+                                      <number>9999</number>
+                                  </property>
+                              </widget>
+                          </item>
                           <item>
                               <spacer name="horizontalSpacer_8">
                                   <property name="orientation">
@@ -831,16 +826,16 @@
                                                       </property>
                                                       <item>
                                                           <property name="text">
-                 <string>Top</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Bottom</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
+                                                              <string>Top</string>
+                                                          </property>
+                                                      </item>
+                                                      <item>
+                                                          <property name="text">
+                                                              <string>Bottom</string>
+                                                          </property>
+                                                      </item>
+                                                      <item>
+                                                          <property name="text">
                  <string>Position</string>
                 </property>
                </item>
@@ -1011,17 +1006,17 @@
               </widget>
              </item>
              <item>
-              <spacer name="horizontalSpacer_10">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-                  <property name="sizeHint" stdset="0">
-                      <size>
-                          <width>0</width>
-                          <height>0</height>
-                      </size>
-                  </property>
-              </spacer>
+                 <spacer name="horizontalSpacer_10">
+                     <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                         <size>
+                             <width>0</width>
+                             <height>0</height>
+                         </size>
+                     </property>
+                 </spacer>
              </item>
             </layout>
            </item>
