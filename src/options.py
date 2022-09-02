@@ -56,9 +56,8 @@ def redraw_list(fields_list: QListWidget, max_height=256):
     fields_list.setFixedHeight(data_height if data_height < max_height else fields_list.maximumHeight())
     fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
     fields_list.setVisible(fields_list.count() != 0)
-
+    # Emit signal for change updates
     fields_list.setCurrentRow(0)
-    print(f'emit')
 
 
 def _bind_tools_options(*args):
@@ -340,8 +339,6 @@ class ActionsWidget(QWidget):
 
     def load(self, actions_config: dict, default_config: dict = None):
         default_config = default_config if default_config else Config.DEFAULT_CONFIG[self.actions_type]
-        print(f'self.actions_type: {self.actions_type}')
-        print(f'default_config: {default_config}')
 
         # FLAG
         def load_flag():
