@@ -62,14 +62,14 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">border: none;</string>
+            <string notr="true">border: none;</string>
         </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonTextBesideIcon</enum>
-        </property>
-        <property name="arrowType">
-         <enum>Qt::RightArrow</enum>
-        </property>
+           <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="arrowType">
+               <enum>Qt::RightArrow</enum>
+           </property>
        </widget>
       </item>
          <item>
@@ -592,16 +592,16 @@
                                       </sizepolicy>
                                   </property>
                                   <property name="maximum">
-           <number>9999</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="rescheduleText2">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
+                                      <number>9999</number>
+                                  </property>
+                              </widget>
+                          </item>
+                          <item>
+                              <widget class="QLabel" name="rescheduleText2">
+                                  <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                                          <horstretch>0</horstretch>
+                                          <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="text">
@@ -617,12 +617,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="suffix">
-           <string>days</string>
-          </property>
-          <property name="maximum">
-           <number>9999</number>
-          </property>
+             <property name="suffix">
+                 <string>days</string>
+             </property>
+             <property name="maximum">
+                 <number>9999</number>
+             </property>
          </widget>
         </item>
                           <item>
@@ -821,16 +821,16 @@
                                               <item>
                                                   <widget class="QComboBox" name="queueFromDropdown">
                                                       <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="sizeAdjustPolicy">
-                <enum>QComboBox::AdjustToContents</enum>
-               </property>
-               <item>
-                <property name="text">
+                                                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                                                              <horstretch>0</horstretch>
+                                                              <verstretch>0</verstretch>
+                                                          </sizepolicy>
+                                                      </property>
+                                                      <property name="sizeAdjustPolicy">
+                                                          <enum>QComboBox::AdjustToContents</enum>
+                                                      </property>
+                                                      <item>
+                                                          <property name="text">
                  <string>Top</string>
                 </property>
                </item>
@@ -1015,12 +1015,12 @@
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
-               <property name="sizeHint" stdset="0">
-                   <size>
-                       <width>0</width>
-                       <height>0</height>
-                   </size>
-               </property>
+                  <property name="sizeHint" stdset="0">
+                      <size>
+                          <width>0</width>
+                          <height>0</height>
+                      </size>
+                  </property>
               </spacer>
              </item>
             </layout>
