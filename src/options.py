@@ -173,7 +173,6 @@ class ReverseWidget(QWidget):
 def _fill_menu_fields(add_button: aqt.qt.QToolButton):
     menu: QMenu = add_button.menu()
     menu.clear()
-
     for note_type in mw.col.models.all():
         sub_menu = menu.addMenu(f'{note_type["name"]}')
 
@@ -220,14 +219,14 @@ class ActionsWidget(QWidget):
 
         self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
 
-        self.ui.queueAddFieldButton.setMenu(QMenu(self.ui.queueAddFieldButton))
-        self.ui.queueAddFieldButton.menu().triggered.connect(
-            lambda action: _handle_new_field(self.ui.queueExcludedFieldList, action, add_excluded_field)
-        )
-
         self.ui.editAddFieldButton.setMenu(QMenu(self.ui.editAddFieldButton))
         self.ui.editAddFieldButton.menu().triggered.connect(
             lambda action: _handle_new_field(self.ui.editFieldsList, action, add_edit_field)
+        )
+
+        self.ui.queueAddFieldButton.setMenu(QMenu(self.ui.queueAddFieldButton))
+        self.ui.queueAddFieldButton.menu().triggered.connect(
+            lambda action: _handle_new_field(self.ui.queueExcludedFieldList, action, add_excluded_field)
         )
 
         self.ui.expandoWidget.set_click_function(lambda: self.toggle_expando(self.ui.expandoButton))
@@ -263,8 +262,6 @@ class ActionsWidget(QWidget):
 
             # Initial update
             button.setVisible(actions_meta[action] != default_meta[action])
-            print(f'{action}')
-            print(f'    actions_meta: {actions_meta[action]}\n      default_meta: {default_meta[action]}')
 
             return button
 
@@ -391,14 +388,12 @@ class ActionsWidget(QWidget):
             self.ui.editFieldsCheckbox.setChecked(actions_config[Action.EDIT_FIELDS][Action.ENABLED])
             for field_item in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
                 mid, item_data = list(field_item.items())[0]
-
                 note_dict = mw.col.models.get(NotetypeId(mid))
                 field_name = mw.col.models.field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
 
                 add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
 
             redraw_list(self.ui.editFieldsList, max_fields_height)
-
             _fill_menu_fields(self.ui.editAddFieldButton)
 
         # DECK MOVE
@@ -422,18 +417,21 @@ class ActionsWidget(QWidget):
         def load_queue():
             queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
             self.ui.queueCheckbox.setChecked(actions_config[Action.ADD_TO_QUEUE][Action.ENABLED])
+
             self.ui.queueFromDropdown.setCurrentIndex(queue_input[QueueAction.FROM_INDEX])
             self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
             self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
             self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
-            top, bottom = mw.col.db.first(
-                f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
-            )
+
+            cmd = f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
+            top, bottom = mw.col.db.first(cmd)
             self.ui.queueLabelTopPos.setText(str(top))
             self.ui.queueLabelBottomPos.setText(str(bottom))
+
             self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
-            self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
+            self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
             self.ui.queueIncludeFieldsCheckbox.setChecked(queue_input[QueueAction.INCLUSIVE_FIELDS])
+            self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
 
             for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
                 mid = list(note_dict)[0]
@@ -441,14 +439,11 @@ class ActionsWidget(QWidget):
                     note = mw.col.models.get(NotetypeId(int(mid)))
                     field_name = mw.col.models.field_names(note)[field_ord]
                     add_excluded_field(self.ui.queueExcludedFieldList, mid, field_name)
-
             self.ui.queueExcludedFieldList.sortItems()
             redraw_list(self.ui.queueExcludedFieldList)
-
             _fill_menu_fields(self.ui.queueAddFieldButton)
 
-            self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
-            self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
+            self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
         # A little easier to read/debug
         load_flag()
@@ -716,13 +711,13 @@ class EditFieldItem(QWidget):
     def _load(self):
         self.note_type_dict = mw.col.models.get(NotetypeId(self.mid))
         self.model_name = self.note_type_dict["name"] if self.note_type_dict else ''
-
-        _fill_menu_fields(self.widget.fieldButtonLabel)
         self.widget.fieldButtonLabel.setToolTip(self.model_name)
         self.widget.fieldButtonLabel.setText(self.field_name)
         self.update_method(self.method_idx)
         self.widget.replaceEdit.setText(self._repl)
         self.widget.inputEdit.setText(self._text)
+
+        _fill_menu_fields(self.widget.fieldButtonLabel)
 
     def update_method(self, method_idx: int):
         self.method_idx = method_idx
