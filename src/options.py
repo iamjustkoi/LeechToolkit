@@ -57,7 +57,7 @@ def redraw_list(fields_list: QListWidget, max_height=256):
     fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
     fields_list.setVisible(fields_list.count() != 0)
     # Emit signal for change updates
-    fields_list.setCurrentRow(0)
+    fields_list.setCurrentItem(fields_list.currentItem())
 
 
 def _bind_tools_options(*args):
@@ -195,15 +195,14 @@ def load_default_button(
         def refresh_default_button(*args):
             save_callback(actions_conf) if save_callback else None
             button.setVisible(actions_conf[action] != defaults_conf[action])
-
         signal.connect(refresh_default_button)
 
     # Initial update
     button.setVisible(actions_conf[action] != defaults_conf[action])
 
     def restore_defaults(*args):
-        # actions_conf[action] = defaults_conf[action]
         load_callback(defaults_conf)
+        refresh_default_button()
 
     button.clicked.connect(restore_defaults)
 
@@ -246,11 +245,13 @@ class ActionsWidget(QWidget):
         self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
 
         self.ui.editAddFieldButton.setMenu(QMenu(self.ui.editAddFieldButton))
+        _fill_menu_fields(self.ui.editAddFieldButton)
         self.ui.editAddFieldButton.menu().triggered.connect(
             lambda action: _handle_new_field(self.ui.editFieldsList, action, add_edit_field)
         )
 
         self.ui.queueAddFieldButton.setMenu(QMenu(self.ui.queueAddFieldButton))
+        _fill_menu_fields(self.ui.queueAddFieldButton)
         self.ui.queueAddFieldButton.menu().triggered.connect(
             lambda action: _handle_new_field(self.ui.queueExcludedFieldList, action, add_excluded_field)
         )
@@ -339,6 +340,7 @@ class ActionsWidget(QWidget):
     # EDIT FIELD
     def load_edit_fields(self, actions_config: dict):
         self.ui.editFieldsCheckbox.setChecked(actions_config[Action.EDIT_FIELDS][Action.ENABLED])
+        self.ui.editFieldsList.clear()
         for field_item in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
             mid, item_data = list(field_item.items())[0]
             note_dict = mw.col.models.get(NotetypeId(mid))
@@ -347,7 +349,6 @@ class ActionsWidget(QWidget):
             add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
 
         redraw_list(self.ui.editFieldsList, max_fields_height)
-        _fill_menu_fields(self.ui.editAddFieldButton)
 
     # DECK MOVE
     def load_deck_move(self, actions_config: dict):
@@ -386,6 +387,7 @@ class ActionsWidget(QWidget):
         self.ui.queueIncludeFieldsCheckbox.setChecked(queue_input[QueueAction.INCLUSIVE_FIELDS])
         self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
 
+        self.ui.queueExcludedFieldList.clear()
         for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
             mid = list(note_dict)[0]
             for field_ord in list(note_dict.values()):
@@ -394,7 +396,6 @@ class ActionsWidget(QWidget):
                 add_excluded_field(self.ui.queueExcludedFieldList, mid, field_name)
         self.ui.queueExcludedFieldList.sortItems()
         redraw_list(self.ui.queueExcludedFieldList)
-        _fill_menu_fields(self.ui.queueAddFieldButton)
 
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
@@ -794,9 +795,11 @@ class EditFieldItem(QWidget):
 
         self.widget.removeButton.clicked.connect(remove_self)
         self.widget.methodDropdown.currentIndexChanged.connect(self.update_method)
+        self.widget.fieldButtonLabel.setMenu(QMenu(self.widget.fieldButtonLabel))
         self.widget.fieldButtonLabel.menu().triggered.connect(
             lambda action: _handle_new_field(self.list_widget, action, self.set_model)
         )
+        _fill_menu_fields(self.widget.fieldButtonLabel)
 
         self._load()
 
@@ -814,8 +817,6 @@ class EditFieldItem(QWidget):
         self.update_method(self.method_idx)
         self.widget.replaceEdit.setText(self._repl)
         self.widget.inputEdit.setText(self._text)
-
-        _fill_menu_fields(self.widget.fieldButtonLabel)
 
     def update_method(self, method_idx: int):
         self.method_idx = method_idx
