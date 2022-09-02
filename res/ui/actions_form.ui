@@ -40,52 +40,52 @@
      <property name="focusPolicy">
       <enum>Qt::StrongFocus</enum>
      </property>
-     <layout class="QHBoxLayout" name="leechActionsExpandoLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-          <number>6</number>
-      </property>
-         <property name="topMargin">
-             <number>0</number>
-         </property>
-         <property name="rightMargin">
-             <number>6</number>
-         </property>
-         <property name="bottomMargin">
-             <number>0</number>
-         </property>
-         <item>
-             <widget class="QToolButton" name="expandoButton">
-                 <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="styleSheet">
-                     <string notr="true">border: none;</string>
-                 </property>
-                 <property name="toolButtonStyle">
-                     <enum>Qt::ToolButtonTextBesideIcon</enum>
-                 </property>
-                 <property name="arrowType">
-                     <enum>Qt::RightArrow</enum>
-                 </property>
-             </widget>
-         </item>
-         <item>
-             <widget class="Line" name="expandoLine">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                 </property>
-             </widget>
-         </item>
-     </layout>
+        <layout class="QHBoxLayout" name="leechActionsExpandoLayout">
+            <property name="spacing">
+                <number>0</number>
+            </property>
+            <property name="leftMargin">
+                <number>6</number>
+            </property>
+            <property name="topMargin">
+                <number>0</number>
+            </property>
+            <property name="rightMargin">
+                <number>6</number>
+            </property>
+            <property name="bottomMargin">
+                <number>0</number>
+            </property>
+            <item>
+                <widget class="QToolButton" name="expandoButton">
+                    <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                    </property>
+                    <property name="styleSheet">
+                        <string notr="true">border: none;</string>
+                    </property>
+                    <property name="toolButtonStyle">
+                        <enum>Qt::ToolButtonTextBesideIcon</enum>
+                    </property>
+                    <property name="arrowType">
+                        <enum>Qt::RightArrow</enum>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="Line" name="expandoLine">
+                    <property name="sizePolicy">
+                        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                    </property>
+                </widget>
+            </item>
+        </layout>
     </widget>
    </item>
       <item>
@@ -345,7 +345,7 @@
                                                                                   </property>
                                                                                   <property name="sizeAdjustPolicy">
                                                                                       <enum>
-                                                                                          QAbstractScrollArea::AdjustToContentsOnFirstShow
+                                                                                          QAbstractScrollArea::AdjustIgnored
                                                                                       </enum>
                                                                                   </property>
                                                                                   <property name="tabChangesFocus">
@@ -509,7 +509,7 @@
                                                                                               <property
                                                                                                       name="popupMode">
                                                                                                   <enum>
-                                                                                                      QToolButton::InstantPopup
+                                                                                                      QToolButton::DelayedPopup
                                                                                                   </enum>
                                                                                               </property>
                                                                                               <property
@@ -856,16 +856,16 @@
                                                           <number>9999999</number>
                                                       </property>
                                                   </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="queueTilda">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
+                                              </item>
+                                              <item>
+                                                  <widget class="QLabel" name="queueTilda">
+                                                      <property name="sizePolicy">
+                                                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                                                              <horstretch>0</horstretch>
+                                                              <verstretch>0</verstretch>
+                                                          </sizepolicy>
+                                                      </property>
+                                                      <property name="text">
                 <string>～</string>
                </property>
               </widget>
@@ -990,20 +990,20 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="queueLabelBottomPos">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-                  <property name="text">
-                      <string>0</string>
-                  </property>
-                  <property name="textInteractionFlags">
-                      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                  </property>
-              </widget>
+                 <widget class="QLabel" name="queueLabelBottomPos">
+                     <property name="sizePolicy">
+                         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                         </sizepolicy>
+                     </property>
+                     <property name="text">
+                         <string>0</string>
+                     </property>
+                     <property name="textInteractionFlags">
+                         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+                     </property>
+                 </widget>
              </item>
                 <item>
                     <spacer name="horizontalSpacer_10">
