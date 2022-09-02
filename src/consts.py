@@ -123,6 +123,46 @@ class Config:
     LEECH_ACTIONS = 'leechActions'
     UN_LEECH_ACTIONS = 'unLeechActions'
 
+    DEFAULT_ACTIONS = {
+        Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
+        Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
+        Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
+        Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
+        Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
+        Action.EDIT_FIELDS: {
+            Action.ENABLED: False,
+            Action.INPUT: [
+                # {'model-id', field_ord, method_index, 'repl', 'ref'}
+            ]
+        },
+        Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''},
+        Action.RESCHEDULE: {
+            Action.ENABLED: False,
+            Action.INPUT: {
+                RescheduleAction.FROM: 0,
+                RescheduleAction.TO: 7,
+                RescheduleAction.RESET: True,
+            }
+        },
+        Action.ADD_TO_QUEUE: {
+            Action.ENABLED: False,
+            Action.INPUT: {
+                QueueAction.FROM_INDEX: 0,
+                QueueAction.FROM_VAL: 0,
+                QueueAction.TO_INDEX: 1,
+                QueueAction.TO_VAL: 0,
+                QueueAction.NEAR_SIBLING: False,
+                QueueAction.NEAR_SIMILAR: False,
+                QueueAction.SIMILAR_RATIO: 0.25,
+                QueueAction.INCLUSIVE_FIELDS: True,
+                QueueAction.FILTERED_FIELDS: [
+                    # {'model-id': field_ord},
+                ],
+                QueueAction.EXCLUDED_TEXT: '\\ ( ) ` \' " ; : . \\, ? ! & [ ] { } \\s'
+            }
+        }
+    }
+
     DECK_DEFAULT_CATEGORIES = {
         REVERSE_OPTIONS,
         LEECH_ACTIONS,
@@ -145,82 +185,6 @@ class Config:
             REVERSE_CONS_ANS: 2,
             REVERSE_METHOD: 0
         },
-        LEECH_ACTIONS: {
-            Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
-            Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
-            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
-            Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
-            Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
-            Action.EDIT_FIELDS: {
-                Action.ENABLED: False,
-                Action.INPUT: [
-                    # {'model-id', field_ord, method_index, 'repl', 'ref'}
-                ]
-            },
-            Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''},
-            Action.RESCHEDULE: {
-                Action.ENABLED: False,
-                Action.INPUT: {
-                    RescheduleAction.FROM: 0,
-                    RescheduleAction.TO: 7,
-                    RescheduleAction.RESET: True,
-                }
-            },
-            Action.ADD_TO_QUEUE: {
-                Action.ENABLED: False,
-                Action.INPUT: {
-                    QueueAction.FROM_INDEX: 0,
-                    QueueAction.FROM_VAL: 0,
-                    QueueAction.TO_INDEX: 1,
-                    QueueAction.TO_VAL: 0,
-                    QueueAction.NEAR_SIBLING: False,
-                    QueueAction.NEAR_SIMILAR: False,
-                    QueueAction.SIMILAR_RATIO: 0.25,
-                    QueueAction.INCLUSIVE_FIELDS: True,
-                    QueueAction.FILTERED_FIELDS: [
-                        # {'model-id': field_ord},
-                    ],
-                    QueueAction.EXCLUDED_TEXT: '\\ ( ) ` \' " ; : . \\, ? ! & [ ] { } \\s'
-                }
-            }
-        },
-        UN_LEECH_ACTIONS: {
-            Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
-            Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
-            Action.ADD_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
-            Action.REMOVE_TAGS: {Action.ENABLED: False, Action.INPUT: ''},
-            Action.FORGET: {Action.ENABLED: False, Action.INPUT: [True, True, True]},
-            Action.EDIT_FIELDS: {
-                Action.ENABLED: False,
-                Action.INPUT: {
-                    # 'model-id': {field_index, method_index, 'repl', 'ref'},
-                }
-            },
-            Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''},
-            Action.RESCHEDULE: {
-                Action.ENABLED: False,
-                Action.INPUT: {
-                    RescheduleAction.FROM: 0,
-                    RescheduleAction.TO: 7,
-                    RescheduleAction.RESET: True,
-                }
-            },
-            Action.ADD_TO_QUEUE: {
-                Action.ENABLED: False,
-                Action.INPUT: {
-                    QueueAction.FROM_INDEX: 0,
-                    QueueAction.FROM_VAL: 0,
-                    QueueAction.TO_INDEX: 1,
-                    QueueAction.TO_VAL: 0,
-                    QueueAction.NEAR_SIBLING: False,
-                    QueueAction.NEAR_SIMILAR: False,
-                    QueueAction.SIMILAR_RATIO: 0.25,
-                    QueueAction.INCLUSIVE_FIELDS: True,
-                    QueueAction.FILTERED_FIELDS: {
-                        # {'model-id': 'field_ord'},
-                    },
-                    QueueAction.EXCLUDED_TEXT: ' \\()`\'";:.,?!&[]{}',
-                }
-            }
-        }
+        LEECH_ACTIONS: DEFAULT_ACTIONS,
+        UN_LEECH_ACTIONS: DEFAULT_ACTIONS
     }
