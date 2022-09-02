@@ -207,7 +207,7 @@ class Ui_ActionsForm(object):
         sizePolicy.setHeightForWidth(self.queueAddFieldButton.sizePolicy().hasHeightForWidth())
         self.queueAddFieldButton.setSizePolicy(sizePolicy)
         self.queueAddFieldButton.setMinimumSize(QtCore.QSize(64, 24))
-        self.queueAddFieldButton.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
+        self.queueAddFieldButton.setPopupMode(QtWidgets.QToolButton.InstantPopup)
         self.queueAddFieldButton.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.queueAddFieldButton.setObjectName("queueAddFieldButton")
         self._5.addWidget(self.queueAddFieldButton)
