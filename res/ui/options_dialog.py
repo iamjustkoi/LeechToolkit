@@ -15,7 +15,7 @@ class Ui_OptionsDialog(object):
     def setupUi(self, OptionsDialog):
         OptionsDialog.setObjectName("OptionsDialog")
         OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
-        OptionsDialog.resize(532, 509)
+        OptionsDialog.resize(574, 509)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(OptionsDialog)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabWidget = QtWidgets.QTabWidget(OptionsDialog)
@@ -29,7 +29,7 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 488, 277))
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 277))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
