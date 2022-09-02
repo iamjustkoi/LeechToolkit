@@ -182,6 +182,32 @@ def _fill_menu_fields(add_button: aqt.qt.QToolButton):
             sub_menu.addAction(action)
 
 
+def load_default_button(
+        button,
+        signals: list[aqt.qt.pyqtBoundSignal],
+        action: str,
+        actions_conf: dict,
+        defaults_conf: dict,
+        save_callback,
+        load_callback,
+):
+    for signal in signals:
+        def refresh_default_button(*args):
+            save_callback(actions_conf) if save_callback else None
+            button.setVisible(actions_conf[action] != defaults_conf[action])
+
+        signal.connect(refresh_default_button)
+
+    # Initial update
+    button.setVisible(actions_conf[action] != defaults_conf[action])
+
+    def restore_defaults(*args):
+        # actions_conf[action] = defaults_conf[action]
+        load_callback(defaults_conf)
+
+    button.clicked.connect(restore_defaults)
+
+
 class ActionsWidget(QWidget):
     def __init__(self, actions_type: str, parent=None, expanded=True):
         super().__init__(parent, mw.windowFlags())
@@ -243,50 +269,6 @@ class ActionsWidget(QWidget):
         self.build_default_button(self.ui.rescheduleCheckbox)
         self.build_default_button(self.ui.queueCheckbox)
 
-    def load_default_button(
-            self,
-            button,
-            signals: list[aqt.qt.pyqtBoundSignal],
-            action: str,
-            actions_conf: dict,
-            defaults_conf: dict,
-            save_callback,
-    ):
-
-        for signal in signals:
-            def refresh_default_button(*args):
-                save_callback(actions_conf) if save_callback else None
-                button.setVisible(actions_conf[action] != defaults_conf[action])
-
-            signal.connect(refresh_default_button)
-
-        # Initial update
-        button.setVisible(actions_conf[action] != defaults_conf[action])
-
-        def restore_defaults(*args):
-            actions_conf[action] = defaults_conf[action]
-            self.load(actions_conf, defaults_conf)
-
-        button.clicked.connect(restore_defaults)
-
-    # def build_default_buttons(self, button, actions_meta: dict, default_meta: dict):
-
-    # for signal in signals:
-    #     def refresh_default_button(*args):
-    #         save_callback(actions_meta) if save_callback else None
-    #         button.setVisible(actions_meta[action] != default_meta[action])
-    #     signal.connect(refresh_default_button)
-    #
-    # # Initial update
-    # button.setVisible(actions_meta[action] != default_meta[action])
-    #
-    # def restore_defaults(*args):
-    #     actions_meta[action] = default_meta[action]
-    #     self.load(actions_meta, default_meta)
-    # button.clicked.connect(restore_defaults)
-    #
-    # return button
-
     def build_default_button(self, anchor_widget):
         anchor_widget.button = aqt.qt.QPushButton(anchor_widget)
         anchor_widget.button.setMaximumSize(QSize(16, 16))
@@ -303,264 +285,276 @@ class ActionsWidget(QWidget):
 
         widget_index = self.ui.actionsFrame.layout().indexOf(anchor_widget)
         widget_row = self.ui.actionsFrame.layout().getItemPosition(widget_index)[0]
+
         self.ui.actionsFrame.layout().addWidget(anchor_widget.button, widget_row, 4)
+
+    # FLAG
+    def load_flag(self, actions_config: dict):
+        self.ui.flagCheckbox.setChecked(actions_config[Action.FLAG][Action.ENABLED])
+        self.ui.flagDropdown.setCurrentIndex(actions_config[Action.FLAG][Action.INPUT])
+
+        flag_manager = aqt.flags.FlagManager(mw)
+        for index in range(1, self.ui.flagDropdown.count()):
+            flag = flag_manager.get_flag(index)
+            pixmap = QPixmap(flag.icon.path)
+            mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
+            pixmap.fill(QColor(flag.icon.current_color(mw.pm.night_mode())))
+            pixmap.setMask(mask)
+            self.ui.flagDropdown.setItemIcon(index, QIcon(pixmap))
+            self.ui.flagDropdown.setItemText(index, f'{flag.label}')
+
+    # SUSPEND
+    def load_suspend(self, actions_config: dict):
+        self.ui.suspendCheckbox.setChecked(actions_config[Action.SUSPEND][Action.ENABLED])
+        self.ui.suspendOnButton.setChecked(actions_config[Action.SUSPEND][Action.INPUT])
+        self.ui.suspendOffButton.setChecked(not actions_config[Action.SUSPEND][Action.INPUT])
+
+    # ADD TAGS
+    def load_add_tags(self, actions_config: dict):
+        # TAGS
+        tag_suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
+
+        self.add_completer.set_list([suggestion for suggestion in tag_suggestions if suggestion != Macro.REGEX])
+        self.ui.addTagsCheckbox.setChecked(actions_config[Action.ADD_TAGS][Action.ENABLED])
+        self.ui.addTagsLine.setText(actions_config[Action.ADD_TAGS][Action.INPUT])
+        self.ui.addTagsLine.setCompleter(self.add_completer)
+
+    # REMOVE TAGS
+    def load_remove_tags(self, actions_config: dict):
+        # TAGS
+        tag_suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
+        self.remove_completer.set_list(tag_suggestions)
+        self.ui.removeTagsCheckbox.setChecked(actions_config[Action.REMOVE_TAGS][Action.ENABLED])
+        self.ui.removeTagsLine.setText(actions_config[Action.REMOVE_TAGS][Action.INPUT])
+        self.ui.removeTagsLine.setCompleter(self.remove_completer)
+
+    # FORGET
+    def load_forget(self, actions_config: dict):
+        self.ui.forgetCheckbox.setChecked(actions_config[Action.FORGET][Action.ENABLED])
+        self.ui.forgetOnRadio.setChecked(actions_config[Action.FORGET][Action.INPUT][0])
+        self.ui.forgetOffRadio.setChecked(not actions_config[Action.FORGET][Action.INPUT][0])
+        self.ui.forgetRestorePosCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][1])
+        self.ui.forgetResetCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][2])
+
+    # EDIT FIELD
+    def load_edit_fields(self, actions_config: dict):
+        self.ui.editFieldsCheckbox.setChecked(actions_config[Action.EDIT_FIELDS][Action.ENABLED])
+        for field_item in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
+            mid, item_data = list(field_item.items())[0]
+            note_dict = mw.col.models.get(NotetypeId(mid))
+            field_name = mw.col.models.field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
+
+            add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
+
+        redraw_list(self.ui.editFieldsList, max_fields_height)
+        _fill_menu_fields(self.ui.editAddFieldButton)
+
+    # DECK MOVE
+    def load_deck_move(self, actions_config: dict):
+        self.ui.deckMoveCheckbox.setChecked(actions_config[Action.MOVE_TO_DECK][Action.ENABLED])
+        deck_names = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
+        deck_name = mw.col.decks.name_if_exists(actions_config[Action.MOVE_TO_DECK][Action.INPUT])
+        self.deck_completer.set_list(deck_names)
+        self.ui.deckMoveLine.setCompleter(self.deck_completer)
+        self.ui.deckMoveLine.setText(deck_name)
+
+    # RESCHEDULE
+    def load_reschedule(self, actions_config: dict):
+        reschedule_input = actions_config[Action.RESCHEDULE][Action.INPUT]
+        self.ui.rescheduleCheckbox.setChecked(actions_config[Action.RESCHEDULE][Action.ENABLED])
+        self.ui.rescheduleFromDays.setValue(reschedule_input[RescheduleAction.FROM])
+        self.ui.rescheduleToDays.setValue(reschedule_input[RescheduleAction.TO])
+        self.ui.rescheduleResetCheckbox.setChecked(reschedule_input[RescheduleAction.RESET])
+
+    # ADD TO QUEUE
+    def load_add_to_queue(self, actions_config: dict):
+        queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
+        self.ui.queueCheckbox.setChecked(actions_config[Action.ADD_TO_QUEUE][Action.ENABLED])
+
+        self.ui.queueFromDropdown.setCurrentIndex(queue_input[QueueAction.FROM_INDEX])
+        self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
+        self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
+        self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
+
+        cmd = f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
+        top, bottom = mw.col.db.first(cmd)
+        self.ui.queueLabelTopPos.setText(str(top))
+        self.ui.queueLabelBottomPos.setText(str(bottom))
+
+        self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
+        self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
+        self.ui.queueIncludeFieldsCheckbox.setChecked(queue_input[QueueAction.INCLUSIVE_FIELDS])
+        self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
+
+        for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
+            mid = list(note_dict)[0]
+            for field_ord in list(note_dict.values()):
+                note = mw.col.models.get(NotetypeId(int(mid)))
+                field_name = mw.col.models.field_names(note)[field_ord]
+                add_excluded_field(self.ui.queueExcludedFieldList, mid, field_name)
+        self.ui.queueExcludedFieldList.sortItems()
+        redraw_list(self.ui.queueExcludedFieldList)
+        _fill_menu_fields(self.ui.queueAddFieldButton)
+
+        self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
+
+    def load_default_buttons(self, actions_config: dict, default_config: dict):
+
+        flag_signals = [
+            self.ui.flagCheckbox.stateChanged,
+            self.ui.flagDropdown.currentTextChanged,
+        ]
+        load_default_button(
+            self.ui.flagCheckbox.button,
+            flag_signals,
+            Action.FLAG,
+            actions_config,
+            default_config,
+            self.save_flag,
+            self.load_flag,
+        )
+
+        suspend_signals = [
+            self.ui.suspendCheckbox.stateChanged,
+            self.ui.suspendOnButton.toggled,
+            self.ui.suspendOffButton.toggled,
+        ]
+        load_default_button(
+            self.ui.suspendCheckbox.button,
+            suspend_signals,
+            Action.SUSPEND,
+            actions_config,
+            default_config,
+            self.save_suspend,
+            self.load_suspend,
+        )
+
+        add_tags_signals = [
+            self.ui.addTagsCheckbox.stateChanged,
+            self.ui.addTagsLine.textChanged,
+        ]
+        load_default_button(
+            self.ui.addTagsCheckbox.button,
+            add_tags_signals,
+            Action.ADD_TAGS,
+            actions_config,
+            default_config,
+            self.save_add_tags,
+            self.load_add_tags,
+        )
+
+        remove_tags_signals = [
+            self.ui.removeTagsCheckbox.stateChanged,
+            self.ui.removeTagsLine.textChanged,
+        ]
+        load_default_button(
+            self.ui.removeTagsCheckbox.button,
+            remove_tags_signals,
+            Action.REMOVE_TAGS,
+            actions_config,
+            default_config,
+            self.save_remove_tags,
+            self.load_remove_tags,
+        )
+
+        forget_signals = [
+            self.ui.forgetCheckbox.stateChanged,
+            self.ui.forgetOnRadio.toggled,
+            self.ui.forgetOffRadio.toggled,
+            self.ui.forgetResetCheckbox.stateChanged,
+            self.ui.forgetRestorePosCheckbox.stateChanged,
+        ]
+        load_default_button(
+            self.ui.forgetCheckbox.button,
+            forget_signals,
+            Action.FORGET,
+            actions_config,
+            default_config,
+            self.save_forget,
+            self.load_forget,
+        )
+
+        edit_fields_signals = [
+            self.ui.editFieldsCheckbox.stateChanged,
+            self.ui.editFieldsList.currentRowChanged,
+        ]
+        load_default_button(
+            self.ui.editFieldsCheckbox.button,
+            edit_fields_signals,
+            Action.EDIT_FIELDS,
+            actions_config,
+            default_config,
+            self.save_edit_fields,
+            self.load_edit_fields,
+        )
+
+        deck_move_signals = [
+            self.ui.deckMoveCheckbox.stateChanged,
+            self.ui.deckMoveLine.textChanged,
+        ]
+        load_default_button(
+            self.ui.deckMoveCheckbox.button,
+            deck_move_signals,
+            Action.MOVE_TO_DECK,
+            actions_config,
+            default_config,
+            self.save_deck_move,
+            self.load_deck_move,
+        )
+
+        reschedule_signals = [
+            self.ui.rescheduleCheckbox.stateChanged,
+            self.ui.rescheduleFromDays.valueChanged,
+            self.ui.rescheduleToDays.valueChanged,
+            self.ui.rescheduleResetCheckbox.stateChanged,
+        ]
+        load_default_button(
+            self.ui.rescheduleCheckbox.button,
+            reschedule_signals,
+            Action.RESCHEDULE,
+            actions_config,
+            default_config,
+            self.save_reschedule,
+            self.load_reschedule,
+        )
+
+        queue_signals = [
+            self.ui.queueCheckbox.stateChanged,
+            self.ui.queueFromSpinbox.valueChanged,
+            self.ui.queueToSpinbox.valueChanged,
+            self.ui.queueFromDropdown.currentIndexChanged,
+            self.ui.queueToDropdown.currentIndexChanged,
+            self.ui.queueSimilarCheckbox.stateChanged,
+            self.ui.queueIncludeFieldsCheckbox.stateChanged,
+            self.ui.queueExcludedFieldList.currentRowChanged,
+            self.ui.queueExcludeTextEdit.textChanged,
+            self.ui.queueRatioSlider.valueChanged,
+            self.ui.queueSiblingCheckbox.stateChanged,
+        ]
+        load_default_button(
+            self.ui.queueCheckbox.button,
+            queue_signals,
+            Action.ADD_TO_QUEUE,
+            actions_config,
+            default_config,
+            self.save_add_to_queue,
+            self.load_add_to_queue,
+        )
 
     def load(self, actions_config: dict, default_config: dict = None):
         default_config = default_config if default_config else Config.DEFAULT_CONFIG[self.actions_type]
 
-        # FLAG
-        def load_flag():
-            self.ui.flagCheckbox.setChecked(actions_config[Action.FLAG][Action.ENABLED])
-            self.ui.flagDropdown.setCurrentIndex(actions_config[Action.FLAG][Action.INPUT])
-
-            flag_manager = aqt.flags.FlagManager(mw)
-            for index in range(1, self.ui.flagDropdown.count()):
-                flag = flag_manager.get_flag(index)
-                pixmap = QPixmap(flag.icon.path)
-                mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
-                pixmap.fill(QColor(flag.icon.current_color(mw.pm.night_mode())))
-                pixmap.setMask(mask)
-                self.ui.flagDropdown.setItemIcon(index, QIcon(pixmap))
-                self.ui.flagDropdown.setItemText(index, f'{flag.label}')
-
-        # SUSPEND
-        def load_suspend():
-            self.ui.suspendCheckbox.setChecked(actions_config[Action.SUSPEND][Action.ENABLED])
-            self.ui.suspendOnButton.setChecked(actions_config[Action.SUSPEND][Action.INPUT])
-            self.ui.suspendOffButton.setChecked(not actions_config[Action.SUSPEND][Action.INPUT])
-
-        # TAGS
-        tag_suggestions = mw.col.weakref().tags.all() + list(Macro.MACROS)
-
-        # ADD TAGS
-        def load_add_tags():
-            self.add_completer.set_list([suggestion for suggestion in tag_suggestions if suggestion != Macro.REGEX])
-            self.ui.addTagsCheckbox.setChecked(actions_config[Action.ADD_TAGS][Action.ENABLED])
-            self.ui.addTagsLine.setText(actions_config[Action.ADD_TAGS][Action.INPUT])
-            self.ui.addTagsLine.setCompleter(self.add_completer)
-
-        # REMOVE TAGS
-        def load_remove_tags():
-            self.remove_completer.set_list(tag_suggestions)
-            self.ui.removeTagsCheckbox.setChecked(actions_config[Action.REMOVE_TAGS][Action.ENABLED])
-            self.ui.removeTagsLine.setText(actions_config[Action.REMOVE_TAGS][Action.INPUT])
-            self.ui.removeTagsLine.setCompleter(self.remove_completer)
-
-        # FORGET
-        def load_forget():
-            self.ui.forgetCheckbox.setChecked(actions_config[Action.FORGET][Action.ENABLED])
-            self.ui.forgetOnRadio.setChecked(actions_config[Action.FORGET][Action.INPUT][0])
-            self.ui.forgetOffRadio.setChecked(not actions_config[Action.FORGET][Action.INPUT][0])
-            self.ui.forgetRestorePosCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][1])
-            self.ui.forgetResetCheckbox.setChecked(actions_config[Action.FORGET][Action.INPUT][2])
-
-        # EDIT FIELD
-        def load_edit_field():
-            self.ui.editFieldsCheckbox.setChecked(actions_config[Action.EDIT_FIELDS][Action.ENABLED])
-            for field_item in actions_config[Action.EDIT_FIELDS][Action.INPUT]:
-                mid, item_data = list(field_item.items())[0]
-                note_dict = mw.col.models.get(NotetypeId(mid))
-                field_name = mw.col.models.field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
-
-                add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
-
-            redraw_list(self.ui.editFieldsList, max_fields_height)
-            _fill_menu_fields(self.ui.editAddFieldButton)
-
-        # DECK MOVE
-        def load_deck_move():
-            self.ui.deckMoveCheckbox.setChecked(actions_config[Action.MOVE_TO_DECK][Action.ENABLED])
-            deck_names = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
-            deck_name = mw.col.decks.name_if_exists(actions_config[Action.MOVE_TO_DECK][Action.INPUT])
-            self.deck_completer.set_list(deck_names)
-            self.ui.deckMoveLine.setCompleter(self.deck_completer)
-            self.ui.deckMoveLine.setText(deck_name)
-
-        # RESCHEDULE
-        def load_reschedule():
-            reschedule_input = actions_config[Action.RESCHEDULE][Action.INPUT]
-            self.ui.rescheduleCheckbox.setChecked(actions_config[Action.RESCHEDULE][Action.ENABLED])
-            self.ui.rescheduleFromDays.setValue(reschedule_input[RescheduleAction.FROM])
-            self.ui.rescheduleToDays.setValue(reschedule_input[RescheduleAction.TO])
-            self.ui.rescheduleResetCheckbox.setChecked(reschedule_input[RescheduleAction.RESET])
-
-        # ADD TO QUEUE
-        def load_queue():
-            queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
-            self.ui.queueCheckbox.setChecked(actions_config[Action.ADD_TO_QUEUE][Action.ENABLED])
-
-            self.ui.queueFromDropdown.setCurrentIndex(queue_input[QueueAction.FROM_INDEX])
-            self.ui.queueToDropdown.setCurrentIndex(queue_input[QueueAction.TO_INDEX])
-            self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
-            self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
-
-            cmd = f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
-            top, bottom = mw.col.db.first(cmd)
-            self.ui.queueLabelTopPos.setText(str(top))
-            self.ui.queueLabelBottomPos.setText(str(bottom))
-
-            self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
-            self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
-            self.ui.queueIncludeFieldsCheckbox.setChecked(queue_input[QueueAction.INCLUSIVE_FIELDS])
-            self.ui.queueRatioSlider.setValue(queue_input[QueueAction.SIMILAR_RATIO] * 100)
-
-            for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
-                mid = list(note_dict)[0]
-                for field_ord in list(note_dict.values()):
-                    note = mw.col.models.get(NotetypeId(int(mid)))
-                    field_name = mw.col.models.field_names(note)[field_ord]
-                    add_excluded_field(self.ui.queueExcludedFieldList, mid, field_name)
-            self.ui.queueExcludedFieldList.sortItems()
-            redraw_list(self.ui.queueExcludedFieldList)
-            _fill_menu_fields(self.ui.queueAddFieldButton)
-
-            self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
-
-        def load_default_buttons():
-
-            flag_signals = [
-                self.ui.flagCheckbox.stateChanged,
-                self.ui.flagDropdown.currentTextChanged,
-            ]
-            self.load_default_button(
-                self.ui.flagCheckbox.button,
-                flag_signals,
-                Action.FLAG,
-                actions_config,
-                default_config,
-                self.save_flag
-            )
-
-            suspend_signals = [
-                self.ui.suspendCheckbox.stateChanged,
-                self.ui.suspendOnButton.toggled,
-                self.ui.suspendOffButton.toggled,
-            ]
-            self.load_default_button(
-                self.ui.suspendCheckbox.button,
-                suspend_signals,
-                Action.SUSPEND,
-                actions_config,
-                default_config,
-                self.save_suspend
-            )
-
-            add_tags_signals = [
-                self.ui.addTagsCheckbox.stateChanged,
-                self.ui.addTagsLine.textChanged,
-            ]
-            self.load_default_button(
-                self.ui.addTagsCheckbox.button,
-                add_tags_signals,
-                Action.ADD_TAGS,
-                actions_config,
-                default_config,
-                self.save_add_tags
-            )
-
-            remove_tags_signals = [
-                self.ui.removeTagsCheckbox.stateChanged,
-                self.ui.removeTagsLine.textChanged,
-            ]
-            self.load_default_button(
-                self.ui.removeTagsCheckbox.button,
-                remove_tags_signals,
-                Action.REMOVE_TAGS,
-                actions_config,
-                default_config,
-                self.save_remove_tags
-            )
-
-            forget_signals = [
-                self.ui.forgetCheckbox.stateChanged,
-                self.ui.forgetOnRadio.toggled,
-                self.ui.forgetOffRadio.toggled,
-                self.ui.forgetResetCheckbox.stateChanged,
-                self.ui.forgetRestorePosCheckbox.stateChanged,
-            ]
-            self.load_default_button(
-                self.ui.forgetCheckbox.button,
-                forget_signals,
-                Action.FORGET,
-                actions_config,
-                default_config,
-                self.save_forget
-            )
-
-            edit_fields_signals = [
-                self.ui.editFieldsCheckbox.stateChanged,
-                self.ui.editFieldsList.currentRowChanged,
-            ]
-            self.load_default_button(
-                self.ui.editFieldsCheckbox.button,
-                edit_fields_signals,
-                Action.EDIT_FIELDS,
-                actions_config,
-                default_config,
-                self.save_edit_fields
-            )
-
-            deck_move_signals = [
-                self.ui.deckMoveCheckbox.stateChanged,
-                self.ui.deckMoveLine.textChanged,
-            ]
-            self.load_default_button(
-                self.ui.deckMoveCheckbox.button,
-                deck_move_signals,
-                Action.MOVE_TO_DECK,
-                actions_config,
-                default_config,
-                self.save_deck_move
-            )
-
-            reschedule_signals = [
-                self.ui.rescheduleCheckbox.stateChanged,
-                self.ui.rescheduleFromDays.valueChanged,
-                self.ui.rescheduleToDays.valueChanged,
-                self.ui.rescheduleResetCheckbox.stateChanged,
-            ]
-            self.load_default_button(
-                self.ui.rescheduleCheckbox.button,
-                reschedule_signals,
-                Action.RESCHEDULE,
-                actions_config,
-                default_config,
-                self.save_reschedule
-            )
-
-            queue_signals = [
-                self.ui.queueCheckbox.stateChanged,
-                self.ui.queueFromSpinbox.valueChanged,
-                self.ui.queueToSpinbox.valueChanged,
-                self.ui.queueFromDropdown.currentIndexChanged,
-                self.ui.queueToDropdown.currentIndexChanged,
-                self.ui.queueSimilarCheckbox.stateChanged,
-                self.ui.queueIncludeFieldsCheckbox.stateChanged,
-                self.ui.queueExcludedFieldList.currentRowChanged,
-                self.ui.queueExcludeTextEdit.textChanged,
-                self.ui.queueRatioSlider.valueChanged,
-                self.ui.queueSiblingCheckbox.stateChanged,
-            ]
-            self.load_default_button(
-                self.ui.queueCheckbox.button,
-                queue_signals,
-                Action.ADD_TO_QUEUE,
-                actions_config,
-                default_config,
-                self.save_add_to_queue
-            )
-
         # A little easier to read/debug
-        load_flag()
-        load_suspend()
-        load_add_tags()
-        load_remove_tags()
-        load_forget()
-        load_edit_field()
-        load_deck_move()
-        load_reschedule()
-        load_queue()
-        load_default_buttons()
+        self.load_flag(actions_config)
+        self.load_suspend(actions_config)
+        self.load_add_tags(actions_config)
+        self.load_remove_tags(actions_config)
+        self.load_forget(actions_config)
+        self.load_edit_fields(actions_config)
+        self.load_deck_move(actions_config)
+        self.load_reschedule(actions_config)
+        self.load_add_to_queue(actions_config)
+        self.load_default_buttons(actions_config, default_config)
 
     def save_all(self, actions_config: dict):
         # A little easier to read/debug
