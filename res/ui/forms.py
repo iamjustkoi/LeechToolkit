@@ -1,5 +1,4 @@
 import re
-
 import aqt
 import aqt.qt
 from aqt import Qt

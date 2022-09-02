@@ -47,15 +47,15 @@
       <property name="leftMargin">
           <number>6</number>
       </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-          <number>6</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
+         <property name="topMargin">
+             <number>0</number>
+         </property>
+         <property name="rightMargin">
+             <number>6</number>
+         </property>
+         <property name="bottomMargin">
+             <number>0</number>
+         </property>
          <item>
              <widget class="QToolButton" name="expandoButton">
                  <property name="focusPolicy">
@@ -345,7 +345,7 @@
                                                                                   </property>
                                                                                   <property name="sizeAdjustPolicy">
                                                                                       <enum>
-                                                                                          QAbstractScrollArea::AdjustIgnored
+                                                                                          QAbstractScrollArea::AdjustToContentsOnFirstShow
                                                                                       </enum>
                                                                                   </property>
                                                                                   <property name="tabChangesFocus">
@@ -846,16 +846,16 @@
                                                       <property name="sizePolicy">
                                                           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                                                               <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimum">
-                <number>-9999999</number>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
+                                                              <verstretch>0</verstretch>
+                                                          </sizepolicy>
+                                                      </property>
+                                                      <property name="minimum">
+                                                          <number>-9999999</number>
+                                                      </property>
+                                                      <property name="maximum">
+                                                          <number>9999999</number>
+                                                      </property>
+                                                  </widget>
              </item>
              <item>
               <widget class="QLabel" name="queueTilda">
@@ -997,12 +997,12 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <property name="text">
-                <string>0</string>
-               </property>
-               <property name="textInteractionFlags">
-                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-               </property>
+                  <property name="text">
+                      <string>0</string>
+                  </property>
+                  <property name="textInteractionFlags">
+                      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+                  </property>
               </widget>
              </item>
                 <item>

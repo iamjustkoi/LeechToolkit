@@ -153,7 +153,7 @@ class Ui_ActionsForm(object):
         self.queueExcludeTextEdit.setSizePolicy(sizePolicy)
         self.queueExcludeTextEdit.setMinimumSize(QtCore.QSize(0, 0))
         self.queueExcludeTextEdit.setMaximumSize(QtCore.QSize(16777215, 256))
-        self.queueExcludeTextEdit.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
+        self.queueExcludeTextEdit.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
         self.queueExcludeTextEdit.setTabChangesFocus(True)
         self.queueExcludeTextEdit.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
         self.queueExcludeTextEdit.setAcceptRichText(False)
