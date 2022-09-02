@@ -113,8 +113,8 @@ class OptionsDialog(QDialog):
         self.ui.browseButtonBrowserCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_BROWSER])
         self.ui.browseButtonOverviewCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_OVERVIEW])
 
-        self.leech_actions.load(self.config[Config.LEECH_ACTIONS])
-        self.reverse_actions.load(self.config[Config.UN_LEECH_ACTIONS])
+        self.leech_actions.load_all(self.config[Config.LEECH_ACTIONS])
+        self.reverse_actions.load_all(self.config[Config.UN_LEECH_ACTIONS])
         self.reverse_form.load(self.config[Config.REVERSE_OPTIONS])
 
     def _save(self):
@@ -542,7 +542,7 @@ class ActionsWidget(QWidget):
             self.load_add_to_queue,
         )
 
-    def load(self, actions_config: dict, default_config: dict = None):
+    def load_all(self, actions_config: dict, default_config: dict = None):
         default_config = default_config if default_config else Config.DEFAULT_CONFIG[self.actions_type]
 
         # A little easier to read/debug
