@@ -704,7 +704,6 @@ class EditFieldItem(QWidget):
         self.widget.fieldButtonLabel.menu().triggered.connect(
             lambda action: _handle_new_field(self.list_widget, action, self.set_model)
         )
-        _fill_menu_fields(self.widget.fieldButtonLabel)
 
         self._load()
 
@@ -718,6 +717,7 @@ class EditFieldItem(QWidget):
         self.note_type_dict = mw.col.models.get(NotetypeId(self.mid))
         self.model_name = self.note_type_dict["name"] if self.note_type_dict else ''
 
+        _fill_menu_fields(self.widget.fieldButtonLabel)
         self.widget.fieldButtonLabel.setToolTip(self.model_name)
         self.widget.fieldButtonLabel.setText(self.field_name)
         self.update_method(self.method_idx)
