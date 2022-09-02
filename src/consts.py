@@ -177,9 +177,9 @@ class Config:
                     QueueAction.NEAR_SIMILAR: False,
                     QueueAction.SIMILAR_RATIO: 0.25,
                     QueueAction.INCLUSIVE_FIELDS: True,
-                    QueueAction.FILTERED_FIELDS: {
-                        # {'model-id': 'field_ord'},
-                    },
+                    QueueAction.FILTERED_FIELDS: [
+                        # {'model-id': field_ord},
+                    ],
                     QueueAction.EXCLUDED_TEXT: '\\ ( ) ` \' " ; : . \\, ? ! & [ ] { } \\s'
                 }
             }
