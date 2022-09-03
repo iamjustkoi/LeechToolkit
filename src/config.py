@@ -16,13 +16,13 @@ def merge_fields(config: dict, default_config: dict):
     :param default_config: base config to compare against
     :param config: config to initialize with the default config
     """
-    default_copy = default_config.copy()
-    for field in default_copy:
+    for field in default_config:
         if field not in config:
-            print(f'Default field added: {field}')
-            config[field] = default_copy.get(field)
-        elif isinstance(default_copy[field], dict):
-            merge_fields(config[field], default_copy[field])
+            # print(f'Default field added: {field}')
+            config[field] = default_config.get(field)
+        elif isinstance(default_config[field], dict):
+            config[field] = merge_fields(config[field], default_config[field])
+    return config
 
 
 class LeechToolkitConfigManager:
@@ -34,13 +34,13 @@ Config manager for accessing and writing addon config values.
     :param mw: Anki window to retrieve addon config data from
         """
         super().__init__()
+        default_copy = Config.DEFAULT_CONFIG.copy()
+
         self._mw = mw
         self._addon = self._mw.addonManager.addonFromModule(__name__)
         self._meta = self._mw.addonManager.addonMeta(self._addon)
 
-        self.config = self._meta.get('config', Config.DEFAULT_CONFIG)
-        merge_fields(self.config, Config.DEFAULT_CONFIG)
-
+        self.config = merge_fields(self._meta.get('config', default_copy), default_copy)
         self._meta['config'] = self.config
 
     def write_config(self):
@@ -55,15 +55,14 @@ Writes the config manager's current values to the addon meta file.
         except AttributeError:
             print(f'{traceback.format_exc()}\nToolkit Manager not found in the current Reviewer.')
 
-    def placeholder_config_for_did(self, did: int):
-        config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
+    def get_conf_for_did(self, did: int, global_conf: dict = None):
+        global_conf = self.get_global_conf() if not global_conf else global_conf
 
-        deck_config = self.config.get(config_id, {Config.REVERSE_OPTIONS: {Config.REVERSE_ENABLED: False}})
-        default_copy = Config.DEFAULT_CONFIG.copy()
-        merge_fields(
-            deck_config,
-            {key: val for key, val in default_copy.items() if key in Config.DECK_DEFAULT_CATEGORIES}
-        )
+        config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
+        deck_config = merge_fields(self.config.get(config_id, {}), global_conf)
 
         self.config[config_id] = deck_config
         return deck_config
+
+    def get_global_conf(self):
+        return {key: val for key, val in self.config.items() if key in Config.DECK_DEFAULT_CATEGORIES}
