@@ -18,7 +18,7 @@ def merge_fields(config: dict, default_config: dict):
     """
     for field in default_config:
         if field not in config:
-            # print(f'Default field added: {field}')
+            print(f'Default field added: {field}')
             config[field] = default_config.get(field)
         elif isinstance(default_config[field], dict):
             config[field] = merge_fields(config[field], default_config[field])
@@ -34,13 +34,10 @@ Config manager for accessing and writing addon config values.
     :param mw: Anki window to retrieve addon config data from
         """
         super().__init__()
-        default_copy = Config.DEFAULT_CONFIG.copy()
-
         self._mw = mw
         self._addon = self._mw.addonManager.addonFromModule(__name__)
         self._meta = self._mw.addonManager.addonMeta(self._addon)
-
-        self.config = merge_fields(self._meta.get('config', default_copy), default_copy)
+        self.config = merge_fields(self._meta.get('config', Config.DEFAULT_CONFIG), Config.DEFAULT_CONFIG)
         self._meta['config'] = self.config
 
     def write_config(self):
@@ -57,12 +54,9 @@ Writes the config manager's current values to the addon meta file.
 
     def get_conf_for_did(self, did: int, global_conf: dict = None):
         global_conf = self.get_global_conf() if not global_conf else global_conf
-
         config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
-        deck_config = merge_fields(self.config.get(config_id, {}), global_conf)
-
-        self.config[config_id] = deck_config
-        return deck_config
+        self.config[config_id] = merge_fields(self.config.get(config_id, {}), global_conf).copy()
+        return self.config[config_id]
 
     def get_global_conf(self):
         return {key: val for key, val in self.config.items() if key in Config.DECK_DEFAULT_CATEGORIES}
