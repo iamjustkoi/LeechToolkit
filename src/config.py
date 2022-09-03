@@ -37,8 +37,7 @@ Config manager for accessing and writing addon config values.
         self._mw = mw
         self._addon = self._mw.addonManager.addonFromModule(__name__)
         self._meta = self._mw.addonManager.addonMeta(self._addon)
-        self.config = merge_fields(self._meta.get('config', Config.DEFAULT_CONFIG), Config.DEFAULT_CONFIG)
-        self._meta['config'] = self.config
+        self._meta['config'] = self.config = merge_fields(self._meta.get('config', {}), Config.DEFAULT_CONFIG)
 
     def write_config(self):
         """
@@ -55,7 +54,7 @@ Writes the config manager's current values to the addon meta file.
     def get_conf_for_did(self, did: int, global_conf: dict = None):
         global_conf = self.get_global_conf() if not global_conf else global_conf
         config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
-        self.config[config_id] = merge_fields(self.config.get(config_id, {}), global_conf).copy()
+        self.config[config_id] = merge_fields(self.config.get(config_id, {}), global_conf)
         return self.config[config_id]
 
     def get_global_conf(self):
