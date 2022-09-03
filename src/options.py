@@ -57,8 +57,7 @@ def redraw_list(fields_list: QListWidget, max_height=256):
     fields_list.setFixedHeight(data_height if data_height < max_height else fields_list.maximumHeight())
     fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
     fields_list.setVisible(fields_list.count() != 0)
-    # Emit signal for change updates
-    fields_list.setCurrentItem(fields_list.currentItem())
+    fields_list.currentRowChanged.emit(fields_list.currentRow())  # Used for updating any change receivers
 
 
 def _bind_tools_options(*args):
