@@ -32,36 +32,39 @@ class DeckOptions(QWidget):
         self.ui.scrollAreaLayout.addWidget(self.reverse_actions_form)
 
     def load(self):
-        manager = LeechToolkitConfigManager(mw)
-        deck_config = manager.placeholder_config_for_did(self.did)
+        # Using separate manager instances to reduce overwrite issues #bandaid-fix
+        global_conf = LeechToolkitConfigManager(mw).get_global_conf()
+        deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
 
-        self.leech_actions_form.load(deck_config[Config.LEECH_ACTIONS])
-        self.reverse_actions_form.load(deck_config[Config.UN_LEECH_ACTIONS])
-        self.reverse_form.load(deck_config[Config.REVERSE_OPTIONS])
+        self.leech_actions_form.load_all(deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS])
+        self.reverse_actions_form.load_all(deck_conf[Config.UN_LEECH_ACTIONS], global_conf[Config.UN_LEECH_ACTIONS])
+        self.reverse_form.load(deck_conf[Config.REVERSE_OPTIONS])
 
     def save(self):
-        manager = LeechToolkitConfigManager(mw)
-        deck_config = manager.placeholder_config_for_did(self.did)
+        print(f'        ###Save')
+        pass
+        # manager = LeechToolkitConfigManager(mw)
+        # deck_config = manager.get_conf_for_did(self.did)
 
-        def write_actions_config(actions_form, config_type):
-            actions_conf = deck_config[config_type]
-            actions_form.save_all(deck_config[config_type])
-            deck_config[config_type] = {
-                key: val for key, val in actions_conf.items() if actions_conf[key][Action.ENABLED]
-            }
-            deck_config.pop(config_type, None) if len(actions_conf) <= 0 else None
+        # def write_actions_config(actions_form, config_type):
+        #     actions_conf = deck_config[config_type]
+        #     actions_form.save_all(deck_config[config_type])
+        #     deck_config[config_type] = {
+        #         key: val for key, val in actions_conf.items() if actions_conf[key][Action.ENABLED]
+        #     }
+        #     deck_config.pop(config_type, None) if len(actions_conf) <= 0 else None
+        #
+        # write_actions_config(self.leech_actions_form, Config.LEECH_ACTIONS)
+        # write_actions_config(self.reverse_actions_form, Config.UN_LEECH_ACTIONS)
 
-        write_actions_config(self.leech_actions_form, Config.LEECH_ACTIONS)
-        write_actions_config(self.reverse_actions_form, Config.UN_LEECH_ACTIONS)
-
-        self.reverse_form.save(deck_config[Config.REVERSE_OPTIONS])
-        reverse_config = deck_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]
-        deck_config.pop(Config.REVERSE_OPTIONS, None) if not reverse_config else None
-
-        config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
-        manager.config[config_id] = deck_config
-        manager.config.pop(config_id, None) if len(deck_config) <= 0 else None
-        manager.write_config()
+        # self.reverse_form.save(deck_config[Config.REVERSE_OPTIONS])
+        # reverse_config = deck_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]
+        # deck_config.pop(Config.REVERSE_OPTIONS, None) if not reverse_config else None
+        #
+        # config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
+        # manager.config[config_id] = deck_config
+        # manager.config.pop(config_id, None) if len(deck_config) <= 0 else None
+        # manager.write_config()
 
 
 def build_hooks():
