@@ -52,10 +52,10 @@ Writes the config manager's current values to the addon meta file.
             print(f'{traceback.format_exc()}\nToolkit Manager not found in the current Reviewer.')
 
     def get_conf_for_did(self, did: int, global_conf: dict = None):
-        global_conf = self.get_global_conf() if not global_conf else global_conf
+        global_conf = self.get_global_deck_conf() if not global_conf else global_conf
         config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
         self.config[config_id] = merge_fields(self.config.get(config_id, {}), global_conf)
         return self.config[config_id]
 
-    def get_global_conf(self):
+    def get_global_deck_conf(self):
         return {key: val for key, val in self.config.items() if key in Config.DECK_DEFAULT_CATEGORIES}
