@@ -122,24 +122,12 @@ class OptionsDialog(QDialog):
         self.reverse_actions.load_all(self.config[Config.UN_LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
         self.reverse_form.load(self.config[Config.REVERSE_OPTIONS])
 
-        build_default_button(self.reverse_form.ui.reverse_enable_layout.layout(), self.reverse_form.ui.reverseCheckbox)
         self.load_defaults(self.config, Config.DEFAULT_CONFIG)
 
     def load_defaults(self, config: dict, default_config: dict):
-        reverse_signals = [
-            self.reverse_form.ui.reverseCheckbox.stateChanged,
-            self.reverse_form.ui.useLeechThresholdCheckbox.stateChanged,
-            self.reverse_form.ui.reverseMethodDropdown.currentIndexChanged,
-            self.reverse_form.ui.reverseThresholdSpinbox.valueChanged,
-            self.reverse_form.ui.consAnswerSpinbox.valueChanged,
-        ]
-        load_default_button(
-            self.reverse_form.ui.reverseCheckbox.button,
-            reverse_signals,
-            self.reverse_form.write,
-            self.reverse_form.load,
-            config[Config.REVERSE_OPTIONS],
-            default_config[Config.REVERSE_OPTIONS],
+        self.reverse_form.load_default(
+            self.config[Config.REVERSE_OPTIONS],
+            Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS]
         )
 
     def _write(self):
@@ -178,6 +166,25 @@ class ReverseWidget(QWidget):
             self.ui.reverseThresholdSpinbox.setEnabled(checked)
 
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
+
+        build_default_button(self.ui.reverse_enable_layout.layout(), self.ui.reverseCheckbox)
+
+    def load_default(self, reverse_conf: dict, default_conf: dict):
+        reverse_signals = [
+            self.ui.reverseCheckbox.stateChanged,
+            self.ui.useLeechThresholdCheckbox.stateChanged,
+            self.ui.reverseMethodDropdown.currentIndexChanged,
+            self.ui.reverseThresholdSpinbox.valueChanged,
+            self.ui.consAnswerSpinbox.valueChanged,
+        ]
+        load_default_button(
+            button=self.ui.reverseCheckbox.button,
+            signals=reverse_signals,
+            write_callback=self.write,
+            load_callback=self.load,
+            config=reverse_conf,
+            default_conf=default_conf,
+        )
 
     def load(self, reverse_config: dict):
         self.ui.reverseCheckbox.setChecked(reverse_config[Config.REVERSE_ENABLED])
