@@ -31,40 +31,50 @@ class DeckOptions(QWidget):
         self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
         self.ui.scrollAreaLayout.addWidget(self.reverse_actions_form)
 
-    def load(self):
         # Using separate manager instances to reduce overwrite issues #bandaid-fix
-        global_conf = LeechToolkitConfigManager(mw).get_global_conf()
+        self.global_conf = LeechToolkitConfigManager(mw).get_global_deck_conf()
+
+    def load(self):
         deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
 
-        self.leech_actions_form.load_all(deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS])
-        self.reverse_actions_form.load_all(deck_conf[Config.UN_LEECH_ACTIONS], global_conf[Config.UN_LEECH_ACTIONS])
-        self.reverse_form.load(deck_conf[Config.REVERSE_OPTIONS])
+        self.leech_actions_form.load_all(
+            deck_conf[Config.LEECH_ACTIONS], self.global_conf[Config.LEECH_ACTIONS]
+        )
+        self.reverse_actions_form.load_all(
+            deck_conf[Config.UN_LEECH_ACTIONS], self.global_conf[Config.UN_LEECH_ACTIONS]
+        )
+        self.reverse_form.load(
+            deck_conf[Config.REVERSE_OPTIONS]
+        )
 
-    def save(self):
-        print(f'        ###Save')
-        pass
-        # manager = LeechToolkitConfigManager(mw)
-        # deck_config = manager.get_conf_for_did(self.did)
+    def write(self):
+        manager = LeechToolkitConfigManager(mw)
+        deck_conf = manager.get_conf_for_did(self.did)
 
-        # def write_actions_config(actions_form, config_type):
-        #     actions_conf = deck_config[config_type]
-        #     actions_form.save_all(deck_config[config_type])
-        #     deck_config[config_type] = {
-        #         key: val for key, val in actions_conf.items() if actions_conf[key][Action.ENABLED]
-        #     }
-        #     deck_config.pop(config_type, None) if len(actions_conf) <= 0 else None
-        #
-        # write_actions_config(self.leech_actions_form, Config.LEECH_ACTIONS)
-        # write_actions_config(self.reverse_actions_form, Config.UN_LEECH_ACTIONS)
+        # is not same as global: write
+        self.leech_actions_form.write_all(deck_conf[Config.LEECH_ACTIONS])
+        self.reverse_actions_form.write_all(deck_conf[Config.UN_LEECH_ACTIONS])
+        self.reverse_form.write(deck_conf[Config.REVERSE_OPTIONS])
 
-        # self.reverse_form.save(deck_config[Config.REVERSE_OPTIONS])
-        # reverse_config = deck_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]
-        # deck_config.pop(Config.REVERSE_OPTIONS, None) if not reverse_config else None
-        #
-        # config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
-        # manager.config[config_id] = deck_config
-        # manager.config.pop(config_id, None) if len(deck_config) <= 0 else None
-        # manager.write_config()
+        def get_diffs(conf: dict, comp_conf: dict):
+            result = {}
+            for key in conf:
+                if conf[key] != comp_conf[key]:
+                    if isinstance(conf[key], dict):
+                        result[key] = get_diffs(conf[key], comp_conf[key])
+                    else:
+                        result[key] = conf[key]
+            return result
+
+        config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
+        min_deck_conf = get_diffs(deck_conf, self.global_conf)
+
+        if len(min_deck_conf) <= 0:
+            manager.config.pop(config_id, None)
+        else:
+            manager.config[config_id] = min_deck_conf
+
+        manager.write_config()
 
 
 def build_hooks():
@@ -94,6 +104,6 @@ def load_deck_options(deck_conf: DeckConf, *args):
 
 def save_deck_options(deck_conf: DeckConf, *args):
     form = deck_conf.form
-    form.tab_options.save()
+    form.tab_options.write()
 
 # On Save: Only write to global config if [key]-enabled is true else remove
