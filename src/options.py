@@ -129,8 +129,8 @@ class OptionsDialog(QDialog):
         self.config[Config.BROWSE_BUTTON_ON_BROWSER] = self.ui.browseButtonBrowserCheckbox.isChecked()
         self.config[Config.BROWSE_BUTTON_ON_OVERVIEW] = self.ui.browseButtonOverviewCheckbox.isChecked()
 
-        self.leech_actions.save_all(self.config[Config.LEECH_ACTIONS])
-        self.reverse_actions.save_all(self.config[Config.UN_LEECH_ACTIONS])
+        self.leech_actions.write_all(self.config[Config.LEECH_ACTIONS])
+        self.reverse_actions.write_all(self.config[Config.UN_LEECH_ACTIONS])
         self.reverse_form.save(self.config[Config.REVERSE_OPTIONS])
 
         # Write
@@ -398,21 +398,21 @@ class ActionsWidget(QWidget):
             self.ui.flagCheckbox.stateChanged,
             self.ui.flagDropdown.currentTextChanged,
         ]
-        load_default_button(self.ui.flagCheckbox.button, flag_signals, Action.FLAG, self.save_flag, self.load_flag)
+        load_default_button(self.ui.flagCheckbox.button, flag_signals, Action.FLAG, self.write_flag, self.load_flag)
 
         suspend_signals = [
             self.ui.suspendCheckbox.stateChanged,
             self.ui.suspendOnButton.toggled,
             self.ui.suspendOffButton.toggled,
         ]
-        load_default_button(self.ui.suspendCheckbox.button, suspend_signals, Action.SUSPEND, self.save_suspend,
+        load_default_button(self.ui.suspendCheckbox.button, suspend_signals, Action.SUSPEND, self.write_suspend,
                             self.load_suspend)
 
         add_tags_signals = [
             self.ui.addTagsCheckbox.stateChanged,
             self.ui.addTagsLine.textChanged,
         ]
-        load_default_button(self.ui.addTagsCheckbox.button, add_tags_signals, Action.ADD_TAGS, self.save_add_tags,
+        load_default_button(self.ui.addTagsCheckbox.button, add_tags_signals, Action.ADD_TAGS, self.write_add_tags,
                             self.load_add_tags)
 
         remove_tags_signals = [
@@ -420,7 +420,7 @@ class ActionsWidget(QWidget):
             self.ui.removeTagsLine.textChanged,
         ]
         load_default_button(self.ui.removeTagsCheckbox.button, remove_tags_signals, Action.REMOVE_TAGS,
-                            self.save_remove_tags, self.load_remove_tags)
+                            self.write_remove_tags, self.load_remove_tags)
 
         forget_signals = [
             self.ui.forgetCheckbox.stateChanged,
@@ -429,7 +429,7 @@ class ActionsWidget(QWidget):
             self.ui.forgetResetCheckbox.stateChanged,
             self.ui.forgetRestorePosCheckbox.stateChanged,
         ]
-        load_default_button(self.ui.forgetCheckbox.button, forget_signals, Action.FORGET, self.save_forget,
+        load_default_button(self.ui.forgetCheckbox.button, forget_signals, Action.FORGET, self.write_forget,
                             self.load_forget)
 
         edit_fields_signals = [
@@ -437,14 +437,14 @@ class ActionsWidget(QWidget):
             self.ui.editFieldsList.currentRowChanged,
         ]
         load_default_button(self.ui.editFieldsCheckbox.button, edit_fields_signals, Action.EDIT_FIELDS,
-                            self.save_edit_fields, self.load_edit_fields)
+                            self.write_edit_fields, self.load_edit_fields)
 
         deck_move_signals = [
             self.ui.deckMoveCheckbox.stateChanged,
             self.ui.deckMoveLine.textChanged,
         ]
         load_default_button(self.ui.deckMoveCheckbox.button, deck_move_signals, Action.MOVE_TO_DECK,
-                            self.save_deck_move, self.load_deck_move)
+                            self.write_deck_move, self.load_deck_move)
 
         reschedule_signals = [
             self.ui.rescheduleCheckbox.stateChanged,
@@ -453,7 +453,7 @@ class ActionsWidget(QWidget):
             self.ui.rescheduleResetCheckbox.stateChanged,
         ]
         load_default_button(self.ui.rescheduleCheckbox.button, reschedule_signals, Action.RESCHEDULE,
-                            self.save_reschedule, self.load_reschedule)
+                            self.write_reschedule, self.load_reschedule)
 
         queue_signals = [
             self.ui.queueCheckbox.stateChanged,
@@ -468,7 +468,7 @@ class ActionsWidget(QWidget):
             self.ui.queueRatioSlider.valueChanged,
             self.ui.queueSiblingCheckbox.stateChanged,
         ]
-        load_default_button(self.ui.queueCheckbox.button, queue_signals, Action.ADD_TO_QUEUE, self.save_add_to_queue,
+        load_default_button(self.ui.queueCheckbox.button, queue_signals, Action.ADD_TO_QUEUE, self.write_add_to_queue,
                             self.load_add_to_queue)
 
     def load_all(self, actions_conf: dict, default_conf: dict):
@@ -484,43 +484,43 @@ class ActionsWidget(QWidget):
         self.load_add_to_queue(actions_conf)
         self.load_defaults(actions_conf, default_conf)
 
-    def save_all(self, actions_config: dict):
+    def write_all(self, actions_config: dict):
         # A little easier to read/debug
-        self.save_flag(actions_config)
-        self.save_suspend(actions_config)
-        self.save_add_tags(actions_config)
-        self.save_remove_tags(actions_config)
-        self.save_forget(actions_config)
-        self.save_edit_fields(actions_config)
-        self.save_deck_move(actions_config)
-        self.save_reschedule(actions_config)
-        self.save_add_to_queue(actions_config)
+        self.write_flag(actions_config)
+        self.write_suspend(actions_config)
+        self.write_add_tags(actions_config)
+        self.write_remove_tags(actions_config)
+        self.write_forget(actions_config)
+        self.write_edit_fields(actions_config)
+        self.write_deck_move(actions_config)
+        self.write_reschedule(actions_config)
+        self.write_add_to_queue(actions_config)
 
-    def save_flag(self, actions_config: dict):
+    def write_flag(self, actions_config: dict):
         actions_config[Action.FLAG][Action.ENABLED] = self.ui.flagCheckbox.isChecked()
         actions_config[Action.FLAG][Action.INPUT] = self.ui.flagDropdown.currentIndex()
 
-    def save_suspend(self, actions_config: dict):
+    def write_suspend(self, actions_config: dict):
         actions_config[Action.SUSPEND][Action.ENABLED] = self.ui.suspendCheckbox.isChecked()
         actions_config[Action.SUSPEND][Action.INPUT] = self.ui.suspendOnButton.isChecked()
 
-    def save_add_tags(self, actions_config: dict):
+    def write_add_tags(self, actions_config: dict):
         actions_config[Action.ADD_TAGS][Action.ENABLED] = self.ui.addTagsCheckbox.isChecked()
         actions_config[Action.ADD_TAGS][Action.INPUT] = \
             mw.col.tags.join(mw.col.tags.split(self.ui.addTagsLine.text()))
 
-    def save_remove_tags(self, actions_config: dict):
+    def write_remove_tags(self, actions_config: dict):
         actions_config[Action.REMOVE_TAGS][Action.ENABLED] = self.ui.removeTagsCheckbox.isChecked()
         actions_config[Action.REMOVE_TAGS][Action.INPUT] = \
             mw.col.tags.join(mw.col.tags.split(self.ui.removeTagsLine.text()))
 
-    def save_forget(self, actions_config: dict):
+    def write_forget(self, actions_config: dict):
         actions_config[Action.FORGET][Action.ENABLED] = self.ui.forgetCheckbox.isChecked()
         actions_config[Action.FORGET][Action.INPUT][0] = self.ui.forgetOnRadio.isChecked()
         actions_config[Action.FORGET][Action.INPUT][1] = self.ui.forgetRestorePosCheckbox.isChecked()
         actions_config[Action.FORGET][Action.INPUT][2] = self.ui.forgetResetCheckbox.isChecked()
 
-    def save_edit_fields(self, actions_config: dict):
+    def write_edit_fields(self, actions_config: dict):
         actions_config[Action.EDIT_FIELDS][Action.ENABLED] = self.ui.editFieldsCheckbox.isChecked()
         edit_input: list = actions_config[Action.EDIT_FIELDS][Action.INPUT]
 
@@ -529,19 +529,19 @@ class ActionsWidget(QWidget):
             item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
             edit_input.append(item.get_field_edit_dict()) if item is not None else None
 
-    def save_deck_move(self, actions_config: dict):
+    def write_deck_move(self, actions_config: dict):
         actions_config[Action.MOVE_TO_DECK][Action.ENABLED] = self.ui.deckMoveCheckbox.isChecked()
         stored_did = self.ui.deckMoveLine.text()
         actions_config[Action.MOVE_TO_DECK][Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else ''
 
-    def save_reschedule(self, actions_config: dict):
+    def write_reschedule(self, actions_config: dict):
         actions_config[Action.RESCHEDULE][Action.ENABLED] = self.ui.rescheduleCheckbox.isChecked()
         reschedule_input = actions_config[Action.RESCHEDULE][Action.INPUT]
         reschedule_input[RescheduleAction.FROM] = self.ui.rescheduleFromDays.value()
         reschedule_input[RescheduleAction.TO] = self.ui.rescheduleToDays.value()
         reschedule_input[RescheduleAction.RESET] = self.ui.rescheduleResetCheckbox.isChecked()
 
-    def save_add_to_queue(self, actions_config: dict):
+    def write_add_to_queue(self, actions_config: dict):
         actions_config[Action.ADD_TO_QUEUE][Action.ENABLED] = self.ui.queueCheckbox.isChecked()
 
         queue_input = actions_config[Action.ADD_TO_QUEUE][Action.INPUT]
