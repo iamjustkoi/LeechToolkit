@@ -117,7 +117,7 @@ class OptionsDialog(QDialog):
         self.reverse_actions.load_all(self.config[Config.UN_LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
         self.reverse_form.load(self.config[Config.REVERSE_OPTIONS])
 
-    def _save(self):
+    def _write(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
         self.config[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerChecbkbox.isChecked()
@@ -131,13 +131,13 @@ class OptionsDialog(QDialog):
 
         self.leech_actions.write_all(self.config[Config.LEECH_ACTIONS])
         self.reverse_actions.write_all(self.config[Config.UN_LEECH_ACTIONS])
-        self.reverse_form.save(self.config[Config.REVERSE_OPTIONS])
+        self.reverse_form.write(self.config[Config.REVERSE_OPTIONS])
 
         # Write
         self.manager.write_config()
 
     def accept(self) -> None:
-        self._save()
+        self._write()
         super().accept()
         bind_actions()
         mw.reset()
@@ -161,7 +161,7 @@ class ReverseWidget(QWidget):
         self.ui.reverseThresholdSpinbox.setValue(reverse_config[Config.REVERSE_THRESHOLD])
         self.ui.consAnswerSpinbox.setValue(reverse_config[Config.REVERSE_CONS_ANS])
 
-    def save(self, reverse_config: dict):
+    def write(self, reverse_config: dict):
         reverse_enabled = self.ui.reverseCheckbox.isChecked()
         reverse_config[Config.REVERSE_ENABLED] = reverse_enabled
         reverse_config[Config.REVERSE_METHOD] = self.ui.reverseMethodDropdown.currentIndex()
@@ -377,10 +377,10 @@ class ActionsWidget(QWidget):
     def load_defaults(self, actions_config: dict, default_config):
         # Remove any re-assignment potential issues
 
-        def load_default_button(button, signals: list[pyqtBoundSignal], action: str, save_callback, load_callback):
+        def load_default_button(button, signals: list[pyqtBoundSignal], action: str, write_callback, load_callback):
             for signal in signals:
                 def refresh_default_button(*args):
-                    save_callback(actions_config) if save_callback else None
+                    write_callback(actions_config) if write_callback else None
                     button.setVisible(actions_config[action] != default_config[action])
 
                 signal.connect(refresh_default_button)
