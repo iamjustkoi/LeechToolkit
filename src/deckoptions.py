@@ -10,7 +10,7 @@ from aqt.qt import (
 )
 
 from .config import LeechToolkitConfigManager
-from .consts import Config, Action
+from .consts import Config
 from .options import ActionsWidget
 from .options import ReverseWidget
 from ..res.ui.deck_options_form import Ui_DeckOptionsPlaceholder
@@ -31,25 +31,27 @@ class DeckOptions(QWidget):
         self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
         self.ui.scrollAreaLayout.addWidget(self.reverse_actions_form)
 
-        # Using separate manager instances to reduce overwrite issues #bandaid-fix
-        self.global_conf = LeechToolkitConfigManager(mw).get_global_deck_conf()
-
     def load(self):
         deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
+        global_conf = self.get_global_conf()
 
         self.leech_actions_form.load_all(
-            deck_conf[Config.LEECH_ACTIONS], self.global_conf[Config.LEECH_ACTIONS]
+            deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS]
         )
         self.reverse_actions_form.load_all(
-            deck_conf[Config.UN_LEECH_ACTIONS], self.global_conf[Config.UN_LEECH_ACTIONS]
+            deck_conf[Config.UN_LEECH_ACTIONS], global_conf[Config.UN_LEECH_ACTIONS]
         )
         self.reverse_form.load(
             deck_conf[Config.REVERSE_OPTIONS]
         )
 
+    @staticmethod
+    def get_global_conf():
+        # Using separate manager instances to reduce overwrite issues #bandaid-fix
+        return LeechToolkitConfigManager(mw).get_global_deck_conf()
+
     def write(self):
-        manager = LeechToolkitConfigManager(mw)
-        deck_conf = manager.get_conf_for_did(self.did)
+        deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
 
         # is not same as global: write
         self.leech_actions_form.write_all(deck_conf[Config.LEECH_ACTIONS])
@@ -66,14 +68,13 @@ class DeckOptions(QWidget):
                         result[key] = conf[key]
             return result
 
+        manager = LeechToolkitConfigManager(mw)
         config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
-        min_deck_conf = get_diffs(deck_conf, self.global_conf)
-
+        min_deck_conf = get_diffs(deck_conf, self.get_global_conf())
         if len(min_deck_conf) <= 0:
             manager.config.pop(config_id, None)
         else:
             manager.config[config_id] = min_deck_conf
-
         manager.write_config()
 
 
