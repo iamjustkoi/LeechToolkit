@@ -62,10 +62,7 @@ class DeckOptions(QWidget):
             result = {}
             for key in conf:
                 if conf[key] != comp_conf[key]:
-                    if isinstance(conf[key], dict):
-                        result[key] = get_diffs(conf[key], comp_conf[key])
-                    else:
-                        result[key] = conf[key]
+                    result[key] = get_diffs(conf[key], comp_conf[key]) if isinstance(conf[key], dict) else conf[key]
             return result
 
         manager = LeechToolkitConfigManager(mw)
