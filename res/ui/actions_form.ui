@@ -20,15 +20,15 @@
    <property name="leftMargin">
     <number>0</number>
    </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
+      <property name="topMargin">
+          <number>0</number>
+      </property>
+      <property name="rightMargin">
+          <number>0</number>
+      </property>
+      <property name="bottomMargin">
+          <number>0</number>
+      </property>
       <item>
           <widget class="ExpandoWidget" name="expandoWidget" native="true">
               <property name="sizePolicy">
@@ -509,7 +509,7 @@
                                                                                               <property
                                                                                                       name="popupMode">
                                                                                                   <enum>
-                                                                                                      QToolButton::InstantPopup
+                                                                                                      QToolButton::DelayedPopup
                                                                                                   </enum>
                                                                                               </property>
                                                                                               <property
@@ -886,16 +886,16 @@
                                                               <string>Top</string>
                                                           </property>
                                                       </item>
-               <item>
-                <property name="text">
-                 <string>Bottom</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Position</string>
-                </property>
-               </item>
+                                                      <item>
+                                                          <property name="text">
+                                                              <string>Bottom</string>
+                                                          </property>
+                                                      </item>
+                                                      <item>
+                                                          <property name="text">
+                                                              <string>Position</string>
+                                                          </property>
+                                                      </item>
               </widget>
              </item>
              <item>
@@ -974,20 +974,20 @@
               </spacer>
              </item>
              <item>
-              <widget class="QLabel" name="queueLabelBottom">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-                  <property name="text">
-                      <string>Bottom:</string>
-                  </property>
-                  <property name="textInteractionFlags">
-                      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-                  </property>
-              </widget>
+                 <widget class="QLabel" name="queueLabelBottom">
+                     <property name="sizePolicy">
+                         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                         </sizepolicy>
+                     </property>
+                     <property name="text">
+                         <string>Bottom:</string>
+                     </property>
+                     <property name="textInteractionFlags">
+                         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+                     </property>
+                 </widget>
              </item>
                 <item>
                     <widget class="QLabel" name="queueLabelBottomPos">
