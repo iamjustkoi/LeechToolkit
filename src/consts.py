@@ -102,19 +102,22 @@ class Action:
 
 
 class Config:
+
     TOOLBAR_ENABLED = 'showToolsMenuOptions'
 
+    MARKER_OPTIONS = 'markerOptions'
     SHOW_LEECH_MARKER = 'showLeechMarker'
     USE_ALMOST_MARKER = 'showAlmostLeechMarker'
     ONLY_SHOW_BACK_MARKER = 'showMarkerOnBack'
     MARKER_POSITION = 'almostMarkPosition'
 
-    SHOW_BROWSE_BUTTON = 'showBrowseButton'
-    BROWSE_BUTTON_ON_BROWSER = 'showBrowseButtonOnBrowser'
-    BROWSE_BUTTON_ON_OVERVIEW = 'showBrowseButtonOnOverview'
+    BUTTON_OPTIONS = 'buttonOptions'
+    SHOW_BUTTON = 'showBrowseButton'
+    SHOW_BROWSER_BUTTON = 'showBrowseButtonOnBrowser'
+    SHOW_OVERVIEW_BUTTON = 'showBrowseButtonOnOverview'
 
-    REVERSE_ENABLED = 'enabled'
     REVERSE_OPTIONS = 'reverseOptions'
+    REVERSE_ENABLED = 'enabled'
     REVERSE_METHOD = 'reverseType'
     REVERSE_USE_LEECH_THRESHOLD = 'reverseUseLeechThreshold'
     REVERSE_THRESHOLD = 'reverseThreshold'
@@ -122,7 +125,6 @@ class Config:
 
     LEECH_ACTIONS = 'leechActions'
     UN_LEECH_ACTIONS = 'unLeechActions'
-
     DEFAULT_ACTIONS = {
         Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
         Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
@@ -149,7 +151,7 @@ class Config:
             Action.INPUT: {
                 QueueAction.FROM_INDEX: 0,
                 QueueAction.FROM_VAL: 0,
-                QueueAction.TO_INDEX: 1,
+                QueueAction.TO_INDEX: 0,
                 QueueAction.TO_VAL: 0,
                 QueueAction.NEAR_SIBLING: False,
                 QueueAction.NEAR_SIMILAR: False,
@@ -171,13 +173,17 @@ class Config:
 
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
-        SHOW_LEECH_MARKER: True,
-        USE_ALMOST_MARKER: True,
-        ONLY_SHOW_BACK_MARKER: True,
-        MARKER_POSITION: DEFAULT,
-        SHOW_BROWSE_BUTTON: True,
-        BROWSE_BUTTON_ON_BROWSER: True,
-        BROWSE_BUTTON_ON_OVERVIEW: True,
+        MARKER_OPTIONS: {
+            SHOW_LEECH_MARKER: True,
+            USE_ALMOST_MARKER: True,
+            ONLY_SHOW_BACK_MARKER: True,
+            MARKER_POSITION: DEFAULT,
+        },
+        BUTTON_OPTIONS: {
+            SHOW_BUTTON: True,
+            SHOW_BROWSER_BUTTON: True,
+            SHOW_OVERVIEW_BUTTON: True,
+        },
         REVERSE_OPTIONS: {
             REVERSE_ENABLED: True,
             REVERSE_USE_LEECH_THRESHOLD: True,
