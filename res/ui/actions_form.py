@@ -207,7 +207,7 @@ class Ui_ActionsForm(object):
         sizePolicy.setHeightForWidth(self.queueAddFieldButton.sizePolicy().hasHeightForWidth())
         self.queueAddFieldButton.setSizePolicy(sizePolicy)
         self.queueAddFieldButton.setMinimumSize(QtCore.QSize(64, 24))
-        self.queueAddFieldButton.setPopupMode(QtWidgets.QToolButton.InstantPopup)
+        self.queueAddFieldButton.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
         self.queueAddFieldButton.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.queueAddFieldButton.setObjectName("queueAddFieldButton")
         self._5.addWidget(self.queueAddFieldButton)
@@ -412,7 +412,8 @@ class Ui_ActionsForm(object):
         sizePolicy.setHeightForWidth(self.queueLabelTop.sizePolicy().hasHeightForWidth())
         self.queueLabelTop.setSizePolicy(sizePolicy)
         self.queueLabelTop.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse
+            )
         self.queueLabelTop.setObjectName("queueLabelTop")
         self.horizontalLayout_17.addWidget(self.queueLabelTop)
         self.queueLabelTopPos = QtWidgets.QLabel(self.frame_6)
@@ -422,7 +423,8 @@ class Ui_ActionsForm(object):
         sizePolicy.setHeightForWidth(self.queueLabelTopPos.sizePolicy().hasHeightForWidth())
         self.queueLabelTopPos.setSizePolicy(sizePolicy)
         self.queueLabelTopPos.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse
+            )
         self.queueLabelTopPos.setObjectName("queueLabelTopPos")
         self.horizontalLayout_17.addWidget(self.queueLabelTopPos)
         spacerItem4 = QtWidgets.QSpacerItem(6, 0, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
@@ -434,7 +436,8 @@ class Ui_ActionsForm(object):
         sizePolicy.setHeightForWidth(self.queueLabelBottom.sizePolicy().hasHeightForWidth())
         self.queueLabelBottom.setSizePolicy(sizePolicy)
         self.queueLabelBottom.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse
+            )
         self.queueLabelBottom.setObjectName("queueLabelBottom")
         self.horizontalLayout_17.addWidget(self.queueLabelBottom)
         self.queueLabelBottomPos = QtWidgets.QLabel(self.frame_6)
@@ -444,7 +447,8 @@ class Ui_ActionsForm(object):
         sizePolicy.setHeightForWidth(self.queueLabelBottomPos.sizePolicy().hasHeightForWidth())
         self.queueLabelBottomPos.setSizePolicy(sizePolicy)
         self.queueLabelBottomPos.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse
+            )
         self.queueLabelBottomPos.setObjectName("queueLabelBottomPos")
         self.horizontalLayout_17.addWidget(self.queueLabelBottomPos)
         spacerItem5 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -490,9 +494,13 @@ class Ui_ActionsForm(object):
         self.suspendOnButton.setText(_translate("ActionsForm", "On"))
         self.suspendOffButton.setText(_translate("ActionsForm", "Off"))
         self.forgetResetCheckbox.setText(_translate("ActionsForm", "Reset total reviews and lapses"))
-        self.queueSiblingCheckbox.setToolTip(_translate("ActionsForm", "Using the given range:\n"
-                                                                       "                                  Place the card next to another one if they\'re each siblings of the same note-type.\n"
-                                                                       "                              "))
+        self.queueSiblingCheckbox.setToolTip(
+            _translate(
+                "ActionsForm", "Using the given range:\n"
+                               "                                  Place the card next to another one if they\'re each siblings of the same note-type.\n"
+                               "                              "
+            )
+        )
         self.queueSiblingCheckbox.setText(_translate("ActionsForm", "Place near sibling cards"))
         self.flagDropdown.setItemText(0, _translate("ActionsForm", "No Flag"))
         self.flagDropdown.setItemText(1, _translate("ActionsForm", "Red"))
@@ -504,43 +512,58 @@ class Ui_ActionsForm(object):
         self.flagDropdown.setItemText(7, _translate("ActionsForm", "Purple"))
         self.forgetRestorePosCheckbox.setText(_translate("ActionsForm", "Restore imported position where possible"))
         self.queueCheckbox.setToolTip(
-            _translate("ActionsForm", "Adds the card to the new queue using the specified range."))
+            _translate("ActionsForm", "Adds the card to the new queue using the specified range.")
+        )
         self.queueCheckbox.setText(_translate("ActionsForm", "Add to New"))
         self.deckMoveCheckbox.setText(_translate("ActionsForm", "Move to Deck"))
         self.suspendCheckbox.setText(_translate("ActionsForm", "Suspend"))
         self.flagCheckbox.setText(_translate("ActionsForm", "Set Flag"))
-        self.queueSimilarCheckbox.setToolTip(_translate("ActionsForm", "Using the given range:\n"
-                                                                       "                                                  Places the card near another one in the queue based on how similar\n"
-                                                                       "                                                  they are.\n"
-                                                                       "                                              "))
+        self.queueSimilarCheckbox.setToolTip(
+            _translate(
+                "ActionsForm", "Using the given range:\n"
+                               "                                                  Places the card near another one in the queue based on how similar\n"
+                               "                                                  they are.\n"
+                               "                                              "
+            )
+        )
         self.queueSimilarCheckbox.setText(_translate("ActionsForm", "Place near similar cards"))
         self.groupBox_4.setTitle(_translate("ActionsForm", "Ignored Text"))
         self.groupBox_5.setTitle(_translate("ActionsForm", "Filtered Fields"))
-        self.queueIncludeFieldsCheckbox.setToolTip(_translate("ActionsForm", "Filters to only match the\n"
-                                                                             "                                                                                          following fields instead of\n"
-                                                                             "                                                                                          filtering them out.\n"
-                                                                             "                                                                                      "))
+        self.queueIncludeFieldsCheckbox.setToolTip(
+            _translate(
+                "ActionsForm", "Filters to only match the\n"
+                               "                                                                                          following fields instead of\n"
+                               "                                                                                          filtering them out.\n"
+                               "                                                                                      "
+            )
+        )
         self.queueIncludeFieldsCheckbox.setText(_translate("ActionsForm", "Inclusive"))
         self.queueExcludedFieldList.setSortingEnabled(True)
         self.queueAddFieldButton.setText(_translate("ActionsForm", "Add"))
         self.rescheduleText1.setText(_translate("ActionsForm", "Between"))
         self.rescheduleText2.setText(_translate("ActionsForm", "and"))
-        self.rescheduleToDays.setSuffix(_translate("ActionsForm", "days"))
+        self.rescheduleToDays.setSuffix(_translate("ActionsForm", " days"))
         self.rescheduleCheckbox.setText(_translate("ActionsForm", "Set Due Date"))
         self.editFieldsGroup.setTitle(_translate("ActionsForm", "Fields"))
         self.editFieldsList.setSortingEnabled(True)
         self.editAddFieldButton.setText(_translate("ActionsForm", "Add"))
-        self.rescheduleResetCheckbox.setToolTip(_translate("ActionsForm",
-                                                           "Updates the card\'s interval using the time between the current day and the updated\n"
-                                                           "                                  date.\n"
-                                                           "                              "))
+        self.rescheduleResetCheckbox.setToolTip(
+            _translate(
+                "ActionsForm", "Updates the card\'s interval using the time between the current day and the updated\n"
+                               "                                  date.\n"
+                               "                              "
+            )
+        )
         self.rescheduleResetCheckbox.setText(_translate("ActionsForm", "Update interval"))
         self.addTagsCheckbox.setText(_translate("ActionsForm", "Add Tag(s)"))
         self.label_4.setText(_translate("ActionsForm", "Similarity"))
         self.queueRatioSlider.setToolTip(
-            _translate("ActionsForm", "Controls how similar a card\'s fields must be for it to be considered\n"
-                                      "                                              \"similar\".\n"
-                                      "                                          "))
+            _translate(
+                "ActionsForm", "Controls how similar a card\'s fields must be for it to be considered\n"
+                               "                                              \"similar\".\n"
+                               "                                          "
+            )
+        )
         self.forgetCheckbox.setText(_translate("ActionsForm", "Forget"))
         self.queueFromDropdown.setItemText(0, _translate("ActionsForm", "Top"))
         self.queueFromDropdown.setItemText(1, _translate("ActionsForm", "Bottom"))
