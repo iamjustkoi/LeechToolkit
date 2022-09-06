@@ -67,7 +67,7 @@ class DeckOptions(QWidget):
             manager.config.pop(config_id, None)
         else:
             manager.config[config_id] = min_deck_conf
-        manager.write_config()
+        manager.save_config()
 
 
 def build_hooks():

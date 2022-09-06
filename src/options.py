@@ -101,22 +101,62 @@ class OptionsDialog(QDialog):
         self.unleech_form = ActionsWidget(Config.UN_LEECH_ACTIONS)
         self.ui.actionsScrollLayout.addWidget(self.unleech_form)
 
+        set_default_button(self.ui.showMarkerCheckbox, self.ui.enableMarkLayout)
+        set_default_button(self.ui.browseButtonCheckbox, self.ui.browseButtonLayout)
+
         self._load()
 
         # Just in case
         self.ui.tabWidget.setCurrentIndex(0)
 
+    def load_defaults(self, config: dict, default_config: dict):
+        marker_signals = [
+            self.ui.showMarkerCheckbox.stateChanged,
+            self.ui.almostCheckbox.stateChanged,
+            self.ui.almostPosDropdown.currentIndexChanged,
+            self.ui.almostBackCheckbox.stateChanged,
+        ]
+        load_default_button(
+            self.ui.showMarkerCheckbox.button,
+            marker_signals,
+            self.write_marker,
+            self.load_marker,
+            self.config[Config.MARKER_OPTIONS],
+            Config.DEFAULT_CONFIG[Config.MARKER_OPTIONS]
+        )
+
+        button_signals = [
+            self.ui.browseButtonCheckbox.stateChanged,
+            self.ui.browseButtonBrowserCheckbox.stateChanged,
+            self.ui.browseButtonOverviewCheckbox.stateChanged,
+        ]
+        load_default_button(
+            self.ui.browseButtonCheckbox.button,
+            button_signals,
+            self.write_button,
+            self.load_button,
+            self.config[Config.BUTTON_OPTIONS],
+            Config.DEFAULT_CONFIG[Config.BUTTON_OPTIONS]
+        )
+
+        self.reverse_form.load_default(config[Config.REVERSE_OPTIONS], default_config[Config.REVERSE_OPTIONS])
+
+    def load_marker(self, marker_conf: dict):
+        self.ui.showMarkerCheckbox.setChecked(marker_conf[Config.SHOW_LEECH_MARKER])
+        self.ui.almostCheckbox.setChecked(marker_conf[Config.USE_ALMOST_MARKER])
+        self.ui.almostPosDropdown.setCurrentIndex(marker_conf[Config.MARKER_POSITION])
+        self.ui.almostBackCheckbox.setChecked(marker_conf[Config.ONLY_SHOW_BACK_MARKER])
+
+    def load_button(self, button_conf: dict):
+        self.ui.browseButtonCheckbox.setChecked(button_conf[Config.SHOW_BUTTON])
+        self.ui.browseButtonBrowserCheckbox.setChecked(button_conf[Config.SHOW_BROWSER_BUTTON])
+        self.ui.browseButtonOverviewCheckbox.setChecked(button_conf[Config.SHOW_OVERVIEW_BUTTON])
+
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
 
-        self.ui.showMarkerCheckbox.setChecked(self.config[Config.SHOW_LEECH_MARKER])
-        self.ui.almostCheckbox.setChecked(self.config[Config.USE_ALMOST_MARKER])
-        self.ui.almostPosDropdown.setCurrentIndex(self.config[Config.MARKER_POSITION])
-        self.ui.almostBackCheckbox.setChecked(self.config[Config.ONLY_SHOW_BACK_MARKER])
-
-        self.ui.browseButtonCheckbox.setChecked(self.config[Config.SHOW_BROWSE_BUTTON])
-        self.ui.browseButtonBrowserCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_BROWSER])
-        self.ui.browseButtonOverviewCheckbox.setChecked(self.config[Config.BROWSE_BUTTON_ON_OVERVIEW])
+        self.load_marker(self.config[Config.MARKER_OPTIONS])
+        self.load_button(self.config[Config.BUTTON_OPTIONS])
 
         self.leech_form.load_all(self.config[Config.LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
         self.unleech_form.load_all(self.config[Config.UN_LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
@@ -124,30 +164,28 @@ class OptionsDialog(QDialog):
 
         self.load_defaults(self.config, Config.DEFAULT_CONFIG)
 
-    def load_defaults(self, config: dict, default_config: dict):
-        self.reverse_form.load_default(
-            config[Config.REVERSE_OPTIONS],
-            default_config[Config.REVERSE_OPTIONS]
-        )
+    def write_marker(self, marker_conf: dict):
+        marker_conf[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerCheckbox.isChecked()
+        marker_conf[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
+        marker_conf[Config.MARKER_POSITION] = self.ui.almostPosDropdown.currentIndex()
+        marker_conf[Config.ONLY_SHOW_BACK_MARKER] = self.ui.almostBackCheckbox.isChecked()
+
+    def write_button(self, button_conf: dict):
+        button_conf[Config.SHOW_BUTTON] = self.ui.browseButtonCheckbox.isChecked()
+        button_conf[Config.SHOW_BROWSER_BUTTON] = self.ui.browseButtonBrowserCheckbox.isChecked()
+        button_conf[Config.SHOW_OVERVIEW_BUTTON] = self.ui.browseButtonOverviewCheckbox.isChecked()
 
     def _write(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
-
-        self.config[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerCheckbox.isChecked()
-        self.config[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
-        self.config[Config.MARKER_POSITION] = self.ui.almostPosDropdown.currentIndex()
-        self.config[Config.ONLY_SHOW_BACK_MARKER] = self.ui.almostBackCheckbox.isChecked()
-
-        self.config[Config.SHOW_BROWSE_BUTTON] = self.ui.browseButtonCheckbox.isChecked()
-        self.config[Config.BROWSE_BUTTON_ON_BROWSER] = self.ui.browseButtonBrowserCheckbox.isChecked()
-        self.config[Config.BROWSE_BUTTON_ON_OVERVIEW] = self.ui.browseButtonOverviewCheckbox.isChecked()
+        self.write_marker(self.config[Config.MARKER_OPTIONS])
+        self.write_button(self.config[Config.BUTTON_OPTIONS])
 
         self.leech_form.write_all(self.config[Config.LEECH_ACTIONS])
         self.unleech_form.write_all(self.config[Config.UN_LEECH_ACTIONS])
         self.reverse_form.write(self.config[Config.REVERSE_OPTIONS])
 
-        # Write
-        self.manager.write_config()
+        # Save config
+        self.manager.save_config()
 
     def accept(self) -> None:
         self._write()
@@ -167,7 +205,9 @@ class ReverseWidget(QWidget):
 
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
 
-        build_default_button(self.ui.reverse_enable_layout.layout(), self.ui.reverseCheckbox)
+        set_default_button(self.ui.reverseCheckbox, self.ui.reverse_enable_layout.layout())
+
+        set_default_button(self.ui.reverseCheckbox, self.ui.reverse_enable_layout.layout())
 
     def load_default(self, reverse_conf: dict, default_conf: dict):
         reverse_signals = [
@@ -214,28 +254,29 @@ def _fill_menu_fields(add_button: aqt.qt.QToolButton):
             sub_menu.addAction(action)
 
 
-def build_default_button(layout: QLayout, anchor_widget, insert_col=4):
-    anchor_widget.button = aqt.qt.QPushButton(anchor_widget)
-    anchor_widget.button.setMaximumSize(QSize(16, 16))
-    anchor_widget.button.setFlat(True)
-    anchor_widget.button.setToolTip(String.RESTORE_DEFAULT_SETTING)
-    anchor_widget.button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
+def set_default_button(main_widget: QWidget, layout: QLayout, insert_col=4):
+    main_widget.button = aqt.qt.QPushButton(main_widget)
+    main_widget.button.setMaximumSize(QSize(16, 16))
+    main_widget.button.setFlat(True)
+    main_widget.button.setToolTip(String.RESTORE_DEFAULT_SETTING)
+    main_widget.button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
 
     size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     size_policy.setHorizontalStretch(0)
     size_policy.setVerticalStretch(0)
-    size_policy.setHeightForWidth(anchor_widget.button.sizePolicy().hasHeightForWidth())
+    size_policy.setHeightForWidth(main_widget.button.sizePolicy().hasHeightForWidth())
 
-    anchor_widget.button.setSizePolicy(size_policy)
+    main_widget.button.setSizePolicy(size_policy)
 
-    if isinstance(layout, QGridLayout):
-        widget_index = layout.indexOf(anchor_widget)
-        widget_row = layout.getItemPosition(widget_index)[0]
-        layout.addWidget(anchor_widget.button, widget_row, insert_col)
-    elif isinstance(layout, QBoxLayout):
-        layout.addWidget(anchor_widget.button, alignment=layout.alignment())
-    else:
-        layout.addWidget(anchor_widget.button)
+    if layout is not None:
+        if isinstance(layout, QGridLayout):
+            widget_index = layout.indexOf(main_widget)
+            widget_row = layout.getItemPosition(widget_index)[0]
+            layout.addWidget(main_widget.button, widget_row, insert_col)
+        elif isinstance(layout, QBoxLayout):
+            layout.addWidget(main_widget.button, alignment=layout.alignment())
+        else:
+            layout.addWidget(main_widget.button)
 
 
 def load_default_button(
@@ -246,24 +287,29 @@ def load_default_button(
     scoped_conf: dict,
     default_scoped_conf: dict
 ):
+    default_copy = default_scoped_conf.copy()
+
     for signal in signals:
         signal: pyqtBoundSignal
 
         def refresh_default_button(*args):
-            print(f'config: {scoped_conf}')
             write_callback(scoped_conf) if write_callback else None
-            button.setVisible(scoped_conf != default_scoped_conf)
+            button.setVisible(scoped_conf != default_copy)
+
+            print(f'config: {scoped_conf}')
+            print(f'def_config: {default_copy}')
+            print()
 
         signal.connect(refresh_default_button)
 
     def restore_defaults(*args):
-        load_callback(default_scoped_conf)
+        load_callback(default_copy)
         refresh_default_button()
 
     button.clicked.connect(restore_defaults)
 
     # Initial update
-    button.setVisible(scoped_conf != default_scoped_conf)
+    button.setVisible(scoped_conf != default_copy)
 
 
 class ActionsWidget(QWidget):
@@ -320,15 +366,15 @@ class ActionsWidget(QWidget):
         self.toggle_expando(self.ui.expandoButton, expanded)
 
         layout = self.ui.actionsFrame.layout()
-        build_default_button(layout, self.ui.flagCheckbox)
-        build_default_button(layout, self.ui.suspendCheckbox)
-        build_default_button(layout, self.ui.addTagsCheckbox)
-        build_default_button(layout, self.ui.removeTagsCheckbox)
-        build_default_button(layout, self.ui.forgetCheckbox)
-        build_default_button(layout, self.ui.editFieldsCheckbox)
-        build_default_button(layout, self.ui.deckMoveCheckbox)
-        build_default_button(layout, self.ui.rescheduleCheckbox)
-        build_default_button(layout, self.ui.queueCheckbox)
+        set_default_button(self.ui.flagCheckbox, layout)
+        set_default_button(self.ui.suspendCheckbox, layout)
+        set_default_button(self.ui.addTagsCheckbox, layout)
+        set_default_button(self.ui.removeTagsCheckbox, layout)
+        set_default_button(self.ui.forgetCheckbox, layout)
+        set_default_button(self.ui.editFieldsCheckbox, layout)
+        set_default_button(self.ui.deckMoveCheckbox, layout)
+        set_default_button(self.ui.rescheduleCheckbox, layout)
+        set_default_button(self.ui.queueCheckbox, layout)
 
     # FLAG
     def load_flag(self, action_conf: dict):
