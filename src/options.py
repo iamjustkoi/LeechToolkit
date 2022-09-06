@@ -207,8 +207,6 @@ class ReverseWidget(QWidget):
 
         set_default_button(self.ui.reverseCheckbox, self.ui.reverse_enable_layout.layout())
 
-        set_default_button(self.ui.reverseCheckbox, self.ui.reverse_enable_layout.layout())
-
     def load_default(self, reverse_conf: dict, default_conf: dict):
         reverse_signals = [
             self.ui.reverseCheckbox.stateChanged,
