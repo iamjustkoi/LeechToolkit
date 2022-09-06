@@ -88,7 +88,7 @@ class QueueAction:
 class Action:
     ADD_TO_QUEUE = 'addToQueue'
     RESCHEDULE = 'reschedule'
-    MOVE_TO_DECK = 'moveToDeck'
+    MOVE_DECK = 'moveToDeck'
     EDIT_FIELDS = 'editFields'
     FORGET = 'forget'
     DISABLE_DEFAULT = 'disableDefault'
@@ -135,7 +135,7 @@ class Config:
                 # {'model-id', field_ord, method_index, 'repl', 'ref'}
             ]
         },
-        Action.MOVE_TO_DECK: {Action.ENABLED: False, Action.INPUT: ''},
+        Action.MOVE_DECK: {Action.ENABLED: False, Action.INPUT: ''},
         Action.RESCHEDULE: {
             Action.ENABLED: False,
             Action.INPUT: {

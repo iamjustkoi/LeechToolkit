@@ -95,15 +95,15 @@ def run_actions(card: anki.cards.Card, actions_conf: dict, reload=True):
 
                 updated_card.note().fields[conf_meta[EditAction.FIELD]] = card_field
 
-    if actions_conf[Action.MOVE_TO_DECK][Action.ENABLED]:
+    if actions_conf[Action.MOVE_DECK][Action.ENABLED]:
         # If the card was also in a cram/custom study deck, set it back to its original deck and due date:
         updated_card.odid = 0
         if updated_card.odue:
             updated_card.due = updated_card.odue
             updated_card.odue = 0
 
-        if actions_conf[Action.MOVE_TO_DECK][Action.INPUT]:
-            updated_card.did = int(actions_conf[Action.MOVE_TO_DECK][Action.INPUT])
+        if actions_conf[Action.MOVE_DECK][Action.INPUT]:
+            updated_card.did = int(actions_conf[Action.MOVE_DECK][Action.INPUT])
 
     if actions_conf[Action.RESCHEDULE][Action.ENABLED]:
         from_days = actions_conf[Action.RESCHEDULE][Action.INPUT][RescheduleAction.FROM]
