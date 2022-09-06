@@ -109,7 +109,7 @@ class OptionsDialog(QDialog):
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
 
-        self.ui.showMarkerChecbkbox.setChecked(self.config[Config.SHOW_LEECH_MARKER])
+        self.ui.showMarkerCheckbox.setChecked(self.config[Config.SHOW_LEECH_MARKER])
         self.ui.almostCheckbox.setChecked(self.config[Config.USE_ALMOST_MARKER])
         self.ui.almostPosDropdown.setCurrentIndex(self.config[Config.MARKER_POSITION])
         self.ui.almostBackCheckbox.setChecked(self.config[Config.ONLY_SHOW_BACK_MARKER])
@@ -133,7 +133,7 @@ class OptionsDialog(QDialog):
     def _write(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
 
-        self.config[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerChecbkbox.isChecked()
+        self.config[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerCheckbox.isChecked()
         self.config[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
         self.config[Config.MARKER_POSITION] = self.ui.almostPosDropdown.currentIndex()
         self.config[Config.ONLY_SHOW_BACK_MARKER] = self.ui.almostBackCheckbox.isChecked()
