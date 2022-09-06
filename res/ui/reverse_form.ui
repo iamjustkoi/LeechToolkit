@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>389</width>
-    <height>150</height>
+    <height>152</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -32,23 +32,47 @@
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <item>
-                  <widget class="QCheckBox" name="reverseCheckbox">
-                      <property name="sizePolicy">
-                          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                          </sizepolicy>
-                      </property>
-                      <property name="text">
-                          <string>Enable leech reversing</string>
-                      </property>
-                  </widget>
-              </item>
-          </layout>
-      </item>
+         <item>
+             <layout class="QHBoxLayout" name="reverse_enable_layout">
+                 <item>
+                     <widget class="QCheckBox" name="reverseCheckbox">
+                         <property name="sizePolicy">
+                             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                             </sizepolicy>
+                         </property>
+                         <property name="text">
+                             <string>Enable leech reversing</string>
+                         </property>
+                     </widget>
+                 </item>
+                 <item>
+                     <widget class="QPushButton" name="pushButton">
+                         <property name="sizePolicy">
+                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                             </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                             <size>
+                                 <width>16</width>
+                                 <height>16</height>
+                             </size>
+                         </property>
+                         <property name="icon">
+                             <iconset>
+                                 <normaloff>../img/restore_icon.svg</normaloff>../img/restore_icon.svg
+                             </iconset>
+                         </property>
+                         <property name="flat">
+                             <bool>true</bool>
+                         </property>
+                     </widget>
+                 </item>
+             </layout>
+         </item>
       <item>
        <layout class="QHBoxLayout" name="reverseThresholdLayout">
         <item>

@@ -35,25 +35,20 @@ class DeckOptions(QWidget):
         deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
         global_conf = self.get_global_conf()
 
-        self.leech_actions_form.load_all(
-            deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS]
-        )
-        self.reverse_actions_form.load_all(
-            deck_conf[Config.UN_LEECH_ACTIONS], global_conf[Config.UN_LEECH_ACTIONS]
-        )
-        self.reverse_form.load(
-            deck_conf[Config.REVERSE_OPTIONS]
-        )
+        self.leech_actions_form.load_all(deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS])
+        self.reverse_actions_form.load_all(deck_conf[Config.UN_LEECH_ACTIONS], global_conf[Config.UN_LEECH_ACTIONS])
+        self.reverse_form.load(deck_conf[Config.REVERSE_OPTIONS])
+        self.reverse_form.load_default(deck_conf[Config.REVERSE_OPTIONS], global_conf[Config.REVERSE_OPTIONS])
 
     @staticmethod
     def get_global_conf():
         # Using separate manager instances to reduce overwrite issues #bandaid-fix
         return LeechToolkitConfigManager(mw).get_global_deck_conf()
 
-    def write(self):
+    def save(self):
         deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
 
-        # is not same as global: write
+        # is not same as global: save
         self.leech_actions_form.write_all(deck_conf[Config.LEECH_ACTIONS])
         self.reverse_actions_form.write_all(deck_conf[Config.UN_LEECH_ACTIONS])
         self.reverse_form.write(deck_conf[Config.REVERSE_OPTIONS])
@@ -102,6 +97,6 @@ def load_deck_options(deck_conf: DeckConf, *args):
 
 def save_deck_options(deck_conf: DeckConf, *args):
     form = deck_conf.form
-    form.tab_options.write()
+    form.tab_options.save()
 
-# On Save: Only write to global config if [key]-enabled is true else remove
+# On Save: Only save to global config if [key]-enabled is true else remove
