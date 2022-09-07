@@ -139,7 +139,7 @@ class ReviewManager:
         self.append_hooks()
 
     def append_marker_html(self):
-        marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_POSITION]]
+        marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
         self.page_content.body += mark_html_shell.format(
             marker_id=marker_id,
             marker_text=MARKER_TEXT,
@@ -243,13 +243,14 @@ class ReviewManager:
         :param card: referenced card
         :param is_front: current display state for card in reviewer
         """
-        if not self.toolkit_config[Config.SHOW_LEECH_MARKER] or (
-                self.toolkit_config[Config.ONLY_SHOW_BACK_MARKER] and is_front):
+        marker_conf = self.toolkit_config[Config.MARKER_OPTIONS]
+        if not marker_conf[Config.SHOW_LEECH_MARKER] or (
+                marker_conf[Config.ONLY_SHOW_BACK_MARKER] and is_front):
             show_marker(False)
         elif card.note().has_tag(LEECH_TAG):
             set_marker_color(LEECH_COLOR)
             show_marker(True)
-        elif self.toolkit_config[Config.USE_ALMOST_MARKER] \
+        elif marker_conf[Config.USE_ALMOST_MARKER] \
                 and card.type == cards.CARD_TYPE_REV \
                 and (card.lapses + ALMOST_DISTANCE) >= self.max_fails:
             set_marker_color(ALMOST_COLOR)
