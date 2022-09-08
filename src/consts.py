@@ -70,7 +70,7 @@ class RescheduleAction:
 
 class QueueAction:
     SIMILAR_RATIO = 'similarityRatio'
-    INCLUSIVE_FIELDS = 'shouldExcludeFields'
+    INCLUSIVE_FIELDS = 'shouldIncludeFields'
     FILTERED_FIELDS = 'filteredFields'
     EXCLUDED_TEXT = 'excludedText'
     NEAR_SIMILAR = 'nearSimilar'
