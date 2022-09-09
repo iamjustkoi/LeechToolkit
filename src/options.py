@@ -279,7 +279,7 @@ def set_default_button(main_widget: QWidget, layout: QLayout, insert_col=4):
 
 def load_default_button(
     button,
-    signals: list,
+    signals: list[pyqtBoundSignal],
     write_callback,
     load_callback,
     scoped_conf: dict,
@@ -288,9 +288,8 @@ def load_default_button(
     default_copy = default_scoped_conf.copy()
 
     for signal in signals:
-        signal: pyqtBoundSignal
-
         def refresh_default_button(*args):
+            write_callback(scoped_conf)
             button.setVisible(scoped_conf != default_copy)
         signal.connect(refresh_default_button)
 
