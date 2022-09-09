@@ -35,6 +35,8 @@ class DeckOptions(QWidget):
         deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
         global_conf = self.get_global_conf()
 
+        # TODO load all using on-change default buttons
+
         self.leech_actions_form.load_all(deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS])
         self.reverse_actions_form.load_all(deck_conf[Config.UN_LEECH_ACTIONS], global_conf[Config.UN_LEECH_ACTIONS])
         self.reverse_form.load_all(deck_conf[Config.REVERSE_OPTIONS], global_conf[Config.REVERSE_OPTIONS])
@@ -46,6 +48,8 @@ class DeckOptions(QWidget):
 
     def save(self):
         deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
+
+        # TODO write all using button state checks
 
         # is not same as global: save
         self.leech_actions_form.write_all(deck_conf[Config.LEECH_ACTIONS])
