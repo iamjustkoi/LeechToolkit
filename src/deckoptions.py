@@ -36,10 +36,20 @@ class DeckOptions(QWidget):
         global_conf = self.get_global_conf()
 
         # TODO load all using on-change default buttons
+        leech_conf, unleech_conf, reverse_conf = (
+            deck_conf[Config.LEECH_ACTIONS],
+            deck_conf[Config.UN_LEECH_ACTIONS],
+            deck_conf[Config.REVERSE_OPTIONS],
+        )
 
-        self.leech_actions_form.load_all(deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS])
-        self.reverse_actions_form.load_all(deck_conf[Config.UN_LEECH_ACTIONS], global_conf[Config.UN_LEECH_ACTIONS])
-        self.reverse_form.load_all(deck_conf[Config.REVERSE_OPTIONS], global_conf[Config.REVERSE_OPTIONS])
+        self.leech_actions_form.load_ui(leech_conf)
+        self.leech_actions_form.load_default_buttons(leech_conf, global_conf[Config.LEECH_ACTIONS])
+
+        self.reverse_actions_form.load_ui(unleech_conf)
+        self.reverse_actions_form.load_default_buttons(unleech_conf, global_conf[Config.UN_LEECH_ACTIONS])
+
+        self.reverse_form.load_ui(reverse_conf)
+        self.reverse_form.load_default_button(reverse_conf, global_conf[Config.REVERSE_OPTIONS])
 
     @staticmethod
     def get_global_conf():

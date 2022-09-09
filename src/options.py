@@ -139,7 +139,7 @@ class OptionsDialog(QDialog):
                 self.ui.browseButtonCheckbox.button,
                 button_signals,
                 self.write_button,
-                self.load_button,
+                self.load_leech_button,
                 self.config[Config.BUTTON_OPTIONS],
                 Config.DEFAULT_CONFIG[Config.BUTTON_OPTIONS]
             )
@@ -153,7 +153,7 @@ class OptionsDialog(QDialog):
         self.ui.almostPosDropdown.setCurrentIndex(marker_conf[Config.MARKER_POSITION])
         self.ui.almostBackCheckbox.setChecked(marker_conf[Config.ONLY_SHOW_BACK_MARKER])
 
-    def load_button(self, button_conf: dict):
+    def load_leech_button(self, button_conf: dict):
         self.ui.browseButtonCheckbox.setChecked(button_conf[Config.SHOW_BUTTON])
         self.ui.browseButtonBrowserCheckbox.setChecked(button_conf[Config.SHOW_BROWSER_BUTTON])
         self.ui.browseButtonOverviewCheckbox.setChecked(button_conf[Config.SHOW_OVERVIEW_BUTTON])
@@ -162,11 +162,22 @@ class OptionsDialog(QDialog):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
 
         self.load_marker(self.config[Config.MARKER_OPTIONS])
-        self.load_button(self.config[Config.BUTTON_OPTIONS])
+        self.load_leech_button(self.config[Config.BUTTON_OPTIONS])
 
-        self.leech_form.load_all(self.config[Config.LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
-        self.unleech_form.load_all(self.config[Config.UN_LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
-        self.reverse_form.load_all(self.config[Config.REVERSE_OPTIONS], Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
+        leech_conf, unleech_conf, reverse_conf = (
+            self.config[Config.LEECH_ACTIONS],
+            self.config[Config.UN_LEECH_ACTIONS],
+            self.config[Config.REVERSE_OPTIONS],
+        )
+
+        self.leech_form.load_ui(leech_conf)
+        self.leech_form.load_default_buttons(leech_conf, Config.DEFAULT_CONFIG[Config.LEECH_ACTIONS])
+
+        self.unleech_form.load_ui(unleech_conf)
+        self.unleech_form.load_default_buttons(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
+
+        self.reverse_form.load_ui(reverse_conf)
+        self.reverse_form.load_default_button(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
 
         self.load_default_buttons()
 
@@ -212,10 +223,6 @@ class ReverseWidget(QWidget):
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
 
         set_default_button(self.ui.reverseCheckbox, self.ui.reverse_enable_layout.layout())
-
-    def load_all(self, reverse_conf: dict, default_conf: dict):
-        self.load_ui(reverse_conf)
-        self.load_default_button(reverse_conf, default_conf)
 
     def load_default_button(self, reverse_conf: dict, default_conf: dict):
         reverse_signals = [
@@ -293,7 +300,8 @@ def load_default_button(
     write_callback,
     load_callback,
     scoped_conf: dict,
-    default_scoped_conf: dict = None
+    default_scoped_conf: dict = None,
+    show_on_change=False
 ):
     default_copy = default_scoped_conf.copy() if default_scoped_conf else None
 
@@ -303,8 +311,10 @@ def load_default_button(
             Intercept function for the created button. Refreshes the button's visibility after running the input
             write-callback.
             """
-            write_callback(scoped_conf)
-            button.setVisible(scoped_conf != default_copy)
+            if not show_on_change:
+                write_callback(scoped_conf)
+            button.setVisible(show_on_change or scoped_conf != default_copy)
+
         signal.connect(refresh_default_button)
 
     def restore_defaults(*args):
@@ -312,12 +322,17 @@ def load_default_button(
         Broadcast function for the created button. Refreshes the button's visibility after running the input
         load-callback.
         """
-        load_callback(default_copy)
+        if not show_on_change:
+            load_callback(default_copy)
         refresh_default_button()
+
     button.clicked.connect(restore_defaults)
 
     # Initial update
-    button.setVisible(scoped_conf != default_copy)
+    if not show_on_change:
+        button.setVisible(scoped_conf != default_copy)
+    else:
+        button.setVisible(False)
 
 
 class ActionsWidget(QWidget):
@@ -659,7 +674,7 @@ class ActionsWidget(QWidget):
 
         [load_default_button(*args) for args in all_args]
 
-    def load_all(self, actions_conf: dict, default_conf: dict):
+    def load_ui(self, actions_conf: dict):
         # A little easier to read/debug
         self.load_flag(actions_conf[Action.FLAG])
         self.load_suspend(actions_conf[Action.SUSPEND])
@@ -670,7 +685,6 @@ class ActionsWidget(QWidget):
         self.load_move_deck(actions_conf[Action.MOVE_DECK])
         self.load_reschedule(actions_conf[Action.RESCHEDULE])
         self.load_add_to_queue(actions_conf[Action.ADD_TO_QUEUE])
-        self.load_default_buttons(actions_conf, default_conf)
 
     def write_all(self, actions_config: dict):
         # A little easier to read/debug
