@@ -291,7 +291,6 @@ def load_default_button(
         signal: pyqtBoundSignal
 
         def refresh_default_button(*args):
-            write_callback(scoped_conf) if write_callback else None
             button.setVisible(scoped_conf != default_copy)
         signal.connect(refresh_default_button)
 
