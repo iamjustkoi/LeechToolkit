@@ -160,7 +160,7 @@ class OptionsDialog(QDialog):
 
         self.leech_form.load_all(self.config[Config.LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
         self.unleech_form.load_all(self.config[Config.UN_LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
-        self.reverse_form.load(self.config[Config.REVERSE_OPTIONS])
+        self.reverse_form.load_ui(self.config[Config.REVERSE_OPTIONS])
 
         self.load_defaults(self.config, Config.DEFAULT_CONFIG)
 
@@ -219,12 +219,12 @@ class ReverseWidget(QWidget):
             button=self.ui.reverseCheckbox.button,
             signals=reverse_signals,
             write_callback=self.write,
-            load_callback=self.load,
+            load_callback=self.load_ui,
             scoped_conf=reverse_conf,
             default_scoped_conf=default_conf,
         )
 
-    def load(self, reverse_config: dict):
+    def load_ui(self, reverse_config: dict):
         self.ui.reverseCheckbox.setChecked(reverse_config[Config.REVERSE_ENABLED])
         self.ui.useLeechThresholdCheckbox.setChecked(reverse_config[Config.REVERSE_USE_LEECH_THRESHOLD])
         self.ui.reverseMethodDropdown.setCurrentIndex(reverse_config[Config.REVERSE_METHOD])

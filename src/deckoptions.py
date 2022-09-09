@@ -37,7 +37,7 @@ class DeckOptions(QWidget):
 
         self.leech_actions_form.load_all(deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS])
         self.reverse_actions_form.load_all(deck_conf[Config.UN_LEECH_ACTIONS], global_conf[Config.UN_LEECH_ACTIONS])
-        self.reverse_form.load(deck_conf[Config.REVERSE_OPTIONS])
+        self.reverse_form.load_ui(deck_conf[Config.REVERSE_OPTIONS])
         self.reverse_form.load_default(deck_conf[Config.REVERSE_OPTIONS], global_conf[Config.REVERSE_OPTIONS])
 
     @staticmethod
@@ -92,7 +92,7 @@ def setup_deck_options(deck_conf: DeckConf):
 
 def load_deck_options(deck_conf: DeckConf, *args):
     form = deck_conf.form
-    form.tab_options.load()
+    form.tab_options.load_ui()
 
 
 def save_deck_options(deck_conf: DeckConf, *args):
