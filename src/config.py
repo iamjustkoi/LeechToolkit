@@ -27,12 +27,7 @@ def merge_fields(config: dict, default_config: dict):
     return config
 
 
-# def get_default_config():
-#     return dict(Config.DEFAULT_CONFIG).copy()
-
-
 class LeechToolkitConfigManager:
-
     def __init__(self, mw: AnkiQt):
         """
         Config manager for accessing and writing addon config values.
@@ -57,22 +52,16 @@ class LeechToolkitConfigManager:
         except AttributeError:
             print(f'{traceback.format_exc()}\nToolkit Manager not found in the current Reviewer.')
 
-    def get_conf_for_did(self, did: int, get_empty=False):
+    def get_conf_for_did(self, did: int):
         """
         Retrieves a new, manager-linked deck config.
 
         :param did: deck ID
-        :param get_empty: merge global and deck configs on retrieve
         :return: a new, instantiated deck-config reference
         """
         config_id = str(self._mw.col.decks.config_dict_for_deck_id(did)['id'])
-        if get_empty:
-            self.config[config_id] = self.config.get(config_id, Config.DECK_CATEGORIES.copy())
-        else:
-            global_conf = self.get_global_deck_conf()
-            self.config[config_id] = merge_fields(self.config.get(config_id, {}), global_conf)
-
+        self.config[config_id] = merge_fields(self.config.get(config_id, {}), self.get_global_deck_conf())
         return self.config[config_id]
 
     def get_global_deck_conf(self):
-        return {key: val for key, val in self.config.items() if key in Config.DECK_CATEGORIES.keys()}
+        return {key: val for key, val in self.config.items() if key in Config.DECK_CATEGORIES}
