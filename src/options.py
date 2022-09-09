@@ -283,7 +283,7 @@ def load_default_button(
     write_callback,
     load_callback,
     scoped_conf: dict,
-    default_scoped_conf: dict
+    default_scoped_conf: dict = Config.DEFAULT_CONFIG
 ):
     default_copy = default_scoped_conf.copy()
 
@@ -293,17 +293,11 @@ def load_default_button(
         def refresh_default_button(*args):
             write_callback(scoped_conf) if write_callback else None
             button.setVisible(scoped_conf != default_copy)
-
-            print(f'config: {scoped_conf}')
-            print(f'def_config: {default_copy}')
-            print()
-
         signal.connect(refresh_default_button)
 
     def restore_defaults(*args):
         load_callback(default_copy)
         refresh_default_button()
-
     button.clicked.connect(restore_defaults)
 
     # Initial update
