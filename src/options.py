@@ -224,7 +224,7 @@ class ReverseWidget(QWidget):
 
         set_default_button(self.ui.reverseCheckbox, self.ui.reverse_enable_layout.layout())
 
-    def load_default_button(self, reverse_conf: dict, default_conf: dict):
+    def load_default_button(self, reverse_conf: dict, default_conf: dict = None, use_on_change=False):
         reverse_signals = [
             self.ui.reverseCheckbox.stateChanged,
             self.ui.useLeechThresholdCheckbox.stateChanged,
@@ -270,28 +270,29 @@ def _fill_menu_fields(add_button: aqt.qt.QToolButton):
 
 
 def set_default_button(anchor: QWidget, layout: QLayout, insert_col=4):
-    anchor.button = aqt.qt.QPushButton(anchor)
-    anchor.button.setMaximumSize(QSize(16, 16))
-    anchor.button.setFlat(True)
-    anchor.button.setToolTip(String.RESTORE_DEFAULT_SETTING)
-    anchor.button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
+    if not hasattr(anchor, 'button'):
+        anchor.button = aqt.qt.QPushButton(anchor)
+        anchor.button.setMaximumSize(QSize(16, 16))
+        anchor.button.setFlat(True)
+        anchor.button.setToolTip(String.RESTORE_DEFAULT_SETTING)
+        anchor.button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
 
-    size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-    size_policy.setHorizontalStretch(0)
-    size_policy.setVerticalStretch(0)
-    size_policy.setHeightForWidth(anchor.button.sizePolicy().hasHeightForWidth())
+        size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(anchor.button.sizePolicy().hasHeightForWidth())
 
-    anchor.button.setSizePolicy(size_policy)
+        anchor.button.setSizePolicy(size_policy)
 
-    if layout is not None:
-        if isinstance(layout, QGridLayout):
-            widget_index = layout.indexOf(anchor)
-            widget_row = layout.getItemPosition(widget_index)[0]
-            layout.addWidget(anchor.button, widget_row, insert_col)
-        elif isinstance(layout, QBoxLayout):
-            layout.addWidget(anchor.button, alignment=layout.alignment())
-        else:
-            layout.addWidget(anchor.button)
+        if layout is not None:
+            if isinstance(layout, QGridLayout):
+                widget_index = layout.indexOf(anchor)
+                widget_row = layout.getItemPosition(widget_index)[0]
+                layout.addWidget(anchor.button, widget_row, insert_col)
+            elif isinstance(layout, QBoxLayout):
+                layout.addWidget(anchor.button, alignment=layout.alignment())
+            else:
+                layout.addWidget(anchor.button)
 
 
 def load_default_button(
@@ -301,38 +302,31 @@ def load_default_button(
     load_callback,
     scoped_conf: dict,
     default_scoped_conf: dict = None,
-    show_on_change=False
 ):
     default_copy = default_scoped_conf.copy() if default_scoped_conf else None
 
     for signal in signals:
-        def refresh_default_button(*args):
+        def refresh_button_visibility(*args):
             """
             Intercept function for the created button. Refreshes the button's visibility after running the input
             write-callback.
             """
-            if not show_on_change:
-                write_callback(scoped_conf)
-            button.setVisible(show_on_change or scoped_conf != default_copy)
+            write_callback(scoped_conf)
+            button.setVisible(scoped_conf != default_copy)
 
-        signal.connect(refresh_default_button)
+        signal.connect(refresh_button_visibility)
 
     def restore_defaults(*args):
         """
         Broadcast function for the created button. Refreshes the button's visibility after running the input
-        load-callback.
+        load_ui-callback.
         """
-        if not show_on_change:
-            load_callback(default_copy)
-        refresh_default_button()
-
+        load_callback(default_copy)
+        refresh_button_visibility()
     button.clicked.connect(restore_defaults)
 
     # Initial update
-    if not show_on_change:
-        button.setVisible(scoped_conf != default_copy)
-    else:
-        button.setVisible(False)
+    button.setVisible(scoped_conf != default_copy)
 
 
 class ActionsWidget(QWidget):
@@ -518,14 +512,6 @@ class ActionsWidget(QWidget):
             self.ui.flagCheckbox.stateChanged,
             self.ui.flagDropdown.currentTextChanged,
         ]
-        # action_args = (
-        #     self.ui.flagCheckbox.button,
-        #     flag_signals,
-        #     self.write_flag,
-        #     self.load_flag,
-        #     actions_config[Action.FLAG],
-        #     default_config[Action.FLAG],
-        # )
         all_args.append(
             (
                 self.ui.flagCheckbox.button,
