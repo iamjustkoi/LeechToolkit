@@ -109,7 +109,7 @@ class OptionsDialog(QDialog):
         # Just in case
         self.ui.tabWidget.setCurrentIndex(0)
 
-    def load_defaults(self, config: dict, default_config: dict):
+    def load_default_buttons(self):
         marker_signals = [
             self.ui.showMarkerCheckbox.stateChanged,
             self.ui.almostCheckbox.stateChanged,
@@ -139,8 +139,6 @@ class OptionsDialog(QDialog):
             Config.DEFAULT_CONFIG[Config.BUTTON_OPTIONS]
         )
 
-        self.reverse_form.load_default(config[Config.REVERSE_OPTIONS], default_config[Config.REVERSE_OPTIONS])
-
     def load_marker(self, marker_conf: dict):
         self.ui.showMarkerCheckbox.setChecked(marker_conf[Config.SHOW_LEECH_MARKER])
         self.ui.almostCheckbox.setChecked(marker_conf[Config.USE_ALMOST_MARKER])
@@ -160,9 +158,9 @@ class OptionsDialog(QDialog):
 
         self.leech_form.load_all(self.config[Config.LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
         self.unleech_form.load_all(self.config[Config.UN_LEECH_ACTIONS], Config.DEFAULT_ACTIONS)
-        self.reverse_form.load_ui(self.config[Config.REVERSE_OPTIONS])
+        self.reverse_form.load_all(self.config[Config.REVERSE_OPTIONS], Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
 
-        self.load_defaults(self.config, Config.DEFAULT_CONFIG)
+        self.load_default_buttons()
 
     def write_marker(self, marker_conf: dict):
         marker_conf[Config.SHOW_LEECH_MARKER] = self.ui.showMarkerCheckbox.isChecked()
@@ -207,7 +205,11 @@ class ReverseWidget(QWidget):
 
         set_default_button(self.ui.reverseCheckbox, self.ui.reverse_enable_layout.layout())
 
-    def load_default(self, reverse_conf: dict, default_conf: dict):
+    def load_all(self, reverse_conf: dict, default_conf: dict):
+        self.load_ui(reverse_conf)
+        self.load_default_button(reverse_conf, default_conf)
+
+    def load_default_button(self, reverse_conf: dict, default_conf: dict):
         reverse_signals = [
             self.ui.reverseCheckbox.stateChanged,
             self.ui.useLeechThresholdCheckbox.stateChanged,
@@ -252,29 +254,29 @@ def _fill_menu_fields(add_button: aqt.qt.QToolButton):
             sub_menu.addAction(action)
 
 
-def set_default_button(main_widget: QWidget, layout: QLayout, insert_col=4):
-    main_widget.button = aqt.qt.QPushButton(main_widget)
-    main_widget.button.setMaximumSize(QSize(16, 16))
-    main_widget.button.setFlat(True)
-    main_widget.button.setToolTip(String.RESTORE_DEFAULT_SETTING)
-    main_widget.button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
+def set_default_button(anchor: QWidget, layout: QLayout, insert_col=4):
+    anchor.button = aqt.qt.QPushButton(anchor)
+    anchor.button.setMaximumSize(QSize(16, 16))
+    anchor.button.setFlat(True)
+    anchor.button.setToolTip(String.RESTORE_DEFAULT_SETTING)
+    anchor.button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
 
     size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     size_policy.setHorizontalStretch(0)
     size_policy.setVerticalStretch(0)
-    size_policy.setHeightForWidth(main_widget.button.sizePolicy().hasHeightForWidth())
+    size_policy.setHeightForWidth(anchor.button.sizePolicy().hasHeightForWidth())
 
-    main_widget.button.setSizePolicy(size_policy)
+    anchor.button.setSizePolicy(size_policy)
 
     if layout is not None:
         if isinstance(layout, QGridLayout):
-            widget_index = layout.indexOf(main_widget)
+            widget_index = layout.indexOf(anchor)
             widget_row = layout.getItemPosition(widget_index)[0]
-            layout.addWidget(main_widget.button, widget_row, insert_col)
+            layout.addWidget(anchor.button, widget_row, insert_col)
         elif isinstance(layout, QBoxLayout):
-            layout.addWidget(main_widget.button, alignment=layout.alignment())
+            layout.addWidget(anchor.button, alignment=layout.alignment())
         else:
-            layout.addWidget(main_widget.button)
+            layout.addWidget(anchor.button)
 
 
 def load_default_button(
@@ -283,17 +285,25 @@ def load_default_button(
     write_callback,
     load_callback,
     scoped_conf: dict,
-    default_scoped_conf: dict = Config.DEFAULT_CONFIG
+    default_scoped_conf: dict = None
 ):
-    default_copy = default_scoped_conf.copy()
+    default_copy = default_scoped_conf.copy() if default_scoped_conf else None
 
     for signal in signals:
         def refresh_default_button(*args):
+            """
+            Intercept function for the created button. Refreshes the button's visibility after running the input
+            write-callback.
+            """
             write_callback(scoped_conf)
             button.setVisible(scoped_conf != default_copy)
         signal.connect(refresh_default_button)
 
     def restore_defaults(*args):
+        """
+        Broadcast function for the created button. Refreshes the button's visibility after running the input
+        load-callback.
+        """
         load_callback(default_copy)
         refresh_default_button()
     button.clicked.connect(restore_defaults)
@@ -476,7 +486,7 @@ class ActionsWidget(QWidget):
 
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
-    def load_defaults(self, actions_config: dict, default_config):
+    def load_default_buttons(self, actions_config: dict, default_config):
         # Remove any re-assignment potential issues
 
         flag_signals = [
@@ -622,7 +632,7 @@ class ActionsWidget(QWidget):
         self.load_move_deck(actions_conf[Action.MOVE_DECK])
         self.load_reschedule(actions_conf[Action.RESCHEDULE])
         self.load_add_to_queue(actions_conf[Action.ADD_TO_QUEUE])
-        self.load_defaults(actions_conf, default_conf)
+        self.load_default_buttons(actions_conf, default_conf)
 
     def write_all(self, actions_config: dict):
         # A little easier to read/debug
