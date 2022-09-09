@@ -165,11 +165,11 @@ class Config:
         }
     }
 
-    DECK_DEFAULT_CATEGORIES = {
+    DECK_CATEGORIES = [
         REVERSE_OPTIONS,
         LEECH_ACTIONS,
         UN_LEECH_ACTIONS,
-    }
+    ]
 
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,

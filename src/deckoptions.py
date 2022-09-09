@@ -17,9 +17,10 @@ from ..res.ui.deck_options_form import Ui_DeckOptionsPlaceholder
 
 
 class DeckOptions(QWidget):
-    def __init__(self, did: int):
+    config_id: str = ''
+
+    def __init__(self):
         super().__init__(flags=mw.windowFlags())
-        self.did = did
         self.ui = Ui_DeckOptionsPlaceholder()
         self.ui.setupUi(DeckOptionsPlaceholder=self)
 
@@ -31,35 +32,37 @@ class DeckOptions(QWidget):
         self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
         self.ui.scrollAreaLayout.addWidget(self.reverse_actions_form)
 
-    def load(self):
-        deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
-        global_conf = self.get_global_conf()
+    def set_config_id(self, config_id: str):
+        self.config_id = config_id
 
-        # TODO load all using on-change default buttons
-        leech_conf, unleech_conf, reverse_conf = (
+    def load_default_buttons(self):
+        deck_conf = LeechToolkitConfigManager(mw).get_deck_conf(self.config_id)
+        global_conf = LeechToolkitConfigManager(mw).get_global_deck_conf()
+
+        print(f'self.config_id: {self.config_id}')
+        print(f'deck_conf: {deck_conf}')
+
+        self.leech_actions_form.load_default_buttons(
             deck_conf[Config.LEECH_ACTIONS],
+            global_conf[Config.LEECH_ACTIONS],
+        )
+        self.reverse_actions_form.load_default_buttons(
             deck_conf[Config.UN_LEECH_ACTIONS],
+            global_conf[Config.UN_LEECH_ACTIONS],
+        )
+        self.reverse_form.load_default_button(
             deck_conf[Config.REVERSE_OPTIONS],
+            global_conf[Config.REVERSE_OPTIONS],
         )
 
-        self.leech_actions_form.load_ui(leech_conf)
-        self.leech_actions_form.load_default_buttons(leech_conf, global_conf[Config.LEECH_ACTIONS])
-
-        self.reverse_actions_form.load_ui(unleech_conf)
-        self.reverse_actions_form.load_default_buttons(unleech_conf, global_conf[Config.UN_LEECH_ACTIONS])
-
-        self.reverse_form.load_ui(reverse_conf)
-        self.reverse_form.load_default_button(reverse_conf, global_conf[Config.REVERSE_OPTIONS])
-
-    @staticmethod
-    def get_global_conf():
-        # Using separate manager instances to reduce overwrite issues #bandaid-fix
-        return LeechToolkitConfigManager(mw).get_global_deck_conf()
+    def load_ui(self):
+        deck_conf = LeechToolkitConfigManager(mw).get_deck_conf(self.config_id)
+        self.leech_actions_form.load_ui(deck_conf[Config.LEECH_ACTIONS])
+        self.reverse_actions_form.load_ui(deck_conf[Config.UN_LEECH_ACTIONS])
+        self.reverse_form.load_ui(deck_conf[Config.REVERSE_OPTIONS])
 
     def save(self):
-        deck_conf = LeechToolkitConfigManager(mw).get_conf_for_did(self.did)
-
-        # TODO write all using button state checks
+        deck_conf = LeechToolkitConfigManager(mw).get_deck_conf(self.config_id)
 
         # is not same as global: save
         self.leech_actions_form.write_all(deck_conf[Config.LEECH_ACTIONS])
@@ -73,13 +76,15 @@ class DeckOptions(QWidget):
                     result[key] = get_diffs(conf[key], comp_conf[key]) if isinstance(conf[key], dict) else conf[key]
             return result
 
+        min_deck_conf = get_diffs(deck_conf, LeechToolkitConfigManager(mw).get_global_deck_conf())
         manager = LeechToolkitConfigManager(mw)
-        config_id = str(mw.col.decks.config_dict_for_deck_id(self.did)['id'])
-        min_deck_conf = get_diffs(deck_conf, self.get_global_conf())
+        # config_id = str(mw.col.decks.config_dict_for_deck_id(self.config_id)['id'])
+
         if len(min_deck_conf) <= 0:
-            manager.config.pop(config_id, None)
+            manager.config.pop(self.config_id, None)
         else:
-            manager.config[config_id] = min_deck_conf
+            manager.config[self.config_id] = min_deck_conf
+
         manager.save_config()
 
 
@@ -95,7 +100,7 @@ def build_hooks():
 
 def setup_deck_options(deck_conf: DeckConf):
     form = deck_conf.form
-    form.tab_options = DeckOptions(deck_conf.deck['id'])
+    form.tab_options = DeckOptions()
 
     tab_widget = form.tabWidget
     for i in range(tab_widget.count()):
@@ -103,13 +108,19 @@ def setup_deck_options(deck_conf: DeckConf):
             tab_widget.insertTab(i + 1, form.tab_options, 'Leech Toolkit')
 
 
-def load_deck_options(deck_conf: DeckConf, *args):
+def load_deck_options(deck_conf: DeckConf, deck_dict: dict, deck_conf_dict: dict):
     form = deck_conf.form
-    form.tab_options.load()
+    tab_options: DeckOptions = form.tab_options
+    config_id = str(deck_conf_dict["id"])
+    print(f'config_id: {config_id} tab_options.config_id: {tab_options.config_id}')
+    if tab_options.config_id != config_id:
+        tab_options.set_config_id(config_id)
+        tab_options.load_ui()
+        tab_options.load_default_buttons()
 
 
 def save_deck_options(deck_conf: DeckConf, *args):
-    form = deck_conf.form
-    form.tab_options.save()
+    tab_options: DeckOptions = deck_conf.form.tab_options
+    tab_options.save()
 
 # On Save: Only save to global config if [key]-enabled is true else remove
