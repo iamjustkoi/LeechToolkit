@@ -110,19 +110,23 @@ class OptionsDialog(QDialog):
         self.ui.tabWidget.setCurrentIndex(0)
 
     def load_default_buttons(self):
+        all_args = []
+
         marker_signals = [
             self.ui.showMarkerCheckbox.stateChanged,
             self.ui.almostCheckbox.stateChanged,
             self.ui.almostPosDropdown.currentIndexChanged,
             self.ui.almostBackCheckbox.stateChanged,
         ]
-        load_default_button(
-            self.ui.showMarkerCheckbox.button,
-            marker_signals,
-            self.write_marker,
-            self.load_marker,
-            self.config[Config.MARKER_OPTIONS],
-            Config.DEFAULT_CONFIG[Config.MARKER_OPTIONS]
+        all_args.append(
+            (
+                self.ui.showMarkerCheckbox.button,
+                marker_signals,
+                self.write_marker,
+                self.load_marker,
+                self.config[Config.MARKER_OPTIONS],
+                Config.DEFAULT_CONFIG[Config.MARKER_OPTIONS]
+            )
         )
 
         button_signals = [
@@ -130,14 +134,18 @@ class OptionsDialog(QDialog):
             self.ui.browseButtonBrowserCheckbox.stateChanged,
             self.ui.browseButtonOverviewCheckbox.stateChanged,
         ]
-        load_default_button(
-            self.ui.browseButtonCheckbox.button,
-            button_signals,
-            self.write_button,
-            self.load_button,
-            self.config[Config.BUTTON_OPTIONS],
-            Config.DEFAULT_CONFIG[Config.BUTTON_OPTIONS]
+        all_args.append(
+            (
+                self.ui.browseButtonCheckbox.button,
+                button_signals,
+                self.write_button,
+                self.load_button,
+                self.config[Config.BUTTON_OPTIONS],
+                Config.DEFAULT_CONFIG[Config.BUTTON_OPTIONS]
+            )
         )
+
+        [load_default_button(*args) for args in all_args]
 
     def load_marker(self, marker_conf: dict):
         self.ui.showMarkerCheckbox.setChecked(marker_conf[Config.SHOW_LEECH_MARKER])
@@ -489,17 +497,29 @@ class ActionsWidget(QWidget):
     def load_default_buttons(self, actions_config: dict, default_config):
         # Remove any re-assignment potential issues
 
+        all_args = []
+
         flag_signals = [
             self.ui.flagCheckbox.stateChanged,
             self.ui.flagDropdown.currentTextChanged,
         ]
-        load_default_button(
-            button=self.ui.flagCheckbox.button,
-            signals=flag_signals,
-            write_callback=self.write_flag,
-            load_callback=self.load_flag,
-            scoped_conf=actions_config[Action.FLAG],
-            default_scoped_conf=default_config[Action.FLAG],
+        # action_args = (
+        #     self.ui.flagCheckbox.button,
+        #     flag_signals,
+        #     self.write_flag,
+        #     self.load_flag,
+        #     actions_config[Action.FLAG],
+        #     default_config[Action.FLAG],
+        # )
+        all_args.append(
+            (
+                self.ui.flagCheckbox.button,
+                flag_signals,
+                self.write_flag,
+                self.load_flag,
+                actions_config[Action.FLAG],
+                default_config[Action.FLAG],
+            )
         )
 
         suspend_signals = [
@@ -507,39 +527,45 @@ class ActionsWidget(QWidget):
             self.ui.suspendOnButton.toggled,
             self.ui.suspendOffButton.toggled,
         ]
-        load_default_button(
-            button=self.ui.suspendCheckbox.button,
-            signals=suspend_signals,
-            write_callback=self.write_suspend,
-            load_callback=self.load_suspend,
-            scoped_conf=actions_config[Action.SUSPEND],
-            default_scoped_conf=default_config[Action.SUSPEND],
+        all_args.append(
+            (
+                self.ui.suspendCheckbox.button,
+                suspend_signals,
+                self.write_suspend,
+                self.load_suspend,
+                actions_config[Action.SUSPEND],
+                default_config[Action.SUSPEND],
+            )
         )
 
         add_tags_signals = [
             self.ui.addTagsCheckbox.stateChanged,
             self.ui.addTagsLine.textChanged,
         ]
-        load_default_button(
-            button=self.ui.addTagsCheckbox.button,
-            signals=add_tags_signals,
-            write_callback=self.write_add_tags,
-            load_callback=self.load_add_tags,
-            scoped_conf=actions_config[Action.ADD_TAGS],
-            default_scoped_conf=default_config[Action.ADD_TAGS],
+        all_args.append(
+            (
+                self.ui.addTagsCheckbox.button,
+                add_tags_signals,
+                self.write_add_tags,
+                self.load_add_tags,
+                actions_config[Action.ADD_TAGS],
+                default_config[Action.ADD_TAGS],
+            )
         )
 
         remove_tags_signals = [
             self.ui.removeTagsCheckbox.stateChanged,
             self.ui.removeTagsLine.textChanged,
         ]
-        load_default_button(
-            button=self.ui.removeTagsCheckbox.button,
-            signals=remove_tags_signals,
-            write_callback=self.write_remove_tags,
-            load_callback=self.load_remove_tags,
-            scoped_conf=actions_config[Action.REMOVE_TAGS],
-            default_scoped_conf=default_config[Action.REMOVE_TAGS],
+        all_args.append(
+            (
+                self.ui.removeTagsCheckbox.button,
+                remove_tags_signals,
+                self.write_remove_tags,
+                self.load_remove_tags,
+                actions_config[Action.REMOVE_TAGS],
+                default_config[Action.REMOVE_TAGS],
+            )
         )
 
         forget_signals = [
@@ -549,39 +575,45 @@ class ActionsWidget(QWidget):
             self.ui.forgetResetCheckbox.stateChanged,
             self.ui.forgetRestorePosCheckbox.stateChanged,
         ]
-        load_default_button(
-            button=self.ui.forgetCheckbox.button,
-            signals=forget_signals,
-            write_callback=self.write_forget,
-            load_callback=self.load_forget,
-            scoped_conf=actions_config[Action.FORGET],
-            default_scoped_conf=default_config[Action.FORGET],
+        all_args.append(
+            (
+                self.ui.forgetCheckbox.button,
+                forget_signals,
+                self.write_forget,
+                self.load_forget,
+                actions_config[Action.FORGET],
+                default_config[Action.FORGET],
+            )
         )
 
         edit_fields_signals = [
             self.ui.editFieldsCheckbox.stateChanged,
             self.ui.editFieldsList.currentRowChanged,
         ]
-        load_default_button(
-            button=self.ui.editFieldsCheckbox.button,
-            signals=edit_fields_signals,
-            write_callback=self.write_edit_fields,
-            load_callback=self.load_edit_fields,
-            scoped_conf=actions_config[Action.EDIT_FIELDS],
-            default_scoped_conf=default_config[Action.EDIT_FIELDS],
+        all_args.append(
+            (
+                self.ui.editFieldsCheckbox.button,
+                edit_fields_signals,
+                self.write_edit_fields,
+                self.load_edit_fields,
+                actions_config[Action.EDIT_FIELDS],
+                default_config[Action.EDIT_FIELDS],
+            )
         )
 
         deck_move_signals = [
             self.ui.deckMoveCheckbox.stateChanged,
             self.ui.deckMoveLine.textChanged,
         ]
-        load_default_button(
-            button=self.ui.deckMoveCheckbox.button,
-            signals=deck_move_signals,
-            write_callback=self.write_move_deck,
-            load_callback=self.load_move_deck,
-            scoped_conf=actions_config[Action.MOVE_DECK],
-            default_scoped_conf=default_config[Action.MOVE_DECK],
+        all_args.append(
+            (
+                self.ui.deckMoveCheckbox.button,
+                deck_move_signals,
+                self.write_move_deck,
+                self.load_move_deck,
+                actions_config[Action.MOVE_DECK],
+                default_config[Action.MOVE_DECK],
+            )
         )
 
         reschedule_signals = [
@@ -590,13 +622,15 @@ class ActionsWidget(QWidget):
             self.ui.rescheduleToDays.valueChanged,
             self.ui.rescheduleResetCheckbox.stateChanged,
         ]
-        load_default_button(
-            button=self.ui.rescheduleCheckbox.button,
-            signals=reschedule_signals,
-            write_callback=self.write_reschedule,
-            load_callback=self.load_reschedule,
-            scoped_conf=actions_config[Action.RESCHEDULE],
-            default_scoped_conf=default_config[Action.RESCHEDULE],
+        all_args.append(
+            (
+                self.ui.rescheduleCheckbox.button,
+                reschedule_signals,
+                self.write_reschedule,
+                self.load_reschedule,
+                actions_config[Action.RESCHEDULE],
+                default_config[Action.RESCHEDULE],
+            )
         )
 
         queue_signals = [
@@ -612,14 +646,18 @@ class ActionsWidget(QWidget):
             self.ui.queueRatioSlider.valueChanged,
             self.ui.queueSiblingCheckbox.stateChanged,
         ]
-        load_default_button(
-            button=self.ui.queueCheckbox.button,
-            signals=queue_signals,
-            write_callback=self.write_add_to_queue,
-            load_callback=self.load_add_to_queue,
-            scoped_conf=actions_config[Action.ADD_TO_QUEUE],
-            default_scoped_conf=default_config[Action.ADD_TO_QUEUE],
+        all_args.append(
+            (
+                self.ui.queueCheckbox.button,
+                queue_signals,
+                self.write_add_to_queue,
+                self.load_add_to_queue,
+                actions_config[Action.ADD_TO_QUEUE],
+                default_config[Action.ADD_TO_QUEUE],
+            )
         )
+
+        [load_default_button(*args) for args in all_args]
 
     def load_all(self, actions_conf: dict, default_conf: dict):
         # A little easier to read/debug
