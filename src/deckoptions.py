@@ -39,9 +39,6 @@ class DeckOptions(QWidget):
         deck_conf = LeechToolkitConfigManager(mw).get_deck_conf(self.config_id)
         global_conf = LeechToolkitConfigManager(mw).get_global_deck_conf()
 
-        print(f'self.config_id: {self.config_id}')
-        print(f'deck_conf: {deck_conf}')
-
         self.leech_actions_form.load_default_buttons(
             deck_conf[Config.LEECH_ACTIONS],
             global_conf[Config.LEECH_ACTIONS],
@@ -112,7 +109,6 @@ def load_deck_options(deck_conf: DeckConf, deck_dict: dict, deck_conf_dict: dict
     form = deck_conf.form
     tab_options: DeckOptions = form.tab_options
     config_id = str(deck_conf_dict["id"])
-    print(f'config_id: {config_id} tab_options.config_id: {tab_options.config_id}')
     if tab_options.config_id != config_id:
         tab_options.set_config_id(config_id)
         tab_options.load_ui()
