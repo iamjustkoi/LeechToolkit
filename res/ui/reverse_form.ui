@@ -2,16 +2,16 @@
 <ui version="4.0">
  <class>ReverseForm</class>
  <widget class="QWidget" name="ReverseForm">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-       <width>389</width>
-       <height>122</height>
-   </rect>
-  </property>
+     <property name="geometry">
+         <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>319</width>
+             <height>109</height>
+         </rect>
+     </property>
      <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
          </sizepolicy>
@@ -24,21 +24,21 @@
      </property>
      <layout class="QVBoxLayout" name="reverseLayout">
          <property name="leftMargin">
-             <number>9</number>
+             <number>0</number>
          </property>
          <property name="topMargin">
-             <number>9</number>
+             <number>0</number>
          </property>
          <property name="rightMargin">
-             <number>9</number>
+             <number>0</number>
          </property>
          <property name="bottomMargin">
-             <number>9</number>
+             <number>0</number>
          </property>
          <item>
              <widget class="QGroupBox" name="reverseGroup">
                  <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                      </sizepolicy>
@@ -70,8 +70,26 @@
                      </property>
                      <item>
                          <layout class="QHBoxLayout" name="reverseThresholdLayout">
+                             <property name="leftMargin">
+                                 <number>0</number>
+                             </property>
+                             <property name="topMargin">
+                                 <number>0</number>
+                             </property>
+                             <property name="rightMargin">
+                                 <number>0</number>
+                             </property>
+                             <property name="bottomMargin">
+                                 <number>0</number>
+                             </property>
                              <item>
                                  <widget class="QLabel" name="reverseThresholdLabel">
+                                     <property name="sizePolicy">
+                                         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                                             <horstretch>0</horstretch>
+                                             <verstretch>0</verstretch>
+                                         </sizepolicy>
+                                     </property>
                                      <property name="text">
                                          <string>Un-leech Threshold</string>
                                      </property>
@@ -88,16 +106,16 @@
                                      <property name="text">
                                          <string>Same as Leech Threshold</string>
                                      </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="reverseThresholdSpinbox">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+                                 </widget>
+                             </item>
+                             <item>
+                                 <widget class="QSpinBox" name="reverseThresholdSpinbox">
+                                     <property name="sizePolicy">
+                                         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                                             <horstretch>0</horstretch>
+                                             <verstretch>0</verstretch>
+                                         </sizepolicy>
+                                     </property>
           <property name="toolTip">
            <string>Un-leeches any cards with a lapse count below this value.</string>
           </property>
@@ -152,11 +170,17 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="consSuffixLabel">
-          <property name="text">
-           <string>correct answer(s) in a row:</string>
-          </property>
-         </widget>
+            <widget class="QLabel" name="consSuffixLabel">
+                <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                    </sizepolicy>
+                </property>
+                <property name="text">
+                    <string>correct answer(s) in a row:</string>
+                </property>
+            </widget>
         </item>
        </layout>
       </item>
