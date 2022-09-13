@@ -6,58 +6,88 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>389</width>
-    <height>152</height>
+       <width>389</width>
+       <height>122</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QGroupBox" name="reverseGroup">
-        <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-            </sizepolicy>
-        </property>
-        <property name="toolTip">
-            <string>Reverse card lapses based on the number of correct review answers they have.</string>
-        </property>
-        <property name="title">
-            <string>Leech Reverse</string>
-        </property>
-        <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-        <property name="checkable">
-            <bool>true</bool>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-                <layout class="QHBoxLayout" name="reverseThresholdLayout">
-                    <item>
-                        <widget class="QLabel" name="reverseThresholdLabel">
-                            <property name="text">
-                                <string>Un-leech Threshold</string>
-                            </property>
-                        </widget>
-                    </item>
-                    <item>
-         <widget class="QCheckBox" name="useLeechThresholdCheckbox">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Same as Leech Threshold</string>
-          </property>
+     <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+         </sizepolicy>
+     </property>
+     <property name="minimumSize">
+         <size>
+             <width>128</width>
+             <height>32</height>
+         </size>
+     </property>
+     <layout class="QVBoxLayout" name="reverseLayout">
+         <property name="leftMargin">
+             <number>9</number>
+         </property>
+         <property name="topMargin">
+             <number>9</number>
+         </property>
+         <property name="rightMargin">
+             <number>9</number>
+         </property>
+         <property name="bottomMargin">
+             <number>9</number>
+         </property>
+         <item>
+             <widget class="QGroupBox" name="reverseGroup">
+                 <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                     </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                     <string>Reverse card lapses based on the number of correct review answers they have.</string>
+                 </property>
+                 <property name="title">
+                     <string>Leech Reverse</string>
+                 </property>
+                 <property name="alignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 </property>
+                 <property name="checkable">
+                     <bool>true</bool>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_2">
+                     <property name="leftMargin">
+                         <number>9</number>
+                     </property>
+                     <property name="topMargin">
+                         <number>9</number>
+                     </property>
+                     <property name="rightMargin">
+                         <number>9</number>
+                     </property>
+                     <property name="bottomMargin">
+                         <number>9</number>
+                     </property>
+                     <item>
+                         <layout class="QHBoxLayout" name="reverseThresholdLayout">
+                             <item>
+                                 <widget class="QLabel" name="reverseThresholdLabel">
+                                     <property name="text">
+                                         <string>Un-leech Threshold</string>
+                                     </property>
+                                 </widget>
+                             </item>
+                             <item>
+                                 <widget class="QCheckBox" name="useLeechThresholdCheckbox">
+                                     <property name="sizePolicy">
+                                         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                                             <horstretch>0</horstretch>
+                                             <verstretch>0</verstretch>
+                                         </sizepolicy>
+                                     </property>
+                                     <property name="text">
+                                         <string>Same as Leech Threshold</string>
+                                     </property>
          </widget>
         </item>
         <item>
