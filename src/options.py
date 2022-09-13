@@ -287,18 +287,16 @@ def append_default_button(parent: QWidget, insert_col=4):
         parent.default_button.setContentsMargins(0, 0, 0, 0)
 
         layout = parent.parent().layout()
+        pos = layout.indexOf(parent) + 1
         if layout is not None:
             if isinstance(layout, QGridLayout):
-                layout.addWidget(parent.default_button, layout.indexOf(parent), insert_col)
+                layout.addWidget(parent.default_button, pos, insert_col)
             elif isinstance(layout, QBoxLayout):
-                layout.insertWidget(
-                    layout.indexOf(parent), parent.default_button, alignment=Qt.AlignRight | Qt.AlignBottom
-                )
+                layout.insertWidget(pos, parent.default_button, alignment=Qt.AlignRight | Qt.AlignBottom)
             else:
                 layout.addWidget(parent.default_button)
 
-            layout.insertSpacing(layout.indexOf(parent.default_button), 12)
-            # parent.default_button.setContentsMargins(0, 24, 0, 12)
+            layout.insertSpacing(layout.indexOf(parent), 6)
 
 
 def load_default_button(

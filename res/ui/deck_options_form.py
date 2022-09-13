@@ -51,7 +51,7 @@ class Ui_DeckOptionsPlaceholder(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
+        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
         self.verticalLayout_2.addItem(spacerItem)
         self.scrollAreaLayout.addWidget(self.reverseWidget)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
