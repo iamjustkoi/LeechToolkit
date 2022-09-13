@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ActionsForm(object):
     def setupUi(self, ActionsForm):
         ActionsForm.setObjectName("ActionsForm")
-        ActionsForm.resize(494, 1705)
+        ActionsForm.resize(494, 1763)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
