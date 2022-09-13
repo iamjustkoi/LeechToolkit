@@ -55,13 +55,15 @@ class Ui_EditFieldItem(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.removeButton.sizePolicy().hasHeightForWidth())
         self.removeButton.setSizePolicy(sizePolicy)
-        self.removeButton.setStyleSheet(":active { border-style: outset;}\n"
-                                        "\n"
-                                        "                     :hover {\n"
-                                        "                     background-color:rgba(138, 138, 138, 0.314);\n"
-                                        "                     border-radius: 2px;\n"
-                                        "                     }\n"
-                                        "                 ")
+        self.removeButton.setStyleSheet(
+            ":active { border-style: outset;}\n"
+            "\n"
+            "                     :hover {\n"
+            "                     background-color:rgba(138, 138, 138, 0.314);\n"
+            "                     border-radius: 2px;\n"
+            "                     }\n"
+            "                 "
+        )
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../img/remove_icon.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.removeButton.setIcon(icon)
