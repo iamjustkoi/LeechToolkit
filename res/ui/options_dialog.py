@@ -29,7 +29,7 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 281))
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 244))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -42,15 +42,10 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox.setObjectName("toolsOptionsCheckBox")
         self.optionsScrollLayout.addWidget(self.toolsOptionsCheckBox)
         self.markerGroup = QtWidgets.QGroupBox(self.OptionsScrollWidget)
+        self.markerGroup.setCheckable(True)
         self.markerGroup.setObjectName("markerGroup")
         self.markerLayout = QtWidgets.QVBoxLayout(self.markerGroup)
         self.markerLayout.setObjectName("markerLayout")
-        self.enableMarkLayout = QtWidgets.QHBoxLayout()
-        self.enableMarkLayout.setObjectName("enableMarkLayout")
-        self.showMarkerCheckbox = QtWidgets.QCheckBox(self.markerGroup)
-        self.showMarkerCheckbox.setObjectName("showMarkerCheckbox")
-        self.enableMarkLayout.addWidget(self.showMarkerCheckbox)
-        self.markerLayout.addLayout(self.enableMarkLayout)
         self.almostBackCheckbox = QtWidgets.QCheckBox(self.markerGroup)
         self.almostBackCheckbox.setObjectName("almostBackCheckbox")
         self.markerLayout.addWidget(self.almostBackCheckbox)
@@ -76,15 +71,10 @@ class Ui_OptionsDialog(object):
         self.markerLayout.addLayout(self.horizontalLayout_4)
         self.optionsScrollLayout.addWidget(self.markerGroup)
         self.browseButtonGroup = QtWidgets.QGroupBox(self.OptionsScrollWidget)
+        self.browseButtonGroup.setCheckable(True)
         self.browseButtonGroup.setObjectName("browseButtonGroup")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.browseButtonGroup)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.browseButtonLayout = QtWidgets.QHBoxLayout()
-        self.browseButtonLayout.setObjectName("browseButtonLayout")
-        self.browseButtonCheckbox = QtWidgets.QCheckBox(self.browseButtonGroup)
-        self.browseButtonCheckbox.setObjectName("browseButtonCheckbox")
-        self.browseButtonLayout.addWidget(self.browseButtonCheckbox)
-        self.verticalLayout.addLayout(self.browseButtonLayout)
         self.leechButtonPagesGroup = QtWidgets.QGroupBox(self.browseButtonGroup)
         self.leechButtonPagesGroup.setObjectName("leechButtonPagesGroup")
         self.leechButtonPagesLayout = QtWidgets.QHBoxLayout(self.leechButtonPagesGroup)
@@ -151,29 +141,34 @@ class Ui_OptionsDialog(object):
         _translate = QtCore.QCoreApplication.translate
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
+        self.markerGroup.setToolTip(_translate("OptionsDialog", "Show a marker on leech cards during review."))
         self.markerGroup.setTitle(_translate("OptionsDialog", "Leech Mark"))
-        self.showMarkerCheckbox.setText(_translate("OptionsDialog", "Show a marker on leech cards during review"))
         self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
         self.almostCheckbox.setToolTip(
             _translate(
-                "OptionsDialog", "When reviewing, displays a mark below the current card if\n"
-                                 "                                                         it\'s about to be marked as a leech.\n"
-                                 "                                                     "
+                "OptionsDialog", "When reviewing, displays a mark below the current card\n"
+                                 "                                                            if\n"
+                                 "                                                            it\'s about to be marked as a leech.\n"
+                                 "                                                        "
             )
         )
-        self.almostCheckbox.setText(_translate("OptionsDialog", "Show unique marker for about-to-be-leeched cards"))
+        self.almostCheckbox.setText(
+            _translate(
+                "OptionsDialog", "Show unique marker for about-to-be-leeched cards\n"
+                                 "                                                        "
+            )
+        )
         self.almostLabel.setText(_translate("OptionsDialog", "Marker Position"))
         self.almostPosDropdown.setItemText(0, _translate("OptionsDialog", "Default"))
         self.almostPosDropdown.setItemText(1, _translate("OptionsDialog", "Left"))
         self.almostPosDropdown.setItemText(2, _translate("OptionsDialog", "Right"))
-        self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
-        self.browseButtonCheckbox.setToolTip(
+        self.browseButtonGroup.setToolTip(
             _translate(
                 "OptionsDialog",
-                "Show a button on the bottom bar whenever a currently displayed deck has any leeches."
+                "Shows a button on bottom bar whenever cards with the leech tag are found in a deck."
             )
         )
-        self.browseButtonCheckbox.setText(_translate("OptionsDialog", "Enable \"Leech Cards\" button on bottom bar"))
+        self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
         self.leechButtonPagesGroup.setTitle(_translate("OptionsDialog", "Enabled Pages"))
         self.browseButtonBrowserCheckbox.setText(_translate("OptionsDialog", "Deck Browser"))
         self.browseButtonOverviewCheckbox.setText(_translate("OptionsDialog", "Deck Overview"))
