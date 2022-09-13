@@ -2,14 +2,14 @@
 <ui version="4.0">
  <class>ActionsForm</class>
  <widget class="QWidget" name="ActionsForm">
-  <property name="geometry">
-   <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>494</width>
-       <height>1705</height>
-   </rect>
-  </property>
+     <property name="geometry">
+         <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>494</width>
+             <height>1705</height>
+         </rect>
+     </property>
      <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
              <horstretch>0</horstretch>
@@ -91,6 +91,9 @@
          <item>
              <widget class="QFrame" name="actionsFrame">
                  <layout class="QVBoxLayout" name="verticalFrame">
+                     <property name="spacing">
+                         <number>0</number>
+                     </property>
                      <property name="leftMargin">
                          <number>12</number>
                      </property>
@@ -176,61 +179,33 @@
                              <property name="checkable">
                                  <bool>true</bool>
                              </property>
-                             <layout class="QGridLayout" name="gridLayout_2">
-                                 <item row="1" column="0">
-                                     <widget class="QFrame" name="suspendFrame">
-                                         <layout class="QHBoxLayout" name="horizontalLayout_9">
-                                             <property name="leftMargin">
-                                                 <number>0</number>
-                                             </property>
-                                             <property name="topMargin">
-                                                 <number>0</number>
-                                             </property>
-                                             <property name="rightMargin">
-                                                 <number>0</number>
-                                             </property>
-                                             <property name="bottomMargin">
-                                                 <number>0</number>
-                                             </property>
-                                             <item>
-                                                 <widget class="QRadioButton" name="suspendOnButton">
-                                                     <property name="text">
-                                                         <string>On</string>
-                                                     </property>
-                                                 </widget>
-                                             </item>
-                                             <item>
-                                                 <widget class="QRadioButton" name="suspendOffButton">
-                                                     <property name="text">
-                                                         <string>Off</string>
-                                                     </property>
-                                                 </widget>
-                                             </item>
-                                             <item>
-                                                 <spacer name="horizontalSpacer_6">
-                                                     <property name="orientation">
-                                                         <enum>Qt::Horizontal</enum>
-                                                     </property>
-                                                     <property name="sizeHint" stdset="0">
-                                                         <size>
-                                                             <width>0</width>
-                                                             <height>0</height>
-                                                         </size>
-                                                     </property>
-                                                 </spacer>
-                                             </item>
-                                         </layout>
-                                     </widget>
-                                 </item>
-                                 <item row="0" column="0">
-                                     <widget class="QPushButton" name="pushButton">
-                                         <property name="maximumSize">
-                                             <size>
-                                                 <width>16</width>
-                                                 <height>16</height>
-                                             </size>
+                             <layout class="QHBoxLayout" name="horizontalLayout_2">
+                                 <item>
+                                     <widget class="QRadioButton" name="suspendOnButton">
+                                         <property name="text">
+                                             <string>On</string>
                                          </property>
                                      </widget>
+                                 </item>
+                                 <item>
+                                     <widget class="QRadioButton" name="suspendOffButton">
+                                         <property name="text">
+                                             <string>Off</string>
+                                         </property>
+                                     </widget>
+                                 </item>
+                                 <item>
+                                     <spacer name="horizontalSpacer_6">
+                                         <property name="orientation">
+                                             <enum>Qt::Horizontal</enum>
+                                         </property>
+                                         <property name="sizeHint" stdset="0">
+                                             <size>
+                                                 <width>0</width>
+                                                 <height>0</height>
+                                             </size>
+                                         </property>
+                                     </spacer>
                                  </item>
                              </layout>
                          </widget>
@@ -281,7 +256,7 @@
                                  <bool>true</bool>
                              </property>
                              <layout class="QGridLayout" name="gridLayout_4">
-                                 <item row="0" column="0">
+                                 <item row="1" column="0">
                                      <widget class="QLineEdit" name="removeTagsLine">
                                          <property name="sizePolicy">
                                              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1215,9 +1190,9 @@
                          </widget>
                      </item>
                  </layout>
-    </widget>
-   </item>
-  </layout>
+             </widget>
+         </item>
+     </layout>
  </widget>
  <customwidgets>
   <customwidget>

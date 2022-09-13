@@ -91,8 +91,8 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
-        self.reverse_form = ReverseWidget(mw.windowFlags())
-        self.ui.optionsScrollLayout.addWidget(self.reverse_form.ui.reverseGroup)
+        self.reverse_form = ReverseWidget(flags=mw.windowFlags())
+        self.ui.optionsScrollLayout.addWidget(self.reverse_form)
 
         self.leech_form = ActionsWidget(Config.LEECH_ACTIONS)
         self.ui.actionsScrollLayout.addWidget(self.leech_form)
@@ -214,7 +214,7 @@ class OptionsDialog(QDialog):
 
 class ReverseWidget(QWidget):
     def __init__(self, flags):
-        super().__init__(flags=flags)
+        super().__init__(parent=None, flags=flags)
         self.ui = Ui_ReverseForm()
         self.ui.setupUi(self)
 
@@ -273,6 +273,7 @@ def _fill_menu_fields(add_button: aqt.qt.QToolButton):
 def append_default_button(parent: QWidget, insert_col=4):
     if not hasattr(parent, 'button'):
         parent.default_button = aqt.qt.QPushButton(parent)
+
         parent.default_button.setMaximumSize(QSize(16, 16))
         parent.default_button.setFlat(True)
         parent.default_button.setToolTip(String.RESTORE_DEFAULT_SETTING)
@@ -282,18 +283,22 @@ def append_default_button(parent: QWidget, insert_col=4):
         size_policy.setHorizontalStretch(0)
         size_policy.setVerticalStretch(0)
         size_policy.setHeightForWidth(parent.default_button.sizePolicy().hasHeightForWidth())
-
         parent.default_button.setSizePolicy(size_policy)
+        parent.default_button.setContentsMargins(0, 0, 0, 0)
 
-        layout = parent.layout()
-
+        layout = parent.parent().layout()
         if layout is not None:
             if isinstance(layout, QGridLayout):
-                layout.addWidget(parent.default_button, 0, insert_col)
+                layout.addWidget(parent.default_button, layout.indexOf(parent), insert_col)
             elif isinstance(layout, QBoxLayout):
-                layout.insertWidget(0, parent.default_button, alignment=Qt.AlignRight | Qt.AlignTop)
+                layout.insertWidget(
+                    layout.indexOf(parent), parent.default_button, alignment=Qt.AlignRight | Qt.AlignBottom
+                )
             else:
                 layout.addWidget(parent.default_button)
+
+            layout.insertSpacing(layout.indexOf(parent.default_button), 12)
+            # parent.default_button.setContentsMargins(0, 24, 0, 12)
 
 
 def load_default_button(
