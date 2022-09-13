@@ -24,12 +24,13 @@ class DeckOptions(QWidget):
         self.ui = Ui_DeckOptionsPlaceholder()
         self.ui.setupUi(DeckOptionsPlaceholder=self)
 
-        self.reverse_form = ReverseWidget(mw.windowFlags())
-        self.leech_actions_form = ActionsWidget(Config.LEECH_ACTIONS, expanded=False)
-        self.reverse_actions_form = ActionsWidget(Config.UN_LEECH_ACTIONS, expanded=False)
+        self.reverse_form = ReverseWidget(flags=mw.windowFlags())
+        self.ui.reverseWidget.layout().addWidget(self.reverse_form)
 
-        self.ui.scrollAreaLayout.addWidget(self.reverse_form)
+        self.leech_actions_form = ActionsWidget(Config.LEECH_ACTIONS, expanded=False)
         self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
+
+        self.reverse_actions_form = ActionsWidget(Config.UN_LEECH_ACTIONS, expanded=False)
         self.ui.scrollAreaLayout.addWidget(self.reverse_actions_form)
 
     def set_config_id(self, config_id: str):
@@ -75,7 +76,6 @@ class DeckOptions(QWidget):
 
         min_deck_conf = get_diffs(deck_conf, LeechToolkitConfigManager(mw).get_global_deck_conf())
         manager = LeechToolkitConfigManager(mw)
-        # config_id = str(mw.col.decks.config_dict_for_deck_id(self.config_id)['id'])
 
         if len(min_deck_conf) <= 0:
             manager.config.pop(self.config_id, None)
