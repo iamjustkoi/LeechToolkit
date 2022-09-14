@@ -642,8 +642,8 @@
                                  <item row="2" column="0">
                                      <widget class="QCheckBox" name="queueCurrentDeckCheckbox">
                                          <property name="toolTip">
-                                             <string>Usse the current deck's queue when placing the card in the selected
-                                                 range.
+                                             <string>Uses the currently-reviewing deck's queue when placing the card in
+                                                 the selected range.
                                              </string>
                                          </property>
                                          <property name="text">
