@@ -57,12 +57,96 @@ def on_options_called(*args):
     options.exec()
 
 
-def redraw_list(fields_list: QListWidget, max_height=256):
-    data_height = fields_list.sizeHintForRow(0) * fields_list.count()
-    fields_list.setFixedHeight(data_height if data_height < max_height else fields_list.maximumHeight())
-    fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
-    fields_list.setVisible(fields_list.count() != 0)
-    fields_list.currentRowChanged.emit(fields_list.currentRow())  # Used for updating any change receivers
+def append_default_button(parent: QWidget, insert_col=4):
+    if not hasattr(parent, 'button'):
+        parent.default_button = aqt.qt.QPushButton(parent)
+
+        parent.default_button.setMaximumSize(QSize(16, 16))
+        parent.default_button.setFlat(True)
+        parent.default_button.setToolTip(String.RESTORE_DEFAULT_SETTING)
+        parent.default_button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
+
+        size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(parent.default_button.sizePolicy().hasHeightForWidth())
+        parent.default_button.setSizePolicy(size_policy)
+        parent.default_button.setContentsMargins(0, 0, 0, 0)
+
+        layout = parent.parent().layout()
+        pos = layout.indexOf(parent) + 1
+
+        if layout is not None:
+            if isinstance(layout, QGridLayout):
+                layout.addWidget(parent.default_button, pos, insert_col)
+            elif isinstance(layout, QBoxLayout):
+                layout.insertWidget(pos, parent.default_button, alignment=Qt.AlignRight | Qt.AlignBottom)
+            else:
+                layout.addWidget(parent.default_button)
+
+            layout.insertSpacing(layout.indexOf(parent), 6)
+
+
+def load_default_button(
+    default_button: aqt.qt.QPushButton,
+    signals: list[pyqtBoundSignal],
+    write_callback,
+    load_callback,
+    scoped_conf: dict,
+    default_scoped_conf: dict = None,
+):
+    default_copy = default_scoped_conf.copy() if default_scoped_conf else None
+
+    for signal in signals:
+        def refresh_button_visibility(*args):
+            """
+            Intercept function for the created button. Refreshes the button's visibility after running the input
+            write-callback.
+            """
+            write_callback(scoped_conf)
+
+            default_button.setVisible(scoped_conf != default_copy)
+
+        signal.connect(refresh_button_visibility)
+
+    def restore_defaults(*args):
+        """
+        Broadcast function for the created button. Refreshes the button's visibility after running the input
+        load_ui-callback.
+        """
+        load_callback(default_copy)
+        refresh_button_visibility()
+
+    default_button.clicked.connect(restore_defaults)
+
+    # Initial update
+    default_button.setVisible(scoped_conf != default_copy)
+
+
+def add_edit_field(list_widget: QListWidget, mid: int, field_name: str, method_idx=0, repl='', text=''):
+    edit_item = EditFieldItem(list_widget, mid, field_name, EditAction.EditMethod(method_idx), repl, text)
+    list_item = QListWidgetItem(list_widget)
+    _add_list_item(list_widget, list_item, edit_item)
+
+
+def add_excluded_field(list_widget: QListWidget, mid: int, field_name=''):
+    """
+Inserts a new excluded field item to the excluded fields list if not already present.
+    :param list_widget:
+    :param mid: Model ID of the note/field
+    :param field_name: text string of the field's name/title
+    """
+
+    for i in range(0, list_widget.count()):
+        item = list_widget.item(i)
+        exclude_item = ExcludeFieldItem.from_list_widget(list_widget, item)
+        fields_names = mw.col.models.field_names(mw.col.models.get(mid))
+        if exclude_item.get_model_field_dict() == {f'{mid}': fields_names.index(field_name)}:
+            return
+
+    exclude_item = ExcludeFieldItem(list_widget, mid=mid, field_name=field_name)
+    list_item = ExcludeFieldItem.ExcludedFieldListItem(list_widget)
+    _add_list_item(list_widget, list_item, exclude_item)
 
 
 def _bind_tools_options(*args):
@@ -81,6 +165,39 @@ def _bind_tools_options(*args):
 
 def _bind_config_options():
     mw.addonManager.setConfigAction(__name__, on_options_called)
+
+
+def _fill_menu_fields(add_button: aqt.qt.QToolButton):
+    menu: QMenu = add_button.menu()
+    menu.clear()
+    for note_type in mw.col.models.all():
+        sub_menu = menu.addMenu(f'{note_type["name"]}')
+
+        for field in mw.col.models.field_names(note_type):
+            action = QAction(f'{field}', add_button)
+            action.setData(note_type['id'])
+            sub_menu.addAction(action)
+
+
+def _handle_new_field(list_widget: QListWidget, action: QAction, callback):
+    callback(list_widget, action.data(), action.text())
+    _redraw_list(list_widget)
+
+
+def _add_list_item(list_widget: QListWidget, list_item: QListWidgetItem, item_widget: QWidget):
+    list_item.setSizeHint(item_widget.sizeHint())
+    list_item.setFlags(Qt.NoItemFlags)
+
+    list_widget.addItem(list_item)
+    list_widget.setItemWidget(list_item, item_widget)
+
+
+def _redraw_list(fields_list: QListWidget, max_height=256):
+    data_height = fields_list.sizeHintForRow(0) * fields_list.count()
+    fields_list.setFixedHeight(data_height if data_height < max_height else fields_list.maximumHeight())
+    fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
+    fields_list.setVisible(fields_list.count() != 0)
+    fields_list.currentRowChanged.emit(fields_list.currentRow())  # Used for updating any change receivers
 
 
 class OptionsDialog(QDialog):
@@ -259,84 +376,6 @@ class ReverseWidget(QWidget):
         reverse_config[Config.REVERSE_CONS_ANS] = self.ui.consAnswerSpinbox.value()
 
 
-def _fill_menu_fields(add_button: aqt.qt.QToolButton):
-    menu: QMenu = add_button.menu()
-    menu.clear()
-    for note_type in mw.col.models.all():
-        sub_menu = menu.addMenu(f'{note_type["name"]}')
-
-        for field in mw.col.models.field_names(note_type):
-            action = QAction(f'{field}', add_button)
-            action.setData(note_type['id'])
-            sub_menu.addAction(action)
-
-
-def append_default_button(parent: QWidget, insert_col=4):
-    if not hasattr(parent, 'button'):
-        parent.default_button = aqt.qt.QPushButton(parent)
-
-        parent.default_button.setMaximumSize(QSize(16, 16))
-        parent.default_button.setFlat(True)
-        parent.default_button.setToolTip(String.RESTORE_DEFAULT_SETTING)
-        parent.default_button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
-
-        size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        size_policy.setHorizontalStretch(0)
-        size_policy.setVerticalStretch(0)
-        size_policy.setHeightForWidth(parent.default_button.sizePolicy().hasHeightForWidth())
-        parent.default_button.setSizePolicy(size_policy)
-        parent.default_button.setContentsMargins(0, 0, 0, 0)
-
-        layout = parent.parent().layout()
-        pos = layout.indexOf(parent) + 1
-
-        if layout is not None:
-            if isinstance(layout, QGridLayout):
-                layout.addWidget(parent.default_button, pos, insert_col)
-            elif isinstance(layout, QBoxLayout):
-                layout.insertWidget(pos, parent.default_button, alignment=Qt.AlignRight | Qt.AlignBottom)
-            else:
-                layout.addWidget(parent.default_button)
-
-            layout.insertSpacing(layout.indexOf(parent), 6)
-
-
-def load_default_button(
-    default_button: aqt.qt.QPushButton,
-    signals: list[pyqtBoundSignal],
-    write_callback,
-    load_callback,
-    scoped_conf: dict,
-    default_scoped_conf: dict = None,
-):
-    default_copy = default_scoped_conf.copy() if default_scoped_conf else None
-
-    for signal in signals:
-        def refresh_button_visibility(*args):
-            """
-            Intercept function for the created button. Refreshes the button's visibility after running the input
-            write-callback.
-            """
-            write_callback(scoped_conf)
-
-            default_button.setVisible(scoped_conf != default_copy)
-
-        signal.connect(refresh_button_visibility)
-
-    def restore_defaults(*args):
-        """
-        Broadcast function for the created button. Refreshes the button's visibility after running the input
-        load_ui-callback.
-        """
-        load_callback(default_copy)
-        refresh_button_visibility()
-
-    default_button.clicked.connect(restore_defaults)
-
-    # Initial update
-    default_button.setVisible(scoped_conf != default_copy)
-
-
 class ActionsWidget(QWidget):
     def __init__(self, actions_type: str, parent=None, expanded=True, dids=None):
         super().__init__(parent, mw.windowFlags())
@@ -465,7 +504,7 @@ class ActionsWidget(QWidget):
 
             add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
 
-        redraw_list(self.ui.editFieldsList, max_fields_height)
+        _redraw_list(self.ui.editFieldsList, max_fields_height)
 
     # DECK MOVE
     def load_move_deck(self, action_conf: dict):
@@ -510,7 +549,7 @@ class ActionsWidget(QWidget):
                 field_name = mw.col.models.field_names(note)[field_ord]
                 add_excluded_field(self.ui.queueExcludedFieldList, mid, field_name)
         self.ui.queueExcludedFieldList.sortItems()
-        redraw_list(self.ui.queueExcludedFieldList)
+        _redraw_list(self.ui.queueExcludedFieldList)
 
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
@@ -781,45 +820,6 @@ class ActionsWidget(QWidget):
             self.ui.actionsFrame.setVisible(toggle)
 
 
-def _add_list_item(list_widget: QListWidget, list_item: QListWidgetItem, item_widget: QWidget):
-    list_item.setSizeHint(item_widget.sizeHint())
-    list_item.setFlags(Qt.NoItemFlags)
-
-    list_widget.addItem(list_item)
-    list_widget.setItemWidget(list_item, item_widget)
-
-
-def add_edit_field(list_widget: QListWidget, mid: int, field_name: str, method_idx=0, repl='', text=''):
-    edit_item = EditFieldItem(list_widget, mid, field_name, EditAction.EditMethod(method_idx), repl, text)
-    list_item = QListWidgetItem(list_widget)
-    _add_list_item(list_widget, list_item, edit_item)
-
-
-def add_excluded_field(list_widget: QListWidget, mid: int, field_name=''):
-    """
-Inserts a new excluded field item to the excluded fields list if not already present.
-    :param list_widget:
-    :param mid: Model ID of the note/field
-    :param field_name: text string of the field's name/title
-    """
-
-    for i in range(0, list_widget.count()):
-        item = list_widget.item(i)
-        exclude_item = ExcludeFieldItem.from_list_widget(list_widget, item)
-        fields_names = mw.col.models.field_names(mw.col.models.get(mid))
-        if exclude_item.get_model_field_dict() == {f'{mid}': fields_names.index(field_name)}:
-            return
-
-    exclude_item = ExcludeFieldItem(list_widget, mid=mid, field_name=field_name)
-    list_item = ExcludeFieldItem.ExcludedFieldListItem(list_widget)
-    _add_list_item(list_widget, list_item, exclude_item)
-
-
-def _handle_new_field(list_widget: QListWidget, action: QAction, callback):
-    callback(list_widget, action.data(), action.text())
-    redraw_list(list_widget)
-
-
 class ExcludeFieldItem(QWidget):
 
     @staticmethod
@@ -851,7 +851,7 @@ class ExcludeFieldItem(QWidget):
                 item = self.list_widget.item(i)
                 if self == self.from_list_widget(self.list_widget, item):
                     self.list_widget.takeItem(i)
-                    redraw_list(self.list_widget)
+                    _redraw_list(self.list_widget)
 
         self.widget.removeButton.clicked.connect(remove_self)
 
@@ -928,7 +928,7 @@ class EditFieldItem(QWidget):
                 item = self.list_widget.item(i)
                 if self == self.from_list_widget(self.list_widget, item):
                     self.list_widget.takeItem(i)
-                    redraw_list(self.list_widget)
+                    _redraw_list(self.list_widget)
 
         self.widget.removeButton.clicked.connect(remove_self)
         self.widget.methodDropdown.currentIndexChanged.connect(self.update_method)
