@@ -4,6 +4,7 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 from pathlib import Path
 
+import anki.decks
 import aqt.flags
 from anki.consts import CARD_TYPE_NEW
 from anki.models import NotetypeId
@@ -335,11 +336,14 @@ def load_default_button(
 
 
 class ActionsWidget(QWidget):
-    def __init__(self, actions_type: str, parent=None, expanded=True):
+    def __init__(self, actions_type: str, parent=None, expanded=True, dids=None):
         super().__init__(parent, mw.windowFlags())
         self.ui = Ui_ActionsForm()
         self.ui.setupUi(ActionsForm=self)
+
         self.actions_type = actions_type
+
+        self.dids = [int(name_id.id) for name_id in mw.col.decks.all_names_and_ids()] if not dids else dids
 
         if self.actions_type == Config.LEECH_ACTIONS:
             self.ui.expandoButton.setText(String.LEECH_ACTIONS)
@@ -353,9 +357,12 @@ class ActionsWidget(QWidget):
         self.ui.queueLabelTop.setGraphicsEffect(QGraphicsOpacityEffect())
 
         self.ui.queueFromSpinbox.dropdown = self.ui.queueFromDropdown
-        self.ui.queueToSpinbox.dropdown = self.ui.queueToDropdown
         self.ui.queueFromDropdown.currentIndexChanged.connect(lambda _: self.ui.queueFromSpinbox.refresh())
+
+        self.ui.queueToSpinbox.dropdown = self.ui.queueToDropdown
         self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
+
+        self.ui.queueCurrentDeckCheckbox.stateChanged.connect(lambda checked: self.update_queue_info(checked))
 
         self.add_completer = CustomCompleter(self.ui.addTagsLine)
         self.remove_completer = CustomCompleter(self.ui.removeTagsLine)
@@ -485,10 +492,8 @@ class ActionsWidget(QWidget):
         self.ui.queueFromSpinbox.setValue(queue_input[QueueAction.FROM_VAL])
         self.ui.queueToSpinbox.setValue(queue_input[QueueAction.TO_VAL])
 
-        cmd = f"select min(due), max(due) from cards where type={CARD_TYPE_NEW} and odid=0"
-        top, bottom = mw.col.db.first(cmd)
-        self.ui.queueLabelTopPos.setText(str(top))
-        self.ui.queueLabelBottomPos.setText(str(bottom))
+        self.ui.queueCurrentDeckCheckbox.setChecked(queue_input[QueueAction.CURRENT_DECK])
+        self.update_queue_info(queue_input[QueueAction.CURRENT_DECK])
 
         self.ui.queueSimilarCheckbox.setChecked(queue_input[QueueAction.NEAR_SIMILAR])
         self.ui.queueExcludeTextEdit.setText(queue_input[QueueAction.EXCLUDED_TEXT])
@@ -506,6 +511,15 @@ class ActionsWidget(QWidget):
         redraw_list(self.ui.queueExcludedFieldList)
 
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
+
+    def update_queue_info(self, use_current_deck=False):
+        cmd = f'SELECT min(due), max(due) FROM cards WHERE type={CARD_TYPE_NEW} AND odid=0'
+        cmd += f' AND did IN {anki.decks.ids2str(self.dids)}' if use_current_deck else ''
+
+        top, bottom = mw.col.db.first(cmd)
+
+        self.ui.queueLabelTopPos.setText(str(top))
+        self.ui.queueLabelBottomPos.setText(str(bottom))
 
     def load_default_buttons(self, actions_config: dict, default_config):
         # Remove any re-assignment potential issues
@@ -736,6 +750,8 @@ class ActionsWidget(QWidget):
         actions_config[Action.ENABLED] = self.ui.queueGroup.isChecked()
 
         queue_input = actions_config[Action.INPUT]
+
+        queue_input[QueueAction.CURRENT_DECK] = self.ui.queueCurrentDeckCheckbox.isChecked()
         queue_input[QueueAction.FROM_INDEX] = self.ui.queueFromDropdown.currentIndex()
         queue_input[QueueAction.TO_INDEX] = self.ui.queueToDropdown.currentIndex()
         queue_input[QueueAction.FROM_VAL] = self.ui.queueFromSpinbox.formatted_value()
