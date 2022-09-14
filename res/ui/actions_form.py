@@ -480,7 +480,9 @@ class Ui_ActionsForm(object):
         sizePolicy.setHeightForWidth(self.queueAddFieldButton.sizePolicy().hasHeightForWidth())
         self.queueAddFieldButton.setSizePolicy(sizePolicy)
         self.queueAddFieldButton.setMinimumSize(QtCore.QSize(64, 24))
-        self.queueAddFieldButton.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
+        self.queueAddFieldButton.setPopupMode(
+            QtWidgets.QToolButton.DelayedPopup
+        )
         self.queueAddFieldButton.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.queueAddFieldButton.setObjectName("queueAddFieldButton")
         self._5.addWidget(self.queueAddFieldButton)
@@ -540,15 +542,17 @@ class Ui_ActionsForm(object):
         self.queueGroup.setTitle(_translate("ActionsForm", "Add to New"))
         self.queueSiblingCheckbox.setToolTip(
             _translate(
-                "ActionsForm",
-                "Using the given range: Place the card next to another one if they\'re each siblings of the same  note-type."
+                "ActionsForm", "Using the given range: Place the card next to another one if\n"
+                               "                                                 they\'re each siblings of the same note-type.\n"
+                               "                                             "
             )
         )
         self.queueSiblingCheckbox.setText(_translate("ActionsForm", "Place near sibling cards"))
         self.queueCurrentDeckCheckbox.setToolTip(
             _translate(
-                "ActionsForm",
-                "Uses the currently-reviewing deck\'s queue when placing the card in the selected range."
+                "ActionsForm", "Uses the currently-reviewing deck\'s queue when placing the card in\n"
+                               "                                                 the selected range.\n"
+                               "                                             "
             )
         )
         self.queueCurrentDeckCheckbox.setText(_translate("ActionsForm", "Using the current deck"))
@@ -576,8 +580,9 @@ class Ui_ActionsForm(object):
         self.queueToDropdown.setItemText(2, _translate("ActionsForm", "Position"))
         self.queueSimilarCheckbox.setToolTip(
             _translate(
-                "ActionsForm",
-                "Using the given range: Places the card near another one in the queue based on how similar they are."
+                "ActionsForm", "Using the given range: Places the card near another one in the\n"
+                               "                                                 queue based on how similar they are.\n"
+                               "                                             "
             )
         )
         self.queueSimilarCheckbox.setText(_translate("ActionsForm", "Place near similar cards"))
@@ -586,12 +591,12 @@ class Ui_ActionsForm(object):
         self.queueIncludeFieldsCheckbox.setToolTip(
             _translate(
                 "ActionsForm", "Filters to only\n"
-                               "                                                                                                 match\n"
-                               "                                                                                                 the\n"
-                               "                                                                                                 following fields\n"
-                               "                                                                                                 instead of\n"
-                               "                                                                                                 filtering them out.\n"
-                               "                                                                                             "
+                               "                                                                             match\n"
+                               "                                                                             the\n"
+                               "                                                                             following fields\n"
+                               "                                                                             instead of\n"
+                               "                                                                             filtering them out.\n"
+                               "                                                                         "
             )
         )
         self.queueIncludeFieldsCheckbox.setText(_translate("ActionsForm", "Inclusive"))
