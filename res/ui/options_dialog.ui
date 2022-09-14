@@ -3,16 +3,16 @@
  <class>OptionsDialog</class>
  <widget class="QDialog" name="OptionsDialog">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+      <enum>Qt::WindowModal</enum>
   </property>
-  <property name="geometry">
-      <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>574</width>
-          <height>520</height>
-      </rect>
-  </property>
+     <property name="geometry">
+         <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>574</width>
+             <height>520</height>
+         </rect>
+     </property>
      <property name="windowTitle">
          <string>Leech Toolkit</string>
      </property>
@@ -44,7 +44,7 @@
                                              <x>0</x>
                                              <y>0</y>
                                              <width>530</width>
-                                             <height>211</height>
+                                             <height>224</height>
                                          </rect>
                                      </property>
                                      <property name="sizePolicy">
@@ -200,7 +200,7 @@
                                          <rect>
                                              <x>0</x>
                                              <y>0</y>
-                                             <width>530</width>
+                                             <width>98</width>
                                              <height>16</height>
                                          </rect>
                                      </property>
@@ -243,8 +243,8 @@
                              </widget>
                          </item>
                      </layout>
-     </widget>
-    </widget>
+                 </widget>
+             </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -252,7 +252,8 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+         <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults
+         </set>
      </property>
     </widget>
    </item>
