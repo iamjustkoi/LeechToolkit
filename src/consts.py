@@ -69,6 +69,7 @@ class RescheduleAction:
 
 
 class QueueAction:
+    CURRENT_DECK = 'currentDeck'
     SIMILAR_RATIO = 'similarityRatio'
     INCLUSIVE_FIELDS = 'shouldIncludeFields'
     FILTERED_FIELDS = 'filteredFields'
@@ -149,6 +150,7 @@ class Config:
         Action.ADD_TO_QUEUE: {
             Action.ENABLED: False,
             Action.INPUT: {
+                QueueAction.CURRENT_DECK: True,
                 QueueAction.FROM_INDEX: 0,
                 QueueAction.FROM_VAL: 0,
                 QueueAction.TO_INDEX: 0,
