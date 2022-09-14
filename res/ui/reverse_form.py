@@ -34,6 +34,7 @@ class Ui_ReverseForm(object):
         self.reverseGroup.setCheckable(True)
         self.reverseGroup.setObjectName("reverseGroup")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.reverseGroup)
+        self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.verticalLayout_2.setContentsMargins(9, 9, 9, 9)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.reverseThresholdLayout = QtWidgets.QHBoxLayout()
