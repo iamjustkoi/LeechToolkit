@@ -653,6 +653,7 @@ class ActionsWidget(QWidget):
 
         queue_signals = [
             self.ui.queueGroup.clicked,
+            self.ui.queueCurrentDeckCheckbox.stateChanged,
             self.ui.queueFromSpinbox.valueChanged,
             self.ui.queueToSpinbox.valueChanged,
             self.ui.queueFromDropdown.currentIndexChanged,
