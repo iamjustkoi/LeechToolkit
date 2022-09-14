@@ -546,7 +546,10 @@ class Ui_ActionsForm(object):
         )
         self.queueSiblingCheckbox.setText(_translate("ActionsForm", "Place near sibling cards"))
         self.queueCurrentDeckCheckbox.setToolTip(
-            _translate("ActionsForm", "Usse the current deck\'s queue when placing the card in the selected range.")
+            _translate(
+                "ActionsForm",
+                "Uses the currently-reviewing deck\'s queue when placing the card in the selected range."
+            )
         )
         self.queueCurrentDeckCheckbox.setText(_translate("ActionsForm", "Using the current deck"))
         self.label_3.setText(_translate("ActionsForm", "(Current)"))
