@@ -656,16 +656,18 @@ class Ui_OptionsDialog(object):
         self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
         self.almostCheckbox.setToolTip(
             _translate(
-                "OptionsDialog", "When reviewing, displays a mark below the current card\n"
-                                 "                                                            if\n"
-                                 "                                                            it\'s about to be marked as a leech.\n"
-                                 "                                                        "
+                "OptionsDialog", "When reviewing, displays a mark below the\n"
+                                 "                                                                     current card\n"
+                                 "                                                                     if\n"
+                                 "                                                                     it\'s about to be marked as a leech.\n"
+                                 "                                                                 "
             )
         )
         self.almostCheckbox.setText(
             _translate(
-                "OptionsDialog", "Show unique marker for about-to-be-leeched cards\n"
-                                 "                                                        "
+                "OptionsDialog", "Show unique marker for about-to-be-leeched\n"
+                                 "                                                                     cards\n"
+                                 "                                                                 "
             )
         )
         self.almostLabel.setText(_translate("OptionsDialog", "Marker Position"))
@@ -674,8 +676,9 @@ class Ui_OptionsDialog(object):
         self.almostPosDropdown.setItemText(2, _translate("OptionsDialog", "Right"))
         self.browseButtonGroup.setToolTip(
             _translate(
-                "OptionsDialog",
-                "Shows a button on bottom bar whenever cards with the leech tag are found in a deck."
+                "OptionsDialog", "Shows a button on bottom bar whenever cards with the leech\n"
+                                 "                                                         tag are found in a deck.\n"
+                                 "                                                     "
             )
         )
         self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
