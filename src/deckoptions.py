@@ -19,7 +19,7 @@ from ..res.ui.deck_options_form import Ui_DeckOptionsPlaceholder
 class DeckOptions(QWidget):
     config_id: str = ''
 
-    def __init__(self):
+    def __init__(self, did):
         super().__init__(flags=mw.windowFlags())
         self.ui = Ui_DeckOptionsPlaceholder()
         self.ui.setupUi(DeckOptionsPlaceholder=self)
@@ -27,10 +27,12 @@ class DeckOptions(QWidget):
         self.reverse_form = ReverseWidget(flags=mw.windowFlags())
         self.ui.reverseWidget.layout().addWidget(self.reverse_form)
 
-        self.leech_actions_form = ActionsWidget(Config.LEECH_ACTIONS, expanded=False)
+        dids = [int(i) for i in mw.col.decks.deck_and_child_ids(did)]
+
+        self.leech_actions_form = ActionsWidget(Config.LEECH_ACTIONS, expanded=False, dids=dids)
         self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
 
-        self.reverse_actions_form = ActionsWidget(Config.UN_LEECH_ACTIONS, expanded=False)
+        self.reverse_actions_form = ActionsWidget(Config.UN_LEECH_ACTIONS, expanded=False, dids=dids)
         self.ui.scrollAreaLayout.addWidget(self.reverse_actions_form)
 
     def set_config_id(self, config_id: str):
@@ -97,7 +99,7 @@ def build_hooks():
 
 def setup_deck_options(deck_conf: DeckConf):
     form = deck_conf.form
-    form.tab_options = DeckOptions()
+    form.tab_options = DeckOptions(deck_conf.deck['id'])
 
     tab_widget = form.tabWidget
     for i in range(tab_widget.count()):
