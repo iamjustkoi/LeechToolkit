@@ -289,6 +289,7 @@ def append_default_button(parent: QWidget, insert_col=4):
 
         layout = parent.parent().layout()
         pos = layout.indexOf(parent) + 1
+
         if layout is not None:
             if isinstance(layout, QGridLayout):
                 layout.addWidget(parent.default_button, pos, insert_col)
@@ -317,6 +318,7 @@ def load_default_button(
             write-callback.
             """
             write_callback(scoped_conf)
+
             default_button.setVisible(scoped_conf != default_copy)
 
         signal.connect(refresh_button_visibility)
