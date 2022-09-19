@@ -50,9 +50,9 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
-def has_cons_correct(card: anki.cards.Card, num_correct: int):
+def was_correct(card: anki.cards.Card, times_correct: int):
     total_correct = len(get_correct_answers(card))
-    return total_correct > 0 and total_correct % num_correct == 0
+    return total_correct > 0 and total_correct % times_correct == 0
 
 
 def get_correct_answers(card: anki.cards.Card):
@@ -69,10 +69,10 @@ Retrieves all reviews that were correct without any "again" answers.
             ORDER BY id DESC
         '''
     answers = card.col.db.list(cmd)
-    if again_ease not in answers:
-        return answers
-    else:
+
+    if again_ease in answers:
         return answers[:answers.index(again_ease) - 1] if answers.index(again_ease) != 0 else []
+    return answers
 
 
 def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_type: anki.consts.CardType):
@@ -95,7 +95,7 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
             config[Config.REVERSE_OPTIONS][Config.REVERSE_THRESHOLD]
 
         # Lapse updates
-        if has_cons_correct(updated_card, config[Config.REVERSE_OPTIONS][Config.REVERSE_CONS_ANS]):
+        if was_correct(updated_card, config[Config.REVERSE_OPTIONS][Config.REVERSE_CONS_ANS]):
             if ease > 1 and updated_card.lapses > 0 and prev_type == anki.cards.CARD_TYPE_REV:
                 if config[Config.REVERSE_OPTIONS][Config.REVERSE_METHOD] == REV_DECREASE:
                     updated_card.lapses -= 1
