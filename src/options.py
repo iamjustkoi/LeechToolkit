@@ -89,7 +89,7 @@ def append_restore_button(parent: QWidget, insert_col=4):
             layout.insertSpacing(layout.indexOf(parent), 6)
 
 
-def build_restore_button(
+def setup_restore_button(
     default_button: aqt.qt.QPushButton,
     signals: list[pyqtBoundSignal],
     write_callback,
@@ -211,6 +211,7 @@ class OptionsDialog(QDialog):
         self.ui.setupUi(OptionsDialog=self)
 
         self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply).clicked.connect(self.apply)
+        self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.RestoreDefaults).clicked.connect(self.restore_defaults)
 
         self.reverse_form = ReverseWidget(flags=mw.windowFlags())
         self.ui.optionsScrollLayout.addWidget(self.reverse_form)
@@ -266,7 +267,7 @@ class OptionsDialog(QDialog):
             )
         ]
 
-        [build_restore_button(*args) for args in restorable_args]
+        [setup_restore_button(*args) for args in restorable_args]
 
         leech_signals = list(self.leech_form.get_signals().values())
         unleech_signals = list(self.unleech_form.get_signals().values())
@@ -309,6 +310,8 @@ class OptionsDialog(QDialog):
     def append_apply_signals(self, signals: [pyqtBoundSignal]):
         for signal in signals:
             signal.connect(lambda _: self.apply_button.setEnabled(True))
+
+    def restore_defaults(self):
 
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
@@ -360,7 +363,7 @@ class ReverseWidget(QWidget):
         append_restore_button(self.ui.reverseGroup)
 
     def load_restorables(self, reverse_conf: dict, default_conf: dict = None):
-        build_restore_button(
+        setup_restore_button(
             self.ui.reverseGroup.default_button,
             self.get_signals(),
             self.write,
@@ -596,7 +599,7 @@ class ActionsWidget(QWidget):
                 default_config[Action.ADD_TO_QUEUE],
             )
         ]
-        [build_restore_button(*args) for args in restorable_args]
+        [setup_restore_button(*args) for args in restorable_args]
 
     # FLAG
     def load_flag(self, action_conf: dict):
