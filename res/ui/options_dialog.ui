@@ -65,7 +65,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox">
+            <widget class="QCheckBox" name="syncUpdateCheckbox">
              <property name="toolTip">
               <string>Applies reverse/action updates to all cards after syncing to AnkiWeb.</string>
              </property>

@@ -236,7 +236,7 @@ class OptionsDialog(QDialog):
         self.ui.tabWidget.setCurrentIndex(0)
 
     def setup_restorables(self):
-        restorable_signals = {
+        global_signals = {
             'marker_signals': [
                 self.ui.markerGroup.clicked,
                 self.ui.almostCheckbox.stateChanged,
@@ -247,13 +247,19 @@ class OptionsDialog(QDialog):
                 self.ui.browseButtonGroup.clicked,
                 self.ui.browseButtonBrowserCheckbox.stateChanged,
                 self.ui.browseButtonOverviewCheckbox.stateChanged,
-            ]
+            ],
+            'toolbar_signals': [
+                self.ui.toolsOptionsCheckBox.stateChanged,
+            ],
+            'sync_signals': [
+                self.ui.syncUpdateCheckbox.stateChanged,
+            ],
         }
 
-        restorable_args = [
+        global_args = [
             (
                 self.ui.markerGroup.default_button,
-                restorable_signals['marker_signals'],
+                global_signals['marker_signals'],
                 self.write_marker,
                 self.load_marker,
                 self.config[Config.MARKER_OPTIONS],
@@ -261,7 +267,7 @@ class OptionsDialog(QDialog):
             ),
             (
                 self.ui.browseButtonGroup.default_button,
-                restorable_signals['button_signals'],
+                global_signals['button_signals'],
                 self.write_button,
                 self.load_leech_button,
                 self.config[Config.BUTTON_OPTIONS],
@@ -269,24 +275,25 @@ class OptionsDialog(QDialog):
             )
         ]
 
-        [setup_restore_button(*args) for args in restorable_args]
+        for args in global_args:
+            setup_restore_button(*args)
 
-        leech_signals = list(self.leech_form.get_signals().values())
-        unleech_signals = list(self.unleech_form.get_signals().values())
-        [self.append_apply_signals(args[1]) for args in restorable_args]
-        [self.append_apply_signals(action_signals) for action_signals in leech_signals]
-        [self.append_apply_signals(action_signals) for action_signals in unleech_signals]
+        signal_lists = \
+            list(global_signals.values()) \
+            + list(self.leech_form.get_signals().values()) \
+            + list(self.unleech_form.get_signals().values())
 
-        leech_conf, unleech_conf, reverse_conf = (
-            self.config[Config.LEECH_ACTIONS],
-            self.config[Config.UN_LEECH_ACTIONS],
-            self.config[Config.REVERSE_OPTIONS],
-        )
+        for signals in signal_lists:
+            self.append_apply_signals(signals)
+
+        leech_conf = self.config[Config.LEECH_ACTIONS]
+        unleech_conf = self.config[Config.UN_LEECH_ACTIONS]
+        reverse_conf = self.config[Config.REVERSE_OPTIONS]
         self.leech_form.setup_restorables(leech_conf, Config.DEFAULT_CONFIG[Config.LEECH_ACTIONS])
         self.unleech_form.setup_restorables(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
         self.reverse_form.setup_restorables(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
 
-    def append_apply_signals(self, signals: [pyqtBoundSignal]):
+    def append_apply_signals(self, signals: list[pyqtBoundSignal]):
         for signal in signals:
             signal.connect(lambda *args: self.apply_button.setEnabled(True))
 
@@ -329,6 +336,7 @@ class OptionsDialog(QDialog):
 
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
+        self.ui.syncUpdateCheckbox.setChecked(self.config[Config.SYNC_ENABLED])
 
         self.load_marker(self.config[Config.MARKER_OPTIONS])
         self.load_leech_button(self.config[Config.BUTTON_OPTIONS])
@@ -339,6 +347,8 @@ class OptionsDialog(QDialog):
 
     def _write(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
+        self.config[Config.SYNC_ENABLED] = self.ui.syncUpdateCheckbox.isChecked()
+
         self.write_marker(self.config[Config.MARKER_OPTIONS])
         self.write_button(self.config[Config.BUTTON_OPTIONS])
 

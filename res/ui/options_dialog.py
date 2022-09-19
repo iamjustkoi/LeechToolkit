@@ -43,10 +43,10 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox = QtWidgets.QCheckBox(self.OptionsScrollWidget)
         self.toolsOptionsCheckBox.setObjectName("toolsOptionsCheckBox")
         self.optionsScrollLayout.addWidget(self.toolsOptionsCheckBox)
-        self.checkBox = QtWidgets.QCheckBox(self.OptionsScrollWidget)
-        self.checkBox.setChecked(False)
-        self.checkBox.setObjectName("checkBox")
-        self.optionsScrollLayout.addWidget(self.checkBox)
+        self.syncUpdateCheckbox = QtWidgets.QCheckBox(self.OptionsScrollWidget)
+        self.syncUpdateCheckbox.setChecked(False)
+        self.syncUpdateCheckbox.setObjectName("syncUpdateCheckbox")
+        self.optionsScrollLayout.addWidget(self.syncUpdateCheckbox)
         self.markerGroup = QtWidgets.QGroupBox(self.OptionsScrollWidget)
         self.markerGroup.setCheckable(True)
         self.markerGroup.setObjectName("markerGroup")
@@ -657,10 +657,10 @@ class Ui_OptionsDialog(object):
         _translate = QtCore.QCoreApplication.translate
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
-        self.checkBox.setToolTip(
+        self.syncUpdateCheckbox.setToolTip(
             _translate("OptionsDialog", "Applies reverse/action updates to all cards after syncing to AnkiWeb.")
         )
-        self.checkBox.setText(_translate("OptionsDialog", "Update collection on-sync"))
+        self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
         self.markerGroup.setToolTip(_translate("OptionsDialog", "Show a marker on leech cards during review."))
         self.markerGroup.setTitle(_translate("OptionsDialog", "Leech Mark"))
         self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
