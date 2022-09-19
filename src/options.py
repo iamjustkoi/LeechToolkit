@@ -57,7 +57,7 @@ def on_options_called(*args):
     options.exec()
 
 
-def append_default_button(parent: QWidget, insert_col=4):
+def append_restore_button(parent: QWidget, insert_col=4):
     if not hasattr(parent, 'button'):
         parent.default_button = aqt.qt.QPushButton(parent)
 
@@ -78,7 +78,9 @@ def append_default_button(parent: QWidget, insert_col=4):
 
         if layout is not None:
             if isinstance(layout, QGridLayout):
-                layout.addWidget(parent.default_button, pos, insert_col)
+                print(f'(New) grid layout item adding...')
+                layout.addItem(parent.default_button, pos, insert_col)
+                # layout.addWidget(parent.default_button, pos, insert_col)
             elif isinstance(layout, QBoxLayout):
                 layout.insertWidget(pos, parent.default_button, alignment=Qt.AlignRight | Qt.AlignBottom)
             else:
@@ -87,7 +89,7 @@ def append_default_button(parent: QWidget, insert_col=4):
             layout.insertSpacing(layout.indexOf(parent), 6)
 
 
-def load_default_button(
+def build_restore_button(
     default_button: aqt.qt.QPushButton,
     signals: list[pyqtBoundSignal],
     write_callback,
@@ -104,7 +106,6 @@ def load_default_button(
             write-callback.
             """
             write_callback(scoped_conf)
-
             default_button.setVisible(scoped_conf != default_copy)
 
         signal.connect(refresh_button_visibility)
@@ -209,6 +210,8 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
+        self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply).clicked.connect(self.apply)
+
         self.reverse_form = ReverseWidget(flags=mw.windowFlags())
         self.ui.optionsScrollLayout.addWidget(self.reverse_form)
 
@@ -218,53 +221,58 @@ class OptionsDialog(QDialog):
         self.unleech_form = ActionsWidget(Config.UN_LEECH_ACTIONS)
         self.ui.actionsScrollLayout.addWidget(self.unleech_form)
 
-        append_default_button(self.ui.markerGroup)
-        append_default_button(self.ui.browseButtonGroup)
+        self.apply_button = self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply)
+        self.apply_button.setEnabled(False)
+
+        append_restore_button(self.ui.markerGroup)
+        append_restore_button(self.ui.browseButtonGroup)
 
         self._load()
 
         # Just in case
         self.ui.tabWidget.setCurrentIndex(0)
 
-    def load_default_buttons(self):
-        all_args = []
+    def load_restorables(self):
+        restorable_signals = {
+            'marker_signals': [
+                self.ui.markerGroup.clicked,
+                self.ui.almostCheckbox.stateChanged,
+                self.ui.almostPosDropdown.currentIndexChanged,
+                self.ui.almostBackCheckbox.stateChanged,
+            ],
+            'button_signals': [
+                self.ui.browseButtonGroup.clicked,
+                self.ui.browseButtonBrowserCheckbox.stateChanged,
+                self.ui.browseButtonOverviewCheckbox.stateChanged,
+            ]
+        }
 
-        marker_signals = [
-            # self.ui.showMarkerCheckbox.stateChanged,
-            self.ui.markerGroup.clicked,
-            self.ui.almostCheckbox.stateChanged,
-            self.ui.almostPosDropdown.currentIndexChanged,
-            self.ui.almostBackCheckbox.stateChanged,
-        ]
-        all_args.append(
+        restorable_args = [
             (
                 self.ui.markerGroup.default_button,
-                marker_signals,
+                restorable_signals['marker_signals'],
                 self.write_marker,
                 self.load_marker,
                 self.config[Config.MARKER_OPTIONS],
                 Config.DEFAULT_CONFIG[Config.MARKER_OPTIONS]
-            )
-        )
-
-        button_signals = [
-            # self.ui.browseButtonCheckbox.stateChanged,
-            self.ui.browseButtonGroup.clicked,
-            self.ui.browseButtonBrowserCheckbox.stateChanged,
-            self.ui.browseButtonOverviewCheckbox.stateChanged,
-        ]
-        all_args.append(
+            ),
             (
                 self.ui.browseButtonGroup.default_button,
-                button_signals,
+                restorable_signals['button_signals'],
                 self.write_button,
                 self.load_leech_button,
                 self.config[Config.BUTTON_OPTIONS],
                 Config.DEFAULT_CONFIG[Config.BUTTON_OPTIONS]
             )
-        )
+        ]
 
-        [load_default_button(*args) for args in all_args]
+        [build_restore_button(*args) for args in restorable_args]
+
+        leech_signals = list(self.leech_form.get_signals().values())
+        unleech_signals = list(self.unleech_form.get_signals().values())
+        [self.append_apply_signals(args[1]) for args in restorable_args]
+        [self.append_apply_signals(action_signals) for action_signals in leech_signals]
+        [self.append_apply_signals(action_signals) for action_signals in unleech_signals]
 
     def load_marker(self, marker_conf: dict):
         self.ui.markerGroup.setChecked(marker_conf[Config.SHOW_LEECH_MARKER])
@@ -276,6 +284,31 @@ class OptionsDialog(QDialog):
         self.ui.browseButtonGroup.setChecked(button_conf[Config.SHOW_BUTTON])
         self.ui.browseButtonBrowserCheckbox.setChecked(button_conf[Config.SHOW_BROWSER_BUTTON])
         self.ui.browseButtonOverviewCheckbox.setChecked(button_conf[Config.SHOW_OVERVIEW_BUTTON])
+
+    def write_marker(self, marker_conf: dict):
+        marker_conf[Config.SHOW_LEECH_MARKER] = self.ui.markerGroup.isChecked()
+        marker_conf[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
+        marker_conf[Config.MARKER_POSITION] = self.ui.almostPosDropdown.currentIndex()
+        marker_conf[Config.ONLY_SHOW_BACK_MARKER] = self.ui.almostBackCheckbox.isChecked()
+
+    def write_button(self, button_conf: dict):
+        button_conf[Config.SHOW_BUTTON] = self.ui.browseButtonGroup.isChecked()
+        button_conf[Config.SHOW_BROWSER_BUTTON] = self.ui.browseButtonBrowserCheckbox.isChecked()
+        button_conf[Config.SHOW_OVERVIEW_BUTTON] = self.ui.browseButtonOverviewCheckbox.isChecked()
+
+    def apply(self):
+        self._write()
+        bind_actions()
+        mw.reset()
+        self.apply_button.setEnabled(False)
+
+    def accept(self) -> None:
+        self.apply()
+        super().accept()
+
+    def append_apply_signals(self, signals: [pyqtBoundSignal]):
+        for signal in signals:
+            signal.connect(lambda _: self.apply_button.setEnabled(True))
 
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
@@ -290,26 +323,15 @@ class OptionsDialog(QDialog):
         )
 
         self.leech_form.load_ui(leech_conf)
-        self.leech_form.load_default_buttons(leech_conf, Config.DEFAULT_CONFIG[Config.LEECH_ACTIONS])
+        self.leech_form.load_restorables(leech_conf, Config.DEFAULT_CONFIG[Config.LEECH_ACTIONS])
 
         self.unleech_form.load_ui(unleech_conf)
-        self.unleech_form.load_default_buttons(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
+        self.unleech_form.load_restorables(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
 
         self.reverse_form.load_ui(reverse_conf)
-        self.reverse_form.load_default_button(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
+        self.reverse_form.load_restorables(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
 
-        self.load_default_buttons()
-
-    def write_marker(self, marker_conf: dict):
-        marker_conf[Config.SHOW_LEECH_MARKER] = self.ui.markerGroup.isChecked()
-        marker_conf[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
-        marker_conf[Config.MARKER_POSITION] = self.ui.almostPosDropdown.currentIndex()
-        marker_conf[Config.ONLY_SHOW_BACK_MARKER] = self.ui.almostBackCheckbox.isChecked()
-
-    def write_button(self, button_conf: dict):
-        button_conf[Config.SHOW_BUTTON] = self.ui.browseButtonGroup.isChecked()
-        button_conf[Config.SHOW_BROWSER_BUTTON] = self.ui.browseButtonBrowserCheckbox.isChecked()
-        button_conf[Config.SHOW_OVERVIEW_BUTTON] = self.ui.browseButtonOverviewCheckbox.isChecked()
+        self.load_restorables()
 
     def _write(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -323,12 +345,6 @@ class OptionsDialog(QDialog):
         # Save config
         self.manager.save_config()
 
-    def accept(self) -> None:
-        self._write()
-        super().accept()
-        bind_actions()
-        mw.reset()
-
 
 class ReverseWidget(QWidget):
     def __init__(self, flags):
@@ -341,24 +357,26 @@ class ReverseWidget(QWidget):
 
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
 
-        append_default_button(self.ui.reverseGroup)
+        append_restore_button(self.ui.reverseGroup)
 
-    def load_default_button(self, reverse_conf: dict, default_conf: dict = None):
-        reverse_signals = [
+    def load_restorables(self, reverse_conf: dict, default_conf: dict = None):
+        build_restore_button(
+            self.ui.reverseGroup.default_button,
+            self.get_signals(),
+            self.write,
+            self.load_ui,
+            reverse_conf,
+            default_conf,
+        )
+
+    def get_signals(self):
+        return [
             self.ui.reverseGroup.clicked,
             self.ui.useLeechThresholdCheckbox.stateChanged,
             self.ui.reverseMethodDropdown.currentIndexChanged,
             self.ui.reverseThresholdSpinbox.valueChanged,
             self.ui.consAnswerSpinbox.valueChanged,
         ]
-        load_default_button(
-            default_button=self.ui.reverseGroup.default_button,
-            signals=reverse_signals,
-            write_callback=self.write,
-            load_callback=self.load_ui,
-            scoped_conf=reverse_conf,
-            default_scoped_conf=default_conf,
-        )
 
     def load_ui(self, reverse_config: dict):
         self.ui.reverseGroup.setChecked(reverse_config[Config.REVERSE_ENABLED])
@@ -435,15 +453,150 @@ class ActionsWidget(QWidget):
         self.ui.expandoButton.pressed.connect(lambda: self.toggle_expando(self.ui.expandoButton))
         self.toggle_expando(self.ui.expandoButton, expanded)
 
-        append_default_button(self.ui.flagGroup)
-        append_default_button(self.ui.suspendGroup)
-        append_default_button(self.ui.addTagGroup)
-        append_default_button(self.ui.removeTagGroup)
-        append_default_button(self.ui.forgetGroup)
-        append_default_button(self.ui.editFieldsGroup)
-        append_default_button(self.ui.deckMoveGroup)
-        append_default_button(self.ui.rescheduleGroup)
-        append_default_button(self.ui.queueGroup)
+        append_restore_button(self.ui.flagGroup)
+        append_restore_button(self.ui.suspendGroup)
+        append_restore_button(self.ui.addTagGroup)
+        append_restore_button(self.ui.removeTagGroup)
+        append_restore_button(self.ui.forgetGroup)
+        append_restore_button(self.ui.editFieldsGroup)
+        append_restore_button(self.ui.deckMoveGroup)
+        append_restore_button(self.ui.rescheduleGroup)
+        append_restore_button(self.ui.queueGroup)
+
+    def get_signals(self):
+        return {
+            'flag_signals': [
+                self.ui.flagGroup.clicked,
+                self.ui.flagDropdown.currentTextChanged,
+            ],
+            'suspend_signals': [
+                self.ui.suspendGroup.clicked,
+                self.ui.suspendOnButton.toggled,
+                self.ui.suspendOffButton.toggled,
+            ],
+            'add_tags_signals': [
+                self.ui.addTagGroup.clicked,
+                self.ui.addTagsLine.textChanged,
+            ],
+            'remove_tags_signals': [
+                self.ui.removeTagGroup.clicked,
+                self.ui.removeTagsLine.textChanged,
+            ],
+            'forget_signals': [
+                self.ui.forgetGroup.clicked,
+                self.ui.forgetOnRadio.toggled,
+                self.ui.forgetOffRadio.toggled,
+                self.ui.forgetResetCheckbox.stateChanged,
+                self.ui.forgetRestorePosCheckbox.stateChanged,
+            ],
+            'edit_fields_signals': [
+                self.ui.editFieldsGroup.clicked,
+                self.ui.editFieldsList.currentRowChanged,
+            ],
+            'deck_move_signals': [
+                self.ui.deckMoveGroup.clicked,
+                self.ui.deckMoveLine.textChanged,
+            ],
+            'reschedule_signals': [
+                self.ui.rescheduleGroup.clicked,
+                self.ui.rescheduleFromDays.valueChanged,
+                self.ui.rescheduleToDays.valueChanged,
+                self.ui.rescheduleResetCheckbox.stateChanged,
+            ],
+            'queue_signals': [
+                self.ui.queueGroup.clicked,
+                self.ui.queueCurrentDeckCheckbox.stateChanged,
+                self.ui.queueFromSpinbox.valueChanged,
+                self.ui.queueToSpinbox.valueChanged,
+                self.ui.queueFromDropdown.currentIndexChanged,
+                self.ui.queueToDropdown.currentIndexChanged,
+                self.ui.queueSimilarCheckbox.stateChanged,
+                self.ui.queueIncludeFieldsCheckbox.stateChanged,
+                self.ui.queueExcludedFieldList.currentRowChanged,
+                self.ui.queueExcludeTextEdit.textChanged,
+                self.ui.queueRatioSlider.valueChanged,
+                self.ui.queueSiblingCheckbox.stateChanged,
+            ],
+        }
+
+    def load_restorables(self, actions_config: dict, default_config):
+        # Remove any re-assignment potential issues
+        signals = self.get_signals()
+        restorable_args = [
+            (
+                self.ui.flagGroup.default_button,
+                signals['flag_signals'],
+                self.write_flag,
+                self.load_flag,
+                actions_config[Action.FLAG],
+                default_config[Action.FLAG],
+            ),
+            (
+                self.ui.suspendGroup.default_button,
+                signals['suspend_signals'],
+                self.write_suspend,
+                self.load_suspend,
+                actions_config[Action.SUSPEND],
+                default_config[Action.SUSPEND],
+            ),
+            (
+                self.ui.addTagGroup.default_button,
+                signals['add_tags_signals'],
+                self.write_add_tags,
+                self.load_add_tags,
+                actions_config[Action.ADD_TAGS],
+                default_config[Action.ADD_TAGS],
+            ),
+            (
+                self.ui.removeTagGroup.default_button,
+                signals['remove_tags_signals'],
+                self.write_remove_tags,
+                self.load_remove_tags,
+                actions_config[Action.REMOVE_TAGS],
+                default_config[Action.REMOVE_TAGS],
+            ),
+            (
+                self.ui.forgetGroup.default_button,
+                signals['forget_signals'],
+                self.write_forget,
+                self.load_forget,
+                actions_config[Action.FORGET],
+                default_config[Action.FORGET],
+            ),
+            (
+                self.ui.editFieldsGroup.default_button,
+                signals['edit_fields_signals'],
+                self.write_edit_fields,
+                self.load_edit_fields,
+                actions_config[Action.EDIT_FIELDS],
+                default_config[Action.EDIT_FIELDS],
+            ),
+            (
+                self.ui.deckMoveGroup.default_button,
+                signals['deck_move_signals'],
+                self.write_move_deck,
+                self.load_move_deck,
+                actions_config[Action.MOVE_DECK],
+                default_config[Action.MOVE_DECK],
+            ),
+            (
+                self.ui.rescheduleGroup.default_button,
+                signals['reschedule_signals'],
+                self.write_reschedule,
+                self.load_reschedule,
+                actions_config[Action.RESCHEDULE],
+                default_config[Action.RESCHEDULE],
+            ),
+            (
+                self.ui.queueGroup.default_button,
+                signals['queue_signals'],
+                self.write_add_to_queue,
+                self.load_add_to_queue,
+                actions_config[Action.ADD_TO_QUEUE],
+                default_config[Action.ADD_TO_QUEUE],
+            )
+        ]
+        [build_restore_button(*args) for args in restorable_args]
 
     # FLAG
     def load_flag(self, action_conf: dict):
@@ -561,163 +714,6 @@ class ActionsWidget(QWidget):
 
         self.ui.queueLabelTopPos.setText(str(top))
         self.ui.queueLabelBottomPos.setText(str(bottom))
-
-    def load_default_buttons(self, actions_config: dict, default_config):
-        # Remove any re-assignment potential issues
-        all_args = []
-
-        flag_signals = [
-            self.ui.flagGroup.clicked,
-            self.ui.flagDropdown.currentTextChanged,
-        ]
-        all_args.append(
-            (
-                self.ui.flagGroup.default_button,
-                flag_signals,
-                self.write_flag,
-                self.load_flag,
-                actions_config[Action.FLAG],
-                default_config[Action.FLAG],
-            )
-        )
-
-        suspend_signals = [
-            self.ui.suspendGroup.clicked,
-            self.ui.suspendOnButton.toggled,
-            self.ui.suspendOffButton.toggled,
-        ]
-        all_args.append(
-            (
-                self.ui.suspendGroup.default_button,
-                suspend_signals,
-                self.write_suspend,
-                self.load_suspend,
-                actions_config[Action.SUSPEND],
-                default_config[Action.SUSPEND],
-            )
-        )
-
-        add_tags_signals = [
-            self.ui.addTagGroup.clicked,
-            self.ui.addTagsLine.textChanged,
-        ]
-        all_args.append(
-            (
-                self.ui.addTagGroup.default_button,
-                add_tags_signals,
-                self.write_add_tags,
-                self.load_add_tags,
-                actions_config[Action.ADD_TAGS],
-                default_config[Action.ADD_TAGS],
-            )
-        )
-
-        remove_tags_signals = [
-            self.ui.removeTagGroup.clicked,
-            self.ui.removeTagsLine.textChanged,
-        ]
-        all_args.append(
-            (
-                self.ui.removeTagGroup.default_button,
-                remove_tags_signals,
-                self.write_remove_tags,
-                self.load_remove_tags,
-                actions_config[Action.REMOVE_TAGS],
-                default_config[Action.REMOVE_TAGS],
-            )
-        )
-
-        forget_signals = [
-            self.ui.forgetGroup.clicked,
-            self.ui.forgetOnRadio.toggled,
-            self.ui.forgetOffRadio.toggled,
-            self.ui.forgetResetCheckbox.stateChanged,
-            self.ui.forgetRestorePosCheckbox.stateChanged,
-        ]
-        all_args.append(
-            (
-                self.ui.forgetGroup.default_button,
-                forget_signals,
-                self.write_forget,
-                self.load_forget,
-                actions_config[Action.FORGET],
-                default_config[Action.FORGET],
-            )
-        )
-
-        edit_fields_signals = [
-            self.ui.editFieldsGroup.clicked,
-            self.ui.editFieldsList.currentRowChanged,
-        ]
-        all_args.append(
-            (
-                self.ui.editFieldsGroup.default_button,
-                edit_fields_signals,
-                self.write_edit_fields,
-                self.load_edit_fields,
-                actions_config[Action.EDIT_FIELDS],
-                default_config[Action.EDIT_FIELDS],
-            )
-        )
-
-        deck_move_signals = [
-            self.ui.deckMoveGroup.clicked,
-            self.ui.deckMoveLine.textChanged,
-        ]
-        all_args.append(
-            (
-                self.ui.deckMoveGroup.default_button,
-                deck_move_signals,
-                self.write_move_deck,
-                self.load_move_deck,
-                actions_config[Action.MOVE_DECK],
-                default_config[Action.MOVE_DECK],
-            )
-        )
-
-        reschedule_signals = [
-            self.ui.rescheduleGroup.clicked,
-            self.ui.rescheduleFromDays.valueChanged,
-            self.ui.rescheduleToDays.valueChanged,
-            self.ui.rescheduleResetCheckbox.stateChanged,
-        ]
-        all_args.append(
-            (
-                self.ui.rescheduleGroup.default_button,
-                reschedule_signals,
-                self.write_reschedule,
-                self.load_reschedule,
-                actions_config[Action.RESCHEDULE],
-                default_config[Action.RESCHEDULE],
-            )
-        )
-
-        queue_signals = [
-            self.ui.queueGroup.clicked,
-            self.ui.queueCurrentDeckCheckbox.stateChanged,
-            self.ui.queueFromSpinbox.valueChanged,
-            self.ui.queueToSpinbox.valueChanged,
-            self.ui.queueFromDropdown.currentIndexChanged,
-            self.ui.queueToDropdown.currentIndexChanged,
-            self.ui.queueSimilarCheckbox.stateChanged,
-            self.ui.queueIncludeFieldsCheckbox.stateChanged,
-            self.ui.queueExcludedFieldList.currentRowChanged,
-            self.ui.queueExcludeTextEdit.textChanged,
-            self.ui.queueRatioSlider.valueChanged,
-            self.ui.queueSiblingCheckbox.stateChanged,
-        ]
-        all_args.append(
-            (
-                self.ui.queueGroup.default_button,
-                queue_signals,
-                self.write_add_to_queue,
-                self.load_add_to_queue,
-                actions_config[Action.ADD_TO_QUEUE],
-                default_config[Action.ADD_TO_QUEUE],
-            )
-        )
-
-        [load_default_button(*args) for args in all_args]
 
     def load_ui(self, actions_conf: dict):
         # A little easier to read/debug
