@@ -105,6 +105,7 @@ class Action:
 class Config:
 
     TOOLBAR_ENABLED = 'showToolsMenuOptions'
+    SYNC_ENABLED = 'applyOnSync'
 
     MARKER_OPTIONS = 'markerOptions'
     SHOW_LEECH_MARKER = 'showLeechMarker'
@@ -175,6 +176,7 @@ class Config:
 
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
+        SYNC_ENABLED: False,
         MARKER_OPTIONS: {
             SHOW_LEECH_MARKER: True,
             USE_ALMOST_MARKER: True,
