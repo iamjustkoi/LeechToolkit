@@ -44,7 +44,7 @@
             <x>0</x>
             <y>0</y>
             <width>530</width>
-            <height>198</height>
+            <height>221</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -61,6 +61,19 @@
             <widget class="QCheckBox" name="toolsOptionsCheckBox">
              <property name="text">
               <string>Show options in Tools menu</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="checkBox">
+             <property name="toolTip">
+              <string>Applies reverse/action updates to all cards after syncing to AnkiWeb.</string>
+             </property>
+             <property name="text">
+              <string>Update collection on-sync</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
              </property>
             </widget>
            </item>
