@@ -10,9 +10,25 @@ from difflib import SequenceMatcher
 
 import anki.cards
 import anki.decks
-from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW
 
-from .consts import Action, Macro, EditAction, RescheduleAction, QueueAction
+from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW
+from aqt import utils
+
+from .consts import (
+    Action,
+    Macro,
+    EditAction,
+    RescheduleAction,
+    QueueAction,
+    Config,
+    String,
+    LEECH_TAG,
+    REV_DECREASE,
+    REV_RESET,
+)
+
+TOOLTIP_ENABLED = True
+TOOLTIP_TIME = 5000
 
 
 def get_formatted_tag(card: anki.cards.Card, tag: str):
@@ -34,8 +50,75 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
+def has_cons_correct(card: anki.cards.Card, num_correct: int):
+    total_correct = len(get_correct_answers(card))
+    return total_correct > 0 and total_correct % num_correct == 0
+
+
+def get_correct_answers(card: anki.cards.Card):
+    """
+Retrieves all reviews that were correct without any "again" answers.
+    :param card: card to use as reference
+    :return: a list of correct answers (2-4)
+    """
+    again_ease = 1
+
+    cmd = f'''
+            SELECT ease FROM revlog 
+            WHERE cid is {card.id} and ease is not 0
+            ORDER BY id DESC
+        '''
+    answers = card.col.db.list(cmd)
+    if again_ease not in answers:
+        return answers
+    else:
+        return answers[:answers.index(again_ease) - 1] if answers.index(again_ease) != 0 else []
+
+
+def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_type: anki.consts.CardType):
+    """
+    Runs reverse leech updates to the input card and returns an updated card object.
+    
+        :param config: toolkit config
+        :param card: Card to update
+        :param ease: review-answer input
+        :param prev_type: previous type of the current card used for determining changes
+        :return: updated card object
+    """
+    updated_card = card.col.get_card(card.id)
+    tooltip_items = []
+
+    if config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
+        deck_config = card.col.decks.config_dict_for_deck_id(card.current_deck_id())
+        use_leech_threshold = config[Config.REVERSE_OPTIONS][Config.REVERSE_USE_LEECH_THRESHOLD]
+        threshold = deck_config['lapse']['leechFails'] if use_leech_threshold else \
+            config[Config.REVERSE_OPTIONS][Config.REVERSE_THRESHOLD]
+
+        # Lapse updates
+        if has_cons_correct(updated_card, config[Config.REVERSE_OPTIONS][Config.REVERSE_CONS_ANS]):
+            if ease > 1 and updated_card.lapses > 0 and prev_type == anki.cards.CARD_TYPE_REV:
+                if config[Config.REVERSE_OPTIONS][Config.REVERSE_METHOD] == REV_DECREASE:
+                    updated_card.lapses -= 1
+                    tooltip_items.append(String.LAPSES_DECREASED)
+                elif config[Config.REVERSE_OPTIONS][Config.REVERSE_METHOD] == REV_RESET:
+                    updated_card.lapses = 0
+                    tooltip_items.append(String.LAPSES_RESET)
+
+        # Un-leech
+        if updated_card.lapses < threshold:
+            if ease > 1 and updated_card.note().has_tag(LEECH_TAG) and prev_type == anki.cards.CARD_TYPE_REV:
+                updated_card.note().remove_tag(LEECH_TAG)
+                tooltip_items.append(String.LEECH_REVERSED)
+
+                updated_card = run_action_updates(updated_card, config[Config.UN_LEECH_ACTIONS], reload=False)
+
+        if TOOLTIP_ENABLED and len(tooltip_items) > 0:
+            utils.tooltip('\n\n'.join(tooltip_items), period=TOOLTIP_TIME)
+    return updated_card
+
+
 # Actions format: actionName: {enabled: bool, key: val}
-def run_actions(card: anki.cards.Card, actions_conf: dict, reload=True):
+def run_action_updates(card: anki.cards.Card, actions_conf: dict, reload=True):
     updated_card = card.col.get_card(card.id) if reload else card
 
     def try_deck_move():
