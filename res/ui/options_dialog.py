@@ -30,7 +30,7 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 198))
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 221))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -43,6 +43,10 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox = QtWidgets.QCheckBox(self.OptionsScrollWidget)
         self.toolsOptionsCheckBox.setObjectName("toolsOptionsCheckBox")
         self.optionsScrollLayout.addWidget(self.toolsOptionsCheckBox)
+        self.checkBox = QtWidgets.QCheckBox(self.OptionsScrollWidget)
+        self.checkBox.setChecked(False)
+        self.checkBox.setObjectName("checkBox")
+        self.optionsScrollLayout.addWidget(self.checkBox)
         self.markerGroup = QtWidgets.QGroupBox(self.OptionsScrollWidget)
         self.markerGroup.setCheckable(True)
         self.markerGroup.setObjectName("markerGroup")
@@ -653,16 +657,20 @@ class Ui_OptionsDialog(object):
         _translate = QtCore.QCoreApplication.translate
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
+        self.checkBox.setToolTip(
+            _translate("OptionsDialog", "Applies reverse/action updates to all cards after syncing to AnkiWeb.")
+        )
+        self.checkBox.setText(_translate("OptionsDialog", "Update collection on-sync"))
         self.markerGroup.setToolTip(_translate("OptionsDialog", "Show a marker on leech cards during review."))
         self.markerGroup.setTitle(_translate("OptionsDialog", "Leech Mark"))
         self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
         self.almostCheckbox.setToolTip(
             _translate(
                 "OptionsDialog", "When reviewing, displays a mark below the\n"
-                                 "                                                                     current card\n"
-                                 "                                                                     if\n"
-                                 "                                                                     it\'s about to be marked as a leech.\n"
-                                 "                                                                 "
+                                 "                  current card\n"
+                                 "                  if\n"
+                                 "                  it\'s about to be marked as a leech.\n"
+                                 "                 "
             )
         )
         self.almostCheckbox.setText(_translate("OptionsDialog", "Show unique marker for about-to-be-leeched cards"))
@@ -673,8 +681,8 @@ class Ui_OptionsDialog(object):
         self.browseButtonGroup.setToolTip(
             _translate(
                 "OptionsDialog", "Shows a button on bottom bar whenever cards with the leech\n"
-                                 "                                                         tag are found in a deck.\n"
-                                 "                                                     "
+                                 "               tag are found in a deck.\n"
+                                 "              "
             )
         )
         self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
