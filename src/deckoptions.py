@@ -32,8 +32,8 @@ class DeckOptions(QWidget):
         self.leech_actions_form = ActionsWidget(Config.LEECH_ACTIONS, expanded=False, dids=dids)
         self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
 
-        self.reverse_actions_form = ActionsWidget(Config.UN_LEECH_ACTIONS, expanded=False, dids=dids)
-        self.ui.scrollAreaLayout.addWidget(self.reverse_actions_form)
+        self.unleech_actions_from = ActionsWidget(Config.UN_LEECH_ACTIONS, expanded=False, dids=dids)
+        self.ui.scrollAreaLayout.addWidget(self.unleech_actions_from)
 
     def set_config_id(self, config_id: str):
         self.config_id = config_id
@@ -42,23 +42,16 @@ class DeckOptions(QWidget):
         deck_conf = LeechToolkitConfigManager(mw).get_deck_conf(self.config_id)
         global_conf = LeechToolkitConfigManager(mw).get_global_deck_conf()
 
-        self.leech_actions_form.load_default_buttons(
-            deck_conf[Config.LEECH_ACTIONS],
-            global_conf[Config.LEECH_ACTIONS],
-        )
-        self.reverse_actions_form.load_default_buttons(
+        self.leech_actions_form.load_restorables(deck_conf[Config.LEECH_ACTIONS], global_conf[Config.LEECH_ACTIONS], )
+        self.unleech_actions_from.load_restorables(
             deck_conf[Config.UN_LEECH_ACTIONS],
-            global_conf[Config.UN_LEECH_ACTIONS],
-        )
-        self.reverse_form.load_default_button(
-            deck_conf[Config.REVERSE_OPTIONS],
-            global_conf[Config.REVERSE_OPTIONS],
-        )
+            global_conf[Config.UN_LEECH_ACTIONS], )
+        self.reverse_form.load_restorables(deck_conf[Config.REVERSE_OPTIONS], global_conf[Config.REVERSE_OPTIONS], )
 
     def load_ui(self):
         deck_conf = LeechToolkitConfigManager(mw).get_deck_conf(self.config_id)
         self.leech_actions_form.load_ui(deck_conf[Config.LEECH_ACTIONS])
-        self.reverse_actions_form.load_ui(deck_conf[Config.UN_LEECH_ACTIONS])
+        self.unleech_actions_from.load_ui(deck_conf[Config.UN_LEECH_ACTIONS])
         self.reverse_form.load_ui(deck_conf[Config.REVERSE_OPTIONS])
 
     def save(self):
@@ -66,7 +59,7 @@ class DeckOptions(QWidget):
 
         # is not same as global: save
         self.leech_actions_form.write_all(deck_conf[Config.LEECH_ACTIONS])
-        self.reverse_actions_form.write_all(deck_conf[Config.UN_LEECH_ACTIONS])
+        self.unleech_actions_from.write_all(deck_conf[Config.UN_LEECH_ACTIONS])
         self.reverse_form.write(deck_conf[Config.REVERSE_OPTIONS])
 
         def get_diffs(conf: dict, comp_conf: dict):
