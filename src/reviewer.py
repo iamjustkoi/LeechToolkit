@@ -11,7 +11,7 @@ from anki.consts import CardType
 from anki.decks import DeckId
 from aqt import reviewer, webview, gui_hooks, mw
 
-from .actions import run_actions
+from .updates import run_action_updates, run_reverse_updates
 from .config import LeechToolkitConfigManager, merge_fields
 from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET, String
 
@@ -60,31 +60,6 @@ def mark_leeched(card: anki.cards.Card):
     setattr(card, was_leech_attr, True)
 
 
-def has_cons_correct(card: cards.Card, num_correct: int):
-    total_correct = len(get_correct_answers(card))
-    return total_correct > 0 and total_correct % num_correct == 0
-
-
-def get_correct_answers(card: cards.Card):
-    """
-Retrieves all reviews that were correct without any "again" answers.
-    :param card: card to use as reference
-    :return: a list of correct answers (2-4)
-    """
-    again_ease = 1
-
-    cmd = f'''
-            SELECT ease FROM revlog 
-            WHERE cid is {card.id} and ease is not 0
-            ORDER BY id DESC
-        '''
-    answers = card.col.db.list(cmd)
-    if again_ease not in answers:
-        return answers
-    else:
-        return answers[:answers.index(again_ease) - 1] if answers.index(again_ease) != 0 else []
-
-
 def was_card_updated(original_card, updated_card):
     changed_items = [item for item in original_card.__dict__.items() if item[1] != updated_card.__dict__.get(item[0])]
     return len(changed_items) > 0
@@ -96,7 +71,7 @@ def set_marker_color(color: str):
 
 def show_marker(show=False):
     """
-Changes the display state of the run_actions marker.
+Changes the display state of the run_action_updates marker.
     :param show: new visibility
     """
     if show:
@@ -121,8 +96,6 @@ class ReviewManager:
         if not mw.col.decks.is_filtered(did):
             self.page_content = content
             self.load_options(did)
-
-            print(f'    self.toolkit_config: {self.toolkit_config}')
 
     def load_options(self, did: DeckId = None):
         self.did = did if did else self.did
@@ -179,61 +152,23 @@ class ReviewManager:
     def on_show_front(self, card: cards.Card):
         self.update_marker(card, True)
         # @DEBUG
-        # self.reverse_update(card, 2, anki.cards.CARD_TYPE_REV)
-        # run_actions(card, self.toolkit_config[Config.LEECH_ACTIONS])
+        # print(f'orig ____ {cards.Card().__dict__}')
+        # run_action_updates(card, self.toolkit_config[Config.LEECH_ACTIONS])
+        # print(f'____    {run_reverse_updates(self.toolkit_config, card, 2, anki.cards.CARD_TYPE_REV).__dict__}')
 
     def on_answer(self, context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         updated_card = card.col.get_card(card.id)
 
         if hasattr(card, prev_type_attr):
-            updated_card = self.reverse_update(card, ease, card.__getattribute__(prev_type_attr))
+            updated_card = run_reverse_updates(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
             delattr(card, prev_type_attr)
 
         if hasattr(card, was_leech_attr):
-            updated_card = run_actions(card, self.toolkit_config[Config.LEECH_ACTIONS])
+            updated_card = run_action_updates(card, self.toolkit_config[Config.LEECH_ACTIONS])
             delattr(card, was_leech_attr)
 
         if was_card_updated(card, updated_card):
             flush_card(updated_card)
-
-    def reverse_update(self, card: anki.cards.Card, ease: int, prev_type: CardType):
-        """
-    Runs reverse leech updates to the input card and returns an updated card object.
-        :param card: Card to update
-        :param ease: review-answer input
-        :param prev_type: previous type of the current card used for determining changes
-        :return: updated card object
-        """
-        updated_card = card.col.get_card(card.id)
-        tooltip_items = []
-
-        if self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
-            deck_config = card.col.decks.config_dict_for_deck_id(card.current_deck_id())
-            use_leech_threshold = self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_USE_LEECH_THRESHOLD]
-            threshold = deck_config['lapse']['leechFails'] if use_leech_threshold else \
-                self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_THRESHOLD]
-
-            # Lapse updates
-            if has_cons_correct(updated_card, self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_CONS_ANS]):
-                if ease > 1 and updated_card.lapses > 0 and prev_type == cards.CARD_TYPE_REV:
-                    if self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_METHOD] == REV_DECREASE:
-                        updated_card.lapses -= 1
-                        tooltip_items.append(String.LAPSES_DECREASED)
-                    elif self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_METHOD] == REV_RESET:
-                        updated_card.lapses = 0
-                        tooltip_items.append(String.LAPSES_RESET)
-
-            # Un-leech
-            if updated_card.lapses < threshold:
-                if ease > 1 and updated_card.note().has_tag(LEECH_TAG) and prev_type == cards.CARD_TYPE_REV:
-                    updated_card.note().remove_tag(LEECH_TAG)
-                    tooltip_items.append(String.LEECH_REVERSED)
-
-                    updated_card = run_actions(updated_card, self.toolkit_config[Config.UN_LEECH_ACTIONS], reload=False)
-
-            if TOOLTIP_ENABLED and len(tooltip_items) > 0:
-                aqt.utils.tooltip('\n\n'.join(tooltip_items), period=TOOLTIP_TIME)
-        return updated_card
 
     def update_marker(self, card: cards.Card, is_front: bool):
         """
