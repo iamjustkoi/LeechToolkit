@@ -78,15 +78,15 @@ def append_restore_button(parent: QWidget, insert_col=4):
 
         if layout is not None:
             if isinstance(layout, QGridLayout):
-                print(f'(New) grid layout item adding...')
                 layout.addItem(parent.default_button, pos, insert_col)
-                # layout.addWidget(parent.default_button, pos, insert_col)
             elif isinstance(layout, QBoxLayout):
                 layout.insertWidget(pos, parent.default_button, alignment=Qt.AlignRight | Qt.AlignBottom)
             else:
                 layout.addWidget(parent.default_button)
 
             layout.insertSpacing(layout.indexOf(parent), 6)
+
+    return parent.default_button
 
 
 def setup_restore_button(
@@ -202,6 +202,7 @@ def _redraw_list(fields_list: QListWidget, max_height=256):
 
 
 class OptionsDialog(QDialog):
+    restore_buttons: list[aqt.qt.QPushButton] = []
 
     def __init__(self, manager: LeechToolkitConfigManager):
         super().__init__(flags=mw.windowFlags())
@@ -210,30 +211,31 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
-        self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply).clicked.connect(self.apply)
-        self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.RestoreDefaults).clicked.connect(self.restore_defaults)
-
-        self.reverse_form = ReverseWidget(flags=mw.windowFlags())
+        self.reverse_form = ReverseWidget(flags=mw.windowFlags(), restore_buttons=self.restore_buttons)
         self.ui.optionsScrollLayout.addWidget(self.reverse_form)
 
-        self.leech_form = ActionsWidget(Config.LEECH_ACTIONS)
+        self.leech_form = ActionsWidget(Config.LEECH_ACTIONS, restore_buttons=self.restore_buttons)
         self.ui.actionsScrollLayout.addWidget(self.leech_form)
 
-        self.unleech_form = ActionsWidget(Config.UN_LEECH_ACTIONS)
+        self.unleech_form = ActionsWidget(Config.UN_LEECH_ACTIONS, restore_buttons=self.restore_buttons)
         self.ui.actionsScrollLayout.addWidget(self.unleech_form)
+
+        self.restore_buttons.append(append_restore_button(self.ui.markerGroup))
+        self.restore_buttons.append(append_restore_button(self.ui.browseButtonGroup))
 
         self.apply_button = self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply)
         self.apply_button.setEnabled(False)
 
-        append_restore_button(self.ui.markerGroup)
-        append_restore_button(self.ui.browseButtonGroup)
+        self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply).clicked.connect(self.apply)
+        self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.RestoreDefaults).clicked.connect(self.restore_defaults)
 
         self._load()
+        self.setup_restorables()
 
         # Just in case
         self.ui.tabWidget.setCurrentIndex(0)
 
-    def load_restorables(self):
+    def setup_restorables(self):
         restorable_signals = {
             'marker_signals': [
                 self.ui.markerGroup.clicked,
@@ -275,6 +277,34 @@ class OptionsDialog(QDialog):
         [self.append_apply_signals(action_signals) for action_signals in leech_signals]
         [self.append_apply_signals(action_signals) for action_signals in unleech_signals]
 
+        leech_conf, unleech_conf, reverse_conf = (
+            self.config[Config.LEECH_ACTIONS],
+            self.config[Config.UN_LEECH_ACTIONS],
+            self.config[Config.REVERSE_OPTIONS],
+        )
+        self.leech_form.setup_restorables(leech_conf, Config.DEFAULT_CONFIG[Config.LEECH_ACTIONS])
+        self.unleech_form.setup_restorables(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
+        self.reverse_form.setup_restorables(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
+
+    def append_apply_signals(self, signals: [pyqtBoundSignal]):
+        for signal in signals:
+            signal.connect(lambda *args: self.apply_button.setEnabled(True))
+
+    def apply(self):
+        self._write()
+        bind_actions()
+        mw.reset()
+        self.apply_button.setEnabled(False)
+
+    def restore_defaults(self):
+        self.config = Config.DEFAULT_CONFIG.copy()
+        self._load()
+        [button.setVisible(False) for button in self.restore_buttons]
+
+    def accept(self) -> None:
+        self.apply()
+        super().accept()
+
     def load_marker(self, marker_conf: dict):
         self.ui.markerGroup.setChecked(marker_conf[Config.SHOW_LEECH_MARKER])
         self.ui.almostCheckbox.setChecked(marker_conf[Config.USE_ALMOST_MARKER])
@@ -297,44 +327,15 @@ class OptionsDialog(QDialog):
         button_conf[Config.SHOW_BROWSER_BUTTON] = self.ui.browseButtonBrowserCheckbox.isChecked()
         button_conf[Config.SHOW_OVERVIEW_BUTTON] = self.ui.browseButtonOverviewCheckbox.isChecked()
 
-    def apply(self):
-        self._write()
-        bind_actions()
-        mw.reset()
-        self.apply_button.setEnabled(False)
-
-    def accept(self) -> None:
-        self.apply()
-        super().accept()
-
-    def append_apply_signals(self, signals: [pyqtBoundSignal]):
-        for signal in signals:
-            signal.connect(lambda _: self.apply_button.setEnabled(True))
-
-    def restore_defaults(self):
-
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
 
         self.load_marker(self.config[Config.MARKER_OPTIONS])
         self.load_leech_button(self.config[Config.BUTTON_OPTIONS])
 
-        leech_conf, unleech_conf, reverse_conf = (
-            self.config[Config.LEECH_ACTIONS],
-            self.config[Config.UN_LEECH_ACTIONS],
-            self.config[Config.REVERSE_OPTIONS],
-        )
-
-        self.leech_form.load_ui(leech_conf)
-        self.leech_form.load_restorables(leech_conf, Config.DEFAULT_CONFIG[Config.LEECH_ACTIONS])
-
-        self.unleech_form.load_ui(unleech_conf)
-        self.unleech_form.load_restorables(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
-
-        self.reverse_form.load_ui(reverse_conf)
-        self.reverse_form.load_restorables(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
-
-        self.load_restorables()
+        self.leech_form.load_ui(self.config[Config.LEECH_ACTIONS])
+        self.unleech_form.load_ui(self.config[Config.UN_LEECH_ACTIONS])
+        self.reverse_form.load_ui(self.config[Config.REVERSE_OPTIONS])
 
     def _write(self):
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
@@ -350,7 +351,7 @@ class OptionsDialog(QDialog):
 
 
 class ReverseWidget(QWidget):
-    def __init__(self, flags):
+    def __init__(self, flags, restore_buttons: list = None):
         super().__init__(parent=None, flags=flags)
         self.ui = Ui_ReverseForm()
         self.ui.setupUi(self)
@@ -361,16 +362,7 @@ class ReverseWidget(QWidget):
         self.ui.useLeechThresholdCheckbox.stateChanged.connect(lambda checked: toggle_threshold(not checked))
 
         append_restore_button(self.ui.reverseGroup)
-
-    def load_restorables(self, reverse_conf: dict, default_conf: dict = None):
-        setup_restore_button(
-            self.ui.reverseGroup.default_button,
-            self.get_signals(),
-            self.write,
-            self.load_ui,
-            reverse_conf,
-            default_conf,
-        )
+        restore_buttons.append(self.ui.reverseGroup.default_button) if restore_buttons else None
 
     def get_signals(self):
         return [
@@ -388,6 +380,16 @@ class ReverseWidget(QWidget):
         self.ui.reverseThresholdSpinbox.setValue(reverse_config[Config.REVERSE_THRESHOLD])
         self.ui.consAnswerSpinbox.setValue(reverse_config[Config.REVERSE_CONS_ANS])
 
+    def setup_restorables(self, reverse_conf: dict, default_conf: dict = None):
+        setup_restore_button(
+            self.ui.reverseGroup.default_button,
+            self.get_signals(),
+            self.write,
+            self.load_ui,
+            reverse_conf,
+            default_conf,
+        )
+
     def write(self, reverse_config: dict):
         reverse_enabled = self.ui.reverseGroup.isChecked()
         reverse_config[Config.REVERSE_ENABLED] = reverse_enabled
@@ -398,7 +400,7 @@ class ReverseWidget(QWidget):
 
 
 class ActionsWidget(QWidget):
-    def __init__(self, actions_type: str, parent=None, expanded=True, dids=None):
+    def __init__(self, actions_type: str, parent=None, expanded=True, dids=None, restore_buttons: list = None):
         super().__init__(parent, mw.windowFlags())
         self.ui = Ui_ActionsForm()
         self.ui.setupUi(ActionsForm=self)
@@ -419,10 +421,10 @@ class ActionsWidget(QWidget):
         self.ui.queueLabelTop.setGraphicsEffect(QGraphicsOpacityEffect())
 
         self.ui.queueFromSpinbox.dropdown = self.ui.queueFromDropdown
-        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda _: self.ui.queueFromSpinbox.refresh())
+        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueFromSpinbox.refresh())
 
         self.ui.queueToSpinbox.dropdown = self.ui.queueToDropdown
-        self.ui.queueToDropdown.currentIndexChanged.connect(lambda _: self.ui.queueToSpinbox.refresh())
+        self.ui.queueToDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueToSpinbox.refresh())
 
         self.ui.queueCurrentDeckCheckbox.stateChanged.connect(lambda checked: self.update_queue_info(checked))
 
@@ -438,7 +440,7 @@ class ActionsWidget(QWidget):
             else:
                 text_box.setFixedHeight(max_height)
 
-        self.ui.queueExcludeTextEdit.textChanged.connect(lambda: update_text_size(self.ui.queueExcludeTextEdit))
+        self.ui.queueExcludeTextEdit.textChanged.connect(lambda *args: update_text_size(self.ui.queueExcludeTextEdit))
 
         self.ui.editAddFieldButton.setMenu(QMenu(self.ui.editAddFieldButton))
         _fill_menu_fields(self.ui.editAddFieldButton)
@@ -456,15 +458,19 @@ class ActionsWidget(QWidget):
         self.ui.expandoButton.pressed.connect(lambda: self.toggle_expando(self.ui.expandoButton))
         self.toggle_expando(self.ui.expandoButton, expanded)
 
-        append_restore_button(self.ui.flagGroup)
-        append_restore_button(self.ui.suspendGroup)
-        append_restore_button(self.ui.addTagGroup)
-        append_restore_button(self.ui.removeTagGroup)
-        append_restore_button(self.ui.forgetGroup)
-        append_restore_button(self.ui.editFieldsGroup)
-        append_restore_button(self.ui.deckMoveGroup)
-        append_restore_button(self.ui.rescheduleGroup)
-        append_restore_button(self.ui.queueGroup)
+        appended_buttons = [
+            append_restore_button(self.ui.flagGroup),
+            append_restore_button(self.ui.suspendGroup),
+            append_restore_button(self.ui.addTagGroup),
+            append_restore_button(self.ui.removeTagGroup),
+            append_restore_button(self.ui.forgetGroup),
+            append_restore_button(self.ui.editFieldsGroup),
+            append_restore_button(self.ui.deckMoveGroup),
+            append_restore_button(self.ui.rescheduleGroup),
+            append_restore_button(self.ui.queueGroup),
+        ]
+
+        [restore_buttons.append(button) for button in appended_buttons] if restore_buttons else None
 
     def get_signals(self):
         return {
@@ -522,7 +528,7 @@ class ActionsWidget(QWidget):
             ],
         }
 
-    def load_restorables(self, actions_config: dict, default_config):
+    def setup_restorables(self, actions_config: dict, default_config):
         # Remove any re-assignment potential issues
         signals = self.get_signals()
         restorable_args = [

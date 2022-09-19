@@ -30,7 +30,7 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 224))
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 198))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -101,7 +101,7 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 98, 16))
+        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 16))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -665,13 +665,7 @@ class Ui_OptionsDialog(object):
                                  "                                                                 "
             )
         )
-        self.almostCheckbox.setText(
-            _translate(
-                "OptionsDialog", "Show unique marker for about-to-be-leeched\n"
-                                 "                                                                     cards\n"
-                                 "                                                                 "
-            )
-        )
+        self.almostCheckbox.setText(_translate("OptionsDialog", "Show unique marker for about-to-be-leeched cards"))
         self.almostLabel.setText(_translate("OptionsDialog", "Marker Position"))
         self.almostPosDropdown.setItemText(0, _translate("OptionsDialog", "Default"))
         self.almostPosDropdown.setItemText(1, _translate("OptionsDialog", "Left"))
