@@ -3,6 +3,7 @@ MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjust
 Full license text available in "LICENSE" file packaged with the program.
 """
 import datetime
+import json
 import random
 import re
 from datetime import date
@@ -10,6 +11,7 @@ from difflib import SequenceMatcher
 
 import anki.cards
 import anki.decks
+from anki.collection import OpChanges
 
 from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUTTON_ONE
 from aqt import utils
@@ -48,6 +50,19 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
         result = result.replace(macro, '%')
 
     return result
+
+
+def commit_card(updated_card: anki.cards.Card, op_callback) -> OpChanges:
+    data = updated_card.col.db.first(f'SELECT data FROM cards WHERE id = 1661783579679')[0]
+    if type(data) == str:
+        data: dict = json.loads(str(data).replace("'", '"'))
+        if not data.pop('toolkit_leech', None):
+            data['toolkit_leech'] = True
+        updated_card.col.db.execute(f'UPDATE cards SET data=? WHERE id = 1661783579679', json.dumps(data))
+        updated_card.col.db.commit()
+    updated_card.flush()
+    updated_card.note().flush()
+    return op_callback(card=True, note=True)
 
 
 def was_consecutively_correct(card: anki.cards.Card, times: int):
