@@ -11,7 +11,7 @@ from difflib import SequenceMatcher
 import anki.cards
 import anki.decks
 
-from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW
+from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUTTON_ONE
 from aqt import utils
 
 from .consts import (
@@ -61,17 +61,12 @@ Retrieves all reviews that were correct without any "again" answers.
     :param card: card to use as reference
     :return: a list of correct answers (2-4)
     """
-    again_ease = 1
 
-    cmd = f'''
-            SELECT ease FROM revlog 
-            WHERE cid is {card.id} and ease is not 0
-            ORDER BY id DESC
-        '''
+    cmd = f'SELECT ease FROM revlog WHERE cid is {card.id} and ease is not 0 ORDER BY id DESC'
     answers = card.col.db.list(cmd)
 
-    if again_ease in answers:
-        return answers[:answers.index(again_ease) - 1] if answers.index(again_ease) != 0 else []
+    if BUTTON_ONE in answers:
+        return answers[:answers.index(BUTTON_ONE) - 1] if answers.index(BUTTON_ONE) != 0 else []
     return answers
 
 
