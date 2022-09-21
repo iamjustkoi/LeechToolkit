@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -44,7 +44,7 @@
             <x>0</x>
             <y>0</y>
             <width>530</width>
-            <height>221</height>
+               <height>175</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -57,26 +57,6 @@
            <property name="spacing">
             <number>6</number>
            </property>
-           <item>
-            <widget class="QCheckBox" name="toolsOptionsCheckBox">
-             <property name="text">
-              <string>Show options in Tools menu</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="syncUpdateCheckbox">
-             <property name="toolTip">
-              <string>Applies reverse/action updates to all cards after syncing to AnkiWeb.</string>
-             </property>
-             <property name="text">
-              <string>Update collection on-sync</string>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
            <item>
             <widget class="QGroupBox" name="markerGroup">
              <property name="toolTip">
@@ -242,9 +222,9 @@
               <property name="topMargin">
                <number>0</number>
               </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
+                 <property name="bottomMargin">
+                     <number>0</number>
+                 </property>
              </layout>
             </widget>
            </item>
@@ -254,6 +234,87 @@
        </item>
       </layout>
      </widget>
+        <widget class="QWidget" name="advancedTab">
+            <attribute name="title">
+                <string>Advanced</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                    <widget class="QScrollArea" name="advancedScrollArea">
+                        <property name="sizePolicy">
+                            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="widgetResizable">
+                            <bool>true</bool>
+                        </property>
+                        <property name="alignment">
+                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                        </property>
+                        <widget class="QWidget" name="scrollAreaWidgetContents">
+                            <property name="geometry">
+                                <rect>
+                                    <x>0</x>
+                                    <y>0</y>
+                                    <width>530</width>
+                                    <height>87</height>
+                                </rect>
+                            </property>
+                            <property name="sizePolicy">
+                                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                            <layout class="QVBoxLayout" name="verticalLayout_2">
+                                <item>
+                                    <widget class="QCheckBox" name="toolsOptionsCheckBox">
+                                        <property name="text">
+                                            <string>Show options in Tools menu</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QCheckBox" name="syncUpdateCheckbox">
+                                        <property name="toolTip">
+                                            <string>After syncing, updates the entire collection with the current
+                                                options/actions based on the synced review logs.
+                                            </string>
+                                        </property>
+                                        <property name="text">
+                                            <string>Update collection on-sync</string>
+                                        </property>
+                                        <property name="checked">
+                                            <bool>false</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="pushButton">
+                                        <property name="sizePolicy">
+                                            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Sync the entire collection based on the current, applied options and
+                                                review logs.
+                                            </string>
+                                        </property>
+                                        <property name="text">
+                                            <string>Update Collection</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </widget>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
     </widget>
    </item>
    <item>
