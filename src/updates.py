@@ -52,16 +52,21 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
-def commit_card(updated_card: anki.cards.Card, op_callback) -> OpChanges:
-    data = updated_card.col.db.first(f'SELECT data FROM cards WHERE id = 1661783579679')[0]
+def commit_card(updated_card: anki.cards.Card, should_leech: bool, op_callback) -> OpChanges:
+    data = updated_card.col.db.first(f'SELECT data FROM cards WHERE id = {updated_card.id}')[0]
+
     if type(data) == str:
         data: dict = json.loads(str(data).replace("'", '"'))
-        if not data.pop('toolkit_leech', None):
-            data['toolkit_leech'] = True
-        updated_card.col.db.execute(f'UPDATE cards SET data=? WHERE id = 1661783579679', json.dumps(data))
-        updated_card.col.db.commit()
+        leech_data = data.pop('toolkit_leech', None)
+        if leech_data or should_leech:
+            if should_leech:
+                data['toolkit_leech'] = True
+            updated_card.col.db.execute(f'UPDATE cards SET data=? WHERE id = {updated_card.id}', json.dumps(data))
+            updated_card.col.db.commit()
+
     updated_card.flush()
     updated_card.note().flush()
+
     return op_callback(card=True, note=True)
 
 
