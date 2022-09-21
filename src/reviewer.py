@@ -2,6 +2,7 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+import json
 
 import anki.cards
 import aqt.reviewer
@@ -11,7 +12,7 @@ from anki.consts import CardType
 from anki.decks import DeckId
 from aqt import reviewer, webview, gui_hooks, mw
 
-from .updates import run_action_updates, run_reverse_updates
+from .updates import run_action_updates, run_reverse_updates, commit_card
 from .config import LeechToolkitConfigManager, merge_fields
 from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET, String
 
@@ -78,12 +79,6 @@ Changes the display state of the run_action_updates marker.
         mw.web.eval(f'document.getElementById("{marker_id}").style.display = "unset"')
     else:
         mw.web.eval(f'document.getElementById("{marker_id}").style.display = "none"')
-
-
-def flush_card(card: anki.cards.Card) -> OpChanges:
-    card.flush()
-    card.note().flush()
-    return aqt.reviewer.OpChanges(card=True, note=True)
 
 
 class ReviewManager:
@@ -168,7 +163,7 @@ class ReviewManager:
             delattr(card, was_leech_attr)
 
         if was_card_updated(card, updated_card):
-            flush_card(updated_card)
+            commit_card(updated_card, aqt.reviewer.OpChanges)
 
     def update_marker(self, card: cards.Card, is_front: bool):
         """
