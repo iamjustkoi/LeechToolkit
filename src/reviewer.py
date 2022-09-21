@@ -7,8 +7,6 @@ import json
 import anki.cards
 import aqt.reviewer
 from anki import cards, hooks
-from anki.collection import OpChanges
-from anki.consts import CardType
 from anki.decks import DeckId
 from aqt import reviewer, webview, gui_hooks, mw
 
@@ -153,17 +151,18 @@ class ReviewManager:
 
     def on_answer(self, context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         updated_card = card.col.get_card(card.id)
-
+        was_leech = False
         if hasattr(card, prev_type_attr):
             updated_card = run_reverse_updates(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
             delattr(card, prev_type_attr)
 
         if hasattr(card, was_leech_attr):
+            was_leech = True
             updated_card = run_action_updates(card, self.toolkit_config[Config.LEECH_ACTIONS])
             delattr(card, was_leech_attr)
 
         if was_card_updated(card, updated_card):
-            commit_card(updated_card, aqt.reviewer.OpChanges)
+            commit_card(updated_card, was_leech, aqt.reviewer.OpChanges)
 
     def update_marker(self, card: cards.Card, is_front: bool):
         """
