@@ -65,9 +65,10 @@ Retrieves all reviews that were correct without any "again" answers.
     cmd = f'SELECT ease FROM revlog WHERE cid is {card.id} and ease is not 0 ORDER BY id DESC'
     answers = card.col.db.list(cmd)
 
+    last_index = len(answers) - 1 if len(answers) > 0 else 0
     if BUTTON_ONE in answers:
-        return answers[:answers.index(BUTTON_ONE) - 1] if answers.index(BUTTON_ONE) != 0 else []
-    return answers
+        last_index = answers.index(BUTTON_ONE) - 1 if answers.index(BUTTON_ONE) != 0 else 0
+    return answers[:last_index]
 
 
 def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_type: anki.consts.CardType):
