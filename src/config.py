@@ -52,7 +52,7 @@ class LeechToolkitConfigManager:
         except AttributeError:
             print(f'{traceback.format_exc()}\nToolkit Manager not found in the current Reviewer.')
 
-    def get_deck_conf(self, config_id: str):
+    def get_group_conf(self, config_id: str):
         """
         Retrieves a new, manager-linked deck config.
 
