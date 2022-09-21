@@ -62,7 +62,7 @@ Retrieves all reviews that were correct without any "again" answers.
     :return: a list of correct answers (2-4)
     """
 
-    cmd = f'SELECT ease FROM revlog WHERE cid is {card.id} and ease is not 0 ORDER BY id DESC'
+    cmd = f'SELECT ease FROM revlog WHERE cid IS {card.id} AND ease IS NOT 0 ORDER BY id DESC'
     answers = card.col.db.list(cmd)
 
     last_index = len(answers) - 1 if len(answers) > 0 else 0
@@ -94,7 +94,7 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
         if was_consecutively_correct(updated_card, config[Config.REVERSE_OPTIONS][Config.REVERSE_CONS_ANS]):
             if ease > 1 and updated_card.lapses > 0 and prev_type == anki.cards.CARD_TYPE_REV:
                 if config[Config.REVERSE_OPTIONS][Config.REVERSE_METHOD] == REV_DECREASE:
-                    updated_card.lapses -= 1
+                    updated_card.lapses -= 1 if updated_card.lapses != 0 else 0
                     tooltip_items.append(String.LAPSES_DECREASED)
                 elif config[Config.REVERSE_OPTIONS][Config.REVERSE_METHOD] == REV_RESET:
                     updated_card.lapses = 0
