@@ -645,7 +645,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 87))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 191))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -661,14 +661,27 @@ class Ui_OptionsDialog(object):
         self.syncUpdateCheckbox.setChecked(False)
         self.syncUpdateCheckbox.setObjectName("syncUpdateCheckbox")
         self.verticalLayout_2.addWidget(self.syncUpdateCheckbox)
-        self.pushButton = QtWidgets.QPushButton(self.scrollAreaWidgetContents)
+        self.syncTagCheckbox = QtWidgets.QGroupBox(self.scrollAreaWidgetContents)
+        self.syncTagCheckbox.setCheckable(True)
+        self.syncTagCheckbox.setObjectName("syncTagCheckbox")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.syncTagCheckbox)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.syncTagLineEdit = QtWidgets.QLineEdit(self.syncTagCheckbox)
+        self.syncTagLineEdit.setObjectName("syncTagLineEdit")
+        self.verticalLayout_7.addWidget(self.syncTagLineEdit)
+        self.label = QtWidgets.QLabel(self.syncTagCheckbox)
+        self.label.setWordWrap(True)
+        self.label.setObjectName("label")
+        self.verticalLayout_7.addWidget(self.label)
+        self.verticalLayout_2.addWidget(self.syncTagCheckbox)
+        self.syncUpdateButton = QtWidgets.QPushButton(self.scrollAreaWidgetContents)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout_2.addWidget(self.pushButton)
+        sizePolicy.setHeightForWidth(self.syncUpdateButton.sizePolicy().hasHeightForWidth())
+        self.syncUpdateButton.setSizePolicy(sizePolicy)
+        self.syncUpdateButton.setObjectName("syncUpdateButton")
+        self.verticalLayout_2.addWidget(self.syncUpdateButton)
         self.advancedScrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.advancedScrollArea)
         self.tabWidget.addTab(self.advancedTab, "")
@@ -814,18 +827,36 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
         self.syncUpdateCheckbox.setToolTip(
             _translate(
-                "OptionsDialog",
-                "After syncing, updates the entire collection with the current options/actions based on the synced review logs."
+                "OptionsDialog", "After syncing, updates the entire collection with the current\n"
+                                 "                                                options/actions based on the synced review logs.\n"
+                                 "                                            "
             )
         )
         self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
-        self.pushButton.setToolTip(
+        self.syncTagCheckbox.setToolTip(
             _translate(
                 "OptionsDialog",
-                "Sync the entire collection based on the current, applied options and review logs."
+                "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."
             )
         )
-        self.pushButton.setText(_translate("OptionsDialog", "Update Collection"))
+        self.syncTagCheckbox.setTitle(
+            _translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices")
+        )
+        self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
+        self.label.setText(
+            _translate(
+                "OptionsDialog",
+                "* Heads up: before syncing, this should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded."
+            )
+        )
+        self.syncUpdateButton.setToolTip(
+            _translate(
+                "OptionsDialog", "Sync the entire collection based on the current, applied options and\n"
+                                 "                                                review logs.\n"
+                                 "                                            "
+            )
+        )
+        self.syncUpdateButton.setText(_translate("OptionsDialog", "Update Collection"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.advancedTab), _translate("OptionsDialog", "Advanced"))
 
 
