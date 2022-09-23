@@ -13,6 +13,7 @@ import anki.decks
 from anki.collection import OpChanges
 
 from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUTTON_ONE
+from anki.notes import Note
 from aqt import utils
 
 from .consts import (
@@ -69,8 +70,16 @@ def was_consecutively_correct(card: anki.cards.Card, times: int):
     return total_correct > 0 and total_correct % times == 0
 
 
-def was_card_updated(original_card, updated_card):
-    changed_items = [item for item in original_card.__dict__.items() if item[1] != updated_card.__dict__.get(item[0])]
+def is_unique_card(original_card: anki.cards.Card, modified_card: anki.cards.Card):
+    changed_items = {}
+    for key, val in modified_card.__dict__.items():
+        if key == '_note':
+            note: Note = val
+            orig_note = original_card.note()
+            if (note.fields, note.id, note.tags) != (orig_note.fields, orig_note.id, orig_note.tags):
+                changed_items[key] = val
+        elif val != original_card.__dict__.get(key):
+            changed_items[key] = val
     return len(changed_items) > 0
 
 
