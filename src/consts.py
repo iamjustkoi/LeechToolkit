@@ -109,7 +109,7 @@ class Config:
     SYNC_ENABLED = 'applyOnSync'
     SYNC_OPTIONS = 'syncOptions'
     SYNC_TAG_ENABLED = 'syncTagEnabled'
-    SYNC_TAG_Text = 'syncTagText'
+    SYNC_TAG_TEXT = 'syncTagText'
 
     MARKER_OPTIONS = 'markerOptions'
     SHOW_LEECH_MARKER = 'showLeechMarker'
@@ -183,7 +183,7 @@ class Config:
         SYNC_ENABLED: False,
         SYNC_OPTIONS: {
             SYNC_TAG_ENABLED: False,
-            SYNC_TAG_Text: String.SYNC_TAG_DEFAULT,
+            SYNC_TAG_TEXT: String.SYNC_TAG_DEFAULT,
         },
         MARKER_OPTIONS: {
             SHOW_LEECH_MARKER: True,
