@@ -3,7 +3,6 @@ MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjust
 Full license text available in "LICENSE" file packaged with the program.
 """
 import datetime
-import json
 import random
 import re
 from datetime import date
@@ -52,22 +51,17 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
-def commit_card(updated_card: anki.cards.Card, should_leech: bool, op_callback) -> OpChanges:
-    data = updated_card.col.db.first(f'SELECT data FROM cards WHERE id = {updated_card.id}')[0]
+def update_card(updated_card: anki.cards.Card, op_callback=None) -> OpChanges:
+    """
+    Flushes and updates a card, as well as its parent note, with an optional (undo) operation change callback.
 
-    if type(data) == str:
-        data: dict = json.loads(str(data).replace("'", '"'))
-        leech_data = data.pop('toolkit_leech', None)
-        if leech_data or should_leech:
-            if should_leech:
-                data['toolkit_leech'] = True
-            updated_card.col.db.execute(f'UPDATE cards SET data=? WHERE id = {updated_card.id}', json.dumps(data))
-            updated_card.col.db.commit()
-
+    :param updated_card: card to update
+    :param op_callback: OpChanges callback to call after updating the card
+    :return: OpChanges message if callback provided, else None
+    """
     updated_card.flush()
     updated_card.note().flush()
-
-    return op_callback(card=True, note=True)
+    return op_callback(card=True, note=True) if op_callback else None
 
 
 def was_consecutively_correct(card: anki.cards.Card, times: int):
@@ -75,9 +69,15 @@ def was_consecutively_correct(card: anki.cards.Card, times: int):
     return total_correct > 0 and total_correct % times == 0
 
 
+def was_card_updated(original_card, updated_card):
+    changed_items = [item for item in original_card.__dict__.items() if item[1] != updated_card.__dict__.get(item[0])]
+    return len(changed_items) > 0
+
+
 def get_correct_answers(card: anki.cards.Card):
     """
-Retrieves all reviews that were correct without any "again" answers.
+    Retrieves all reviews that were correct without any "again" answers.
+
     :param card: card to use as reference
     :return: a list of correct answers (2-4)
     """
@@ -95,11 +95,11 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
     """
     Runs reverse leech updates to the input card and returns an updated card object.
     
-        :param config: toolkit config
-        :param card: Card to update
-        :param ease: review-answer input
-        :param prev_type: previous type of the current card used for determining changes
-        :return: updated card object
+    :param config: toolkit config
+    :param card: Card to update
+    :param ease: review-answer input
+    :param prev_type: previous type of the current card used for determining changes
+    :return: updated card object
     """
     updated_card = card.col.get_card(card.id)
     tooltip_items = []
@@ -127,6 +127,8 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
                 tooltip_items.append(String.LEECH_REVERSED)
 
                 updated_card = run_action_updates(updated_card, config[Config.UN_LEECH_ACTIONS], reload=False)
+                if config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED]:
+                    updated_card.note().remove_tag(config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
 
         if TOOLTIP_ENABLED and len(tooltip_items) > 0:
             utils.tooltip('\n\n'.join(tooltip_items), period=TOOLTIP_TIME)
@@ -222,7 +224,8 @@ def run_action_updates(card: anki.cards.Card, actions_conf: dict, reload=True):
 
             def get_inserted_pos(insert_type, input_pos):
                 """
-            Retrieves the position for the given insert type.
+                Retrieves the position for the given insert type.
+
                 :param insert_type: type of insertion to use to determine the position output
                 :param input_pos: extra position value to add to/insert with the position value returned
                 :return: retrieved position number

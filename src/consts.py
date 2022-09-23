@@ -107,7 +107,7 @@ class Config:
     TOOLBAR_ENABLED = 'showToolsMenuOptions'
 
     SYNC_ENABLED = 'applyOnSync'
-    SYNC_OPTIONS = 'syncOptions'
+    SYNC_TAG_OPTIONS = 'syncOptions'
     SYNC_TAG_ENABLED = 'syncTagEnabled'
     SYNC_TAG_TEXT = 'syncTagText'
 
@@ -181,7 +181,7 @@ class Config:
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SYNC_ENABLED: False,
-        SYNC_OPTIONS: {
+        SYNC_TAG_OPTIONS: {
             SYNC_TAG_ENABLED: False,
             SYNC_TAG_TEXT: String.SYNC_TAG_DEFAULT,
         },
