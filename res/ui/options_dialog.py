@@ -244,8 +244,10 @@ class Ui_OptionsDialog(object):
         self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
         self.label.setText(
             _translate(
-                "OptionsDialog",
-                "* This should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded before syncing."
+                "OptionsDialog", "* This should be updated to the same tag as any other\n"
+                                 "                                                            Anki client(s) where it might\'ve also been changed and\n"
+                                 "                                                            synced/uploaded before syncing.\n"
+                                 "                                                        "
             )
         )
         self.syncUpdateButton.setToolTip(

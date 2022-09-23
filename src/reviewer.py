@@ -8,7 +8,7 @@ from anki import cards, hooks
 from anki.decks import DeckId
 from aqt import reviewer, webview, gui_hooks, mw
 
-from .updates import run_action_updates, run_reverse_updates, update_card, was_card_updated
+from .updates import run_action_updates, run_reverse_updates, update_card, is_unique_card
 from .config import LeechToolkitConfigManager, merge_fields
 from .consts import Config, MARKER_POS_STYLES, LEECH_TAG
 
@@ -154,7 +154,7 @@ class ReviewManager:
                 updated_card.note().add_tag(self.toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
             delattr(card, was_leech_attr)
 
-        if was_card_updated(card, updated_card):
+        if is_unique_card(card, updated_card):
             update_card(updated_card, aqt.reviewer.OpChanges)
 
     def update_marker(self, card: cards.Card, is_front: bool):
