@@ -5,7 +5,7 @@ Full license text available in "LICENSE" file packaged with the program.
 import aqt.operations
 from aqt import gui_hooks, mw
 
-from .updates import run_action_updates, update_card
+from .updates import run_action_updates, update_card, is_unique_card
 from .config import LeechToolkitConfigManager, merge_fields
 from .consts import Config, LEECH_TAG, String
 from anki.consts import *
@@ -60,52 +60,50 @@ def sync_collection():
             toolkit_configs[f'{deck_name_id.id}'] = merge_fields(global_conf.get(str(config_id), {}), global_conf)
             thresholds[f'{deck_name_id.id}'] = deck_conf['lapse']['leechFails']
 
-        cards = mw.col.db.all(f'SELECT id, did, lapses, type FROM cards WHERE reps > 0 ORDER BY id DESC')
+        cards = mw.col.db.all(f'SELECT id, did, lapses, type, nid FROM cards WHERE reps > 0 ORDER BY id DESC')
 
         # Stored for double-checking siblings not updated, yet
-        nids_toolkit_tagged = []
+        tagged_nids = []
 
-        for cid, did, lapses, card_type in cards:
+        for cid, did, lapses, card_type, nid in cards:
 
             # Only updating status for cards in the review queue; otherwise letting User/Anki handle updates.
             if card_type == QUEUE_TYPE_REV:
-
-                card = mw.col.get_card(cid)
-                note = card.note()
+                updated_card = mw.col.get_card(cid)
+                updated_note = updated_card.note()
 
                 toolkit_config = toolkit_configs[str(did)]
 
-                updated_lapses = get_remeasured_lapses(cid, toolkit_config[Config.REVERSE_OPTIONS]) \
-                    if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED] \
-                    else lapses
+                if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
+                    updated_card.lapses = max(get_remeasured_lapses(cid, toolkit_config[Config.REVERSE_OPTIONS]), 0)
 
                 threshold = thresholds[str(did)] \
                     if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_USE_LEECH_THRESHOLD] \
                     else toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_THRESHOLD]
 
-                has_toolkit_tag = note.has_tag(String.SYNC_TAG_DEFAULT) and note.id not in nids_toolkit_tagged
-                has_leech_tag = note.has_tag(LEECH_TAG)
+                has_toolkit_tag = updated_note.has_tag(String.SYNC_TAG_DEFAULT) and nid not in tagged_nids
+                has_leech_tag = updated_note.has_tag(LEECH_TAG)
 
-                if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED] and updated_lapses < threshold:
+                if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED] and updated_card.lapses < threshold:
 
                     if toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED] and has_toolkit_tag:
-                        run_action_updates(card, toolkit_config[Config.UN_LEECH_ACTIONS], reload=False)
-                        note.remove_tag(toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+                        run_action_updates(updated_card, toolkit_config[Config.UN_LEECH_ACTIONS], reload=False)
+                        updated_note.remove_tag(toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
 
                     if has_leech_tag:
-                        note.remove_tag(LEECH_TAG)
+                        updated_note.remove_tag(LEECH_TAG)
 
-                elif updated_lapses >= threshold:
+                elif updated_card.lapses >= threshold:
 
                     if toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED] and not has_toolkit_tag:
-                        run_action_updates(card, toolkit_config[Config.LEECH_ACTIONS], reload=False)
-                        note.add_tag(toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+                        run_action_updates(updated_card, toolkit_config[Config.LEECH_ACTIONS], reload=False)
+                        updated_note.add_tag(toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
 
-                        if note.id not in nids_toolkit_tagged:
-                            nids_toolkit_tagged.append(note.id)
+                        if nid not in tagged_nids:
+                            tagged_nids.append(nid)
 
                     if not has_leech_tag:
-                        note.add_tag(LEECH_TAG)
+                        updated_note.add_tag(LEECH_TAG)
 
-                card.lapses = max(0, updated_lapses)
-                update_card(card, aqt.operations.OpChanges)
+                if is_unique_card(mw.col.get_card(cid), updated_card):
+                    update_card(updated_card, aqt.operations.OpChanges)
