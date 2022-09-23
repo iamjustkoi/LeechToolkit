@@ -30,7 +30,7 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 175))
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 513, 175))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -132,7 +132,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 191))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 178))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -230,18 +230,22 @@ class Ui_OptionsDialog(object):
         self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
         self.syncTagCheckbox.setToolTip(
             _translate(
-                "OptionsDialog",
-                "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."
+                "OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom\n"
+                                 "                                                tag that gets added to any filtered leeches.\n"
+                                 "                                            "
             )
         )
         self.syncTagCheckbox.setTitle(
-            _translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices")
+            _translate(
+                "OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices\n"
+                                 "                                            "
+            )
         )
         self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
         self.label.setText(
             _translate(
                 "OptionsDialog",
-                "* Heads up: before syncing, this should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded."
+                "* This should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded before syncing."
             )
         )
         self.syncUpdateButton.setToolTip(
