@@ -35,6 +35,7 @@ from .consts import (
     String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction,
     RESTORE_ICON_PATH,
 )
+from .sync import sync_collection
 from ..res.ui.actions_form import Ui_ActionsForm
 from ..res.ui.edit_field_item import Ui_EditFieldItem
 from ..res.ui.exclude_field_item import Ui_ExcludedFieldItem
@@ -230,6 +231,8 @@ class OptionsDialog(QDialog):
         self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply).clicked.connect(self.apply)
         self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.RestoreDefaults).clicked.connect(self.restore_defaults)
 
+        self.ui.syncUpdateButton.clicked.connect(sync_collection)
+
         self._load()
         self.setup_restorables()
 
@@ -337,7 +340,6 @@ class OptionsDialog(QDialog):
         self.ui.browseButtonOverviewCheckbox.setChecked(button_conf[Config.SHOW_OVERVIEW_BUTTON])
 
     def load_sync_tag(self, sync_tag_conf: dict):
-        print(f' load_sync_tag_conf: {sync_tag_conf}')
         self.ui.syncTagCheckbox.setChecked(sync_tag_conf[Config.SYNC_TAG_ENABLED])
         self.ui.syncTagLineEdit.setText(sync_tag_conf[Config.SYNC_TAG_TEXT])
 
