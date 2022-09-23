@@ -2,17 +2,15 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-import json
-
 import anki.cards
 import aqt.reviewer
 from anki import cards, hooks
 from anki.decks import DeckId
 from aqt import reviewer, webview, gui_hooks, mw
 
-from .updates import run_action_updates, run_reverse_updates, commit_card
+from .updates import run_action_updates, run_reverse_updates, update_card, was_card_updated
 from .config import LeechToolkitConfigManager, merge_fields
-from .consts import Config, MARKER_POS_STYLES, LEECH_TAG, REV_DECREASE, REV_RESET, String
+from .consts import Config, MARKER_POS_STYLES, LEECH_TAG
 
 mark_html_shell = '''
 <style>
@@ -57,11 +55,6 @@ def on_will_start(content: aqt.webview.WebContent, anki_reviewer: aqt.reviewer.R
 
 def mark_leeched(card: anki.cards.Card):
     setattr(card, was_leech_attr, True)
-
-
-def was_card_updated(original_card, updated_card):
-    changed_items = [item for item in original_card.__dict__.items() if item[1] != updated_card.__dict__.get(item[0])]
-    return len(changed_items) > 0
 
 
 def set_marker_color(color: str):
@@ -151,18 +144,18 @@ class ReviewManager:
 
     def on_answer(self, context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         updated_card = card.col.get_card(card.id)
-        was_leech = False
         if hasattr(card, prev_type_attr):
             updated_card = run_reverse_updates(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
             delattr(card, prev_type_attr)
 
         if hasattr(card, was_leech_attr):
-            was_leech = True
             updated_card = run_action_updates(card, self.toolkit_config[Config.LEECH_ACTIONS])
+            if self.toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED]:
+                updated_card.note().add_tag(self.toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
             delattr(card, was_leech_attr)
 
         if was_card_updated(card, updated_card):
-            commit_card(updated_card, was_leech, aqt.reviewer.OpChanges)
+            update_card(updated_card, aqt.reviewer.OpChanges)
 
     def update_marker(self, card: cards.Card, is_front: bool):
         """

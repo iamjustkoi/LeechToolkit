@@ -43,7 +43,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>530</width>
+            <width>513</width>
             <height>175</height>
            </rect>
           </property>
@@ -214,19 +214,19 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QFrame" name="actionsScrollFrame">
-             <property name="mouseTracking">
-              <bool>true</bool>
-             </property>
-                <layout class="QVBoxLayout" name="actionsScrollLayout">
-                    <property name="topMargin">
-                        <number>0</number>
-                    </property>
-                    <property name="bottomMargin">
-                        <number>0</number>
-                    </property>
-                </layout>
-            </widget>
+               <widget class="QFrame" name="actionsScrollFrame">
+                   <property name="mouseTracking">
+                       <bool>true</bool>
+                   </property>
+                   <layout class="QVBoxLayout" name="actionsScrollLayout">
+                       <property name="topMargin">
+                           <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                           <number>0</number>
+                       </property>
+                   </layout>
+               </widget>
            </item>
           </layout>
          </widget>
@@ -259,7 +259,7 @@
                                     <x>0</x>
                                     <y>0</y>
                                     <width>530</width>
-                                    <height>191</height>
+                                    <height>178</height>
                                 </rect>
                             </property>
                             <property name="sizePolicy">
@@ -316,9 +316,9 @@
                                             <item>
                                                 <widget class="QLabel" name="label">
                                                     <property name="text">
-                                                        <string>* Heads up: before syncing, this should be updated to
-                                                            the same tag as any other Anki client(s) where it might've
-                                                            also been changed and synced/uploaded.
+                                                        <string>* This should be updated to the same tag as any other
+                                                            Anki client(s) where it might've also been changed and
+                                                            synced/uploaded before syncing.
                                                         </string>
                                                     </property>
                                                     <property name="wordWrap">

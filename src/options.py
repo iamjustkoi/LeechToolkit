@@ -222,6 +222,7 @@ class OptionsDialog(QDialog):
 
         self.restore_buttons.append(append_restore_button(self.ui.markerGroup))
         self.restore_buttons.append(append_restore_button(self.ui.browseButtonGroup))
+        self.restore_buttons.append(append_restore_button(self.ui.syncTagCheckbox))
 
         self.apply_button = self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply)
         self.apply_button.setEnabled(False)
@@ -254,16 +255,20 @@ class OptionsDialog(QDialog):
             'sync_signals': [
                 self.ui.syncUpdateCheckbox.stateChanged,
             ],
+            'sync_tag_signals': [
+                self.ui.syncTagCheckbox.clicked,
+                self.ui.syncTagLineEdit.textChanged,
+            ],
         }
 
-        global_args = [
+        global_button_args = [
             (
                 self.ui.markerGroup.default_button,
                 global_signals['marker_signals'],
                 self.write_marker,
                 self.load_marker,
                 self.config[Config.MARKER_OPTIONS],
-                Config.DEFAULT_CONFIG[Config.MARKER_OPTIONS]
+                Config.DEFAULT_CONFIG[Config.MARKER_OPTIONS],
             ),
             (
                 self.ui.browseButtonGroup.default_button,
@@ -271,17 +276,24 @@ class OptionsDialog(QDialog):
                 self.write_button,
                 self.load_leech_button,
                 self.config[Config.BUTTON_OPTIONS],
-                Config.DEFAULT_CONFIG[Config.BUTTON_OPTIONS]
+                Config.DEFAULT_CONFIG[Config.BUTTON_OPTIONS],
+            ),
+            (
+                self.ui.syncTagCheckbox.default_button,
+                global_signals['sync_tag_signals'],
+                self.write_sync_tag,
+                self.load_sync_tag,
+                self.config[Config.SYNC_TAG_OPTIONS],
+                Config.DEFAULT_CONFIG[Config.SYNC_TAG_OPTIONS],
             )
         ]
 
-        for args in global_args:
+        for args in global_button_args:
             setup_restore_button(*args)
 
-        signal_lists = \
-            list(global_signals.values()) \
-            + list(self.leech_form.get_signals().values()) \
-            + list(self.unleech_form.get_signals().values())
+        signal_lists = list(global_signals.values()) \
+                       + list(self.leech_form.get_signals().values()) \
+                       + list(self.unleech_form.get_signals().values())
 
         for signals in signal_lists:
             self.append_apply_signals(signals)
@@ -289,6 +301,7 @@ class OptionsDialog(QDialog):
         leech_conf = self.config[Config.LEECH_ACTIONS]
         unleech_conf = self.config[Config.UN_LEECH_ACTIONS]
         reverse_conf = self.config[Config.REVERSE_OPTIONS]
+
         self.leech_form.setup_restorables(leech_conf, Config.DEFAULT_CONFIG[Config.LEECH_ACTIONS])
         self.unleech_form.setup_restorables(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
         self.reverse_form.setup_restorables(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
@@ -323,6 +336,11 @@ class OptionsDialog(QDialog):
         self.ui.browseButtonBrowserCheckbox.setChecked(button_conf[Config.SHOW_BROWSER_BUTTON])
         self.ui.browseButtonOverviewCheckbox.setChecked(button_conf[Config.SHOW_OVERVIEW_BUTTON])
 
+    def load_sync_tag(self, sync_tag_conf: dict):
+        print(f' load_sync_tag_conf: {sync_tag_conf}')
+        self.ui.syncTagCheckbox.setChecked(sync_tag_conf[Config.SYNC_TAG_ENABLED])
+        self.ui.syncTagLineEdit.setText(sync_tag_conf[Config.SYNC_TAG_TEXT])
+
     def write_marker(self, marker_conf: dict):
         marker_conf[Config.SHOW_LEECH_MARKER] = self.ui.markerGroup.isChecked()
         marker_conf[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
@@ -334,12 +352,18 @@ class OptionsDialog(QDialog):
         button_conf[Config.SHOW_BROWSER_BUTTON] = self.ui.browseButtonBrowserCheckbox.isChecked()
         button_conf[Config.SHOW_OVERVIEW_BUTTON] = self.ui.browseButtonOverviewCheckbox.isChecked()
 
+    def write_sync_tag(self, sync_tag_conf: dict):
+        print(f' write_toolkit_conf: {sync_tag_conf}')
+        sync_tag_conf[Config.SYNC_TAG_ENABLED] = self.ui.syncTagCheckbox.isChecked()
+        sync_tag_conf[Config.SYNC_TAG_TEXT] = self.ui.syncTagLineEdit.text()
+
     def _load(self):
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
         self.ui.syncUpdateCheckbox.setChecked(self.config[Config.SYNC_ENABLED])
 
         self.load_marker(self.config[Config.MARKER_OPTIONS])
         self.load_leech_button(self.config[Config.BUTTON_OPTIONS])
+        self.load_sync_tag(self.config[Config.SYNC_TAG_OPTIONS])
 
         self.leech_form.load_ui(self.config[Config.LEECH_ACTIONS])
         self.unleech_form.load_ui(self.config[Config.UN_LEECH_ACTIONS])
@@ -351,6 +375,7 @@ class OptionsDialog(QDialog):
 
         self.write_marker(self.config[Config.MARKER_OPTIONS])
         self.write_button(self.config[Config.BUTTON_OPTIONS])
+        self.write_sync_tag(self.config[Config.SYNC_TAG_OPTIONS])
 
         self.leech_form.write_all(self.config[Config.LEECH_ACTIONS])
         self.unleech_form.write_all(self.config[Config.UN_LEECH_ACTIONS])
