@@ -48,6 +48,7 @@ class String:
     LEECH_ACTIONS = 'Leech Actions'
     LEECH_REVERSE_ACTIONS = 'Un-leech Actions'
     NOTE_NOT_FOUND = 'Missing Note-Type'
+    SYNC_TAG_DEFAULT = 'leech::toolkit-filtered'
 
 
 class EditAction:
@@ -103,9 +104,12 @@ class Action:
 
 
 class Config:
-
     TOOLBAR_ENABLED = 'showToolsMenuOptions'
+
     SYNC_ENABLED = 'applyOnSync'
+    SYNC_OPTIONS = 'syncOptions'
+    SYNC_TAG_ENABLED = 'syncTagEnabled'
+    SYNC_TAG_Text = 'syncTagText'
 
     MARKER_OPTIONS = 'markerOptions'
     SHOW_LEECH_MARKER = 'showLeechMarker'
@@ -177,6 +181,10 @@ class Config:
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SYNC_ENABLED: False,
+        SYNC_OPTIONS: {
+            SYNC_TAG_ENABLED: False,
+            SYNC_TAG_Text: String.SYNC_TAG_DEFAULT,
+        },
         MARKER_OPTIONS: {
             SHOW_LEECH_MARKER: True,
             USE_ALMOST_MARKER: True,
