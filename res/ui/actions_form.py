@@ -531,28 +531,23 @@ class Ui_ActionsForm(object):
         self.rescheduleToDays.setSuffix(_translate("ActionsForm", "days"))
         self.rescheduleResetCheckbox.setToolTip(
             _translate(
-                "ActionsForm", "Updates the card\'s interval using the time between the current day\n"
-                               "                                                 and the\n"
-                               "                                                 updated\n"
-                               "                                                 date.\n"
-                               "                                             "
+                "ActionsForm",
+                "Updates the card\'s interval using the time between the current day and the updated date."
             )
         )
         self.rescheduleResetCheckbox.setText(_translate("ActionsForm", "Update interval"))
         self.queueGroup.setTitle(_translate("ActionsForm", "Add to New"))
         self.queueSiblingCheckbox.setToolTip(
             _translate(
-                "ActionsForm", "Using the given range: Place the card next to another one if\n"
-                               "                                                 they\'re each siblings of the same note-type.\n"
-                               "                                             "
+                "ActionsForm",
+                "Using the given range: Place the card next to another one if they\'re each siblings of the same note-type."
             )
         )
         self.queueSiblingCheckbox.setText(_translate("ActionsForm", "Place near sibling cards"))
         self.queueCurrentDeckCheckbox.setToolTip(
             _translate(
-                "ActionsForm", "Uses the currently-reviewing deck\'s queue when placing the card in\n"
-                               "                                                 the selected range.\n"
-                               "                                             "
+                "ActionsForm",
+                "Uses the currently-reviewing deck\'s queue when placing the card in the selected range."
             )
         )
         self.queueCurrentDeckCheckbox.setText(_translate("ActionsForm", "Using the current deck"))
@@ -564,11 +559,8 @@ class Ui_ActionsForm(object):
         self.label_4.setText(_translate("ActionsForm", "Similarity"))
         self.queueRatioSlider.setToolTip(
             _translate(
-                "ActionsForm", "Controls how similar a card\'s fields must be for it to\n"
-                               "                                                             be\n"
-                               "                                                             considered\n"
-                               "                                                             \"similar\".\n"
-                               "                                                         "
+                "ActionsForm",
+                "Controls how similar a card\'s fields must be for it to be considered \"similar\"."
             )
         )
         self.queueFromDropdown.setItemText(0, _translate("ActionsForm", "Top"))
@@ -580,24 +572,15 @@ class Ui_ActionsForm(object):
         self.queueToDropdown.setItemText(2, _translate("ActionsForm", "Position"))
         self.queueSimilarCheckbox.setToolTip(
             _translate(
-                "ActionsForm", "Using the given range: Places the card near another one in the\n"
-                               "                                                 queue based on how similar they are.\n"
-                               "                                             "
+                "ActionsForm",
+                "Using the given range: Places the card near another one in the queue based on how similar they are."
             )
         )
         self.queueSimilarCheckbox.setText(_translate("ActionsForm", "Place near similar cards"))
         self.groupBox_4.setTitle(_translate("ActionsForm", "Ignored Text"))
         self.groupBox_5.setTitle(_translate("ActionsForm", "Filtered Fields"))
         self.queueIncludeFieldsCheckbox.setToolTip(
-            _translate(
-                "ActionsForm", "Filters to only\n"
-                               "                                                                             match\n"
-                               "                                                                             the\n"
-                               "                                                                             following fields\n"
-                               "                                                                             instead of\n"
-                               "                                                                             filtering them out.\n"
-                               "                                                                         "
-            )
+            _translate("ActionsForm", "Filters to only match the following fields instead of filtering them out.")
         )
         self.queueIncludeFieldsCheckbox.setText(_translate("ActionsForm", "Inclusive"))
         self.queueExcludedFieldList.setSortingEnabled(True)
