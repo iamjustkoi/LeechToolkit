@@ -595,11 +595,7 @@
                                  <item row="1" column="0">
                                      <widget class="QCheckBox" name="rescheduleResetCheckbox">
                                          <property name="toolTip">
-                                             <string>Updates the card's interval using the time between the current day
-                                                 and the
-                                                 updated
-                                                 date.
-                                             </string>
+                                             <string>Updates the card's interval using the time between the current day and the updated date.</string>
                                          </property>
                                          <property name="text">
                                              <string>Update interval</string>
@@ -630,9 +626,7 @@
                                  <item row="6" column="0">
                                      <widget class="QCheckBox" name="queueSiblingCheckbox">
                                          <property name="toolTip">
-                                             <string>Using the given range: Place the card next to another one if
-                                                 they're each siblings of the same note-type.
-                                             </string>
+                                             <string>Using the given range: Place the card next to another one if they're each siblings of the same note-type.</string>
                                          </property>
                                          <property name="text">
                                              <string>Place near sibling cards</string>
@@ -642,9 +636,7 @@
                                  <item row="2" column="0">
                                      <widget class="QCheckBox" name="queueCurrentDeckCheckbox">
                                          <property name="toolTip">
-                                             <string>Uses the currently-reviewing deck's queue when placing the card in
-                                                 the selected range.
-                                             </string>
+                                             <string>Uses the currently-reviewing deck's queue when placing the card in the selected range.</string>
                                          </property>
                                          <property name="text">
                                              <string>Using the current deck</string>
@@ -799,11 +791,7 @@
                                              <item>
                                                  <widget class="TipSlider" name="queueRatioSlider">
                                                      <property name="toolTip">
-                                                         <string>Controls how similar a card's fields must be for it to
-                                                             be
-                                                             considered
-                                                             &quot;similar&quot;.
-                                                         </string>
+                                                         <string>Controls how similar a card's fields must be for it to be considered &quot;similar&quot;.</string>
                                                      </property>
                                                      <property name="minimum">
                                                          <number>0</number>
@@ -953,9 +941,7 @@
                                  <item row="3" column="0">
                                      <widget class="QCheckBox" name="queueSimilarCheckbox">
                                          <property name="toolTip">
-                                             <string>Using the given range: Places the card near another one in the
-                                                 queue based on how similar they are.
-                                             </string>
+                                             <string>Using the given range: Places the card near another one in the queue based on how similar they are.</string>
                                          </property>
                                          <property name="text">
                                              <string>Place near similar cards</string>
@@ -1049,13 +1035,7 @@
                                                                  <widget class="QCheckBox"
                                                                          name="queueIncludeFieldsCheckbox">
                                                                      <property name="toolTip">
-                                                                         <string>Filters to only
-                                                                             match
-                                                                             the
-                                                                             following fields
-                                                                             instead of
-                                                                             filtering them out.
-                                                                         </string>
+                                                                         <string>Filters to only match the following fields instead of filtering them out.</string>
                                                                      </property>
                                                                      <property name="text">
                                                                          <string>Inclusive</string>

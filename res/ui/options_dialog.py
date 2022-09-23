@@ -30,7 +30,7 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 513, 175))
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 175))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -695,7 +695,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
@@ -708,11 +708,8 @@ class Ui_OptionsDialog(object):
         self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
         self.almostCheckbox.setToolTip(
             _translate(
-                "OptionsDialog", "When reviewing, displays a mark below the\n"
-                                 "                  current card\n"
-                                 "                  if\n"
-                                 "                  it\'s about to be marked as a leech.\n"
-                                 "                 "
+                "OptionsDialog",
+                "When reviewing, displays a mark below the current card if it\'s about to be marked as a leech."
             )
         )
         self.almostCheckbox.setText(_translate("OptionsDialog", "Show unique marker for about-to-be-leeched cards"))
@@ -722,9 +719,8 @@ class Ui_OptionsDialog(object):
         self.almostPosDropdown.setItemText(2, _translate("OptionsDialog", "Right"))
         self.browseButtonGroup.setToolTip(
             _translate(
-                "OptionsDialog", "Shows a button on bottom bar whenever cards with the leech\n"
-                                 "               tag are found in a deck.\n"
-                                 "              "
+                "OptionsDialog",
+                "Shows a button on bottom bar whenever cards with the leech tag are found in a deck."
             )
         )
         self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
@@ -827,39 +823,31 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
         self.syncUpdateCheckbox.setToolTip(
             _translate(
-                "OptionsDialog", "After syncing, updates the entire collection with the current\n"
-                                 "                                                options/actions based on the synced review logs.\n"
-                                 "                                            "
+                "OptionsDialog",
+                "After syncing, updates the entire collection with the current options/actions based on the synced review logs."
             )
         )
         self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
         self.syncTagCheckbox.setToolTip(
             _translate(
-                "OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom\n"
-                                 "                                                tag that gets added to any filtered leeches.\n"
-                                 "                                            "
+                "OptionsDialog",
+                "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."
             )
         )
         self.syncTagCheckbox.setTitle(
-            _translate(
-                "OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices\n"
-                                 "                                            "
-            )
+            _translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices.")
         )
         self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
         self.label.setText(
             _translate(
-                "OptionsDialog", "* This should be updated to the same tag as any other\n"
-                                 "                                                            Anki client(s) where it might\'ve also been changed and\n"
-                                 "                                                            synced/uploaded before syncing.\n"
-                                 "                                                        "
+                "OptionsDialog",
+                "* This should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded before syncing."
             )
         )
         self.syncUpdateButton.setToolTip(
             _translate(
-                "OptionsDialog", "Sync the entire collection based on the current, applied options and\n"
-                                 "                                                review logs.\n"
-                                 "                                            "
+                "OptionsDialog",
+                "Sync the entire collection based on the current, applied options and review logs."
             )
         )
         self.syncUpdateButton.setText(_translate("OptionsDialog", "Update Collection"))
