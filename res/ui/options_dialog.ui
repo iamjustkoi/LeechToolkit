@@ -44,7 +44,7 @@
             <x>0</x>
             <y>0</y>
             <width>530</width>
-               <height>175</height>
+            <height>175</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -218,14 +218,14 @@
              <property name="mouseTracking">
               <bool>true</bool>
              </property>
-             <layout class="QVBoxLayout" name="actionsScrollLayout">
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-                 <property name="bottomMargin">
-                     <number>0</number>
-                 </property>
-             </layout>
+                <layout class="QVBoxLayout" name="actionsScrollLayout">
+                    <property name="topMargin">
+                        <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>0</number>
+                    </property>
+                </layout>
             </widget>
            </item>
           </layout>
@@ -259,7 +259,7 @@
                                     <x>0</x>
                                     <y>0</y>
                                     <width>530</width>
-                                    <height>87</height>
+                                    <height>191</height>
                                 </rect>
                             </property>
                             <property name="sizePolicy">
@@ -292,7 +292,45 @@
                                     </widget>
                                 </item>
                                 <item>
-                                    <widget class="QPushButton" name="pushButton">
+                                    <widget class="QGroupBox" name="syncTagCheckbox">
+                                        <property name="toolTip">
+                                            <string>Keeps track of leech/unleech actions across devices using a custom
+                                                tag that gets added to any filtered leeches.
+                                            </string>
+                                        </property>
+                                        <property name="title">
+                                            <string>Use a custom tag to keep track of toolkit updates across devices
+                                            </string>
+                                        </property>
+                                        <property name="checkable">
+                                            <bool>true</bool>
+                                        </property>
+                                        <layout class="QVBoxLayout" name="verticalLayout_7">
+                                            <item>
+                                                <widget class="QLineEdit" name="syncTagLineEdit">
+                                                    <property name="text">
+                                                        <string>leech::toolkit-filtered</string>
+                                                    </property>
+                                                </widget>
+                                            </item>
+                                            <item>
+                                                <widget class="QLabel" name="label">
+                                                    <property name="text">
+                                                        <string>* Heads up: before syncing, this should be updated to
+                                                            the same tag as any other Anki client(s) where it might've
+                                                            also been changed and synced/uploaded.
+                                                        </string>
+                                                    </property>
+                                                    <property name="wordWrap">
+                                                        <bool>true</bool>
+                                                    </property>
+                                                </widget>
+                                            </item>
+                                        </layout>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="syncUpdateButton">
                                         <property name="sizePolicy">
                                             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                                                 <horstretch>0</horstretch>
