@@ -40,6 +40,16 @@ class LeechToolkitConfigManager:
         self._meta = self._mw.addonManager.addonMeta(self._addon)
         self._meta['config'] = self.config = merge_fields(self._meta.get('config', {}), Config.DEFAULT_CONFIG)
 
+    def get_all_configs(self):
+        """
+        Retrieves a dictionary of deck configs with global defaults.
+        """
+        toolkit_configs: dict = {}
+        for deck_name_id in self._mw.col.decks.all_names_and_ids():
+            config_id = self._mw.col.decks.get(deck_name_id.id)['conf']
+            toolkit_configs[f'{deck_name_id.id}'] = merge_fields(self.config.get(str(config_id), {}), self.config)
+        return toolkit_configs
+
     def save_config(self):
         """
         Writes the config manager's current values to the addon meta file.
