@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_SetLapseDialog(object):
     def setupUi(self, SetLapseDialog):
         SetLapseDialog.setObjectName("SetLapseDialog")
-        SetLapseDialog.resize(300, 99)
+        SetLapseDialog.resize(302, 99)
         self.verticalLayout = QtWidgets.QVBoxLayout(SetLapseDialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(SetLapseDialog)
@@ -39,15 +39,14 @@ class Ui_SetLapseDialog(object):
         SetLapseDialog.setWindowTitle(_translate("SetLapseDialog", "Set Card Lapse Count"))
         self.label.setText(
             _translate(
-                "SetLapseDialog", "Supports basic math: + - * /\n"
-                                  "(*2 = Multiply all lapses by 2, etc.)"
+                "SetLapseDialog", "Supports math with the symbols: + - * /\n"
+                                  "* 2 = multiply all lapses by 2, etc."
             )
         )
 
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     SetLapseDialog = QtWidgets.QDialog()
     ui = Ui_SetLapseDialog()
