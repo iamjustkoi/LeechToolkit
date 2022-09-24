@@ -347,10 +347,11 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
 
     def update_sync_tag():
-        if action_type == Config.LEECH_ACTIONS:
-            updated_card.note().add_tag(toolkit_conf[Config.SYNC_TAG_TEXT])
-        elif action_type == Config.UN_LEECH_ACTIONS:
-            updated_card.note().remove_tag(toolkit_conf[Config.SYNC_TAG_TEXT])
+        if toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED]:
+            if action_type == Config.LEECH_ACTIONS:
+                updated_card.note().add_tag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+            elif action_type == Config.UN_LEECH_ACTIONS:
+                updated_card.note().remove_tag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
 
     try_flag()
     try_deck_move()
