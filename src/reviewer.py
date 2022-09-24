@@ -149,9 +149,7 @@ class ReviewManager:
             delattr(card, prev_type_attr)
 
         if hasattr(card, was_leech_attr):
-            updated_card = run_action_updates(card, self.toolkit_config[Config.LEECH_ACTIONS])
-            if self.toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED]:
-                updated_card.note().add_tag(self.toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+            updated_card = run_action_updates(card, self.toolkit_config, Config.LEECH_ACTIONS)
             delattr(card, was_leech_attr)
 
         if is_unique_card(card, updated_card):
