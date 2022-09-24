@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
+    <width>302</width>
     <height>99</height>
    </rect>
   </property>
@@ -17,8 +17,8 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Supports basic math: + - * /
-(*2 = Multiply all lapses by 2, etc.)</string>
+      <string>Supports math with the symbols: + - * /
+* 2 = multiply all lapses by 2, etc.</string>
      </property>
     </widget>
    </item>
