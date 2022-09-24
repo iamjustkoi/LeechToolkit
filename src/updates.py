@@ -136,7 +136,12 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
                 updated_card.note().remove_tag(LEECH_TAG)
                 tooltip_items.append(String.LEECH_REVERSED)
 
-                updated_card = run_action_updates(updated_card, config[Config.UN_LEECH_ACTIONS], reload=False)
+                updated_card = run_action_updates(
+                    updated_card,
+                    config,
+                    Config.UN_LEECH_ACTIONS,
+                    reload=False
+                )
                 if config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED]:
                     updated_card.note().remove_tag(config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
 
@@ -146,8 +151,9 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
 
 
 # Actions format: actionName: {enabled: bool, key: val}
-def run_action_updates(card: anki.cards.Card, actions_conf: dict, reload=True):
+def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Config.LEECH_ACTIONS, reload=True):
     updated_card = card.col.get_card(card.id) if reload else card
+    actions_conf = toolkit_conf[action_type]
 
     def try_deck_move():
         if actions_conf[Action.MOVE_DECK][Action.ENABLED]:
@@ -340,8 +346,15 @@ def run_action_updates(card: anki.cards.Card, actions_conf: dict, reload=True):
             else:
                 updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
 
+    def update_sync_tag():
+        if action_type == Config.LEECH_ACTIONS:
+            updated_card.note().add_tag(toolkit_conf[Config.SYNC_TAG_TEXT])
+        elif action_type == Config.UN_LEECH_ACTIONS:
+            updated_card.note().remove_tag(toolkit_conf[Config.SYNC_TAG_TEXT])
+
     try_flag()
     try_deck_move()
     try_everything_else()
+    update_sync_tag()
 
     return updated_card
