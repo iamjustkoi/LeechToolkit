@@ -76,8 +76,9 @@ def is_unique_card(original_card: anki.cards.Card, modified_card: anki.cards.Car
         if key == '_note':
             note: Note = val
             orig_note = original_card.note()
-            if (note.fields, note.id, note.tags) != (orig_note.fields, orig_note.id, orig_note.tags):
-                changed_items[key] = val
+            if note and orig_note:
+                if (note.fields, note.id, note.tags) != (orig_note.fields, orig_note.id, orig_note.tags):
+                    changed_items[key] = val
         elif val != original_card.__dict__.get(key):
             changed_items[key] = val
     return len(changed_items) > 0
