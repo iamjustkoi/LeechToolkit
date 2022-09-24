@@ -86,18 +86,28 @@ def sync_collection():
 
                 if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED] and updated_card.lapses < threshold:
 
+                    # Unleech
                     if toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED] and has_toolkit_tag:
-                        run_action_updates(updated_card, toolkit_config[Config.UN_LEECH_ACTIONS], reload=False)
-                        updated_note.remove_tag(toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+                        run_action_updates(
+                            updated_card,
+                            toolkit_config,
+                            Config.UN_LEECH_ACTIONS,
+                            reload=False
+                        )
 
                     if has_leech_tag:
                         updated_note.remove_tag(LEECH_TAG)
 
                 elif updated_card.lapses >= threshold:
 
+                    # Leech
                     if toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED] and not has_toolkit_tag:
-                        run_action_updates(updated_card, toolkit_config[Config.LEECH_ACTIONS], reload=False)
-                        updated_note.add_tag(toolkit_config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+                        run_action_updates(
+                            updated_card,
+                            toolkit_config,
+                            Config.LEECH_ACTIONS,
+                            reload=False
+                        )
 
                         if nid not in tagged_nids:
                             tagged_nids.append(nid)

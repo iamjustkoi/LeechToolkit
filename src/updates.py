@@ -142,8 +142,6 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
                     Config.UN_LEECH_ACTIONS,
                     reload=False
                 )
-                if config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED]:
-                    updated_card.note().remove_tag(config[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
 
         if TOOLTIP_ENABLED and len(tooltip_items) > 0:
             utils.tooltip('\n\n'.join(tooltip_items), period=TOOLTIP_TIME)
