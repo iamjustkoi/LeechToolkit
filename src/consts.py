@@ -4,9 +4,19 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 from typing import NewType
 
+from aqt.utils import tr
+
 CURRENT_VERSION = '0.5.0-beta'
 
+LEECH_TAG = 'leech'
+LEECHES_URL = 'viewleeches'
+
+REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
+RESTORE_ICON_PATH = '../res/img/restore_icon.svg'
+
 ANKI_LEGACY_VER = 35
+
+MENU_CARDS_TEXT = tr.qt_accel_cards()
 
 PosType = NewType('PosIndex', int)
 DEFAULT = PosType(0)
@@ -18,15 +28,6 @@ ReverseType = NewType('ReverseType', int)
 REV_DECREASE = ReverseType(0)
 REV_RESET = ReverseType(1)
 
-CARD_TYPE_STR = {0: 'new', 1: 'learn', 2: 'review', 3: 'relearn'}
-
-LEECH_TAG = 'leech'
-
-REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
-RESTORE_ICON_PATH = '../res/img/restore_icon.svg'
-
-LEECHES_URL = 'viewleeches'
-
 
 class Macro:
     DATE = '%date'
@@ -36,10 +37,10 @@ class Macro:
 
 
 class String:
+    TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
     RESTORE_DEFAULT_SETTING = 'Restore Default Setting'
     OUTPUT_TEXT = 'Text'
     REPLACE_WITH = 'Replace With'
-    TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
     VIEW_LEECHES = 'Leech Cards'
     BUTTON_SHORTCUT_HINT = 'Shortcut key'
     LAPSES_DECREASED = r"Lapses decreased!"

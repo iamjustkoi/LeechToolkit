@@ -835,7 +835,10 @@ class Ui_OptionsDialog(object):
             )
         )
         self.syncTagCheckbox.setTitle(
-            _translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices.")
+            _translate(
+                "OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices\n"
+                                 "                                            "
+            )
         )
         self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
         self.label.setText(
