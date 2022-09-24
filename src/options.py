@@ -156,13 +156,13 @@ def _bind_tools_options(*args):
     if config[Config.TOOLBAR_ENABLED]:
         options_action = QAction(String.TOOLBAR_OPTIONS, mw)
         options_action.triggered.connect(on_options_called)
+
         # Handles edge cases where toolbar action already exists in the tools menu
         if options_action.text() not in [action.text() for action in mw.form.menuTools.actions()]:
             mw.form.menuTools.addAction(options_action)
     else:
         for action in mw.form.menuTools.actions():
-            if action.text() == String.TOOLBAR_OPTIONS:
-                mw.form.menuTools.removeAction(action)
+            mw.form.menuTools.removeAction(action) if action.text() == String.TOOLBAR_OPTIONS else None
 
 
 def _bind_config_options():
