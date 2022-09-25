@@ -287,7 +287,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 filtered_ids = card.col.db.list(cmd.format(get='id'))
                 filtered_positions = card.col.db.list(cmd.format(get='due'))
 
-                # Gets the string output of each card's data currently in the new queue and compares to the leech
+                # Gets the string output of each card's data currently in the new queue and compares it to other cards
                 #  using ratios/fuzzy comparison.
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
                     excluded_inputs_str: str = queue_inputs[QueueAction.EXCLUDED_TEXT]
