@@ -5,9 +5,11 @@ Full license text available in "LICENSE" file packaged with the program.
 
 import re
 
+import anki.collection
 import aqt.browser
 from anki.collection import Collection
 from aqt import gui_hooks, mw
+from aqt.operations import CollectionOp
 from aqt.qt import (
     QDialog,
     QDialogButtonBox,
@@ -17,13 +19,14 @@ from aqt.utils import (
     ensure_editor_saved,
 )
 
-from .config import LeechToolkitConfigManager
-from .consts import MENU_CARDS_TEXT
+from .config import LeechToolkitConfigManager, merge_fields
+from .consts import MENU_CARDS_TEXT, Config, LEECH_TAG
+from .updates import run_action_updates, update_card
 from ..res.ui.set_lapse_dialog import Ui_SetLapseDialog
 
 TOOLKIT_ACTIONS = 'Too&lkit Actions'
 ACTION_LEECH = '&Leech'
-ACTION_UNLEECH = '&Un-leech'
+ACTION_UNLEECH = '&Un-Leech'
 ACTION_SET_LAPSES = '&Set Lapses...'
 STORED_LAPSE_INPUT = 'storedLapseInput'
 
@@ -40,31 +43,61 @@ def _get_menu(menu_bar: aqt.qt.QMenuBar, menu_text):
 
 
 def init_browser(browser: aqt.browser.Browser):
-    menu_bar = browser.menuBar()
-    menu = _get_menu(menu_bar, MENU_CARDS_TEXT)
+    manager = LeechToolkitConfigManager(mw)
+
+    menu = _get_menu(browser.menuBar(), MENU_CARDS_TEXT)
     menu.addSeparator()
+
     sub_menu = menu.addMenu(TOOLKIT_ACTIONS)
-    sub_menu.addAction(ACTION_LEECH)
-    sub_menu.addAction(ACTION_UNLEECH)
-    menu.addAction(ACTION_SET_LAPSES, lambda *args: set_lapses(browser))
+
+    sub_menu.addAction(ACTION_LEECH, lambda *args: apply_leech_updates(manager, browser, Config.LEECH_ACTIONS))
+    sub_menu.addAction(ACTION_UNLEECH, lambda *args: apply_leech_updates(manager, browser, Config.UN_LEECH_ACTIONS))
+
+    menu.addAction(ACTION_SET_LAPSES, lambda *args: show_set_lapses(manager, browser))
 
 
-def set_lapses(browser: aqt.browser.Browser):
-    dialog = SetLapseDialog(LeechToolkitConfigManager(mw), browser)
+# def collection_op(browser, callback_with_result):
+#     if action_type in (ACTION_LEECH, ACTION_UNLEECH):
+#         CollectionOp(browser, callback_with_result).success(None)
+
+
+def show_set_lapses(manager: LeechToolkitConfigManager, browser: aqt.browser.Browser):
+    dialog = SetLapseDialog(manager, browser)
     dialog.exec()
 
 
-def leech():
-    pass
+def apply_leech_updates(manager: LeechToolkitConfigManager, browser: aqt.browser.Browser, action_type):
+    toolkit_configs = manager.get_all_configs()
+    total_updates = 0
+
+    for cid in browser.selectedCards():
+        card = browser.col.get_card(cid)
+        if action_type == Config.LEECH_ACTIONS:
+            run_action_updates(card, toolkit_configs[str(card.did)], Config.LEECH_ACTIONS, reload=False)
+            card.note().add_tag(LEECH_TAG)
+        elif action_type == Config.UN_LEECH_ACTIONS:
+            run_action_updates(card, toolkit_configs[str(card.did)], Config.UN_LEECH_ACTIONS, reload=False)
+            card.note().remove_tag(LEECH_TAG)
+        update_card(card)
+        total_updates += 1
+
+    browser.table.reset()
+
+    if action_type == Config.LEECH_ACTIONS:
+        show_update_tip('Leeched', total_updates)
+    elif action_type == Config.UN_LEECH_ACTIONS:
+        show_update_tip('Un-leeched', total_updates)
+
+    # return anki.collection.OpChanges
 
 
-def unleech():
-    pass
+def show_update_tip(prefix: str, total_updated: int):
+    aqt.utils.tooltip(f'{prefix} {total_updated} card{"s" if total_updated != 1 else ""}')
 
 
 class SetLapseDialog(QDialog):
     def __init__(self, manager: LeechToolkitConfigManager, browser: aqt.browser.Browser):
-        super().__init__(flags=mw.windowFlags())
+        super().__init__(parent=browser, flags=browser.windowFlags())
         self.manager = manager
         self.config = manager.config
         self.browser = browser
@@ -78,22 +111,27 @@ class SetLapseDialog(QDialog):
 
         self.ui.lineEdit.textChanged.connect(on_text_changed)
 
-        self.ui.lineEdit.setValidator(aqt.qt.QRegExpValidator(aqt.qt.QRegExp(r'(\d*|\s*|((\+|-|\/|\*)(\d|\s)))*')))
+        lone_symbol_validator = aqt.qt.QRegExpValidator(aqt.qt.QRegExp(r'(\d|\s*|[+\-/*](\s*\d|\d))*'))
+        self.ui.lineEdit.setValidator(lone_symbol_validator)
         self.ui.lineEdit.setText(self.config.get(STORED_LAPSE_INPUT, ''))
 
     @skip_if_selection_is_empty
     @ensure_editor_saved
     def accept(self):
-        line_text = self.ui.lineEdit.text().strip()
-
-        cards = []
+        raw_text = self.ui.lineEdit.text()
+        formatted_text = re.sub(r'(?<!\d)0*(?!\D|$)', '', self.ui.lineEdit.text().strip().replace(' ', ''))
+        updated_cards = []
         for cid in self.browser.selectedCards():
-            card = mw.col.get_card(cid)
-            card.lapses = int(eval(f'{card.lapses if line_text[0] in "*/+-" else ""}{line_text}'))
-            cards.append(card)
-        Collection.update_cards(self.browser.col, cards)
+            card = self.browser.col.get_card(cid)
+            result = int(eval(f'{card.lapses}{formatted_text}' if formatted_text[0] in r'+-\*' else formatted_text))
+            card.lapses = max(result, 0)
+            updated_cards.append(card)
 
         self.table.reset()
-        self.config[STORED_LAPSE_INPUT] = line_text
+        self.config[STORED_LAPSE_INPUT] = raw_text
         self.manager.save_config()
         self.close()
+
+        show_update_tip('Updated lapse count for', len(updated_cards))
+
+        # return anki.collection.OpChanges

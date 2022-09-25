@@ -47,7 +47,7 @@ class String:
     LAPSES_RESET = r"Lapses reset!"
     LEECH_REVERSED = r"Leech reversed!"
     LEECH_ACTIONS = 'Leech Actions'
-    LEECH_REVERSE_ACTIONS = 'Un-leech Actions'
+    UN_LEECH_ACTIONS = 'Un-Leech Actions'
     NOTE_NOT_FOUND = 'Missing Note-Type'
     SYNC_TAG_DEFAULT = 'leech::toolkit-filtered'
 
