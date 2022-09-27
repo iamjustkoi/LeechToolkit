@@ -154,6 +154,7 @@ class SetLapseDialog(QDialog):
             entry = col.add_custom_undo_entry(String.UNDO_ENTRY_SET_LAPSES)
             changes = None
 
+            # Stash all the dictionaries, but should be replaced with fewer calls based on selected cards
             toolkit_configs: dict = {}
             if self.ui.updateLeechesCheckbox.isChecked():
                 for deck_name_id in col.decks.all_names_and_ids():
