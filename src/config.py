@@ -20,7 +20,6 @@ def merge_fields(config: dict, default_config: dict):
     default_copy = default_config.copy()
     for field in default_copy:
         if field not in config:
-            print(f'Default field added: {field}')
             config[field] = default_copy.get(field)
         elif isinstance(default_copy[field], dict):
             config[field] = merge_fields(config[field], default_copy[field])
