@@ -12,7 +12,7 @@ import anki.cards
 import anki.decks
 from anki.collection import OpChanges
 
-from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUTTON_ONE
+from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUTTON_ONE, REVLOG_RESCHED
 from anki.notes import Note
 from aqt import utils
 
@@ -147,6 +147,44 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
         if TOOLTIP_ENABLED and len(tooltip_items) > 0:
             utils.tooltip('\n\n'.join(tooltip_items), period=TOOLTIP_TIME)
     return updated_card
+
+
+# Was considering for logging changes, etc., but opted to warn/reveal to frontend, instead.
+{
+    # def commit_lapses_to_revlog(col: anki.collection.Collection, card: anki.cards.Card, lapses: int):
+    #     """
+    #     ...
+    #     :param col:
+    #     :param card:
+    #     :param lapses:
+    #     :return:
+    #     """
+    #     # id -- unix ms time/review id
+    #     # cid -- cid
+    #     # usn -- usn (update sequence number for checking against Anki Web. -1 = push)
+    #     # ease -- ease (often unused for reschedule reviews, so using as lapse data field)
+    #     # ivl -- interval (negative = seconds)
+    #     # lastIvl -- last interval (negative = seconds)
+    #     # factor -- factor
+    #     # time -- time
+    #     # type -- type
+    #     cmd = f'''
+    #         INSERT INTO "revlog" (id, cid, usn, ease, ivl, lastIvl, factor, time, type)
+    #         VALUES(
+    #             {int(datetime.datetime.now().timestamp() * 1000)},
+    #             {card.id},
+    #             -1,
+    #             {lapses + 1},
+    #             {card.ivl},
+    #             {card.ivl},
+    #             0,
+    #             0,
+    #             {REVLOG_RESCHED}
+    #         );
+    #     '''
+    #     col.db.all(cmd)
+    #     col.db.commit()
+}
 
 
 # Actions format: actionName: {enabled: bool, key: val}
