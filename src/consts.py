@@ -39,21 +39,39 @@ class Macro:
 
 
 class String:
-    TOOLBAR_OPTIONS = '&Leech Toolkit Options...'
+    LEECH_TOOLKIT_OPTIONS = '&Leech Toolkit Options...'
+
     RESTORE_DEFAULT_SETTING = 'Restore Default Setting'
+
+    TOOLKIT_ACTIONS = 'Too&lkit Actions'
+    ACTION_LEECH = '&Leech'
+    ACTION_UNLEECH = '&Un-Leech'
+    ACTION_SET_LAPSES = '&Set Lapses...'
+    STORED_LAPSE_INPUT = 'storedLapseInput'
+
     OUTPUT_TEXT = 'Text'
     REPLACE_WITH = 'Replace With'
     VIEW_LEECHES = 'Leech Cards'
+
     BUTTON_SHORTCUT_HINT = 'Shortcut key'
+
     LAPSES_DECREASED = r"Lapses decreased!"
     LAPSES_RESET = r"Lapses reset!"
     LEECH_REVERSED = r"Leech reversed!"
+
     LEECH_ACTIONS = 'Leech Actions'
     UN_LEECH_ACTIONS = 'Un-Leech Actions'
+
     NOTE_NOT_FOUND = 'Missing Note-Type'
     SYNC_TAG_DEFAULT = 'leech::toolkit-filtered'
-    UNDO_ENTRY_LEECH = 'Leech'
-    UNDO_ENTRY_UNLEECH = 'Un-leech'
+
+    UNDO_ENTRY_SET_LAPSES = 'Set Lapses'
+    UNDO_ENTRY_LEECH_ACTIONS = 'Leech Actions'
+    UNDO_ENTRY_UNLEECH_ACTIONS = 'Un-leech Actions'
+
+    TIP_LEECHED_TEMPLATE = 'Leeched {} cards'
+    TIP_UNLEECHED_TEMPLATE = 'Un-leeched {} cards'
+    TIP_SET_LAPSES_TEMPLATE = 'Set lapses for {} cards'
 
 
 class EditAction:
