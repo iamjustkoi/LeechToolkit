@@ -330,6 +330,8 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 #  using ratios/fuzzy comparison.
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
                     excluded_inputs_str: str = queue_inputs[QueueAction.EXCLUDED_TEXT]
+
+                    # Concatenate, replace new lines with, and split string using space characters
                     excluded_inputs = re.sub('  +', ' ', excluded_inputs_str).replace('\n', ' ').split(' ')
 
                     min_ratio = queue_inputs[QueueAction.SIMILAR_RATIO]
