@@ -132,7 +132,9 @@ class SetLapseDialog(QDialog):
 
         lone_symbol_validator = QRegExpValidator(QRegExp(r'(\d|\s*|[+\-/*](\s*\d|\d))*'))
         self.ui.lineEdit.setValidator(lone_symbol_validator)
-        self.ui.lineEdit.setText(self.config.get(String.STORED_LAPSE_INPUT, ''))
+        self.ui.lineEdit.setText(self.config.get(Config.SET_LAPSES_INPUT, ''))
+
+        self.ui.updateLeechesCheckbox.setChecked(self.config.get(Config.SET_LAPSE_UPDATE_LEECHES, False))
 
     @skip_if_selection_is_empty
     @ensure_editor_saved
@@ -159,5 +161,6 @@ class SetLapseDialog(QDialog):
         start_collection_op(self.browser, lambda col: set_lapses_operation(col), String.TIP_SET_LAPSES_TEMPLATE, count)
 
         self.config[Config.SET_LAPSES_INPUT] = raw_stripped_text
+        self.config[Config.SET_LAPSE_UPDATE_LEECHES] = self.ui.updateLeechesCheckbox.isChecked()
         self.manager.save_config()
         self.close()
