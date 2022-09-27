@@ -154,7 +154,7 @@ Inserts a new excluded field item to the excluded fields list if not already pre
 def _bind_tools_options(*args):
     config = LeechToolkitConfigManager(mw).config
     if config[Config.TOOLBAR_ENABLED]:
-        options_action = QAction(String.TOOLBAR_OPTIONS, mw)
+        options_action = QAction(String.LEECH_TOOLKIT_OPTIONS, mw)
         options_action.triggered.connect(on_options_called)
 
         # Handles edge cases where toolbar action already exists in the tools menu
@@ -162,7 +162,7 @@ def _bind_tools_options(*args):
             mw.form.menuTools.addAction(options_action)
     else:
         for action in mw.form.menuTools.actions():
-            mw.form.menuTools.removeAction(action) if action.text() == String.TOOLBAR_OPTIONS else None
+            mw.form.menuTools.removeAction(action) if action.text() == String.LEECH_TOOLKIT_OPTIONS else None
 
 
 def _bind_config_options():
@@ -355,7 +355,6 @@ class OptionsDialog(QDialog):
         button_conf[Config.SHOW_OVERVIEW_BUTTON] = self.ui.browseButtonOverviewCheckbox.isChecked()
 
     def write_sync_tag(self, sync_tag_conf: dict):
-        print(f' write_toolkit_conf: {sync_tag_conf}')
         sync_tag_conf[Config.SYNC_TAG_ENABLED] = self.ui.syncTagCheckbox.isChecked()
         sync_tag_conf[Config.SYNC_TAG_TEXT] = self.ui.syncTagLineEdit.text()
 
