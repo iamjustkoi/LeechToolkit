@@ -286,10 +286,13 @@
            <item>
             <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>* Overwrites non-review/non-reschedule changes to card lapse counts (e.g. database edits or the &quot;Set Lapses&quot; option).</string>
+              <string>* Overwrites non-review/non-reschedule changes to card lapse counts (e.g. Leech Toolkit browser actions, database edits, etc.).</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
+             </property>
+             <property name="indent">
+              <number>12</number>
              </property>
             </widget>
            </item>
@@ -316,7 +319,7 @@
               <item>
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>* Should be updated to the same tag as any other Anki client(s) where it might've also been changed and synced/uploaded before syncing.</string>
+                 <string>* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might've also been changed and synced/uploaded.</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
