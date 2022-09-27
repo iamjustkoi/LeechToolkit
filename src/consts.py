@@ -51,6 +51,8 @@ class String:
     TOOLKIT_ACTIONS = 'Too&lkit Actions'
     ACTION_LEECH = '&Leech'
     ACTION_UNLEECH = '&Un-Leech'
+    REVIEWER_ACTION_LEECH = 'Leech'
+    REVIEWER_ACTION_UNLEECH = 'Un-Leech'
     ACTION_SET_LAPSES = '&Set Lapses...'
 
     OUTPUT_TEXT = 'Text'
@@ -221,8 +223,8 @@ class Config:
             SYNC_TAG_TEXT: String.SYNC_TAG_DEFAULT,
         },
         MENU_OPTIONS: {
-            LEECH_SHORTCUT: 'Ctrl+L',
-            UNLEECH_SHORTCUT: 'Ctrl+U',
+            LEECH_SHORTCUT: 'L',
+            UNLEECH_SHORTCUT: 'U',
         },
         MARKER_OPTIONS: {
             SHOW_LEECH_MARKER: True,
