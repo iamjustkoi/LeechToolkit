@@ -213,7 +213,7 @@ class Config:
         TOOLBAR_ENABLED: True,
         SYNC_ENABLED: False,
         SYNC_TAG_OPTIONS: {
-            SYNC_TAG_ENABLED: False,
+            SYNC_TAG_ENABLED: True,
             SYNC_TAG_TEXT: String.SYNC_TAG_DEFAULT,
         },
         MARKER_OPTIONS: {
