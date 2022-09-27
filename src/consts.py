@@ -134,6 +134,10 @@ class Action:
 class Config:
     TOOLBAR_ENABLED = 'showToolsMenuOptions'
 
+    MENU_OPTIONS = 'menuOptions'
+    LEECH_SHORTCUT = 'leechShortcut'
+    UNLEECH_SHORTCUT = 'unleechShortcut'
+
     SYNC_ENABLED = 'applyOnSync'
     SYNC_TAG_OPTIONS = 'syncOptions'
     SYNC_TAG_ENABLED = 'syncTagEnabled'
@@ -216,6 +220,10 @@ class Config:
             SYNC_TAG_ENABLED: True,
             SYNC_TAG_TEXT: String.SYNC_TAG_DEFAULT,
         },
+        MENU_OPTIONS: {
+            LEECH_SHORTCUT: 'Ctrl+L',
+            UNLEECH_SHORTCUT: 'Ctrl+U',
+        },
         MARKER_OPTIONS: {
             SHOW_LEECH_MARKER: True,
             USE_ALMOST_MARKER: True,
@@ -232,8 +240,8 @@ class Config:
             REVERSE_USE_LEECH_THRESHOLD: True,
             REVERSE_THRESHOLD: 4,
             REVERSE_CONS_ANS: 2,
-            REVERSE_METHOD: 0
+            REVERSE_METHOD: 0,
         },
         LEECH_ACTIONS: DEFAULT_ACTIONS,
-        UN_LEECH_ACTIONS: DEFAULT_ACTIONS
+        UN_LEECH_ACTIONS: DEFAULT_ACTIONS,
     }

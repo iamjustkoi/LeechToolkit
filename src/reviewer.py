@@ -6,11 +6,12 @@ import anki.cards
 import aqt.reviewer
 from anki import cards, hooks
 from anki.decks import DeckId
-from aqt import reviewer, webview, gui_hooks, mw
+from aqt.webview import WebContent, AnkiWebView
+from aqt import reviewer, gui_hooks, mw
 
 from .updates import run_action_updates, run_reverse_updates, update_card, is_unique_card
 from .config import LeechToolkitConfigManager, merge_fields
-from .consts import Config, ErrorMsg, MARKER_POS_STYLES, LEECH_TAG
+from .consts import Config, ErrorMsg, MARKER_POS_STYLES, LEECH_TAG, String
 
 mark_html_template = '''
 <style>
@@ -39,7 +40,9 @@ TOOLTIP_TIME = 5000
 
 
 def build_hooks():
-    from aqt.gui_hooks import webview_will_set_content
+    from aqt.gui_hooks import (
+        webview_will_set_content,
+    )
 
     webview_will_set_content.append(
         lambda content, context:
@@ -111,14 +114,34 @@ class ReviewManager:
             reviewer_did_show_answer,
             reviewer_did_answer_card,
             reviewer_will_end,
+            reviewer_will_show_context_menu,
         )
         card_did_leech.append(mark_leeched)
 
         reviewer_did_show_question.append(self.on_show_front)
         reviewer_did_show_answer.append(self.on_show_back)
         reviewer_did_answer_card.append(self.on_answer)
+        reviewer_will_show_context_menu.append(self.append_context_menu)
 
         reviewer_will_end.append(self.remove_hooks)
+
+    def append_context_menu(self, webview: AnkiWebView, menu: aqt.qt.QMenu):
+        leech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.LEECH_SHORTCUT])
+        unleech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.UNLEECH_SHORTCUT])
+
+        menu.addSeparator()
+
+        leech_action = menu.addAction(
+            String.ACTION_LEECH.replace('&', ''),
+            # lambda *args: apply_leech_updates(manager, browser, Config.LEECH_ACTIONS),
+        )
+        leech_action.setShortcut(leech_shortcut)
+
+        unleech_action = menu.addAction(
+            String.ACTION_UNLEECH.replace('&', ''),
+            # lambda *args: apply_leech_updates(manager, browser, Config.UN_LEECH_ACTIONS)
+        )
+        unleech_action.setShortcut(unleech_shortcut)
 
     def remove_hooks(self):
         try:
