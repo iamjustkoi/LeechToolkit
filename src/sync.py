@@ -27,7 +27,7 @@ def get_remeasured_lapses(cid: int, reverse_conf: dict):
         if rev_type not in (REVLOG_RELRN, REVLOG_LRN):
             consecutive_correct = 0
 
-        # Card graduated (lapses reset)
+        # Card graduated (lapses reset, learn interval became positive)
         if rev_type == REVLOG_LRN and ivl > 0:
             remeasured_lapses = 0
 
