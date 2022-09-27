@@ -150,6 +150,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_2.addWidget(self.syncUpdateCheckbox)
         self.label_2 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_2.setWordWrap(True)
+        self.label_2.setIndent(12)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_2.addWidget(self.label_2)
         self.syncTagCheckbox = QtWidgets.QGroupBox(self.scrollAreaWidgetContents)
@@ -230,7 +231,7 @@ class Ui_OptionsDialog(object):
         self.label_2.setText(
             _translate(
                 "OptionsDialog",
-                "* Overwrites non-review/non-reschedule changes to card lapse counts (e.g. database edits or the \"Set Lapses\" option)."
+                "* Overwrites non-review/non-reschedule changes to card lapse counts (e.g. Leech Toolkit browser actions, database edits, etc.)."
             )
         )
         self.syncTagCheckbox.setToolTip(
@@ -249,7 +250,7 @@ class Ui_OptionsDialog(object):
         self.label.setText(
             _translate(
                 "OptionsDialog",
-                "* Should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded before syncing."
+                "* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded."
             )
         )
         self.syncUpdateButton.setToolTip(
