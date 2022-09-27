@@ -6,7 +6,7 @@ import traceback
 
 from aqt import AnkiQt
 
-from .consts import Config
+from .consts import Config, ErrorMsg
 
 
 def merge_fields(config: dict, default_config: dict):
@@ -59,7 +59,7 @@ class LeechToolkitConfigManager:
         try:
             self._mw.reviewer.toolkit_manager.load_options() if self._mw.state == 'review' else None
         except AttributeError:
-            print(f'{traceback.format_exc()}\nToolkit Manager not found in the current Reviewer.')
+            print(f'{traceback.format_exc()}\n{ErrorMsg.TOOLKIT_MANAGER_NOT_FOUND}')
 
     def get_group_conf(self, config_id: str):
         """

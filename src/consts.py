@@ -32,7 +32,8 @@ REV_RESET = ReverseType(1)
 
 
 class ErrorMsg:
-    MANAGER_NOT_DEFINED = 'Action manager not yet defined.'
+    ACTION_MANAGER_NOT_DEFINED = 'Action manager not yet defined.'
+    TOOLKIT_MANAGER_NOT_FOUND = 'Toolkit manager not found.'
 
 
 class Macro:
