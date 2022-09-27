@@ -9,14 +9,14 @@ from aqt.utils import tr
 
 CURRENT_VERSION = '0.5.0-beta'
 
+ANKI_VERSION = int(buildinfo.version.replace('2.1.', ''))
+ANKI_LEGACY_VER = 35
+
 LEECH_TAG = 'leech'
 LEECHES_URL = 'viewleeches'
 
 REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
 RESTORE_ICON_PATH = '../res/img/restore_icon.svg'
-
-ANKI_LEGACY_VER = 35
-ANKI_UNDO_VER = 45
 
 MENU_CARDS_TEXT = tr.qt_accel_cards()
 
@@ -29,8 +29,6 @@ MARKER_POS_STYLES = {DEFAULT: 'unset', LEFT: 'left', RIGHT: 'right'}
 ReverseType = NewType('ReverseType', int)
 REV_DECREASE = ReverseType(0)
 REV_RESET = ReverseType(1)
-
-ANKI_VERSION = int(buildinfo.version.replace('2.1.', ''))
 
 
 class Macro:
