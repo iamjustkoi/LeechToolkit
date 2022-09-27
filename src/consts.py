@@ -157,7 +157,8 @@ class Config:
     REVERSE_THRESHOLD = 'reverseThreshold'
     REVERSE_CONS_ANS = 'reverseConsecutiveAnswers'
 
-    STORED_LAPSE_INPUT = 'storedLapseInput'
+    SET_LAPSES_INPUT = 'setLapseInput'
+    SET_LAPSE_UPDATE_LEECHES = 'setLapseUpdateLeeches'
 
     LEECH_ACTIONS = 'leechActions'
     UN_LEECH_ACTIONS = 'unLeechActions'
