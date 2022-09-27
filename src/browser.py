@@ -158,6 +158,6 @@ class SetLapseDialog(QDialog):
         count = len(self.browser.selectedCards())
         start_collection_op(self.browser, lambda col: set_lapses_operation(col), String.TIP_SET_LAPSES_TEMPLATE, count)
 
-        self.config[String.STORED_LAPSE_INPUT] = raw_stripped_text
+        self.config[Config.STORED_LAPSE_INPUT] = raw_stripped_text
         self.manager.save_config()
         self.close()
