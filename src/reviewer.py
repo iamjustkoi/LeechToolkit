@@ -124,7 +124,7 @@ class ReviewManager:
         try:
             hooks.card_did_leech.remove(mark_leeched)
         except NameError:
-            print(ErrorMsg.MANAGER_NOT_DEFINED)
+            print(ErrorMsg.ACTION_MANAGER_NOT_DEFINED)
 
         gui_hooks.reviewer_did_show_question.remove(self.on_show_front)
         gui_hooks.reviewer_did_show_answer.remove(self.on_show_back)
