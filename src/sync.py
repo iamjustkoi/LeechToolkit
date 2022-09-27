@@ -17,14 +17,15 @@ def build_hooks():
 
 def get_remeasured_lapses(cid: int, reverse_conf: dict):
     remeasured_lapses = 0
-    current_consecutive = 0
+    consecutive_correct = 0
 
     reviews = mw.col.db.all(f'SELECT ease, type, ivl FROM revlog WHERE cid={cid} ORDER BY id DESC')
 
     for ease, rev_type, ivl in reviews:
 
-        if rev_type not in (REVLOG_RESCHED, REVLOG_REV, REVLOG_CRAM):
-            current_consecutive = 0
+        # If review type was relearn or learn, reset the consecutive count
+        if rev_type not in (REVLOG_RELRN, REVLOG_LRN):
+            consecutive_correct = 0
 
         # Card graduated (lapses reset)
         if rev_type == REVLOG_LRN and ivl > 0:
@@ -34,14 +35,14 @@ def get_remeasured_lapses(cid: int, reverse_conf: dict):
 
             if ease < BUTTON_TWO:
                 remeasured_lapses += 1
-                current_consecutive = 0
+                consecutive_correct = 0
 
             if ease >= BUTTON_TWO:
-                current_consecutive += 1
+                consecutive_correct += 1
 
-            if current_consecutive == reverse_conf[Config.REVERSE_CONS_ANS]:
+            if consecutive_correct == reverse_conf[Config.REVERSE_CONS_ANS]:
                 remeasured_lapses -= 1
-                current_consecutive = 0
+                consecutive_correct = 0
 
     return remeasured_lapses
 
