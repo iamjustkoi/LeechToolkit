@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>302</width>
-    <height>99</height>
+    <height>122</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,6 +24,16 @@
    </item>
    <item>
     <widget class="QLineEdit" name="lineEdit"/>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="updateLeechesCheckbox">
+     <property name="toolTip">
+      <string>Tags/Un-tags leeches based on their individual lapse counts after being updated.</string>
+     </property>
+     <property name="text">
+      <string>Update leech status</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
