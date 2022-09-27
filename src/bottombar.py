@@ -17,7 +17,7 @@ def build_bottom_bar():
 
     def draw_bottom_bar(self, buf: str, web_context, link_handler):
         """
-Custom handler for drawing Anki's bottom bar.
+        Custom handler for drawing Anki's bottom bar.
         :param self: Anki window/QT object
         :param buf: base string buffer for the bottom bar's html
         :param web_context: Anki's current page context
