@@ -31,6 +31,10 @@ REV_DECREASE = ReverseType(0)
 REV_RESET = ReverseType(1)
 
 
+class ErrorMsg:
+    MANAGER_NOT_DEFINED = 'Action manager not yet defined.'
+
+
 class Macro:
     DATE = '%date'
     REVIEWS = '%reviews'

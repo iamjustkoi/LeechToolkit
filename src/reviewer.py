@@ -10,7 +10,7 @@ from aqt import reviewer, webview, gui_hooks, mw
 
 from .updates import run_action_updates, run_reverse_updates, update_card, is_unique_card
 from .config import LeechToolkitConfigManager, merge_fields
-from .consts import Config, MARKER_POS_STYLES, LEECH_TAG
+from .consts import Config, ErrorMsg, MARKER_POS_STYLES, LEECH_TAG
 
 mark_html_template = '''
 <style>
@@ -124,7 +124,7 @@ class ReviewManager:
         try:
             hooks.card_did_leech.remove(mark_leeched)
         except NameError:
-            print(f'Action manager not yet defined.')
+            print(ErrorMsg.MANAGER_NOT_DEFINED)
 
         gui_hooks.reviewer_did_show_question.remove(self.on_show_front)
         gui_hooks.reviewer_did_show_answer.remove(self.on_show_back)
