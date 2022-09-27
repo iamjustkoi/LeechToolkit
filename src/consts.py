@@ -223,8 +223,8 @@ class Config:
             SYNC_TAG_TEXT: String.SYNC_TAG_DEFAULT,
         },
         MENU_OPTIONS: {
-            LEECH_SHORTCUT: 'L',
-            UNLEECH_SHORTCUT: 'U',
+            LEECH_SHORTCUT: 'Alt+L',
+            UNLEECH_SHORTCUT: 'Alt+U',
         },
         MARKER_OPTIONS: {
             SHOW_LEECH_MARKER: True,
