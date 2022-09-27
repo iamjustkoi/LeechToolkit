@@ -9,8 +9,8 @@ from aqt.utils import tr
 
 CURRENT_VERSION = '0.5.0-beta'
 
-ANKI_VERSION = int(buildinfo.version.replace('2.1.', ''))
-ANKI_LEGACY_VER = 35
+ANKI_21_VERSION = int(buildinfo.version.replace('2.1.', ''))
+ANKI_21_LEGACY_VER = 35
 
 LEECH_TAG = 'leech'
 LEECHES_URL = 'viewleeches'
@@ -52,6 +52,8 @@ class String:
     UN_LEECH_ACTIONS = 'Un-Leech Actions'
     NOTE_NOT_FOUND = 'Missing Note-Type'
     SYNC_TAG_DEFAULT = 'leech::toolkit-filtered'
+    UNDO_ENTRY_LEECH = 'Leech'
+    UNDO_ENTRY_UNLEECH = 'Un-leech'
 
 
 class EditAction:
