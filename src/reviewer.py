@@ -12,7 +12,7 @@ from .updates import run_action_updates, run_reverse_updates, update_card, is_un
 from .config import LeechToolkitConfigManager, merge_fields
 from .consts import Config, MARKER_POS_STYLES, LEECH_TAG
 
-mark_html_shell = '''
+mark_html_frame = '''
 <style>
     #{marker_id} {{
         color: transparent;  
@@ -97,7 +97,7 @@ class ReviewManager:
 
     def append_marker_html(self):
         marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
-        self.page_content.body += mark_html_shell.format(
+        self.page_content.body += mark_html_frame.format(
             marker_id=marker_id,
             marker_text=MARKER_TEXT,
             marker_color=LEECH_COLOR,
