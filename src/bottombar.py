@@ -33,7 +33,7 @@ def build_bottom_bar():
 
                 def leech_link_handler(url):
                     """
-                Custom link handler that adds functionality for the run_action_updates-browse button's link.
+                Custom link handler that adds functionality for the run_action-browse button's link.
                     :param url: passed url string to handle
                     """
                     if url == LEECHES_URL:
