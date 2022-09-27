@@ -52,17 +52,17 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
-def update_card(updated_card: anki.cards.Card, op_callback=None) -> OpChanges:
+def update_card(updated_card: anki.cards.Card, changes=None) -> OpChanges:
     """
-    Flushes and updates a card, as well as its parent note, with an optional (undo) operation change callback.
+    Flushes and updates a card, as well as its parent note, with an optional (undo) change callback.
 
     :param updated_card: card to update
-    :param op_callback: OpChanges callback to call after updating the card
-    :return: OpChanges message if callback provided, else None
+    :param changes: OpChanges callback to call after updating the card
+    :return: OpChanges message if changes provided, else None
     """
     updated_card.flush()
     updated_card.note().flush()
-    return op_callback(card=True, note=True) if op_callback else None
+    return changes(card=True, note=True) if changes else None
 
 
 def was_consecutively_correct(card: anki.cards.Card, times: int):
