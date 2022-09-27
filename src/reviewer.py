@@ -66,7 +66,7 @@ def set_marker_color(color: str):
 
 def show_marker(show=False):
     """
-Changes the display state of the run_action_updates marker.
+    Changes the display state of the run_action marker.
     :param show: new visibility
     """
     if show:
@@ -80,6 +80,8 @@ class ReviewManager:
     max_fails: int
     did: DeckId
     page_content: aqt.webview.WebContent
+    card: anki.cards.Card
+    on_front: bool
 
     def __init__(self, content: aqt.webview.WebContent, did: DeckId):
         if not mw.col.decks.is_filtered(did):
@@ -97,6 +99,16 @@ class ReviewManager:
 
         self.append_marker_html()
         self.append_hooks()
+
+    def run_action(self, action_type: str):
+        if action_type == Config.LEECH_ACTIONS:
+            self.card = run_action_updates(self.card, self.toolkit_config, Config.LEECH_ACTIONS)
+            self.card.note().add_tag(LEECH_TAG)
+        elif action_type == Config.UN_LEECH_ACTIONS:
+            self.card = run_action_updates(self.card, self.toolkit_config, Config.UN_LEECH_ACTIONS)
+            self.card.note().remove_tag(LEECH_TAG)
+        update_card(updated_card=self.card, changes=aqt.reviewer.OpChanges)
+        self.update_marker()
 
     def append_marker_html(self):
         marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
@@ -126,22 +138,31 @@ class ReviewManager:
         reviewer_will_end.append(self.remove_hooks)
 
     def append_context_menu(self, webview: AnkiWebView, menu: aqt.qt.QMenu):
-        leech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.LEECH_SHORTCUT])
-        unleech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.UNLEECH_SHORTCUT])
+        leech_exists, unleech_exists = False, False
+        for action in menu.actions():
+            action: aqt.qt.QAction
+            if action.text() == String.REVIEWER_ACTION_LEECH:
+                leech_exists = True
+            if action.text() == String.REVIEWER_ACTION_UNLEECH:
+                unleech_exists = True
 
         menu.addSeparator()
 
-        leech_action = menu.addAction(
-            String.ACTION_LEECH.replace('&', ''),
-            # lambda *args: apply_leech_updates(manager, browser, Config.LEECH_ACTIONS),
-        )
-        leech_action.setShortcut(leech_shortcut)
+        if not leech_exists:
+            leech_action = menu.addAction(
+                String.REVIEWER_ACTION_LEECH,
+                lambda *args: self.run_action(Config.LEECH_ACTIONS),
+            )
+            leech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.LEECH_SHORTCUT])
+            leech_action.setShortcut(leech_shortcut)
 
-        unleech_action = menu.addAction(
-            String.ACTION_UNLEECH.replace('&', ''),
-            # lambda *args: apply_leech_updates(manager, browser, Config.UN_LEECH_ACTIONS)
-        )
-        unleech_action.setShortcut(unleech_shortcut)
+        if not unleech_exists:
+            unleech_action = menu.addAction(
+                String.REVIEWER_ACTION_UNLEECH,
+                lambda *args: self.run_action(Config.UN_LEECH_ACTIONS),
+            )
+            unleech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.UNLEECH_SHORTCUT])
+            unleech_action.setShortcut(unleech_shortcut)
 
     def remove_hooks(self):
         try:
@@ -154,16 +175,15 @@ class ReviewManager:
         gui_hooks.reviewer_did_answer_card.remove(self.on_answer)
 
     def on_show_back(self, card: cards.Card):
+        self.on_front = False
         if self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
             setattr(card, prev_type_attr, card.type)
-        self.update_marker(card, False)
+        self.update_marker()
 
     def on_show_front(self, card: cards.Card):
-        self.update_marker(card, True)
-        # @DEBUG
-        # print(f'orig ____ {cards.Card().__dict__}')
-        # run_action_updates(card, self.toolkit_config[Config.LEECH_ACTIONS])
-        # print(f'____    {run_reverse_updates(self.toolkit_config, card, 2, anki.cards.CARD_TYPE_REV).__dict__}')
+        self.on_front = True
+        self.update_marker()
+        self.card = card
 
     def on_answer(self, context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
         updated_card = card.col.get_card(card.id)
@@ -178,21 +198,21 @@ class ReviewManager:
         if is_unique_card(card, updated_card):
             update_card(updated_card, aqt.reviewer.OpChanges)
 
-    def update_marker(self, card: cards.Card, is_front: bool):
+    def update_marker(self):
         """
-    Updates marker style/visibility based on user options and current card's attributes.
-        :param card: referenced card
-        :param is_front: current display state for card in reviewer
+        Updates marker style/visibility based on user options and current card's attributes.
         """
         marker_conf = self.toolkit_config[Config.MARKER_OPTIONS]
         if not marker_conf[Config.SHOW_LEECH_MARKER] or (
-                marker_conf[Config.ONLY_SHOW_BACK_MARKER] and is_front):
+                marker_conf[Config.ONLY_SHOW_BACK_MARKER] and self.on_front):
             show_marker(False)
-        elif card.note().has_tag(LEECH_TAG):
+        elif self.card.note().has_tag(LEECH_TAG):
             set_marker_color(LEECH_COLOR)
             show_marker(True)
         elif marker_conf[Config.USE_ALMOST_MARKER] \
-                and card.type == cards.CARD_TYPE_REV \
-                and (card.lapses + ALMOST_DISTANCE) >= self.max_fails:
+                and self.card.type == cards.CARD_TYPE_REV \
+                and (self.card.lapses + ALMOST_DISTANCE) >= self.max_fails:
             set_marker_color(ALMOST_COLOR)
             show_marker(True)
+        elif not self.card.note().has_tag(LEECH_TAG):
+            show_marker(False)
