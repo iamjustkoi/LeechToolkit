@@ -52,7 +52,6 @@ class String:
     ACTION_LEECH = '&Leech'
     ACTION_UNLEECH = '&Un-Leech'
     ACTION_SET_LAPSES = '&Set Lapses...'
-    STORED_LAPSE_INPUT = 'storedLapseInput'
 
     OUTPUT_TEXT = 'Text'
     REPLACE_WITH = 'Replace With'
@@ -68,6 +67,7 @@ class String:
     UN_LEECH_ACTIONS = 'Un-Leech Actions'
 
     NOTE_NOT_FOUND = 'Missing Note-Type'
+
     SYNC_TAG_DEFAULT = 'leech::toolkit-filtered'
 
     UNDO_ENTRY_SET_LAPSES = 'Set Lapses'
@@ -156,6 +156,8 @@ class Config:
     REVERSE_USE_LEECH_THRESHOLD = 'reverseUseLeechThreshold'
     REVERSE_THRESHOLD = 'reverseThreshold'
     REVERSE_CONS_ANS = 'reverseConsecutiveAnswers'
+
+    STORED_LAPSE_INPUT = 'storedLapseInput'
 
     LEECH_ACTIONS = 'leechActions'
     UN_LEECH_ACTIONS = 'unLeechActions'
