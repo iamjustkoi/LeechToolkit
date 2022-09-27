@@ -132,7 +132,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 178))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 210))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -148,6 +148,10 @@ class Ui_OptionsDialog(object):
         self.syncUpdateCheckbox.setChecked(False)
         self.syncUpdateCheckbox.setObjectName("syncUpdateCheckbox")
         self.verticalLayout_2.addWidget(self.syncUpdateCheckbox)
+        self.label_2 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.label_2.setWordWrap(True)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout_2.addWidget(self.label_2)
         self.syncTagCheckbox = QtWidgets.QGroupBox(self.scrollAreaWidgetContents)
         self.syncTagCheckbox.setCheckable(True)
         self.syncTagCheckbox.setObjectName("syncTagCheckbox")
@@ -223,6 +227,12 @@ class Ui_OptionsDialog(object):
             )
         )
         self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
+        self.label_2.setText(
+            _translate(
+                "OptionsDialog",
+                "* Overwrites non-review/non-reschedule changes to card lapse counts (e.g. database edits or the \"Set Lapses\" option)."
+            )
+        )
         self.syncTagCheckbox.setToolTip(
             _translate(
                 "OptionsDialog",
@@ -239,7 +249,7 @@ class Ui_OptionsDialog(object):
         self.label.setText(
             _translate(
                 "OptionsDialog",
-                "* This should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded before syncing."
+                "* Should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded before syncing."
             )
         )
         self.syncUpdateButton.setToolTip(
