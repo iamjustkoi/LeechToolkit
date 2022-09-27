@@ -53,7 +53,7 @@ def build_hooks():
 def on_will_start(content: aqt.webview.WebContent, anki_reviewer: aqt.reviewer.Reviewer):
     if not mw.col.decks.is_filtered(mw.col.decks.get_current_id()):
         # Attached for garbage collection
-        anki_reviewer.toolkit_manager = ReviewerWrapper(content, mw.col.decks.get_current_id())
+        anki_reviewer.toolkit_manager = ReviewWrapper(content, mw.col.decks.get_current_id())
 
 
 def mark_leeched(card: anki.cards.Card):
@@ -75,7 +75,7 @@ def show_marker(show=False):
         mw.web.eval(f'document.getElementById("{marker_id}").style.display = "none"')
 
 
-class ReviewerWrapper:
+class ReviewWrapper:
     toolkit_config: dict
     max_fails: int
     did: DeckId
