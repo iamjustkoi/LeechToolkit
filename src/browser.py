@@ -49,7 +49,6 @@ def init_browser(browser: Browser):
     menu.addSeparator()
 
     sub_menu = menu.addMenu(String.TOOLKIT_ACTIONS)
-
     sub_menu.addAction(
         String.ACTION_LEECH,
         lambda *args: apply_leech_updates(manager, browser, Config.LEECH_ACTIONS)
@@ -109,13 +108,13 @@ def apply_leech_updates(manager: LeechToolkitConfigManager, browser: Browser, ac
         return changes
 
     if skip_undo_entry:
-        action_operation(browser.col)
+        return action_operation(browser.col)
+
+    if action_type == Config.LEECH_ACTIONS:
+        tip_message = String.TIP_LEECHED_TEMPLATE
     else:
-        if action_type == Config.LEECH_ACTIONS:
-            tip_message = String.TIP_LEECHED_TEMPLATE
-        else:
-            tip_message = String.TIP_UNLEECHED_TEMPLATE
-        start_collection_op(browser, lambda col: action_operation(col), tip_message, len(browser.selected_cards()))
+        tip_message = String.TIP_UNLEECHED_TEMPLATE
+    return start_collection_op(browser, lambda col: action_operation(col), tip_message, len(browser.selected_cards()))
 
 
 class SetLapseDialog(QDialog):
