@@ -480,9 +480,7 @@ class Ui_ActionsForm(object):
         sizePolicy.setHeightForWidth(self.queueAddFieldButton.sizePolicy().hasHeightForWidth())
         self.queueAddFieldButton.setSizePolicy(sizePolicy)
         self.queueAddFieldButton.setMinimumSize(QtCore.QSize(64, 24))
-        self.queueAddFieldButton.setPopupMode(
-            QtWidgets.QToolButton.DelayedPopup
-        )
+        self.queueAddFieldButton.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
         self.queueAddFieldButton.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.queueAddFieldButton.setObjectName("queueAddFieldButton")
         self._5.addWidget(self.queueAddFieldButton)
@@ -578,6 +576,12 @@ class Ui_ActionsForm(object):
         )
         self.queueSimilarCheckbox.setText(_translate("ActionsForm", "Place near similar cards"))
         self.groupBox_4.setTitle(_translate("ActionsForm", "Ignored Text"))
+        self.queueExcludeTextEdit.setToolTip(
+            _translate(
+                "ActionsForm", "Words/characters ignored when determining card similarities.\n"
+                               "(Separated by spaces and/or new lines)"
+            )
+        )
         self.groupBox_5.setTitle(_translate("ActionsForm", "Filtered Fields"))
         self.queueIncludeFieldsCheckbox.setToolTip(
             _translate("ActionsForm", "Filters to only match the following fields instead of filtering them out.")
