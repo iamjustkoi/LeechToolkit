@@ -52,7 +52,7 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
-def update_card(updated_card: anki.cards.Card, changes=None, note=False) -> OpChanges or None:
+def update_card(updated_card: anki.cards.Card, changes=None, note=True) -> OpChanges or None:
     """
     Flushes and updates a card, as well as its parent note, with an optional (undo) change callback.
 
