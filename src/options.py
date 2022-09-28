@@ -6,6 +6,7 @@ from pathlib import Path
 
 import anki.decks
 import aqt.flags
+from anki.collection import OpChanges
 from anki.consts import CARD_TYPE_NEW
 from anki.models import NotetypeId
 from anki.notes import NoteId
@@ -149,6 +150,13 @@ Inserts a new excluded field item to the excluded fields list if not already pre
     exclude_item = ExcludeFieldItem(list_widget, mid=mid, field_name=field_name)
     list_item = ExcludeFieldItem.ExcludedFieldListItem(list_widget)
     _add_list_item(list_widget, list_item, exclude_item)
+
+
+def refresh_window():
+    if mw.state != 'review':
+        mw.reset()
+    else:
+        mw.reviewer.toolkit_wrapper.refresh_if_needed(OpChanges(study_queues=True))
 
 
 def _bind_tools_options(*args):
@@ -316,7 +324,7 @@ class OptionsDialog(QDialog):
     def apply(self):
         self._write()
         bind_actions()
-        mw.reset()
+        refresh_window()
         self.apply_button.setEnabled(False)
 
     def restore_defaults(self):
@@ -457,10 +465,10 @@ class ActionsWidget(QWidget):
         self.ui.queueLabelTop.setGraphicsEffect(QGraphicsOpacityEffect())
 
         self.ui.queueFromSpinbox.dropdown = self.ui.queueFromDropdown
-        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueFromSpinbox.refresh())
+        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueFromSpinbox.refresh_window())
 
         self.ui.queueToSpinbox.dropdown = self.ui.queueToDropdown
-        self.ui.queueToDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueToSpinbox.refresh())
+        self.ui.queueToDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueToSpinbox.refresh_window())
 
         self.ui.queueCurrentDeckCheckbox.stateChanged.connect(lambda checked: self.update_queue_info(checked))
 
