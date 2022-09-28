@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -289,7 +289,9 @@
            <item>
             <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>* Overwrites non-review/non-reschedule changes to card lapse counts (e.g. Leech Toolkit browser actions, database edits, etc.).</string>
+              <string>* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser
+               actions, database edits, etc.).
+              </string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
