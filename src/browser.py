@@ -84,9 +84,9 @@ def apply_leech_updates(manager: LeechToolkitConfigManager, browser: Browser, ac
 
         changes = None
         if action_type == Config.LEECH_ACTIONS:
-            entry = col.add_custom_undo_entry(String.UNDO_ENTRY_LEECH_ACTIONS)
+            entry = col.add_custom_undo_entry(String.ENTRY_LEECH_ACTIONS)
         else:
-            entry = col.add_custom_undo_entry(String.UNDO_ENTRY_UNLEECH_ACTIONS)
+            entry = col.add_custom_undo_entry(String.ENTRY_UNLEECH_ACTIONS)
 
         for cid in browser.selectedCards():
             card = col.get_card(cid)
@@ -150,7 +150,7 @@ class SetLapseDialog(QDialog):
         formatted_text = re.sub(r'(?<!\d)0*(?!\D|$)', '', raw_stripped_text.replace(' ', ''))
 
         def set_lapses_operation(col: anki.collection.Collection) -> OpChanges or None:
-            entry = col.add_custom_undo_entry(String.UNDO_ENTRY_SET_LAPSES)
+            entry = col.add_custom_undo_entry(String.ENTRY_SET_LAPSES)
             changes = None
 
             # Stash all the dictionaries, but should be replaced with fewer calls based on selected cards
