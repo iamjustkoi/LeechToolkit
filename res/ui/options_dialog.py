@@ -46,6 +46,7 @@ class Ui_OptionsDialog(object):
         self.markerLayout = QtWidgets.QVBoxLayout(self.markerGroup)
         self.markerLayout.setObjectName("markerLayout")
         self.almostBackCheckbox = QtWidgets.QCheckBox(self.markerGroup)
+        self.almostBackCheckbox.setChecked(True)
         self.almostBackCheckbox.setObjectName("almostBackCheckbox")
         self.markerLayout.addWidget(self.almostBackCheckbox)
         self.almostCheckbox = QtWidgets.QCheckBox(self.markerGroup)
