@@ -74,6 +74,9 @@
                 <property name="text">
                  <string>Only show on back of cards</string>
                 </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
