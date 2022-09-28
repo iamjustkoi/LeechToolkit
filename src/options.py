@@ -457,12 +457,12 @@ class ActionsWidget(QWidget):
 
         self.actions_type = actions_type
 
-        self.dids = [int(name_id.id) for name_id in mw.col.decks.all_names_and_ids()] if not dids else dids
-
         if self.actions_type == Config.LEECH_ACTIONS:
             self.ui.expandoButton.setText(String.LEECH_ACTIONS)
         if self.actions_type == Config.UN_LEECH_ACTIONS:
             self.ui.expandoButton.setText(String.UN_LEECH_ACTIONS)
+
+        self.dids = [int(name_id.id) for name_id in mw.col.decks.all_names_and_ids()] if not dids else dids
 
         self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
 
