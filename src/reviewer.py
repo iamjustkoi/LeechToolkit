@@ -4,10 +4,12 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 import anki.cards
 import aqt.reviewer
-from anki import cards, hooks
+from anki import hooks
 from anki.decks import DeckId
+from aqt.utils import tooltip
 from aqt.webview import WebContent, AnkiWebView
-from aqt import reviewer, gui_hooks, mw
+from aqt import gui_hooks, mw
+from aqt.reviewer import Reviewer
 
 from .updates import run_action_updates, run_reverse_updates, update_card, is_unique_card
 from .config import LeechToolkitConfigManager, merge_fields
@@ -28,6 +30,7 @@ mark_html_template = '''
 
 marker_id = 'leech_marker'
 prev_type_attr = 'prevtype'
+wrapper_attr = 'toolkit_manager'
 was_leech_attr = 'was_leech'
 
 MARKER_TEXT = '🩸'
@@ -44,16 +47,17 @@ def build_hooks():
         webview_will_set_content,
     )
 
-    webview_will_set_content.append(
-        lambda content, context:
-        on_will_start(content, context) if isinstance(context, reviewer.Reviewer) else None
-    )
+    webview_will_set_content.append(try_append_wrapper)
 
 
-def on_will_start(content: aqt.webview.WebContent, anki_reviewer: aqt.reviewer.Reviewer):
-    if not mw.col.decks.is_filtered(mw.col.decks.get_current_id()):
-        # Attached for garbage collection
-        anki_reviewer.toolkit_manager = ReviewWrapper(content, mw.col.decks.get_current_id())
+def try_append_wrapper(content: aqt.webview.WebContent, context: object):
+    if isinstance(context, Reviewer):
+        reviewer: aqt.reviewer.Reviewer = context
+        if mw.col.decks.is_filtered(mw.col.decks.get_current_id()) and hasattr(mw.reviewer, wrapper_attr):
+            mw.reviewer.__delattr__(wrapper_attr)
+        else:
+            # Attached for calls and any future garbage collection, potentially, idk
+            reviewer.toolkit_manager = ReviewWrapper(reviewer, content, mw.col.decks.get_current_id())
 
 
 def mark_leeched(card: anki.cards.Card):
@@ -79,14 +83,32 @@ class ReviewWrapper:
     toolkit_config: dict
     max_fails: int
     did: DeckId
-    page_content: aqt.webview.WebContent
+    content: aqt.webview.WebContent
     card: anki.cards.Card
     on_front: bool
 
-    def __init__(self, content: aqt.webview.WebContent, did: DeckId):
+    def __init__(self, reviewer: Reviewer, content: aqt.webview.WebContent, did: DeckId):
         if not mw.col.decks.is_filtered(did):
-            self.page_content = content
+            self.content = content
+            self.reviewer = reviewer
             self.load_options(did)
+
+            self.leech_action = aqt.qt.QAction(String.REVIEWER_ACTION_LEECH, mw)
+            leech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.LEECH_SHORTCUT])
+            self.leech_action.setShortcut(leech_shortcut)
+            self.leech_action.triggered.connect(lambda *args: self.run_action(Config.LEECH_ACTIONS))
+
+            self.unleech_action = aqt.qt.QAction(String.REVIEWER_ACTION_UNLEECH, mw)
+            unleech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.UNLEECH_SHORTCUT])
+            self.unleech_action.setShortcut(unleech_shortcut)
+            self.unleech_action.triggered.connect(lambda *args: self.run_action(Config.UN_LEECH_ACTIONS))
+
+            mw.setStateShortcuts(
+                [
+                    (leech_shortcut, lambda *args: self.run_action(Config.LEECH_ACTIONS)),
+                    (unleech_shortcut, lambda *args: self.run_action(Config.UN_LEECH_ACTIONS)),
+                ]
+            )
 
     def load_options(self, did: DeckId = None):
         self.did = did if did else self.did
@@ -101,18 +123,39 @@ class ReviewWrapper:
         self.append_hooks()
 
     def run_action(self, action_type: str):
+        msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
+        entry = self.reviewer.mw.col.add_custom_undo_entry(msg)
+
+        pre_queue, pre_due, pre_note_text = (
+            self.card.queue,
+            self.card.due,
+            self.card.note().joined_fields(),
+        )
+
         if action_type == Config.LEECH_ACTIONS:
             self.card = run_action_updates(self.card, self.toolkit_config, Config.LEECH_ACTIONS)
             self.card.note().add_tag(LEECH_TAG)
+            tooltip(String.TIP_LEECHED_TEMPLATE.format(1))
         elif action_type == Config.UN_LEECH_ACTIONS:
             self.card = run_action_updates(self.card, self.toolkit_config, Config.UN_LEECH_ACTIONS)
             self.card.note().remove_tag(LEECH_TAG)
-        update_card(updated_card=self.card, changes=aqt.reviewer.OpChanges)
-        self.update_marker()
+            tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
+
+        self.reviewer.mw.col.update_card(self.card)
+        self.reviewer.mw.col.update_note(self.card.note())
+
+        changes = self.reviewer.mw.col.merge_undo_entries(entry)
+        changes.study_queues = True if (pre_queue != self.card.queue) or (pre_due != self.card.due) else False
+        changes.note_text = True if pre_note_text != self.card.note().joined_fields() else False
+
+        self.reviewer.op_executed(changes=changes, handler=self, focused=True)
+
+        if not self.reviewer.refresh_if_needed():
+            self.update_marker()
 
     def append_marker_html(self):
         marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
-        self.page_content.body += mark_html_template.format(
+        self.content.body += mark_html_template.format(
             marker_id=marker_id,
             marker_text=MARKER_TEXT,
             marker_color=LEECH_COLOR,
@@ -138,31 +181,10 @@ class ReviewWrapper:
         reviewer_will_end.append(self.remove_hooks)
 
     def append_context_menu(self, webview: AnkiWebView, menu: aqt.qt.QMenu):
-        leech_exists, unleech_exists = False, False
-        for action in menu.actions():
-            action: aqt.qt.QAction
-            if action.text() == String.REVIEWER_ACTION_LEECH:
-                leech_exists = True
-            if action.text() == String.REVIEWER_ACTION_UNLEECH:
-                unleech_exists = True
-
+        action_labels = [action.text() for action in menu.actions()]
         menu.addSeparator()
-
-        if not leech_exists:
-            leech_action = menu.addAction(
-                String.REVIEWER_ACTION_LEECH,
-                lambda *args: self.run_action(Config.LEECH_ACTIONS),
-            )
-            leech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.LEECH_SHORTCUT])
-            leech_action.setShortcut(leech_shortcut)
-
-        if not unleech_exists:
-            unleech_action = menu.addAction(
-                String.REVIEWER_ACTION_UNLEECH,
-                lambda *args: self.run_action(Config.UN_LEECH_ACTIONS),
-            )
-            unleech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.UNLEECH_SHORTCUT])
-            unleech_action.setShortcut(unleech_shortcut)
+        menu.addAction(self.leech_action) if String.REVIEWER_ACTION_LEECH not in action_labels else None
+        menu.addAction(self.unleech_action) if String.REVIEWER_ACTION_UNLEECH not in action_labels else None
 
     def remove_hooks(self):
         try:
@@ -174,18 +196,19 @@ class ReviewWrapper:
         gui_hooks.reviewer_did_show_answer.remove(self.on_show_back)
         gui_hooks.reviewer_did_answer_card.remove(self.on_answer)
 
-    def on_show_back(self, card: cards.Card):
+    def on_show_back(self, card: anki.cards.Card):
         self.on_front = False
+        self.card = card
         if self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
             setattr(card, prev_type_attr, card.type)
         self.update_marker()
 
-    def on_show_front(self, card: cards.Card):
+    def on_show_front(self, card: anki.cards.Card):
         self.on_front = True
-        self.update_marker()
         self.card = card
+        self.update_marker()
 
-    def on_answer(self, context: aqt.reviewer.Reviewer, card: cards.Card, ease: int):
+    def on_answer(self, context: aqt.reviewer.Reviewer, card: anki.cards.Card, ease: int):
         updated_card = card.col.get_card(card.id)
         if hasattr(card, prev_type_attr):
             updated_card = run_reverse_updates(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
@@ -203,16 +226,16 @@ class ReviewWrapper:
         Updates marker style/visibility based on user options and current card's attributes.
         """
         marker_conf = self.toolkit_config[Config.MARKER_OPTIONS]
-        if not marker_conf[Config.SHOW_LEECH_MARKER] or (
-                marker_conf[Config.ONLY_SHOW_BACK_MARKER] and self.on_front):
-            show_marker(False)
-        elif self.card.note().has_tag(LEECH_TAG):
-            set_marker_color(LEECH_COLOR)
-            show_marker(True)
-        elif marker_conf[Config.USE_ALMOST_MARKER] \
-                and self.card.type == cards.CARD_TYPE_REV \
-                and (self.card.lapses + ALMOST_DISTANCE) >= self.max_fails:
-            set_marker_color(ALMOST_COLOR)
-            show_marker(True)
-        elif not self.card.note().has_tag(LEECH_TAG):
-            show_marker(False)
+
+        show_marker(False)
+        if self.on_front and not marker_conf[Config.ONLY_SHOW_BACK_MARKER]:
+            if self.card.note().has_tag(LEECH_TAG):
+                set_marker_color(LEECH_COLOR)
+                show_marker(True)
+            elif (
+                    marker_conf[Config.USE_ALMOST_MARKER]
+                    and self.card.type == anki.cards.CARD_TYPE_REV
+                    and (self.card.lapses + ALMOST_DISTANCE) >= self.max_fails
+            ):
+                set_marker_color(ALMOST_COLOR)
+                show_marker(True)
