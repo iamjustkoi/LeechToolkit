@@ -83,10 +83,8 @@ def apply_leech_updates(manager: LeechToolkitConfigManager, browser: Browser, ac
         toolkit_configs = manager.get_all_configs()
 
         changes = None
-        if action_type == Config.LEECH_ACTIONS:
-            entry = col.add_custom_undo_entry(String.ENTRY_LEECH_ACTIONS)
-        else:
-            entry = col.add_custom_undo_entry(String.ENTRY_UNLEECH_ACTIONS)
+        msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
+        entry = col.add_custom_undo_entry(msg)
 
         for cid in browser.selectedCards():
             card = col.get_card(cid)
