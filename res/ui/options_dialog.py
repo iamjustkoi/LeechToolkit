@@ -837,7 +837,9 @@ class Ui_OptionsDialog(object):
         self.label_2.setText(
             _translate(
                 "OptionsDialog",
-                "* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser actions, database edits, etc.)."
+                "* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser\n"
+                "               actions, database edits, etc.).\n"
+                "              "
             )
         )
         self.syncTagCheckbox.setToolTip(
