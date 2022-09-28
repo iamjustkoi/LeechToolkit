@@ -60,14 +60,6 @@ def on_options_called(*args):
     options.exec()
 
 
-def get_styled_icon(path: str, day_color: QColor, night_color: QColor):
-    pixmap = QPixmap(path)
-    mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
-    pixmap.fill(night_color) if mw.pm.night_mode() else pixmap.fill(day_color)
-    pixmap.setMask(mask)
-    return QIcon(pixmap)
-
-
 def append_restore_button(parent: QWidget, insert_col=4):
     if not hasattr(parent, button_attr):
         parent.default_button = aqt.qt.QPushButton(parent)
@@ -76,8 +68,13 @@ def append_restore_button(parent: QWidget, insert_col=4):
         parent.default_button.setFlat(True)
         parent.default_button.setToolTip(String.RESTORE_DEFAULT_SETTING)
 
-        restore_icon_path = f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'
-        parent.default_button.setIcon(get_styled_icon(restore_icon_path, QColor('#adadad'), QColor('#1a1a1a')))
+        pixmap = QPixmap(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}')
+        mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
+        print(f'nm: {mw.pm.night_mode()}')
+        # pixmap.fill(QColor('#adadad' if mw.pm.night_mode() else '#1a1a1a'))
+        pixmap.fill(QColor('#adadad'))
+        pixmap.setMask(mask)
+        parent.default_button.setIcon(QIcon(pixmap))
 
         size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         size_policy.setHorizontalStretch(0)
