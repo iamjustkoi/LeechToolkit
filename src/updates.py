@@ -307,7 +307,6 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
 
             filtered_ids, filtered_positions = [], []
             if queue_inputs[QueueAction.NEAR_SIBLING] or queue_inputs[QueueAction.NEAR_SIMILAR]:
-
                 # Just in case (modular function)
                 try_deck_move() if str(updated_card.did) != actions_conf[Action.MOVE_DECK][Action.INPUT] else None
 
@@ -317,12 +316,10 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                     AND did == {updated_card.did}
                     AND due BETWEEN {from_pos} AND {to_pos}
                 '''
-
                 if queue_inputs[QueueAction.NEAR_SIBLING]:
                     cmd += f'    AND nid = {updated_card.nid} AND queue = {QUEUE_TYPE_NEW}'
                 else:
                     cmd += f'    AND nid != {updated_card.nid}'
-
                 filtered_ids = card.col.db.list(cmd.format(get='id'))
                 filtered_positions = card.col.db.list(cmd.format(get='due'))
 
@@ -330,18 +327,14 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 #  using ratios/fuzzy comparison.
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
                     excluded_inputs_str: str = queue_inputs[QueueAction.EXCLUDED_TEXT]
-
                     # Concatenate, replace new lines with, and split string using space characters
                     excluded_inputs = re.sub('  +', ' ', excluded_inputs_str).replace('\n', ' ').split(' ')
-
-                    min_ratio = queue_inputs[QueueAction.SIMILAR_RATIO]
-
                     filtered_field_ords: list[int] = []
                     for note_dict in queue_inputs[QueueAction.FILTERED_FIELDS]:
                         note_type_id = int(list(note_dict)[0])
-
                         if note_type_id == updated_card.note().mid:
-                            [filtered_field_ords.append(int(note_dict[key])) for key in list(note_dict.keys())]
+                            for key in list(note_dict.keys()):
+                                filtered_field_ords.append(int(note_dict[key]))
 
                     def get_filtered_card_data(items: list[(str, str)]):
                         # for item in items:
@@ -363,18 +356,15 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
 
                         return filtered_str
 
+                    min_ratio = queue_inputs[QueueAction.SIMILAR_RATIO]
                     leech_data_str = get_filtered_card_data(updated_card.note().items())
-
                     for cid in filtered_ids:
                         new_card = card.col.get_card(cid)
                         is_similar_card = False
-
                         if new_card.note_type()['id'] == updated_card.note().mid:
                             new_data_str = get_filtered_card_data(new_card.note().items())
-
                             if SequenceMatcher(None, leech_data_str, new_data_str).ratio() >= min_ratio:
                                 is_similar_card = True
-
                         if not is_similar_card:
                             filtered_positions.remove(new_card.due)
 
