@@ -701,7 +701,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
@@ -837,7 +837,7 @@ class Ui_OptionsDialog(object):
         self.label_2.setText(
             _translate(
                 "OptionsDialog",
-                "* Overwrites non-review/non-reschedule changes to card lapse counts (e.g. Leech Toolkit browser actions, database edits, etc.)."
+                "* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser actions, database edits, etc.)."
             )
         )
         self.syncTagCheckbox.setToolTip(
