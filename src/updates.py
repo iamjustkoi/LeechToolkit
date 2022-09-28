@@ -326,9 +326,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 # Gets the string output of each card's data currently in the new queue and compares it to other cards
                 #  using ratios/fuzzy comparison.
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
-                    excluded_inputs_str: str = queue_inputs[QueueAction.EXCLUDED_TEXT]
-                    # Concatenate, replace new lines with, and split string using space characters
-                    excluded_inputs = re.sub('  +', ' ', excluded_inputs_str).replace('\n', ' ').split(' ')
+
                     filtered_field_ords: list[int] = []
                     for note_dict in queue_inputs[QueueAction.FILTERED_FIELDS]:
                         note_type_id = int(list(note_dict)[0])
@@ -336,25 +334,40 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                             for key in list(note_dict.keys()):
                                 filtered_field_ords.append(int(note_dict[key]))
 
+                    def get_excluded_strings() -> list[str]:
+                        query = str(queue_inputs[QueueAction.EXCLUDED_TEXT])
+                        excluded_result = []
+
+                        # Handle quote and escape quote characters
+                        pattern = r'(?<!\\)"(?:[^\\"]|\\")*"'
+                        matches: list[str] = re.findall(pattern, query)
+                        excluded_result += [result.strip('"').replace(r'\"', '"') for result in matches]
+                        filtered_query = re.sub(pattern, '', query).replace(r'\"', '"')
+
+                        # Concatenate, replace new lines with, and split string using space characters
+                        excluded_result += re.sub('  +', ' ', filtered_query).replace('\n', ' ').split(' ')
+                        return excluded_result
+
+                    excluded_strings = get_excluded_strings()
+
                     def get_filtered_card_data(items: list[(str, str)]):
                         # for item in items:
-                        filtered_items = []
+                        filtered_str_data = ''
                         # INCLUDE
                         if queue_inputs[QueueAction.INCLUSIVE_FIELDS]:
                             for field_ord in filtered_field_ords:
-                                filtered_items.append(items[field_ord][1])
+                                filtered_str_data += items[field_ord][1]
                         # EXCLUDE
                         if not queue_inputs[QueueAction.INCLUSIVE_FIELDS]:
                             for item in items:
                                 if item[0] not in filtered_field_ords:
-                                    filtered_items.append(item[1])
+                                    filtered_str_data += item[1]
 
-                        filtered_str = ''.join(filtered_items)
-                        for excluded_str in excluded_inputs:
+                        for excluded_str in excluded_strings:
                             excluded_str = ' ' if excluded_str == '\\s' else excluded_str
-                            filtered_str = filtered_str.replace(excluded_str, '')
+                            filtered_str_data = filtered_str_data.replace(excluded_str, '')
 
-                        return filtered_str
+                        return filtered_str_data
 
                     min_ratio = queue_inputs[QueueAction.SIMILAR_RATIO]
                     leech_data_str = get_filtered_card_data(updated_card.note().items())

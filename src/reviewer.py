@@ -111,7 +111,6 @@ class ReviewWrapper:
             )
 
     def load_options(self, did: DeckId = None):
-        print(f'load_options')
         self.did = did if did else self.did
 
         deck_conf_dict = mw.col.decks.config_dict_for_deck_id(self.did)
