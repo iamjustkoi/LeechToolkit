@@ -24,7 +24,7 @@ class DeckOptions(QWidget):
         self.ui = Ui_DeckOptionsPlaceholder()
         self.ui.setupUi(DeckOptionsPlaceholder=self)
 
-        self.reverse_form = ReverseWidget(flags=mw.windowFlags())
+        self.reverse_form = ReverseWidget(flags=mw.windowFlags(), global_conf=False)
         self.ui.reverseWidget.layout().addWidget(self.reverse_form)
 
         dids = [int(i) for i in mw.col.decks.deck_and_child_ids(did)]

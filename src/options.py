@@ -401,10 +401,13 @@ class OptionsDialog(QDialog):
 
 
 class ReverseWidget(QWidget):
-    def __init__(self, flags, restore_buttons: list = None):
+    def __init__(self, flags, restore_buttons: list = None, global_conf=True):
         super().__init__(parent=None, flags=flags)
         self.ui = Ui_ReverseForm()
         self.ui.setupUi(self)
+
+        title = self.ui.reverseGroup.title() + (f' {String.GLOBAL_SUFFIX}' if global_conf else '')
+        self.ui.reverseGroup.setTitle(title)
 
         def toggle_threshold(checked: bool):
             self.ui.reverseThresholdSpinbox.setEnabled(checked)
@@ -457,10 +460,10 @@ class ActionsWidget(QWidget):
 
         self.actions_type = actions_type
 
-        if self.actions_type == Config.LEECH_ACTIONS:
-            self.ui.expandoButton.setText(String.LEECH_ACTIONS)
-        if self.actions_type == Config.UN_LEECH_ACTIONS:
-            self.ui.expandoButton.setText(String.UN_LEECH_ACTIONS)
+        expando_text = String.LEECH_ACTIONS if actions_type == Config.LEECH_ACTIONS else String.UN_LEECH_ACTIONS
+        expando_text += f' {String.GLOBAL_SUFFIX}' if not dids else ''
+
+        self.ui.expandoButton.setText(expando_text)
 
         self.dids = [int(name_id.id) for name_id in mw.col.decks.all_names_and_ids()] if not dids else dids
 

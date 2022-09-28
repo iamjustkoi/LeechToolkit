@@ -67,6 +67,7 @@ class String:
 
     LEECH_ACTIONS = 'Leech Actions'
     UN_LEECH_ACTIONS = 'Un-Leech Actions'
+    GLOBAL_SUFFIX = '(Global)'
 
     NOTE_NOT_FOUND = 'Missing Note-Type'
 
