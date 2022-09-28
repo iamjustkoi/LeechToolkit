@@ -72,9 +72,9 @@ class String:
 
     SYNC_TAG_DEFAULT = 'leech::toolkit-filtered'
 
-    UNDO_ENTRY_SET_LAPSES = 'Set Lapses'
-    UNDO_ENTRY_LEECH_ACTIONS = 'Leech Actions'
-    UNDO_ENTRY_UNLEECH_ACTIONS = 'Un-leech Actions'
+    ENTRY_SET_LAPSES = 'Set Lapses'
+    ENTRY_LEECH_ACTIONS = 'Leech Actions'
+    ENTRY_UNLEECH_ACTIONS = 'Un-leech Actions'
 
     TIP_LEECHED_TEMPLATE = 'Leeched {} cards'
     TIP_UNLEECHED_TEMPLATE = 'Un-leeched {} cards'
@@ -223,8 +223,8 @@ class Config:
             SYNC_TAG_TEXT: String.SYNC_TAG_DEFAULT,
         },
         MENU_OPTIONS: {
-            LEECH_SHORTCUT: 'Alt+L',
-            UNLEECH_SHORTCUT: 'Alt+U',
+            LEECH_SHORTCUT: 'Ctrl+Shift+L',
+            UNLEECH_SHORTCUT: 'Ctrl+Shift+U',
         },
         MARKER_OPTIONS: {
             SHOW_LEECH_MARKER: True,
