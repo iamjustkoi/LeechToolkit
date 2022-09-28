@@ -47,6 +47,7 @@ from ..res.ui.reverse_form import Ui_ReverseForm
 max_fields_height = 572
 max_queue_height = 256
 arrow_types = [Qt.RightArrow, Qt.DownArrow]
+button_attr = 'button'
 
 
 def bind_actions():
@@ -60,13 +61,18 @@ def on_options_called(*args):
 
 
 def append_restore_button(parent: QWidget, insert_col=4):
-    if not hasattr(parent, 'button'):
+    if not hasattr(parent, button_attr):
         parent.default_button = aqt.qt.QPushButton(parent)
 
         parent.default_button.setMaximumSize(QSize(16, 16))
         parent.default_button.setFlat(True)
         parent.default_button.setToolTip(String.RESTORE_DEFAULT_SETTING)
-        parent.default_button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}'))
+
+        pixmap = QPixmap(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}')
+        mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
+        pixmap.fill(QColor('#9e9e9ead'))
+        pixmap.setMask(mask)
+        parent.default_button.setIcon(QIcon(pixmap))
 
         size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         size_policy.setHorizontalStretch(0)
