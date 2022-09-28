@@ -57,7 +57,7 @@ def try_append_wrapper(content: aqt.webview.WebContent, context: object):
             mw.reviewer.__delattr__(wrapper_attr)
         else:
             # Attached for calls and any future garbage collection, potentially, idk
-            reviewer.toolkit_manager = ReviewWrapper(reviewer, content, mw.col.decks.get_current_id())
+            reviewer.toolkit_wrapper = ReviewWrapper(reviewer, content, mw.col.decks.get_current_id())
 
 
 def mark_leeched(card: anki.cards.Card):
@@ -111,6 +111,7 @@ class ReviewWrapper:
             )
 
     def load_options(self, did: DeckId = None):
+        print(f'load_options')
         self.did = did if did else self.did
 
         deck_conf_dict = mw.col.decks.config_dict_for_deck_id(self.did)
@@ -121,6 +122,11 @@ class ReviewWrapper:
 
         self.append_marker_html()
         self.append_hooks()
+
+    def refresh_if_needed(self, changes: aqt.reviewer.OpChanges):
+        self.reviewer.op_executed(changes=changes, handler=self, focused=True)
+        if not self.reviewer.refresh_if_needed():
+            self.update_marker()
 
     def run_action(self, action_type: str):
         msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
@@ -148,10 +154,7 @@ class ReviewWrapper:
         changes.study_queues = True if (pre_queue != self.card.queue) or (pre_due != self.card.due) else False
         changes.note_text = True if pre_note_text != self.card.note().joined_fields() else False
 
-        self.reviewer.op_executed(changes=changes, handler=self, focused=True)
-
-        if not self.reviewer.refresh_if_needed():
-            self.update_marker()
+        self.refresh_if_needed(changes)
 
     def append_marker_html(self):
         marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
@@ -223,19 +226,20 @@ class ReviewWrapper:
 
     def update_marker(self):
         """
-        Updates marker style/visibility based on user options and current card's attributes.
+        Update marker style/visibility based on config options and card attributes.
         """
         marker_conf = self.toolkit_config[Config.MARKER_OPTIONS]
-
         show_marker(False)
-        if self.on_front and not marker_conf[Config.ONLY_SHOW_BACK_MARKER]:
-            if self.card.note().has_tag(LEECH_TAG):
-                set_marker_color(LEECH_COLOR)
-                show_marker(True)
-            elif (
-                    marker_conf[Config.USE_ALMOST_MARKER]
-                    and self.card.type == anki.cards.CARD_TYPE_REV
-                    and (self.card.lapses + ALMOST_DISTANCE) >= self.max_fails
-            ):
-                set_marker_color(ALMOST_COLOR)
-                show_marker(True)
+
+        if marker_conf[Config.SHOW_LEECH_MARKER]:
+            only_show_on_back = marker_conf[Config.ONLY_SHOW_BACK_MARKER]
+            is_review = self.card.type == anki.cards.CARD_TYPE_REV
+            almost_leech = is_review and self.card.lapses + ALMOST_DISTANCE >= self.max_fails
+
+            if (not self.on_front and only_show_on_back) or not only_show_on_back:
+                if self.card.note().has_tag(LEECH_TAG):
+                    set_marker_color(LEECH_COLOR)
+                    show_marker(True)
+                elif marker_conf[Config.USE_ALMOST_MARKER] and almost_leech:
+                    set_marker_color(ALMOST_COLOR)
+                    show_marker(True)

@@ -57,7 +57,7 @@ class LeechToolkitConfigManager:
 
         # Refresh reviewer if currently active
         try:
-            self._mw.reviewer.toolkit_manager.load_options() if self._mw.state == 'review' else None
+            self._mw.reviewer.toolkit_wrapper.load_options() if self._mw.state == 'review' else None
         except AttributeError:
             print(f'{traceback.format_exc()}\n{ErrorMsg.TOOLKIT_MANAGER_NOT_FOUND}')
 
