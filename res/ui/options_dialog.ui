@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -256,7 +256,7 @@
             <x>0</x>
             <y>0</y>
             <width>530</width>
-            <height>210</height>
+               <height>223</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -342,12 +342,12 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="toolTip">
-              <string>Sync the entire collection based on the current, applied options and review logs.</string>
-             </property>
-             <property name="text">
-              <string>Update Collection</string>
-             </property>
+                <property name="toolTip">
+                    <string>Sync the entire collection based on the current, applied options and review logs.</string>
+                </property>
+                <property name="text">
+                    <string>Update Collection</string>
+                </property>
             </widget>
            </item>
           </layout>
@@ -356,6 +356,276 @@
        </item>
       </layout>
      </widget>
+        <widget class="QWidget" name="aboutTab">
+            <attribute name="title">
+                <string>About</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+                <item>
+                    <widget class="QScrollArea" name="scroll_area">
+                        <widget class="QWidget" name="about_scroll">
+                            <property name="geometry">
+                                <rect>
+                                    <x>0</x>
+                                    <y>0</y>
+                                    <width>449</width>
+                                    <height>802</height>
+                                </rect>
+                            </property>
+                            <layout class="QVBoxLayout" name="scroll_layout" stretch="0,0,1">
+                                <property name="spacing">
+                                    <number>6</number>
+                                </property>
+                                <item>
+                                    <widget class="QLabel" name="about_label_header">
+                                        <property name="sizePolicy">
+                                            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>## Leech Toolkit
+                                                Adds a total and ranged study time statistic to Anki's main window.
+
+                                                Version: {version}
+                                                Have any issues or feedback? Feel free to post on the project's issue
+                                                section on
+                                                [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!
+
+                                                [Releases/Changelog](https://github.com/iamjustkoi/StudyTimeStats/releases)
+                                                [Source Code](https://github.com/iamjustkoi/StudyTimeStats)
+
+                                                If you want to help support what I do::
+                                            </string>
+                                        </property>
+                                        <property name="textFormat">
+                                            <enum>Qt::MarkdownText</enum>
+                                        </property>
+                                        <property name="alignment">
+                                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                                        </property>
+                                        <property name="wordWrap">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <layout class="QHBoxLayout" name="support_buttons">
+                                        <property name="leftMargin">
+                                            <number>6</number>
+                                        </property>
+                                        <property name="topMargin">
+                                            <number>6</number>
+                                        </property>
+                                        <property name="rightMargin">
+                                            <number>6</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                            <number>6</number>
+                                        </property>
+                                        <item>
+                                            <widget class="QPushButton" name="like_button">
+                                                <property name="minimumSize">
+                                                    <size>
+                                                        <width>0</width>
+                                                        <height>42</height>
+                                                    </size>
+                                                </property>
+                                                <property name="maximumSize">
+                                                    <size>
+                                                        <width>200</width>
+                                                        <height>16777215</height>
+                                                    </size>
+                                                </property>
+                                                <property name="cursor">
+                                                    <cursorShape>PointingHandCursor</cursorShape>
+                                                </property>
+                                                <property name="focusPolicy">
+                                                    <enum>Qt::NoFocus</enum>
+                                                </property>
+                                                <property name="contextMenuPolicy">
+                                                    <enum>Qt::CustomContextMenu</enum>
+                                                </property>
+                                                <property name="text">
+                                                    <string>Review on AnkiWeb</string>
+                                                </property>
+                                                <property name="icon">
+                                                    <iconset>
+                                                        <normaloff>
+                                                            ../../../StudyTimeStats/res/ui/res/img/anki_like.png</normaloff>
+                                                        ../../../StudyTimeStats/res/ui/res/img/anki_like.png
+                                                    </iconset>
+                                                </property>
+                                                <property name="iconSize">
+                                                    <size>
+                                                        <width>32</width>
+                                                        <height>32</height>
+                                                    </size>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item>
+                                            <widget class="QPushButton" name="kofi_button">
+                                                <property name="minimumSize">
+                                                    <size>
+                                                        <width>0</width>
+                                                        <height>42</height>
+                                                    </size>
+                                                </property>
+                                                <property name="maximumSize">
+                                                    <size>
+                                                        <width>200</width>
+                                                        <height>16777215</height>
+                                                    </size>
+                                                </property>
+                                                <property name="cursor">
+                                                    <cursorShape>PointingHandCursor</cursorShape>
+                                                </property>
+                                                <property name="focusPolicy">
+                                                    <enum>Qt::NoFocus</enum>
+                                                </property>
+                                                <property name="contextMenuPolicy">
+                                                    <enum>Qt::CustomContextMenu</enum>
+                                                </property>
+                                                <property name="text">
+                                                    <string>Buy me a coffee</string>
+                                                </property>
+                                                <property name="icon">
+                                                    <iconset>
+                                                        <normaloff>
+                                                            ../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG</normaloff>
+                                                        ../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG
+                                                    </iconset>
+                                                </property>
+                                                <property name="iconSize">
+                                                    <size>
+                                                        <width>32</width>
+                                                        <height>32</height>
+                                                    </size>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item>
+                                            <widget class="QPushButton" name="patreon_button">
+                                                <property name="minimumSize">
+                                                    <size>
+                                                        <width>0</width>
+                                                        <height>42</height>
+                                                    </size>
+                                                </property>
+                                                <property name="maximumSize">
+                                                    <size>
+                                                        <width>200</width>
+                                                        <height>16777215</height>
+                                                    </size>
+                                                </property>
+                                                <property name="cursor">
+                                                    <cursorShape>PointingHandCursor</cursorShape>
+                                                </property>
+                                                <property name="focusPolicy">
+                                                    <enum>Qt::NoFocus</enum>
+                                                </property>
+                                                <property name="contextMenuPolicy">
+                                                    <enum>Qt::CustomContextMenu</enum>
+                                                </property>
+                                                <property name="text">
+                                                    <string>Become a patron</string>
+                                                </property>
+                                                <property name="icon">
+                                                    <iconset>
+                                                        <normaloff>
+                                                            ../../../StudyTimeStats/res/ui/res/img/patreon.png</normaloff>
+                                                        ../../../StudyTimeStats/res/ui/res/img/patreon.png
+                                                    </iconset>
+                                                </property>
+                                                <property name="iconSize">
+                                                    <size>
+                                                        <width>32</width>
+                                                        <height>32</height>
+                                                    </size>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                    </layout>
+                                </item>
+                                <item>
+                                    <widget class="QLabel" name="about_label_body">
+                                        <property name="sizePolicy">
+                                            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>Every bit helps with maintaining and developing the add-on and is
+                                                greatly appreciated!
+                                                ### Text Macros
+                                                The add-on can also filter text in the custom labels input to show
+                                                information based on what's set in the config (e.g. &quot;Past %range&quot;
+                                                to &quot;Past Week&quot;). These can be used multiple times and will
+                                                update whenever Anki's main window reloads.
+
+                                                ### Available Macros:
+
+                                                ##### General
+                                                + `%range` - the currently selected range format (Week, 2 Weeks, Month,
+                                                Year)
+                                                + `%from_date` - range filter's start date using the system's locale
+                                                (2022-06-30)
+                                                + `%from_day` - range filter's starting day using a compact format (Sun)
+                                                + `%from_full_day` - range filter's full start day (Sunday)
+                                                + `%from_month` - range filter's month name using a compact format (Sep)
+                                                + `%from_full_month` - range filter's full month name (September)
+                                                + `%days` - total days the range filter checks against (17)
+                                                &lt;br&gt;&lt;/br&gt;
+                                                ##### Advanced
+                                                These macros will each index the received review logs and output its
+                                                individual value-unit combination (e.g. &quot;%total_hrs&quot; -&gt;
+                                                &quot;3.14 hrs&quot;).
+                                                + `%total_hrs` - total study time
+                                                + `%range_hrs` - ranged study time
+                                                + `%prev_range_hrs` - total study time of the last calendar range
+                                                &lt;br&gt;&lt;/br&gt;
+
+                                                Total time for a specific range (current week, current month, etc):
+                                                + `%week_hrs`, `%two_week_hrs`, `%month_hrs`, `%year_hrs`
+                                                &lt;br&gt;&lt;/br&gt;
+
+                                                Total time for a specific, previous range (previous week, previous
+                                                month, etc):
+                                                + `%prev_day_hrs`, `%prev_week_hrs`, `%prev_two_week_hrs`,
+                                                `%prev_month_hrs`, `%prev_year_hrs`
+                                                &lt;br&gt;&lt;/br&gt;
+                                                ##### Misc
+                                                + `%%` - returns a single % symbol and doesn't apply the text macro (%,
+                                                %range, etc)
+
+                                                &lt;br&gt;&lt;/br&gt;
+                                                Thanks for downloading and hope you enjoy!
+                                                -koi
+                                                &lt;br&gt;&lt;/br&gt;
+                                                MIT License
+                                                ©2022 JustKoi (iamjustkoi)
+                                            </string>
+                                        </property>
+                                        <property name="textFormat">
+                                            <enum>Qt::MarkdownText</enum>
+                                        </property>
+                                        <property name="alignment">
+                                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                                        </property>
+                                        <property name="wordWrap">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </widget>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
     </widget>
    </item>
    <item>

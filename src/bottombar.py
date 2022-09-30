@@ -17,7 +17,7 @@ def build_bottom_bar():
 
     def draw_bottom_bar(self, buf: str, web_context, link_handler):
         """
-        Custom handler for drawing Anki's bottom bar.
+        Custom handler for drawing a leech button to Anki's bottom bar.
         :param self: Anki window/QT object
         :param buf: base string buffer for the bottom bar's html
         :param web_context: Anki's current page context
@@ -33,7 +33,7 @@ def build_bottom_bar():
 
                 def leech_link_handler(url):
                     """
-                Custom link handler that adds functionality for the run_action-browse button's link.
+                    Custom link handler that adds functionality for the run_action-browse button's link.
                     :param url: passed url string to handle
                     """
                     if url == LEECHES_URL:
@@ -43,7 +43,7 @@ def build_bottom_bar():
 
                 def updated_buf(default_buf):
                     """
-                Formats and returns a custom html string.
+                    Formats and returns a custom html string.
                     :param default_buf: referenced buffer
                     :return: formatted string-buffer with new or removed html elements
                     """
@@ -76,7 +76,13 @@ def build_bottom_bar():
 
 
 class BarButton:
-    def __init__(self, text: str, cmd: str, shortcut_key=None):
-        attributes = f'onclick="pycmd(\'{cmd}\')"'
+    def __init__(self, text: str, url: str, shortcut_key=None):
+        """
+        Custom bar button class.
+        :param text: button text
+        :param url: pylink string received by link handler for executing responses
+        :param shortcut_key: optional shortcut key
+        """
+        attributes = f'onclick="pycmd(\'{url}\')"'
         attributes += f' title="{String.BUTTON_SHORTCUT_HINT}: {shortcut_key}"' if shortcut_key else ''
         self.html = f'<button {attributes}>{text}</button>'
