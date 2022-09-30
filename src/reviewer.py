@@ -56,6 +56,7 @@ def build_hooks():
 def try_append_wrapper(content: aqt.webview.WebContent, context: object):
     """
     Attempts to attach to the current reviewer, as long as it's not a filtered deck, else removes the wrapper.
+
     :param content: web-content for html and page edits
     :param context: used for checking whether the webview is being set to the reviewer
     """
@@ -71,6 +72,7 @@ def try_append_wrapper(content: aqt.webview.WebContent, context: object):
 def mark_leeched(card: anki.cards.Card):
     """
     Appends a temporary, custom leech attribute to the selected card.
+
     :param card: card object to add the attribute to
     """
     setattr(card, was_leech_attr, True)
@@ -79,6 +81,7 @@ def mark_leeched(card: anki.cards.Card):
 def set_marker_color(color: str):
     """
     Psuedo-tints the leech marker to the input color.
+
     :param color: color (style) string to update the marker color to
     """
     mw.web.eval(f'document.getElementById("{marker_id}").style.textShadow = "0 0 0 {color}";')
@@ -87,6 +90,7 @@ def set_marker_color(color: str):
 def show_marker(show=False):
     """
     Changes the display state of the run_action marker.
+
     :param show: new visibility
     """
     if show:
@@ -106,6 +110,7 @@ class ReviewWrapper:
     def __init__(self, reviewer: Reviewer, content: aqt.webview.WebContent, did: DeckId):
         """
         Wrapper used for handling events in the Anki reviewer, if not a filtered review-type.
+
         :param reviewer: Anki Reviewer object
         :param content: web-content used for editing the page style/html
         :param did: deck id of the current reviewer
@@ -135,6 +140,7 @@ class ReviewWrapper:
     def load_options(self, did: DeckId = None):
         """
         Loads options to UI elements and config-based actions, as well as appends hooks to the initialized reviewer.
+
         :param did: deck id used for determining config values
         """
         self.did = did if did else self.did
@@ -151,6 +157,7 @@ class ReviewWrapper:
     def refresh_if_needed(self, changes: aqt.reviewer.OpChanges):
         """
         Function call to update the current window based on whether cards/schedules were changed.
+
         :param changes: OpChanges object to reference for schedule/card/note changes.
         """
         self.reviewer.op_executed(changes=changes, handler=self, focused=True)
@@ -160,6 +167,7 @@ class ReviewWrapper:
     def run_action(self, action_type: str):
         """
         Function for handling action calls via shortcuts/context menu actions.
+
         :param action_type: action type string to use as a reference for the undo entry actions to take
         """
         msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
@@ -263,6 +271,7 @@ class ReviewWrapper:
     def on_answer(self, context: aqt.reviewer.Reviewer, card: anki.cards.Card, ease: int):
         """
         Handles updates after answering cards.
+
         :param context: unused Reviewer object
         :param card: referenced card
         :param ease: value of the answer given
