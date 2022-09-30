@@ -114,6 +114,9 @@
           <height>64</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Sets a card's flag to the selected flag.</string>
+        </property>
         <property name="title">
          <string>Set Flag</string>
         </property>
@@ -182,6 +185,9 @@
           <height>64</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Toggles card suspension on or off.</string>
+        </property>
         <property name="title">
          <string>Suspend</string>
         </property>
@@ -230,6 +236,9 @@
           <height>64</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Add custom tags to the card, separated by spaces. Supports text macros (%).</string>
+        </property>
         <property name="title">
          <string>Add Tag(s)</string>
         </property>
@@ -263,6 +272,9 @@
           <width>0</width>
           <height>64</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Remove tags from the card, separated by spaces. Supports text macros (%).</string>
         </property>
         <property name="title">
          <string>Remove Tag(s)</string>
@@ -298,6 +310,9 @@
           <height>64</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Toggles card forgetting on or off.</string>
+        </property>
         <property name="title">
          <string>Forget</string>
         </property>
@@ -331,6 +346,9 @@
             </property>
             <item>
              <widget class="QRadioButton" name="forgetOnRadio">
+              <property name="toolTip">
+               <string>Forget the card (place in new queue).</string>
+              </property>
               <property name="text">
                <string>On</string>
               </property>
@@ -338,6 +356,9 @@
             </item>
             <item>
              <widget class="QRadioButton" name="forgetOffRadio">
+              <property name="toolTip">
+               <string>Don't forget the card after answering.</string>
+              </property>
               <property name="text">
                <string>Off</string>
               </property>
@@ -361,6 +382,11 @@
          </item>
          <item row="1" column="0">
           <widget class="QCheckBox" name="forgetRestorePosCheckbox">
+           <property name="toolTip">
+            <string>Restore's the cards position to the position it had when it was imported (before other
+             position-related actions).
+            </string>
+           </property>
            <property name="text">
             <string>Restore imported position where possible</string>
            </property>
@@ -368,6 +394,9 @@
          </item>
          <item row="2" column="0">
           <widget class="QCheckBox" name="forgetResetCheckbox">
+           <property name="toolTip">
+            <string>Resets the total reviews and lapse counts for the card.</string>
+           </property>
            <property name="text">
             <string>Reset total reviews and lapses</string>
            </property>
@@ -383,6 +412,9 @@
           <width>0</width>
           <height>64</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Append, prepend, or replace fields for the card's note.</string>
         </property>
         <property name="title">
          <string>Edit Field(s)</string>
@@ -457,6 +489,9 @@
                 <height>24</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>Add a field.</string>
+              </property>
               <property name="text">
                <string>Add</string>
               </property>
@@ -481,6 +516,9 @@
           <width>0</width>
           <height>64</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Move the card to a specified deck (supports sub decks, e.g. Parent-Deck::Child-Deck)</string>
         </property>
         <property name="title">
          <string>Move to Deck</string>
@@ -509,6 +547,9 @@
           <width>0</width>
           <height>64</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Set a new due date for the card.</string>
         </property>
         <property name="title">
          <string>Set Due Date</string>
@@ -542,6 +583,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string/>
              </property>
              <property name="maximum">
               <number>9999</number>
@@ -612,6 +656,9 @@
           <width>0</width>
           <height>64</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Add the card back to the new queue at a selected position.</string>
         </property>
         <property name="title">
          <string>Add to New</string>
@@ -791,7 +838,10 @@
             <item>
              <widget class="TipSlider" name="queueRatioSlider">
               <property name="toolTip">
-               <string>Controls how similar a card's fields must be for it to be considered &quot;similar&quot;.</string>
+               <string>Controls how similar a card's fields must be for it to be considered &quot;similar&quot;.
+                (Default: 25%, e.g.&quot;ABCD&quot; will match with &quot;CDEF&quot; using the &quot;CD&quot;
+                characters)
+               </string>
               </property>
               <property name="minimum">
                <number>0</number>
@@ -830,6 +880,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>Set postiion to start the input range from in the new queue.</string>
+             </property>
              <property name="sizeAdjustPolicy">
               <enum>QComboBox::AdjustToContents</enum>
              </property>
@@ -857,6 +910,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Positive, negative, or exact value to position the card with.</string>
              </property>
              <property name="minimum">
               <number>-9999999</number>
@@ -887,6 +943,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>Set position to end the input range to in the new queue.</string>
+             </property>
              <property name="sizeAdjustPolicy">
               <enum>QComboBox::AdjustToContents</enum>
              </property>
@@ -914,6 +973,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Positive, negative, or exact value to position the card with.</string>
              </property>
              <property name="minimum">
               <number>-9999999</number>
@@ -986,7 +1048,11 @@
                   </property>
                   <property name="toolTip">
                    <string>Words/characters ignored when determining card similarities.
-(Separated by spaces and/or new lines)</string>
+                    Separated by spaces/new lines.
+                    Can ignore lines of text by placing it in quotes (e.g. &quot;ignored text&quot;),
+                    and ignore/include quote characters by escaping with '\&quot;' (e.g. &quot;this will be included in
+                    the ignore: \&quot;&quot;).
+                   </string>
                   </property>
                   <property name="sizeAdjustPolicy">
                    <enum>QAbstractScrollArea::AdjustIgnored</enum>
@@ -1063,6 +1129,9 @@
                     <width>16777215</width>
                     <height>256</height>
                    </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Add a field.</string>
                   </property>
                   <property name="frameShape">
                    <enum>QFrame::NoFrame</enum>

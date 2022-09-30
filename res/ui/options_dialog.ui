@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -70,14 +70,17 @@
              </property>
              <layout class="QVBoxLayout" name="markerLayout">
               <item>
-               <widget class="QCheckBox" name="almostBackCheckbox">
-                <property name="text">
-                 <string>Only show on back of cards</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
+                  <widget class="QCheckBox" name="almostBackCheckbox">
+                      <property name="toolTip">
+                          <string>Disables the mark when only showing the front/answer in reviews.</string>
+                      </property>
+                      <property name="text">
+                          <string>Only show on back of cards</string>
+                      </property>
+                      <property name="checked">
+                          <bool>true</bool>
+                      </property>
+                  </widget>
               </item>
               <item>
                <widget class="QCheckBox" name="almostCheckbox">
@@ -99,22 +102,27 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="almostPosDropdown">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string>Default</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Left</string>
-                   </property>
+                    <widget class="QComboBox" name="almostPosDropdown">
+                        <property name="sizePolicy">
+                            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="toolTip">
+                            <string>Position of the attached marker. Attaches to the bottom of the reveiwer with a
+                                centered default value.
+                            </string>
+                        </property>
+                        <item>
+                            <property name="text">
+                                <string>Default</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Left</string>
+                            </property>
                   </item>
                   <item>
                    <property name="text">
@@ -141,18 +149,24 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
-               <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
-                <property name="text">
-                 <string>Deck Browser</string>
-                </property>
-               </widget>
+                  <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
+                      <property name="toolTip">
+                          <string>Enables the button on the main, deck list page.</string>
+                      </property>
+                      <property name="text">
+                          <string>Deck Browser</string>
+                      </property>
+                  </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
-                <property name="text">
-                 <string>Deck Overview</string>
-                </property>
-               </widget>
+                  <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
+                      <property name="toolTip">
+                          <string>Enables the button for the page show when viewing a specific deck.</string>
+                      </property>
+                      <property name="text">
+                          <string>Deck Overview</string>
+                      </property>
+                  </widget>
               </item>
              </layout>
             </widget>
@@ -267,11 +281,16 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QCheckBox" name="toolsOptionsCheckBox">
-             <property name="text">
-              <string>Show options in Tools menu</string>
-             </property>
-            </widget>
+               <widget class="QCheckBox" name="toolsOptionsCheckBox">
+                   <property name="toolTip">
+                       <string>Enables a Tools menu shortcut in the toolbar for accessing these options. These can also
+                           be accessed in the Add-ons window from the &quot;Config&quot; button.
+                       </string>
+                   </property>
+                   <property name="text">
+                       <string>Show options in Tools menu</string>
+                   </property>
+               </widget>
            </item>
            <item>
             <widget class="QCheckBox" name="syncUpdateCheckbox">
@@ -315,11 +334,14 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
               <item>
-               <widget class="QLineEdit" name="syncTagLineEdit">
-                <property name="text">
-                 <string>leech::toolkit-filtered</string>
-                </property>
-               </widget>
+                  <widget class="QLineEdit" name="syncTagLineEdit">
+                      <property name="toolTip">
+                          <string>Custom tag text.</string>
+                      </property>
+                      <property name="text">
+                          <string>leech::toolkit-filtered</string>
+                      </property>
+                  </widget>
               </item>
               <item>
                <widget class="QLabel" name="label">
@@ -335,20 +357,21 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="syncUpdateButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-                <property name="toolTip">
-                    <string>Sync the entire collection based on the current, applied options and review logs.</string>
-                </property>
-                <property name="text">
-                    <string>Update Collection</string>
-                </property>
-            </widget>
+               <widget class="QPushButton" name="syncUpdateButton">
+                   <property name="sizePolicy">
+                       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                       </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                       <string>Sync the entire collection based on the current, applied options and review logs.
+                       </string>
+                   </property>
+                   <property name="text">
+                       <string>Update Collection</string>
+                   </property>
+               </widget>
            </item>
           </layout>
          </widget>
