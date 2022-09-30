@@ -646,7 +646,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 210))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 223))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -691,17 +691,114 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.advancedScrollArea)
         self.tabWidget.addTab(self.advancedTab, "")
+        self.aboutTab = QtWidgets.QWidget()
+        self.aboutTab.setObjectName("aboutTab")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.aboutTab)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.scroll_area = QtWidgets.QScrollArea(self.aboutTab)
+        self.scroll_area.setObjectName("scroll_area")
+        self.about_scroll = QtWidgets.QWidget()
+        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 449, 802))
+        self.about_scroll.setObjectName("about_scroll")
+        self.scroll_layout = QtWidgets.QVBoxLayout(self.about_scroll)
+        self.scroll_layout.setSpacing(6)
+        self.scroll_layout.setObjectName("scroll_layout")
+        self.about_label_header = QtWidgets.QLabel(self.about_scroll)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.about_label_header.sizePolicy().hasHeightForWidth())
+        self.about_label_header.setSizePolicy(sizePolicy)
+        self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
+        self.about_label_header.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        self.about_label_header.setWordWrap(True)
+        self.about_label_header.setObjectName("about_label_header")
+        self.scroll_layout.addWidget(self.about_label_header)
+        self.support_buttons = QtWidgets.QHBoxLayout()
+        self.support_buttons.setContentsMargins(6, 6, 6, 6)
+        self.support_buttons.setObjectName("support_buttons")
+        self.like_button = QtWidgets.QPushButton(self.about_scroll)
+        self.like_button.setMinimumSize(QtCore.QSize(0, 42))
+        self.like_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.like_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.like_button.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.like_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        icon = QtGui.QIcon()
+        icon.addPixmap(
+            QtGui.QPixmap(
+                "\n"
+                "                                                            "
+                "../../../StudyTimeStats/res/ui/res/img/anki_like.png"
+            ), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
+        self.like_button.setIcon(icon)
+        self.like_button.setIconSize(QtCore.QSize(32, 32))
+        self.like_button.setObjectName("like_button")
+        self.support_buttons.addWidget(self.like_button)
+        self.kofi_button = QtWidgets.QPushButton(self.about_scroll)
+        self.kofi_button.setMinimumSize(QtCore.QSize(0, 42))
+        self.kofi_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.kofi_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.kofi_button.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.kofi_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(
+            QtGui.QPixmap(
+                "\n"
+                "                                                            "
+                "../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"
+            ), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
+        self.kofi_button.setIcon(icon1)
+        self.kofi_button.setIconSize(QtCore.QSize(32, 32))
+        self.kofi_button.setObjectName("kofi_button")
+        self.support_buttons.addWidget(self.kofi_button)
+        self.patreon_button = QtWidgets.QPushButton(self.about_scroll)
+        self.patreon_button.setMinimumSize(QtCore.QSize(0, 42))
+        self.patreon_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.patreon_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.patreon_button.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.patreon_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(
+            QtGui.QPixmap(
+                "\n"
+                "                                                            "
+                "../../../StudyTimeStats/res/ui/res/img/patreon.png"
+            ), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
+        self.patreon_button.setIcon(icon2)
+        self.patreon_button.setIconSize(QtCore.QSize(32, 32))
+        self.patreon_button.setObjectName("patreon_button")
+        self.support_buttons.addWidget(self.patreon_button)
+        self.scroll_layout.addLayout(self.support_buttons)
+        self.about_label_body = QtWidgets.QLabel(self.about_scroll)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.about_label_body.sizePolicy().hasHeightForWidth())
+        self.about_label_body.setSizePolicy(sizePolicy)
+        self.about_label_body.setTextFormat(QtCore.Qt.MarkdownText)
+        self.about_label_body.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        self.about_label_body.setWordWrap(True)
+        self.about_label_body.setObjectName("about_label_body")
+        self.scroll_layout.addWidget(self.about_label_body)
+        self.scroll_layout.setStretch(2, 1)
+        self.scroll_area.setWidget(self.about_scroll)
+        self.verticalLayout_8.addWidget(self.scroll_area)
+        self.tabWidget.addTab(self.aboutTab, "")
         self.verticalLayout_4.addWidget(self.tabWidget)
         self.buttonBox = QtWidgets.QDialogButtonBox(OptionsDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.RestoreDefaults
+            QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok |
+            QtWidgets.QDialogButtonBox.RestoreDefaults
             )
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
@@ -711,6 +808,9 @@ class Ui_OptionsDialog(object):
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
         self.markerGroup.setToolTip(_translate("OptionsDialog", "Show a marker on leech cards during review."))
         self.markerGroup.setTitle(_translate("OptionsDialog", "Leech Mark"))
+        self.almostBackCheckbox.setToolTip(
+            _translate("OptionsDialog", "Disables the mark when only showing the front/answer in reviews.")
+        )
         self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
         self.almostCheckbox.setToolTip(
             _translate(
@@ -720,6 +820,13 @@ class Ui_OptionsDialog(object):
         )
         self.almostCheckbox.setText(_translate("OptionsDialog", "Show unique marker for about-to-be-leeched cards"))
         self.almostLabel.setText(_translate("OptionsDialog", "Marker Position"))
+        self.almostPosDropdown.setToolTip(
+            _translate(
+                "OptionsDialog", "Position of the attached marker. Attaches to the bottom of the reveiwer with a\n"
+                                 "                                centered default value.\n"
+                                 "                            "
+            )
+        )
         self.almostPosDropdown.setItemText(0, _translate("OptionsDialog", "Default"))
         self.almostPosDropdown.setItemText(1, _translate("OptionsDialog", "Left"))
         self.almostPosDropdown.setItemText(2, _translate("OptionsDialog", "Right"))
@@ -730,7 +837,13 @@ class Ui_OptionsDialog(object):
             )
         )
         self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
+        self.browseButtonBrowserCheckbox.setToolTip(
+            _translate("OptionsDialog", "Enables the button on the main, deck list page.")
+        )
         self.browseButtonBrowserCheckbox.setText(_translate("OptionsDialog", "Deck Browser"))
+        self.browseButtonOverviewCheckbox.setToolTip(
+            _translate("OptionsDialog", "Enables the button for the page show when viewing a specific deck.")
+        )
         self.browseButtonOverviewCheckbox.setText(_translate("OptionsDialog", "Deck Overview"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.generalTab), _translate("OptionsDialog", "General"))
 <<<<<<< HEAD
@@ -826,11 +939,20 @@ class Ui_OptionsDialog(object):
 =======
 >>>>>>> a2aa2d5 (Changed how actions are appended to options and added reverse leech expando)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
+        self.toolsOptionsCheckBox.setToolTip(
+            _translate(
+                "OptionsDialog",
+                "Enables a Tools menu shortcut in the toolbar for accessing these options. These can also\n"
+                "                           be accessed in the Add-ons window from the \"Config\" button.\n"
+                "                       "
+            )
+        )
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
         self.syncUpdateCheckbox.setToolTip(
             _translate(
                 "OptionsDialog",
-                "After syncing, updates the entire collection with the current options/actions based on the synced review logs."
+                "After syncing, updates the entire collection with the current options/actions based on the synced "
+                "review logs."
             )
         )
         self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
@@ -845,7 +967,8 @@ class Ui_OptionsDialog(object):
         self.syncTagCheckbox.setToolTip(
             _translate(
                 "OptionsDialog",
-                "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."
+                "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any "
+                "filtered leeches."
             )
         )
         self.syncTagCheckbox.setTitle(
@@ -854,21 +977,115 @@ class Ui_OptionsDialog(object):
                                  "                                            "
             )
         )
+        self.syncTagLineEdit.setToolTip(_translate("OptionsDialog", "Custom tag text."))
         self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
         self.label.setText(
             _translate(
                 "OptionsDialog",
-                "* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded."
+                "* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it "
+                "might\'ve also been changed and synced/uploaded."
             )
         )
         self.syncUpdateButton.setToolTip(
             _translate(
-                "OptionsDialog",
-                "Sync the entire collection based on the current, applied options and review logs."
+                "OptionsDialog", "Sync the entire collection based on the current, applied options and review logs.\n"
+                                 "                       "
             )
         )
         self.syncUpdateButton.setText(_translate("OptionsDialog", "Update Collection"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.advancedTab), _translate("OptionsDialog", "Advanced"))
+        self.about_label_header.setText(
+            _translate(
+                "OptionsDialog", "## Leech Toolkit\n"
+                                 "                                                Adds a total and ranged study time "
+                                 "statistic to Anki\'s main window.\n"
+                                 "\n"
+                                 "                                                Version: {version}\n"
+                                 "                                                Have any issues or feedback? Feel "
+                                 "free to post on the project\'s issue\n"
+                                 "                                                section on\n"
+                                 "                                                [GitHub]("
+                                 "https://github.com/iamjustkoi/StudyTimeStats/issues)!\n"
+                                 "\n"
+                                 "                                                [Releases/Changelog]("
+                                 "https://github.com/iamjustkoi/StudyTimeStats/releases)\n"
+                                 "                                                [Source Code]("
+                                 "https://github.com/iamjustkoi/StudyTimeStats)\n"
+                                 "\n"
+                                 "                                                If you want to help support what I "
+                                 "do::\n"
+                                 "                                            "
+            )
+        )
+        self.like_button.setText(_translate("OptionsDialog", "Review on AnkiWeb"))
+        self.kofi_button.setText(_translate("OptionsDialog", "Buy me a coffee"))
+        self.patreon_button.setText(_translate("OptionsDialog", "Become a patron"))
+        self.about_label_body.setText(
+            _translate(
+                "OptionsDialog", "Every bit helps with maintaining and developing the add-on and is\n"
+                                 "                                                greatly appreciated!\n"
+                                 "                                                ### Text Macros\n"
+                                 "                                                The add-on can also filter text in "
+                                 "the custom labels input to show\n"
+                                 "                                                information based on what\'s set in "
+                                 "the config (e.g. \"Past %range\"\n"
+                                 "                                                to \"Past Week\"). These can be "
+                                 "used multiple times and will\n"
+                                 "                                                update whenever Anki\'s main window "
+                                 "reloads.\n"
+                                 "\n"
+                                 "                                                ### Available Macros:\n"
+                                 "\n"
+                                 "                                                ##### General\n"
+                                 "                                                + `%range` - the currently selected "
+                                 "range format (Week, 2 Weeks, Month,\n"
+                                 "                                                Year)\n"
+                                 "                                                + `%from_date` - range filter\'s "
+                                 "start date using the system\'s locale\n"
+                                 "                                                (2022-06-30)\n"
+                                 "                                                + `%from_day` - range filter\'s "
+                                 "starting day using a compact format (Sun)\n"
+                                 "                                                + `%from_full_day` - range "
+                                 "filter\'s full start day (Sunday)\n"
+                                 "                                                + `%from_month` - range filter\'s "
+                                 "month name using a compact format (Sep)\n"
+                                 "                                                + `%from_full_month` - range "
+                                 "filter\'s full month name (September)\n"
+                                 "                                                + `%days` - total days the range "
+                                 "filter checks against (17)\n"
+                                 "                                                <br></br>\n"
+                                 "                                                ##### Advanced\n"
+                                 "                                                These macros will each index the received review logs and output its\n"
+                                 "                                                individual value-unit combination (e.g. \"%total_hrs\" ->\n"
+                                 "                                                \"3.14 hrs\").\n"
+                                 "                                                + `%total_hrs` - total study time\n"
+                                 "                                                + `%range_hrs` - ranged study time\n"
+                                 "                                                + `%prev_range_hrs` - total study time of the last calendar range\n"
+                                 "                                                <br></br>\n"
+                                 "\n"
+                                 "                                                Total time for a specific range (current week, current month, etc):\n"
+                                 "                                                + `%week_hrs`, `%two_week_hrs`, `%month_hrs`, `%year_hrs`\n"
+                                 "                                                <br></br>\n"
+                                 "\n"
+                                 "                                                Total time for a specific, previous range (previous week, previous\n"
+                                 "                                                month, etc):\n"
+                                 "                                                + `%prev_day_hrs`, `%prev_week_hrs`, `%prev_two_week_hrs`,\n"
+                                 "                                                `%prev_month_hrs`, `%prev_year_hrs`\n"
+                                 "                                                <br></br>\n"
+                                 "                                                ##### Misc\n"
+                                 "                                                + `%%` - returns a single % symbol and doesn\'t apply the text macro (%,\n"
+                                 "                                                %range, etc)\n"
+                                 "\n"
+                                 "                                                <br></br>\n"
+                                 "                                                Thanks for downloading and hope you enjoy!\n"
+                                 "                                                -koi\n"
+                                 "                                                <br></br>\n"
+                                 "                                                MIT License\n"
+                                 "                                                ©2022 JustKoi (iamjustkoi)\n"
+                                 "                                            "
+            )
+        )
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.aboutTab), _translate("OptionsDialog", "About"))
 
 
 if __name__ == "__main__":

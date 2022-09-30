@@ -233,6 +233,7 @@ class Ui_ActionsForm(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rescheduleFromDays.sizePolicy().hasHeightForWidth())
         self.rescheduleFromDays.setSizePolicy(sizePolicy)
+        self.rescheduleFromDays.setToolTip("")
         self.rescheduleFromDays.setMaximum(9999)
         self.rescheduleFromDays.setObjectName("rescheduleFromDays")
         self.horizontalLayout_14.addWidget(self.rescheduleFromDays)
@@ -500,6 +501,7 @@ class Ui_ActionsForm(object):
 
     def retranslateUi(self, ActionsForm):
         _translate = QtCore.QCoreApplication.translate
+        self.flagGroup.setToolTip(_translate("ActionsForm", "Sets a card\'s flag to the selected flag."))
         self.flagGroup.setTitle(_translate("ActionsForm", "Set Flag"))
         self.flagDropdown.setItemText(0, _translate("ActionsForm", "No Flag"))
         self.flagDropdown.setItemText(1, _translate("ActionsForm", "Red"))
@@ -509,20 +511,52 @@ class Ui_ActionsForm(object):
         self.flagDropdown.setItemText(5, _translate("ActionsForm", "Pink"))
         self.flagDropdown.setItemText(6, _translate("ActionsForm", "Turquise"))
         self.flagDropdown.setItemText(7, _translate("ActionsForm", "Purple"))
+        self.suspendGroup.setToolTip(_translate("ActionsForm", "Toggles card suspension on or off."))
         self.suspendGroup.setTitle(_translate("ActionsForm", "Suspend"))
         self.suspendOnButton.setText(_translate("ActionsForm", "On"))
         self.suspendOffButton.setText(_translate("ActionsForm", "Off"))
+        self.addTagGroup.setToolTip(
+            _translate("ActionsForm", "Add custom tags to the card, separated by spaces. Supports text macros (%).")
+        )
         self.addTagGroup.setTitle(_translate("ActionsForm", "Add Tag(s)"))
+        self.removeTagGroup.setToolTip(
+            _translate("ActionsForm", "Remove tags from the card, separated by spaces. Supports text macros (%).")
+        )
         self.removeTagGroup.setTitle(_translate("ActionsForm", "Remove Tag(s)"))
+        self.forgetGroup.setToolTip(_translate("ActionsForm", "Toggles card forgetting on or off."))
         self.forgetGroup.setTitle(_translate("ActionsForm", "Forget"))
+        self.forgetOnRadio.setToolTip(_translate("ActionsForm", "Forget the card (place in new queue)."))
         self.forgetOnRadio.setText(_translate("ActionsForm", "On"))
+        self.forgetOffRadio.setToolTip(_translate("ActionsForm", "Don\'t forget the card after answering."))
         self.forgetOffRadio.setText(_translate("ActionsForm", "Off"))
+        self.forgetRestorePosCheckbox.setToolTip(
+            _translate(
+                "ActionsForm",
+                "Restore\'s the cards position to the position it had when it was imported (before other\n"
+                "             position-related actions).\n"
+                "            "
+            )
+        )
         self.forgetRestorePosCheckbox.setText(_translate("ActionsForm", "Restore imported position where possible"))
+        self.forgetResetCheckbox.setToolTip(
+            _translate("ActionsForm", "Resets the total reviews and lapse counts for the card.")
+        )
         self.forgetResetCheckbox.setText(_translate("ActionsForm", "Reset total reviews and lapses"))
+        self.editFieldsGroup.setToolTip(
+            _translate("ActionsForm", "Append, prepend, or replace fields for the card\'s note.")
+        )
         self.editFieldsGroup.setTitle(_translate("ActionsForm", "Edit Field(s)"))
         self.editFieldsList.setSortingEnabled(True)
+        self.editAddFieldButton.setToolTip(_translate("ActionsForm", "Add a field."))
         self.editAddFieldButton.setText(_translate("ActionsForm", "Add"))
+        self.deckMoveGroup.setToolTip(
+            _translate(
+                "ActionsForm",
+                "Move the card to a specified deck (supports sub decks, e.g. Parent-Deck::Child-Deck)"
+            )
+        )
         self.deckMoveGroup.setTitle(_translate("ActionsForm", "Move to Deck"))
+        self.rescheduleGroup.setToolTip(_translate("ActionsForm", "Set a new due date for the card."))
         self.rescheduleGroup.setTitle(_translate("ActionsForm", "Set Due Date"))
         self.rescheduleText1.setText(_translate("ActionsForm", "Between"))
         self.rescheduleText2.setText(_translate("ActionsForm", "and"))
@@ -534,11 +568,15 @@ class Ui_ActionsForm(object):
             )
         )
         self.rescheduleResetCheckbox.setText(_translate("ActionsForm", "Update interval"))
+        self.queueGroup.setToolTip(
+            _translate("ActionsForm", "Add the card back to the new queue at a selected position.")
+        )
         self.queueGroup.setTitle(_translate("ActionsForm", "Add to New"))
         self.queueSiblingCheckbox.setToolTip(
             _translate(
                 "ActionsForm",
-                "Using the given range: Place the card next to another one if they\'re each siblings of the same note-type."
+                "Using the given range: Place the card next to another one if they\'re each siblings of the same "
+                "note-type."
             )
         )
         self.queueSiblingCheckbox.setText(_translate("ActionsForm", "Place near sibling cards"))
@@ -557,17 +595,31 @@ class Ui_ActionsForm(object):
         self.label_4.setText(_translate("ActionsForm", "Similarity"))
         self.queueRatioSlider.setToolTip(
             _translate(
-                "ActionsForm",
-                "Controls how similar a card\'s fields must be for it to be considered \"similar\"."
+                "ActionsForm", "Controls how similar a card\'s fields must be for it to be considered \"similar\".\n"
+                               "                (Default: 25%, e.g.\"ABCD\" will match with \"CDEF\" using the \"CD\"\n"
+                               "                characters)\n"
+                               "               "
             )
+        )
+        self.queueFromDropdown.setToolTip(
+            _translate("ActionsForm", "Set postiion to start the input range from in the new queue.")
         )
         self.queueFromDropdown.setItemText(0, _translate("ActionsForm", "Top"))
         self.queueFromDropdown.setItemText(1, _translate("ActionsForm", "Bottom"))
         self.queueFromDropdown.setItemText(2, _translate("ActionsForm", "Position"))
+        self.queueFromSpinbox.setToolTip(
+            _translate("ActionsForm", "Positive, negative, or exact value to position the card with.")
+        )
         self.queueTilda.setText(_translate("ActionsForm", "～"))
+        self.queueToDropdown.setToolTip(
+            _translate("ActionsForm", "Set position to end the input range to in the new queue.")
+        )
         self.queueToDropdown.setItemText(0, _translate("ActionsForm", "Top"))
         self.queueToDropdown.setItemText(1, _translate("ActionsForm", "Bottom"))
         self.queueToDropdown.setItemText(2, _translate("ActionsForm", "Position"))
+        self.queueToSpinbox.setToolTip(
+            _translate("ActionsForm", "Positive, negative, or exact value to position the card with.")
+        )
         self.queueSimilarCheckbox.setToolTip(
             _translate(
                 "ActionsForm",
@@ -579,7 +631,11 @@ class Ui_ActionsForm(object):
         self.queueExcludeTextEdit.setToolTip(
             _translate(
                 "ActionsForm", "Words/characters ignored when determining card similarities.\n"
-                               "(Separated by spaces and/or new lines)"
+                               "                    Separated by spaces/new lines.\n"
+                               "                    Can ignore lines of text by placing it in quotes (e.g. \"ignored text\"),\n"
+                               "                    and ignore/include quote characters by escaping with \'\\\"\' (e.g. \"this will be included in\n"
+                               "                    the ignore: \\\"\").\n"
+                               "                   "
             )
         )
         self.groupBox_5.setTitle(_translate("ActionsForm", "Filtered Fields"))
@@ -587,6 +643,7 @@ class Ui_ActionsForm(object):
             _translate("ActionsForm", "Filters to only match the following fields instead of filtering them out.")
         )
         self.queueIncludeFieldsCheckbox.setText(_translate("ActionsForm", "Inclusive"))
+        self.queueExcludedFieldList.setToolTip(_translate("ActionsForm", "Add a field."))
         self.queueExcludedFieldList.setSortingEnabled(True)
         self.queueAddFieldButton.setText(_translate("ActionsForm", "Add"))
 from .forms import ExpandoWidget, QueueSpinBox, TipSlider
