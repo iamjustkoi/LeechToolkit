@@ -2,20 +2,21 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+import traceback
 from pathlib import Path
+from typing import List
 
 import anki.decks
-import aqt.flags
-from anki.collection import OpChanges
 from anki.consts import CARD_TYPE_NEW
-from anki.models import NotetypeId
-from anki.notes import NoteId
 from aqt import mw
 from aqt.qt import (
     Qt,
     QAction,
     QDialog,
     QIcon,
+    QToolButton,
+    QPushButton,
+    QDialogButtonBox,
     QPixmap,
     QColor,
     QWidget,
@@ -33,7 +34,16 @@ from aqt.qt import (
 
 from .config import LeechToolkitConfigManager
 from .consts import (
-    String, Config, Action, Macro, REMOVE_ICON_PATH, EditAction, RescheduleAction, QueueAction,
+    ANKI_LEGACY_VER,
+    ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER,
+    ErrorMsg, LEGACY_FLAGS_PLACEHOLDER, String,
+    Config,
+    Action,
+    Macro,
+    REMOVE_ICON_PATH,
+    EditAction,
+    RescheduleAction,
+    QueueAction,
     RESTORE_ICON_PATH,
 )
 from .sync import sync_collection
@@ -43,6 +53,14 @@ from ..res.ui.exclude_field_item import Ui_ExcludedFieldItem
 from ..res.ui.forms import CustomCompleter
 from ..res.ui.options_dialog import Ui_OptionsDialog
 from ..res.ui.reverse_form import Ui_ReverseForm
+
+try:
+    import aqt.flags
+    from anki.collection import OpChanges
+    from anki.models import NotetypeId
+    from anki.notes import NoteId
+except ModuleNotFoundError:
+    print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
 max_fields_height = 572
 max_queue_height = 256
@@ -77,14 +95,14 @@ def append_restore_button(parent: QWidget, insert_col=4):
     :return: the newly appended restore button
     """
     if not hasattr(parent, button_attr):
-        parent.default_button = aqt.qt.QPushButton(parent)
+        parent.default_button = QPushButton(parent)
 
         parent.default_button.setMaximumSize(QSize(16, 16))
         parent.default_button.setFlat(True)
         parent.default_button.setToolTip(String.RESTORE_DEFAULT_SETTING)
 
         pixmap = QPixmap(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}')
-        mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
+        mask = pixmap.createMaskFromColor(QColor('black'), Qt.MaskOutColor)
         # pixmap.fill(QColor('#adadad' if mw.pm.night_mode() else '#1a1a1a'))
         pixmap.fill(QColor('#adadad'))
         pixmap.setMask(mask)
@@ -114,8 +132,8 @@ def append_restore_button(parent: QWidget, insert_col=4):
 
 
 def setup_restore_button(
-    button: aqt.qt.QPushButton,
-    signals: list[pyqtBoundSignal],
+    button: QPushButton,
+    signals: List[pyqtBoundSignal],
     write_callback,
     load_callback,
     scoped_conf: dict,
@@ -187,7 +205,7 @@ def add_excluded_field(list_widget: QListWidget, mid: int, field_name=''):
     for i in range(0, list_widget.count()):
         item = list_widget.item(i)
         exclude_item = ExcludeFieldItem.from_list_widget(list_widget, item)
-        fields_names = mw.col.models.field_names(mw.col.models.get(mid))
+        fields_names = _try_get_field_names(mw.col.models.get(mid))
         if exclude_item.get_model_field_dict() == {f'{mid}': fields_names.index(field_name)}:
             return
 
@@ -204,7 +222,10 @@ def refresh_window():
     if mw.state != 'review':
         mw.reset()
     else:
-        mw.reviewer.toolkit_wrapper.refresh_if_needed(OpChanges(study_queues=True))
+        if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
+            mw.reviewer.toolkit_wrapper.refresh_if_needed(OpChanges(study_queues=True))
+        else:
+            mw.reset()
 
 
 def _bind_tools_options(*args):
@@ -233,7 +254,22 @@ def _bind_config_options():
     mw.addonManager.setConfigAction(__name__, on_options_called)
 
 
-def _fill_menu_fields(add_button: aqt.qt.QToolButton):
+def _try_get_field_names(note_type: dict):
+    if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+        return mw.col.models.field_names(note_type)
+    else:
+        return [f["name"] for f in note_type["flds"]]
+
+
+def _try_get_deck_name(did: int):
+    if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+        return mw.col.decks.name_if_exists(did)
+    else:
+        deck = mw.col.decks.get(did, default=False)
+        return deck["name"] if deck else None
+
+
+def _fill_menu_fields(add_button: QToolButton):
     """
     Fills the field menus for an "Add" field button with respective model-id data and field strings per action.
 
@@ -244,7 +280,7 @@ def _fill_menu_fields(add_button: aqt.qt.QToolButton):
     for note_type in mw.col.models.all():
         sub_menu = menu.addMenu(f'{note_type["name"]}')
 
-        for field in mw.col.models.field_names(note_type):
+        for field in _try_get_field_names(note_type):
             action = QAction(f'{field}', add_button)
             action.setData(note_type['id'])
             sub_menu.addAction(action)
@@ -292,7 +328,7 @@ def _redraw_list(list_widget: QListWidget, max_height=256):
 
 
 class OptionsDialog(QDialog):
-    restore_buttons: list[aqt.qt.QPushButton] = []
+    restore_buttons: List[QPushButton] = []
 
     def __init__(self, manager: LeechToolkitConfigManager):
         """
@@ -319,11 +355,11 @@ class OptionsDialog(QDialog):
         self.restore_buttons.append(append_restore_button(self.ui.browseButtonGroup))
         self.restore_buttons.append(append_restore_button(self.ui.syncTagCheckbox))
 
-        self.apply_button = self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply)
+        self.apply_button = self.ui.buttonBox.button(QDialogButtonBox.Apply)
         self.apply_button.setEnabled(False)
 
-        self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.Apply).clicked.connect(self.apply)
-        self.ui.buttonBox.button(aqt.qt.QDialogButtonBox.RestoreDefaults).clicked.connect(self.restore_defaults)
+        self.ui.buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.apply)
+        self.ui.buttonBox.button(QDialogButtonBox.RestoreDefaults).clicked.connect(self.restore_defaults)
 
         self.ui.syncUpdateButton.clicked.connect(sync_collection)
 
@@ -406,7 +442,7 @@ class OptionsDialog(QDialog):
         self.unleech_form.setup_restorables(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
         self.reverse_form.setup_restorables(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
 
-    def _append_apply_signals(self, signals: list[pyqtBoundSignal]):
+    def _append_apply_signals(self, signals: List[pyqtBoundSignal]):
         for signal in signals:
             signal.connect(lambda *args: self.apply_button.setEnabled(True))
 
@@ -781,15 +817,19 @@ class ActionsWidget(QWidget):
         self.ui.flagGroup.setChecked(action_conf[Action.ENABLED])
         self.ui.flagDropdown.setCurrentIndex(action_conf[Action.INPUT])
 
-        flag_manager = aqt.flags.FlagManager(mw)
+        flag_manager = aqt.flags.FlagManager(mw) if CURRENT_ANKI_VER > ANKI_LEGACY_VER else None
+
         for index in range(1, self.ui.flagDropdown.count()):
-            flag = flag_manager.get_flag(index)
-            pixmap = QPixmap(flag.icon.path)
-            mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
-            pixmap.fill(QColor(flag.icon.current_color(mw.pm.night_mode())))
-            pixmap.setMask(mask)
-            self.ui.flagDropdown.setItemIcon(index, QIcon(pixmap))
-            self.ui.flagDropdown.setItemText(index, f'{flag.label}')
+            if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+                flag = flag_manager.get_flag(index)
+                pixmap = QPixmap(flag.icon.path)
+                mask = pixmap.createMaskFromColor(QColor('black'), Qt.MaskOutColor)
+                pixmap.fill(QColor(flag.icon.current_color(mw.pm.night_mode())))
+                pixmap.setMask(mask)
+                self.ui.flagDropdown.setItemIcon(index, QIcon(pixmap))
+                self.ui.flagDropdown.setItemText(index, f'{flag.label}')
+            else:
+                self.ui.flagDropdown.setItemText(index, f'{LEGACY_FLAGS_PLACEHOLDER[index - 1]}')
 
     # SUSPEND
     def load_suspend(self, action_conf: dict):
@@ -830,8 +870,12 @@ class ActionsWidget(QWidget):
         self.ui.editFieldsList.clear()
         for field_item in action_conf[Action.INPUT]:
             mid, item_data = list(field_item.items())[0]
-            note_dict = mw.col.models.get(NotetypeId(mid))
-            field_name = mw.col.models.field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
+            if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+                note_dict = mw.col.models.get(NotetypeId(mid) if CURRENT_ANKI_VER > ANKI_LEGACY_VER else int(mid))
+                field_name = _try_get_field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
+            else:
+                note_dict = mw.col.models.get(int(mid))
+                field_name = _try_get_field_names(note_dict)[item_data[0]] if note_dict else String.NOTE_NOT_FOUND
 
             add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
 
@@ -841,7 +885,7 @@ class ActionsWidget(QWidget):
     def load_move_deck(self, action_conf: dict):
         self.ui.deckMoveGroup.setChecked(action_conf[Action.ENABLED])
         deck_names = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
-        deck_name = mw.col.decks.name_if_exists(action_conf[Action.INPUT])
+        deck_name = _try_get_deck_name(action_conf[Action.INPUT])
         self.deck_completer.set_list(deck_names)
         self.ui.deckMoveLine.setCompleter(self.deck_completer)
         self.ui.deckMoveLine.setText(deck_name)
@@ -876,8 +920,8 @@ class ActionsWidget(QWidget):
         for note_dict in queue_input[QueueAction.FILTERED_FIELDS]:
             mid = list(note_dict)[0]
             for field_ord in list(note_dict.values()):
-                note = mw.col.models.get(NotetypeId(int(mid)))
-                field_name = mw.col.models.field_names(note)[field_ord]
+                note = mw.col.models.get(NotetypeId(int(mid)) if CURRENT_ANKI_VER > ANKI_LEGACY_VER else int(mid))
+                field_name = _try_get_field_names(note)[field_ord]
                 add_excluded_field(self.ui.queueExcludedFieldList, mid, field_name)
         self.ui.queueExcludedFieldList.sortItems()
         _redraw_list(self.ui.queueExcludedFieldList)
@@ -992,7 +1036,7 @@ class ActionsWidget(QWidget):
         queue_input[QueueAction.EXCLUDED_TEXT] = self.ui.queueExcludeTextEdit.toPlainText()
         queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
 
-    def toggle_expando(self, button: aqt.qt.QToolButton, toggle: bool = None):
+    def toggle_expando(self, button: QToolButton, toggle: bool = None):
         """
         Toggles the action expando's expanded state to the input, or opposite of its current value.
 
@@ -1032,7 +1076,8 @@ class ExcludeFieldItem(QWidget):
         self.widget.setupUi(ExcludedFieldItem=self)
         self.widget.fieldLabel.setText(field_name)
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
-        self.widget.fieldLabel.setToolTip(f'{mw.col.models.get(NoteId(self.mid))["name"]}')
+        nid = NoteId(self.mid) if CURRENT_ANKI_VER > ANKI_LEGACY_VER else self.mid
+        self.widget.fieldLabel.setToolTip(f'{mw.col.models.get(nid)["name"]}')
 
         def remove_self(_):
             """
@@ -1054,7 +1099,7 @@ class ExcludeFieldItem(QWidget):
 
         :return: a dict object with the format {'note-type/model id': field-ord/field index}
         """
-        fields_names = mw.col.models.field_names(mw.col.models.get(self.mid))
+        fields_names = _try_get_field_names(mw.col.models.get(self.mid))
         return {f'{self.mid}': fields_names.index(self.widget.fieldLabel.text())}
 
     class ExcludedFieldListItem(QListWidgetItem):
@@ -1165,7 +1210,9 @@ class EditFieldItem(QWidget):
         self._load()
 
     def _load(self):
-        self.note_type_dict = mw.col.models.get(NotetypeId(self.mid))
+        self.note_type_dict = mw.col.models.get(
+            NotetypeId(self.mid) if CURRENT_ANKI_VER > ANKI_LEGACY_VER else int(self.mid)
+        )
         self.model_name = self.note_type_dict["name"] if self.note_type_dict else ''
         self.widget.fieldButtonLabel.setToolTip(self.model_name)
         self.widget.fieldButtonLabel.setText(self.field_name)
@@ -1190,7 +1237,7 @@ class EditFieldItem(QWidget):
 
     def get_field_edit_dict(self):
         if self.note_type_dict:
-            fields_names = mw.col.models.field_names(self.note_type_dict)
+            fields_names = _try_get_field_names(self.note_type_dict)
             field_idx = fields_names.index(self.widget.fieldButtonLabel.text())
         else:
             field_idx = 0

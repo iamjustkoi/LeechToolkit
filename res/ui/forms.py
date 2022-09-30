@@ -1,4 +1,6 @@
 import re
+from typing import List
+
 import aqt
 import aqt.qt
 from aqt import Qt
@@ -153,7 +155,7 @@ class CustomCompleter(QCompleter):
     def __init__(self, parent_line_edit: aqt.qt.QLineEdit) -> None:
         QCompleter.__init__(self, aqt.qt.QStringListModel(), parent_line_edit)
 
-        self.current_data: list[str] = []
+        self.current_data: List[str] = []
         self.cursor_index: int or None = None
         self.cursor_item_pos: int or None = None
 
@@ -178,13 +180,13 @@ class CustomCompleter(QCompleter):
         self.line_edit.focusInEvent = focus_event
         self.line_edit.mouseReleaseEvent = release_event
 
-    def set_list(self, data: list[str]):
+    def set_list(self, data: List[str]):
         self.setModel(aqt.qt.QStringListModel(data))
 
     def get_path_pos(self):
         return sum([len(item) for item in self.current_data[:self.cursor_index]])
 
-    def splitPath(self, path: str) -> list[str]:
+    def splitPath(self, path: str) -> List[str]:
         """
         Splits the line edit's path based on a variety of filters, updates the current cursor position variables,
         and outputs a list with a single item to use as

@@ -2,18 +2,30 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+import traceback
+
 from aqt import mw
-from aqt import tr
 from aqt.deckconf import DeckConf
 from aqt.qt import (
     QWidget,
 )
 
 from .config import LeechToolkitConfigManager
-from .consts import Config
+from .consts import Config, ErrorMsg
 from .options import ActionsWidget
 from .options import ReverseWidget
 from ..res.ui.deck_options_form import Ui_DeckOptionsPlaceholder
+
+try:
+    from aqt import tr
+except ImportError:
+    class tr:
+        @staticmethod
+        def scheduling_lapses():
+            return 'Lapses'
+
+
+    print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
 
 class DeckOptions(QWidget):

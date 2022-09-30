@@ -2,13 +2,19 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-import aqt.operations
+import traceback
+
 from aqt import gui_hooks, mw
 
 from .updates import run_action_updates, update_card, is_unique_card
 from .config import LeechToolkitConfigManager, merge_fields
-from .consts import Config, LEECH_TAG, String
+from .consts import ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER, Config, ErrorMsg, LEECH_TAG, String
 from anki.consts import *
+
+try:
+    import aqt.operations
+except ModuleNotFoundError:
+    print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
 
 def build_hooks():
@@ -128,4 +134,8 @@ def sync_collection():
                         updated_note.add_tag(LEECH_TAG)
 
                 if is_unique_card(mw.col.get_card(cid), updated_card):
-                    update_card(updated_card, aqt.operations.OpChanges)
+                    if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
+                        update_card(updated_card, aqt.operations.OpChanges)
+                    else:
+                        update_card(updated_card)
+                        mw.checkpoint(String.ENTRY_LEECH_ACTIONS)
