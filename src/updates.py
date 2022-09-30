@@ -34,6 +34,13 @@ TOOLTIP_TIME = 5000
 
 
 def get_formatted_tag(card: anki.cards.Card, tag: str):
+    """
+    Formats the input tag string with its filled-in text macro values.
+    
+    :param card: card used as a reference-point for retrieved data
+    :param tag: tag string to format
+    :return: a new, formatted string
+    """
     result = tag
 
     macro = Macro.DATE
@@ -67,11 +74,25 @@ def update_card(updated_card: anki.cards.Card, changes=None, note=True) -> OpCha
 
 
 def was_consecutively_correct(card: anki.cards.Card, times: int):
+    """
+    Checks if the card was correct for a certain amount of consecutive times.
+    
+    :param card: card to check
+    :param times: total times to check the card was answered correctly, in a row
+    :return: true if answers were correct for the input times, else false
+    """
     total_correct = len(get_correct_answers(card))
     return total_correct > 0 and total_correct % times == 0
 
 
 def is_unique_card(original_card: anki.cards.Card, modified_card: anki.cards.Card):
+    """
+    Checks if fields, note tags, and note fields are different between two cards.
+    
+    :param original_card: base card to check against, assumed original
+    :param modified_card: updated/modified card to check against
+    :return: true if cards are different in any way, else false
+    """
     changed_items = {}
     for key, val in modified_card.__dict__.items():
         if key == '_note':
@@ -189,6 +210,15 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
 
 # Actions format: actionName: {enabled: bool, key: val}
 def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Config.LEECH_ACTIONS, reload=True):
+    """
+    Performs updates to a card based on user preferences and the leech/un-leech action type.
+
+    :param card: card to update
+    :param toolkit_conf: config instance to use as a reference for updates
+    :param action_type: action type string used to determine config requests and updates to perform
+    :param reload: whether to create a new card object or update the input card, itself
+    :return: an updated card object
+    """
     updated_card = card.col.get_card(card.id) if reload else card
     actions_conf = toolkit_conf[action_type]
 
@@ -389,6 +419,9 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 updated_card.due = random.randrange(from_pos, to_pos) if from_pos != to_pos else from_pos
 
     def update_sync_tag():
+        """
+        Attaches the custom leech tag based on user preferences.
+        """
         if toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED]:
             if action_type == Config.LEECH_ACTIONS:
                 updated_card.note().add_tag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
