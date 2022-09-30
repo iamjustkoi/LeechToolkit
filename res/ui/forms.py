@@ -31,7 +31,8 @@ class ElidingLabel(QLabel):
 
     def __init__(self, text='', mode: Qt.TextElideMode = Qt.ElideRight, **kwargs):
         """
-QLabel with automatic elision based on the label's minimum size.
+        QLabel with automatic elision based on the label's minimum size.
+
         :param text: label text
         :param mode: QTextElideMode used for positioning label ellipses
         """
@@ -53,7 +54,8 @@ QLabel with automatic elision based on the label's minimum size.
 
     def paintEvent(self, event: QPaintEvent):
         """
-    Redraw label object to place ellipses and shorten label size to scalar.
+        Redraw label object to place ellipses and shorten label size to scalar.
+
         :param event: default event flag, used for super call
         """
         super().paintEvent(event)
@@ -114,7 +116,6 @@ class QueueSpinBox(QSpinBox):
 
 
 class TipSlider(QSlider):
-
     def __init__(self, *args):
         super(QSlider, self).__init__(*args)
         self.style = aqt.mw.style()
@@ -185,9 +186,10 @@ class CustomCompleter(QCompleter):
 
     def splitPath(self, path: str) -> list[str]:
         """
-    Splits the line edit's path based on a variety of filters, updates the current cursor position variables,
-    and outputs a list with a single item to use as
-    auto-completion suggestions.
+        Splits the line edit's path based on a variety of filters, updates the current cursor position variables,
+        and outputs a list with a single item to use as
+        auto-completion suggestions.
+        
         :param path: the current path to split/filter
         :return: a list containing a single string to use as a reference for completer suggestions
         """
@@ -217,6 +219,7 @@ class CustomCompleter(QCompleter):
     def pathFromIndex(self, index: aqt.qt.QModelIndex) -> str:
         """
     Retrieves the line edit's path from the given index data.
+
         :param index: QModelIndex used as a reference for what to insert
         :return: the string output of the given path result
         """
