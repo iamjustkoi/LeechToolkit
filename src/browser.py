@@ -4,12 +4,10 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 
 import re
+import traceback
 
 import anki.collection
-from anki.collection import OpChanges
-from aqt.operations import (
-    CollectionOp,
-)
+
 from aqt.browser import Browser
 from aqt import gui_hooks, mw
 from aqt.qt import (
@@ -19,16 +17,38 @@ from aqt.qt import (
     QRegExpValidator,
     QRegExp,
 )
-from aqt.utils import (
-    skip_if_selection_is_empty,
-    ensure_editor_saved,
-    tooltip,
-)
 
 from .config import LeechToolkitConfigManager, merge_fields
-from .consts import MENU_CARDS_TEXT, Config, LEECH_TAG, String
+from .consts import ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER, ErrorMsg, MENU_CARDS_TEXT, Config, LEECH_TAG, String
 from .updates import run_action_updates
 from ..res.ui.set_lapse_dialog import Ui_SetLapseDialog
+
+try:
+    from aqt.utils import (
+        skip_if_selection_is_empty,
+        ensure_editor_saved,
+        tooltip,
+    )
+except ImportError as error:
+    def skip_if_selection_is_empty(*args):
+        pass
+
+
+    def ensure_editor_saved(*args):
+        pass
+
+
+    if error.name == 'tooltip':
+        def tooltip():
+            pass
+
+try:
+    from anki.collection import OpChanges
+    from aqt.operations import (
+        CollectionOp,
+    )
+except (ModuleNotFoundError, ImportError):
+    print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
 
 def build_hooks():
@@ -116,47 +136,74 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
     :return: OpChanges if undo entry was skipped, else None
     """
 
-    def action_operation(col: anki.collection.Collection) -> OpChanges or None:
-        """
-        Operation callback for performing action updates to the collection.
+    msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
 
-        :param col: Collection used for retrieving and updating cards
-        :return: OpChanges if successful, else None
-        """
-        toolkit_configs = manager.get_all_configs()
+    if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
+        def action_operation(col: anki.collection.Collection) -> OpChanges or None:
+            """
+            Operation callback for performing action updates to the collection.
 
-        changes = None
-        msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
-        entry = col.add_custom_undo_entry(msg)
+            :param col: Collection used for retrieving and updating cards
+            :return: OpChanges if successful, else None
+            """
+            toolkit_configs = manager.get_all_configs()
 
-        for cid in browser.selectedCards():
-            card = col.get_card(cid)
-            if action_type == Config.LEECH_ACTIONS:
-                run_action_updates(card, toolkit_configs[str(card.did)], Config.LEECH_ACTIONS, reload=False)
-                card.note().add_tag(LEECH_TAG)
-            elif action_type == Config.UN_LEECH_ACTIONS:
-                run_action_updates(card, toolkit_configs[str(card.did)], Config.UN_LEECH_ACTIONS, reload=False)
-                card.note().remove_tag(LEECH_TAG)
+            changes = None
+            entry = col.add_custom_undo_entry(msg)
 
-            if not skip_undo_entry:
-                # MAX 30 UNDO ENTRIES STORED #
-                col.update_card(card)
-                col.update_note(card.note())
+            for cid in browser.selectedCards():
+                card = col.get_card(cid)
+                if action_type == Config.LEECH_ACTIONS:
+                    run_action_updates(card, toolkit_configs[str(card.did)], Config.LEECH_ACTIONS, reload=False)
+                    card.note().add_tag(LEECH_TAG)
+                elif action_type == Config.UN_LEECH_ACTIONS:
+                    run_action_updates(card, toolkit_configs[str(card.did)], Config.UN_LEECH_ACTIONS, reload=False)
+                    card.note().remove_tag(LEECH_TAG)
 
-                # Single update + merge also steps around the differences between Anki ~.45 and >=~.46 update functions
-                changes = col.merge_undo_entries(entry)
+                if not skip_undo_entry:
+                    # MAX 30 UNDO ENTRIES STORED #
+                    col.update_card(card)
+                    col.update_note(card.note())
 
-        return changes
+                    # Single update + merge also steps around the differences between
+                    #  Anki ~.45 and >=~.46 update functions
+                    changes = col.merge_undo_entries(entry)
 
-    if skip_undo_entry:
-        return action_operation(browser.col)
+            return changes
 
-    if action_type == Config.LEECH_ACTIONS:
-        tip_message = String.TIP_LEECHED_TEMPLATE
+        if skip_undo_entry:
+            return action_operation(browser.col)
+
+        if action_type == Config.LEECH_ACTIONS:
+            tip_message = String.TIP_LEECHED_TEMPLATE
+        else:
+            tip_message = String.TIP_UNLEECHED_TEMPLATE
+
+        start_collection_op(browser, lambda col: action_operation(col), tip_message, len(browser.selected_cards()))
+
     else:
-        tip_message = String.TIP_UNLEECHED_TEMPLATE
-
-    start_collection_op(browser, lambda col: action_operation(col), tip_message, len(browser.selected_cards()))
+        legacy_toolkit_configs = manager.get_all_configs()
+        for legacy_cid in browser.selectedCards():
+            legacy_card = browser.col.get_card(legacy_cid)
+            if action_type == Config.LEECH_ACTIONS:
+                run_action_updates(
+                    legacy_card,
+                    legacy_toolkit_configs[str(legacy_card.did)],
+                    Config.LEECH_ACTIONS,
+                    reload=False
+                )
+                legacy_card.note().add_tag(LEECH_TAG)
+            elif action_type == Config.UN_LEECH_ACTIONS:
+                run_action_updates(
+                    legacy_card,
+                    legacy_toolkit_configs[str(legacy_card.did)],
+                    Config.UN_LEECH_ACTIONS,
+                    reload=False
+                )
+                legacy_card.note().remove_tag(LEECH_TAG)
+            legacy_card.flush()
+            legacy_card.note().flush()
+        mw.checkpoint(msg)
 
 
 class SetLapseDialog(QDialog):
@@ -200,59 +247,103 @@ class SetLapseDialog(QDialog):
         # Remove spaces and any duplicate/leading 0's
         formatted_text = re.sub(r'(?<!\d)0*(?!\D|$)', '', raw_stripped_text.replace(' ', ''))
 
-        def set_lapses_operation(col: anki.collection.Collection) -> OpChanges or None:
-            """
-            Operation callback for performing updates to the collection.
+        if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
+            def set_lapses_operation(col: anki.collection.Collection) -> OpChanges or None:
+                """
+                Operation callback for performing updates to the collection.
 
-            :param col: Collection used for retrieving and updating cards
-            :return: OpChanges if successful, else None
-            """
-            entry = col.add_custom_undo_entry(String.ENTRY_SET_LAPSES)
-            changes = None
+                :param col: Collection used for retrieving and updating cards
+                :return: OpChanges if successful, else None
+                """
+                entry = col.add_custom_undo_entry(String.ENTRY_SET_LAPSES)
+                changes = None
 
+                # Stash all the dictionaries, but should be replaced with fewer calls based on selected cards
+                toolkit_configs: dict = {}
+                if self.ui.updateLeechesCheckbox.isChecked():
+                    for deck_name_id in col.decks.all_names_and_ids():
+                        config_id = col.decks.get(deck_name_id.id)['conf']
+                        toolkit_configs[f'{deck_name_id.id}'] = merge_fields(
+                            self.config.get(str(config_id), {}),
+                            self.config,
+                        )
+
+                for cid in self.browser.selectedCards():
+                    card = self.browser.col.get_card(cid)
+                    result = int(
+                        eval(f'{card.lapses}{formatted_text}' if formatted_text[0] in r'+-\*' else formatted_text)
+                    )
+                    card.lapses = max(result, 0)
+
+                    if self.ui.updateLeechesCheckbox.isChecked():
+                        toolkit_config = toolkit_configs.get(str(card.did), self.config)
+                        reverse_conf = toolkit_config[Config.REVERSE_OPTIONS]
+
+                        if reverse_conf[Config.REVERSE_USE_LEECH_THRESHOLD]:
+                            reverse_threshold = col.decks.config_dict_for_deck_id(card.did)['lapse']['leechFails']
+                        else:
+                            reverse_threshold = reverse_conf[Config.REVERSE_THRESHOLD]
+
+                        if card.lapses < reverse_threshold:
+                            run_action_updates(card, toolkit_config, Config.UN_LEECH_ACTIONS, reload=False)
+                            card.note().remove_tag(LEECH_TAG)
+                        else:
+                            run_action_updates(card, toolkit_config, Config.LEECH_ACTIONS, reload=False)
+                            card.note().add_tag(LEECH_TAG)
+
+                        # Add note update to undo logs
+                        col.update_note(card.note())
+
+                    col.update_card(card)
+
+                    # Single update + merge also steps around the differences between Anki ~.45 and >=~.46 update
+                    # functions
+                    changes = col.merge_undo_entries(entry)
+
+                return changes
+
+            count = len(self.browser.selectedCards())
+            start_collection_op(
+                self.browser,
+                lambda col: set_lapses_operation(col),
+                String.TIP_SET_LAPSES_TEMPLATE,
+                count
+            )
+        else:
             # Stash all the dictionaries, but should be replaced with fewer calls based on selected cards
-            toolkit_configs: dict = {}
+            legacy_toolkit_configs: dict = {}
             if self.ui.updateLeechesCheckbox.isChecked():
-                for deck_name_id in col.decks.all_names_and_ids():
-                    config_id = col.decks.get(deck_name_id.id)['conf']
-                    toolkit_configs[f'{deck_name_id.id}'] = merge_fields(
-                        self.config.get(str(config_id), {}),
+                for legacy_deck_name_id in self.browser.col.decks.all_names_and_ids():
+                    legacy_config_id = self.browser.col.decks.get(legacy_deck_name_id.id)['conf']
+                    legacy_toolkit_configs[f'{legacy_deck_name_id.id}'] = merge_fields(
+                        self.config.get(str(legacy_config_id), {}),
                         self.config,
                     )
 
-            for cid in self.browser.selectedCards():
-                card = self.browser.col.get_card(cid)
-                result = int(eval(f'{card.lapses}{formatted_text}' if formatted_text[0] in r'+-\*' else formatted_text))
-                card.lapses = max(result, 0)
+            for legacy_cid in self.browser.selectedCards():
+                legacy_card = self.browser.col.get_card(legacy_cid)
+                legacy_result = int(
+                    eval(f'{legacy_card.lapses}{formatted_text}' if formatted_text[0] in r'+-\*' else formatted_text)
+                )
+                legacy_card.lapses = max(legacy_result, 0)
 
                 if self.ui.updateLeechesCheckbox.isChecked():
-                    toolkit_config = toolkit_configs.get(str(card.did), self.config)
-                    reverse_conf = toolkit_config[Config.REVERSE_OPTIONS]
+                    legacy_toolkit_config = legacy_toolkit_configs.get(str(legacy_card.did), self.config)
+                    legacy_reverse_conf = legacy_toolkit_config[Config.REVERSE_OPTIONS]
 
-                    if reverse_conf[Config.REVERSE_USE_LEECH_THRESHOLD]:
-                        reverse_threshold = col.decks.config_dict_for_deck_id(card.did)['lapse']['leechFails']
+                    if legacy_reverse_conf[Config.REVERSE_USE_LEECH_THRESHOLD]:
+                        legacy_reverse_threshold = \
+                            self.browser.col.decks.config_dict_for_deck_id(legacy_card.did)['lapse'][
+                                'leechFails']
                     else:
-                        reverse_threshold = reverse_conf[Config.REVERSE_THRESHOLD]
+                        legacy_reverse_threshold = legacy_reverse_conf[Config.REVERSE_THRESHOLD]
 
-                    if card.lapses < reverse_threshold:
-                        run_action_updates(card, toolkit_config, Config.UN_LEECH_ACTIONS, reload=False)
-                        card.note().remove_tag(LEECH_TAG)
+                    if legacy_card.lapses < legacy_reverse_threshold:
+                        run_action_updates(legacy_card, legacy_toolkit_config, Config.UN_LEECH_ACTIONS, reload=False)
+                        legacy_card.note().remove_tag(LEECH_TAG)
                     else:
-                        run_action_updates(card, toolkit_config, Config.LEECH_ACTIONS, reload=False)
-                        card.note().add_tag(LEECH_TAG)
-
-                    # Add note update to undo logs
-                    col.update_note(card.note())
-
-                col.update_card(card)
-
-                # Single update + merge also steps around the differences between Anki ~.45 and >=~.46 update functions
-                changes = col.merge_undo_entries(entry)
-
-            return changes
-
-        count = len(self.browser.selectedCards())
-        start_collection_op(self.browser, lambda col: set_lapses_operation(col), String.TIP_SET_LAPSES_TEMPLATE, count)
+                        run_action_updates(legacy_card, legacy_toolkit_config, Config.LEECH_ACTIONS, reload=False)
+                        legacy_card.note().add_tag(LEECH_TAG)
 
         self.config[Config.SET_LAPSES_INPUT] = raw_stripped_text
         self.config[Config.SET_LAPSE_UPDATE_LEECHES] = self.ui.updateLeechesCheckbox.isChecked()

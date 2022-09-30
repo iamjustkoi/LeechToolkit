@@ -2,23 +2,26 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+from __future__ import annotations
+
 import datetime
 import random
 import re
+import traceback
 from datetime import date
 from difflib import SequenceMatcher
+from typing import List
 
 import anki.cards
 import anki.decks
-from anki.collection import OpChanges
 
-from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUTTON_ONE, REVLOG_RESCHED
+from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUTTON_ONE
 from anki.notes import Note
 from aqt import utils
 
 from .consts import (
-    Action,
-    Macro,
+    ANKI_LEGACY_VER, ANKI_UNDO_UPDATE_VER, Action,
+    CURRENT_ANKI_VER, ErrorMsg, Macro,
     EditAction,
     RescheduleAction,
     QueueAction,
@@ -28,6 +31,12 @@ from .consts import (
     REV_DECREASE,
     REV_RESET,
 )
+from .legacy import _try_get_config_dict_for_did, _try_get_current_did
+
+try:
+    from anki.collection import OpChanges
+except (ModuleNotFoundError, ImportError):
+    print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
 TOOLTIP_ENABLED = True
 TOOLTIP_TIME = 5000
@@ -59,7 +68,7 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
-def update_card(updated_card: anki.cards.Card, changes=None, note=True) -> OpChanges or None:
+def update_card(updated_card: anki.cards.Card, changes=None, note=True) -> 'OpChanges' or None:
     """
     Flushes and updates a card, as well as its parent note, with an optional (undo) change callback.
 
@@ -137,7 +146,7 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
     tooltip_items = []
 
     if config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
-        deck_config = card.col.decks.config_dict_for_deck_id(card.current_deck_id())
+        deck_config = _try_get_config_dict_for_did(_try_get_current_did(updated_card))
         use_leech_threshold = config[Config.REVERSE_OPTIONS][Config.REVERSE_USE_LEECH_THRESHOLD]
         threshold = deck_config['lapse']['leechFails'] if use_leech_threshold else \
             config[Config.REVERSE_OPTIONS][Config.REVERSE_THRESHOLD]
@@ -154,6 +163,10 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
 
         # Un-leech
         if updated_card.lapses < threshold:
+
+            if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
+                updated_card.note().has_tag = lambda tag: tag.lower() in [t.lower() for t in updated_card.note().tags]
+
             if ease > 1 and updated_card.note().has_tag(LEECH_TAG) and prev_type == anki.cards.CARD_TYPE_REV:
                 updated_card.note().remove_tag(LEECH_TAG)
                 tooltip_items.append(String.LEECH_REVERSED)
@@ -271,7 +284,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 updated_card.lapses = 0
 
         if actions_conf[Action.EDIT_FIELDS][Action.ENABLED]:
-            inputs: list[str] = actions_conf[Action.EDIT_FIELDS][Action.INPUT]
+            inputs: List[str] = actions_conf[Action.EDIT_FIELDS][Action.INPUT]
 
             for filtered_nid in inputs:
                 nid = int(filtered_nid.split('.')[0])
@@ -324,6 +337,8 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
 
                     top, bottom = card.col.db.first(queue_cmd)
                     queue_pos = top if insert_type == QueueAction.TOP else bottom
+                    # Empty queue
+                    queue_pos = 0 if queue_pos is None else queue_pos
 
                     return queue_pos + input_pos if (queue_pos + input_pos > 0) else queue_pos
 
@@ -357,7 +372,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 #  using ratios/fuzzy comparison.
                 if queue_inputs[QueueAction.NEAR_SIMILAR]:
 
-                    filtered_field_ords: list[int] = []
+                    filtered_field_ords: List[int] = []
                     for note_dict in queue_inputs[QueueAction.FILTERED_FIELDS]:
                         note_type_id = int(list(note_dict)[0])
                         if note_type_id == updated_card.note().mid:
@@ -370,7 +385,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
 
                         # Handle quote and escape quote characters
                         pattern = r'(?<!\\)"(?:[^\\"]|\\")*"'
-                        matches: list[str] = re.findall(pattern, query)
+                        matches: List[str] = re.findall(pattern, query)
                         excluded_result += [result.strip('"').replace(r'\"', '"') for result in matches]
                         filtered_query = re.sub(pattern, '', query).replace(r'\"', '"')
 
@@ -380,7 +395,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
 
                     excluded_strings = get_excluded_strings()
 
-                    def get_filtered_card_data(items: list[(str, str)]):
+                    def get_filtered_card_data(items: List[(str, str)]):
                         # for item in items:
                         filtered_str_data = ''
                         # INCLUDE
