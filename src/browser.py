@@ -38,6 +38,7 @@ def build_hooks():
 def _get_menu(menu_bar: QMenuBar, menu_text):
     """
     Searches for the selected menu item.
+
     :param menu_bar: QMenuBar to search through
     :param menu_text: text string to search for
     :return: the input menu, if found, else a new menu with the input text
@@ -51,6 +52,7 @@ def _get_menu(menu_bar: QMenuBar, menu_text):
 def build_menus(browser: Browser):
     """
     Initializes toolkit menu options for the browser.
+
     :param browser: Browser object to attach to
     """
     manager = LeechToolkitConfigManager(mw)
