@@ -43,9 +43,6 @@ TOOLTIP_TIME = 5000
 
 
 def build_hooks():
-    """
-    Build Anki hooks for attaching the review wrapper to the reveiwer.
-    """
     from aqt.gui_hooks import (
         webview_will_set_content,
     )
