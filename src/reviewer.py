@@ -43,6 +43,9 @@ TOOLTIP_TIME = 5000
 
 
 def build_hooks():
+    """
+    Build Anki hooks for attaching the review wrapper to the reveiwer.
+    """
     from aqt.gui_hooks import (
         webview_will_set_content,
     )
@@ -51,6 +54,11 @@ def build_hooks():
 
 
 def try_append_wrapper(content: aqt.webview.WebContent, context: object):
+    """
+    Attempts to attach to the current reviewer, as long as it's not a filtered deck, else removes the wrapper.
+    :param content: web-content for html and page edits
+    :param context: used for checking whether the webview is being set to the reviewer
+    """
     if isinstance(context, Reviewer):
         reviewer: aqt.reviewer.Reviewer = context
         if mw.col.decks.is_filtered(mw.col.decks.get_current_id()) and hasattr(mw.reviewer, wrapper_attr):
@@ -61,10 +69,18 @@ def try_append_wrapper(content: aqt.webview.WebContent, context: object):
 
 
 def mark_leeched(card: anki.cards.Card):
+    """
+    Appends a temporary, custom leech attribute to the selected card.
+    :param card: card object to add the attribute to
+    """
     setattr(card, was_leech_attr, True)
 
 
 def set_marker_color(color: str):
+    """
+    Psuedo-tints the leech marker to the input color.
+    :param color: color (style) string to update the marker color to
+    """
     mw.web.eval(f'document.getElementById("{marker_id}").style.textShadow = "0 0 0 {color}";')
 
 
@@ -88,6 +104,12 @@ class ReviewWrapper:
     on_front: bool
 
     def __init__(self, reviewer: Reviewer, content: aqt.webview.WebContent, did: DeckId):
+        """
+        Wrapper used for handling events in the Anki reviewer, if not a filtered review-type.
+        :param reviewer: Anki Reviewer object
+        :param content: web-content used for editing the page style/html
+        :param did: deck id of the current reviewer
+        """
         if not mw.col.decks.is_filtered(did):
             self.content = content
             self.reviewer = reviewer
@@ -111,6 +133,10 @@ class ReviewWrapper:
             )
 
     def load_options(self, did: DeckId = None):
+        """
+        Loads options to UI elements and config-based actions, as well as appends hooks to the initialized reviewer.
+        :param did: deck id used for determining config values
+        """
         self.did = did if did else self.did
 
         deck_conf_dict = mw.col.decks.config_dict_for_deck_id(self.did)
@@ -123,11 +149,19 @@ class ReviewWrapper:
         self.append_hooks()
 
     def refresh_if_needed(self, changes: aqt.reviewer.OpChanges):
+        """
+        Function call to update the current window based on whether cards/schedules were changed.
+        :param changes: OpChanges object to reference for schedule/card/note changes.
+        """
         self.reviewer.op_executed(changes=changes, handler=self, focused=True)
         if not self.reviewer.refresh_if_needed():
             self.update_marker()
 
     def run_action(self, action_type: str):
+        """
+        Function for handling action calls via shortcuts/context menu actions.
+        :param action_type: action type string to use as a reference for the undo entry actions to take
+        """
         msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
         entry = self.reviewer.mw.col.add_custom_undo_entry(msg)
 
@@ -156,6 +190,9 @@ class ReviewWrapper:
         self.refresh_if_needed(changes)
 
     def append_marker_html(self):
+        """
+        Appends a leech marker to the review window's html.
+        """
         marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
         self.content.body += mark_html_template.format(
             marker_id=marker_id,
@@ -165,6 +202,9 @@ class ReviewWrapper:
         )
 
     def append_hooks(self):
+        """
+        Appends hooks to the current reviewer.
+        """
         from anki.hooks import card_did_leech
         from aqt.gui_hooks import (
             reviewer_did_show_question,
@@ -199,6 +239,11 @@ class ReviewWrapper:
         gui_hooks.reviewer_did_answer_card.remove(self.on_answer)
 
     def on_show_back(self, card: anki.cards.Card):
+        """
+        Updates the current card, leech marker, and view state to back values.
+
+        :param card: referenced card
+        """
         self.on_front = False
         self.card = card
         if self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
@@ -206,11 +251,22 @@ class ReviewWrapper:
         self.update_marker()
 
     def on_show_front(self, card: anki.cards.Card):
+        """
+        Updates the current card, leech marker, and view state to front values.
+
+        :param card: referenced card
+        """
         self.on_front = True
         self.card = card
         self.update_marker()
 
     def on_answer(self, context: aqt.reviewer.Reviewer, card: anki.cards.Card, ease: int):
+        """
+        Handles updates after answering cards.
+        :param context: unused Reviewer object
+        :param card: referenced card
+        :param ease: value of the answer given
+        """
         updated_card = card.col.get_card(card.id)
         if hasattr(card, prev_type_attr):
             updated_card = run_reverse_updates(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
