@@ -11,6 +11,9 @@ CURRENT_VERSION = '0.5.1-beta'
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_LEGACY_VER = 35
+ANKI_UNDO_UPDATE_VER = 45
+
+LEGACY_FLAGS_PLACEHOLDER = ['Red', 'Orange', 'Green', 'Blue', 'Pink', 'Turquoise', 'Purple']
 
 LEECH_TAG = 'leech'
 LEECHES_URL = 'viewleeches'
@@ -18,7 +21,7 @@ LEECHES_URL = 'viewleeches'
 REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
 RESTORE_ICON_PATH = '../res/img/restore_icon.svg'
 
-MENU_CARDS_TEXT = tr.qt_accel_cards()
+MENU_CARDS_TEXT = tr.qt_accel_cards() if CURRENT_ANKI_VER > ANKI_LEGACY_VER else 'Cards'
 
 PosType = NewType('PosIndex', int)
 DEFAULT = PosType(0)
@@ -34,6 +37,7 @@ REV_RESET = ReverseType(1)
 class ErrorMsg:
     ACTION_MANAGER_NOT_DEFINED = 'Action manager not yet defined.'
     TOOLKIT_MANAGER_NOT_FOUND = 'Toolkit manager not found.'
+    MODULE_NOT_FOUND_LEGACY = 'Module could not be found, may be due to running a legacy version of Anki.'
 
 
 class Macro:

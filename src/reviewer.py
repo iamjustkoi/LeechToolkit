@@ -2,18 +2,38 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+
+from __future__ import annotations
+
+import traceback
+
 import anki.cards
 import aqt.reviewer
 from anki import hooks
-from anki.decks import DeckId
 from aqt.utils import tooltip
 from aqt.webview import WebContent, AnkiWebView
 from aqt import gui_hooks, mw
 from aqt.reviewer import Reviewer
 
+from .legacy import _try_check_filtered, _try_get_config_dict_for_did, _try_get_current_did
 from .updates import run_action_updates, run_reverse_updates, update_card, is_unique_card
 from .config import LeechToolkitConfigManager, merge_fields
-from .consts import Config, ErrorMsg, MARKER_POS_STYLES, LEECH_TAG, String
+from .consts import (
+    ANKI_LEGACY_VER,
+    ANKI_UNDO_UPDATE_VER,
+    CURRENT_ANKI_VER,
+    Config,
+    ErrorMsg,
+    MARKER_POS_STYLES,
+    LEECH_TAG,
+    String,
+)
+
+try:
+    from anki.decks import DeckId
+except ImportError:
+    print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
+    DeckId = int
 
 mark_html_template = '''
 <style>
@@ -59,11 +79,11 @@ def try_append_wrapper(content: aqt.webview.WebContent, context: object):
     """
     if isinstance(context, Reviewer):
         reviewer: aqt.reviewer.Reviewer = context
-        if mw.col.decks.is_filtered(mw.col.decks.get_current_id()) and hasattr(mw.reviewer, wrapper_attr):
+        if _try_check_filtered(_try_get_current_did()) and hasattr(mw.reviewer, wrapper_attr):
             mw.reviewer.__delattr__(wrapper_attr)
         else:
             # Attached for calls and any future garbage collection, potentially, idk
-            reviewer.toolkit_wrapper = ReviewWrapper(reviewer, content, mw.col.decks.get_current_id())
+            reviewer.toolkit_wrapper = ReviewWrapper(reviewer, content, _try_get_current_did())
 
 
 def mark_leeched(card: anki.cards.Card):
@@ -112,7 +132,7 @@ class ReviewWrapper:
         :param content: web-content used for editing the page style/html
         :param did: deck id of the current reviewer
         """
-        if not mw.col.decks.is_filtered(did):
+        if not _try_check_filtered(did):
             self.content = content
             self.reviewer = reviewer
             self.load_options(did)
@@ -142,7 +162,7 @@ class ReviewWrapper:
         """
         self.did = did if did else self.did
 
-        deck_conf_dict = mw.col.decks.config_dict_for_deck_id(self.did)
+        deck_conf_dict = _try_get_config_dict_for_did(self.did)
         self.max_fails = deck_conf_dict['lapse']['leechFails']
 
         global_conf = LeechToolkitConfigManager(mw).config
@@ -168,7 +188,7 @@ class ReviewWrapper:
         :param action_type: action type string to use as a reference for the undo entry actions to take
         """
         msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
-        entry = self.reviewer.mw.col.add_custom_undo_entry(msg)
+        entry = self.reviewer.mw.col.add_custom_undo_entry(msg) if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER else None
 
         pre_queue, pre_due, pre_note_text = (
             self.card.queue,
@@ -184,15 +204,20 @@ class ReviewWrapper:
             self.card = run_action_updates(self.card, self.toolkit_config, Config.UN_LEECH_ACTIONS)
             self.card.note().remove_tag(LEECH_TAG)
             tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
+        if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
+            self.reviewer.mw.col.update_card(self.card)
+            self.reviewer.mw.col.update_note(self.card.note())
 
-        self.reviewer.mw.col.update_card(self.card)
-        self.reviewer.mw.col.update_note(self.card.note())
+            changes = self.reviewer.mw.col.merge_undo_entries(entry)
+            changes.study_queues = True if (pre_queue != self.card.queue) or (pre_due != self.card.due) else False
+            changes.note_text = True if pre_note_text != self.card.note().joined_fields() else False
 
-        changes = self.reviewer.mw.col.merge_undo_entries(entry)
-        changes.study_queues = True if (pre_queue != self.card.queue) or (pre_due != self.card.due) else False
-        changes.note_text = True if pre_note_text != self.card.note().joined_fields() else False
-
-        self.refresh_if_needed(changes)
+            self.refresh_if_needed(changes)
+        else:
+            self.card.flush()
+            self.card.note().flush()
+            mw.checkpoint(msg)
+            mw.reset()
 
     def append_marker_html(self):
         """
@@ -273,6 +298,10 @@ class ReviewWrapper:
         :param card: referenced card
         :param ease: value of the answer given
         """
+
+        if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
+            card.col.get_card = lambda cid: anki.cards.Card(mw.col, cid)
+
         updated_card = card.col.get_card(card.id)
         if hasattr(card, prev_type_attr):
             updated_card = run_reverse_updates(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
@@ -283,7 +312,11 @@ class ReviewWrapper:
             delattr(card, was_leech_attr)
 
         if is_unique_card(card, updated_card):
-            update_card(updated_card, aqt.reviewer.OpChanges)
+            if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
+                update_card(updated_card, aqt.reviewer.OpChanges)
+            else:
+                update_card(updated_card)
+                mw.checkpoint(String.ENTRY_LEECH_ACTIONS)
 
     def update_marker(self):
         """
@@ -298,6 +331,10 @@ class ReviewWrapper:
             almost_leech = is_review and self.card.lapses + ALMOST_DISTANCE >= self.max_fails
 
             if (not self.on_front and only_show_on_back) or not only_show_on_back:
+
+                if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
+                    self.card.note().has_tag = lambda tag: tag.lower() in [t.lower() for t in self.card.note().tags]
+
                 if self.card.note().has_tag(LEECH_TAG):
                     set_marker_color(LEECH_COLOR)
                     show_marker(True)
