@@ -9,8 +9,8 @@ from aqt.utils import tr
 
 CURRENT_VERSION = '0.5.1-beta'
 
-ANKI_21_VERSION = int(buildinfo.version.replace('2.1.', ''))
-ANKI_21_LEGACY_VER = 35
+CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
+ANKI_LEGACY_VER = 35
 
 LEECH_TAG = 'leech'
 LEECHES_URL = 'viewleeches'
