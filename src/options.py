@@ -51,11 +51,19 @@ button_attr = 'button'
 
 
 def bind_actions():
+    """
+    Binds option-related function to Anki.
+    """
     _bind_config_options()
     _bind_tools_options()
 
 
 def on_options_called(*args):
+    """
+    Show options dialog and pause main UI thread using an exec call to prevent reloading the options while editing them.
+
+    :param args: unused arguments parameter
+    """
     options = OptionsDialog(LeechToolkitConfigManager(mw))
     options.exec()
 
@@ -63,6 +71,7 @@ def on_options_called(*args):
 def append_restore_button(parent: QWidget, insert_col=4):
     """
     Appends a stylized, default restoration button to a parent QWidget using the widgets position and parent layout.
+
     :param parent: parent QWidget that will have the button added to its own class attributes
     :param insert_col: optional column to place the button into if the provided parent's surrounding layout supports it
     :return: the newly appended restore button
@@ -105,13 +114,24 @@ def append_restore_button(parent: QWidget, insert_col=4):
 
 
 def setup_restore_button(
-    default_button: aqt.qt.QPushButton,
+    button: aqt.qt.QPushButton,
     signals: list[pyqtBoundSignal],
     write_callback,
     load_callback,
     scoped_conf: dict,
     default_scoped_conf: dict = None,
 ):
+    """
+    Fills and applies action and signal updates to restore buttons.
+
+    :param button: referenced, restore QPushbutton
+    :param signals: signals connect visual and config updates to the button with
+    :param write_callback: function used to write config data to the button to recognize differences between the held
+    default and its respective changes
+    :param load_callback: function to read config data to when applying default config data from the button
+    :param scoped_conf: config meta that holds a set of data to read/write to
+    :param default_scoped_conf: default config meta with the same scope as the scoped config parameter
+    """
     default_copy = default_scoped_conf.copy() if default_scoped_conf else None
 
     for signal in signals:
@@ -121,7 +141,7 @@ def setup_restore_button(
             write-callback.
             """
             write_callback(scoped_conf)
-            default_button.setVisible(scoped_conf != default_copy)
+            button.setVisible(scoped_conf != default_copy)
 
         signal.connect(refresh_button_visibility)
 
@@ -133,13 +153,23 @@ def setup_restore_button(
         load_callback(default_copy)
         refresh_button_visibility()
 
-    default_button.clicked.connect(restore_defaults)
+    button.clicked.connect(restore_defaults)
 
     # Initial update
-    default_button.setVisible(scoped_conf != default_copy)
+    button.setVisible(scoped_conf != default_copy)
 
 
 def add_edit_field(list_widget: QListWidget, mid: int, field_name: str, method_idx=0, repl='', text=''):
+    """
+    Adds an EditFieldItem widget to the input list widget.
+
+    :param list_widget: QListWidget to add the item to
+    :param mid: note-type/model id to use as the field's holder
+    :param field_name: name of the field to add
+    :param method_idx: index of the method to use when editing a field
+    :param repl: optional replacement text to search for replace-method edits
+    :param text: input text used to fill in the QLineEdit, used when applying the edit to the selected field
+    """
     edit_item = EditFieldItem(list_widget, mid, field_name, EditAction.EditMethod(method_idx), repl, text)
     list_item = QListWidgetItem(list_widget)
     _add_list_item(list_widget, list_item, edit_item)
@@ -147,9 +177,10 @@ def add_edit_field(list_widget: QListWidget, mid: int, field_name: str, method_i
 
 def add_excluded_field(list_widget: QListWidget, mid: int, field_name=''):
     """
-Inserts a new excluded field item to the excluded fields list if not already present.
-    :param list_widget:
-    :param mid: Model ID of the note/field
+    Inserts a new excluded field item to the excluded fields list if not already present.
+
+    :param list_widget: QListWidget to add the item to
+    :param mid: note-type/model ID of the note/field
     :param field_name: text string of the field's name/title
     """
 
@@ -166,6 +197,10 @@ Inserts a new excluded field item to the excluded fields list if not already pre
 
 
 def refresh_window():
+    """
+    Filters the current window state and resets using different function calls depending on whether Anki is currently
+    in the reviewer, or not.
+    """
     if mw.state != 'review':
         mw.reset()
     else:
@@ -173,6 +208,11 @@ def refresh_window():
 
 
 def _bind_tools_options(*args):
+    """
+    Binds an options dialog launcher to the toolbar menu, under Tools.
+
+    :param args: unused arguments parameter
+    """
     config = LeechToolkitConfigManager(mw).config
     if config[Config.TOOLBAR_ENABLED]:
         options_action = QAction(String.LEECH_TOOLKIT_OPTIONS, mw)
@@ -187,10 +227,18 @@ def _bind_tools_options(*args):
 
 
 def _bind_config_options():
+    """
+    Binds an options dialog launcher to the Config button in the add-ons window.
+    """
     mw.addonManager.setConfigAction(__name__, on_options_called)
 
 
 def _fill_menu_fields(add_button: aqt.qt.QToolButton):
+    """
+    Fills the field menus for an "Add" field button with respective model-id data and field strings per action.
+
+    :param add_button: button to append the menus to
+    """
     menu: QMenu = add_button.menu()
     menu.clear()
     for note_type in mw.col.models.all():
@@ -203,11 +251,25 @@ def _fill_menu_fields(add_button: aqt.qt.QToolButton):
 
 
 def _handle_new_field(list_widget: QListWidget, action: QAction, callback):
+    """
+    Handler for adding fields to and redrawing field lists.
+
+    :param list_widget: QListWidget referenced for new field events
+    :param action: action data retrieved from add action calls that holds model-id data and field text
+    :param callback: function for handling more specific field list changes using the input data
+    """
     callback(list_widget, action.data(), action.text())
     _redraw_list(list_widget)
 
 
 def _add_list_item(list_widget: QListWidget, list_item: QListWidgetItem, item_widget: QWidget):
+    """
+    Adds a QListWidgetItem to the input QListWidget using information from the input QWidget.
+
+    :param list_widget: QListWidget to add the item to
+    :param list_item: QListWidgetItem to fill
+    :param item_widget: QWidget to use for the list item's UI
+    """
     list_item.setSizeHint(item_widget.sizeHint())
     list_item.setFlags(Qt.NoItemFlags)
 
@@ -215,18 +277,29 @@ def _add_list_item(list_widget: QListWidget, list_item: QListWidgetItem, item_wi
     list_widget.setItemWidget(list_item, item_widget)
 
 
-def _redraw_list(fields_list: QListWidget, max_height=256):
-    data_height = fields_list.sizeHintForRow(0) * fields_list.count()
-    fields_list.setFixedHeight(data_height if data_height < max_height else fields_list.maximumHeight())
-    fields_list.setMaximumWidth(fields_list.parent().maximumWidth())
-    fields_list.setVisible(fields_list.count() != 0)
-    fields_list.currentRowChanged.emit(fields_list.currentRow())  # Used for updating any change receivers
+def _redraw_list(list_widget: QListWidget, max_height=256):
+    """
+    Redraws the QListWidget using its items as a size reference.
+
+    :param list_widget: QListWidget object to resize
+    :param max_height: optional maximum size to stop at
+    """
+    data_height = list_widget.sizeHintForRow(0) * list_widget.count()
+    list_widget.setFixedHeight(data_height if data_height < max_height else list_widget.maximumHeight())
+    list_widget.setMaximumWidth(list_widget.parent().maximumWidth())
+    list_widget.setVisible(list_widget.count() != 0)
+    list_widget.currentRowChanged.emit(list_widget.currentRow())  # Used for updating any change receivers
 
 
 class OptionsDialog(QDialog):
     restore_buttons: list[aqt.qt.QPushButton] = []
 
     def __init__(self, manager: LeechToolkitConfigManager):
+        """
+        Add-on options window.
+
+        :param manager: Toolkit Manager object to use for config reads/writes.
+        """
         super().__init__(flags=mw.windowFlags())
         self.manager = manager
         self.config = manager.config
@@ -261,6 +334,9 @@ class OptionsDialog(QDialog):
         self.ui.tabWidget.setCurrentIndex(0)
 
     def setup_restorables(self):
+        """
+        Loads data to default restoration buttons.
+        """
         global_signals = {
             'marker_signals': [
                 self.ui.markerGroup.clicked,
@@ -320,7 +396,7 @@ class OptionsDialog(QDialog):
                        + list(self.unleech_form.get_signals().values())
 
         for signals in signal_lists:
-            self.append_apply_signals(signals)
+            self._append_apply_signals(signals)
 
         leech_conf = self.config[Config.LEECH_ACTIONS]
         unleech_conf = self.config[Config.UN_LEECH_ACTIONS]
@@ -330,22 +406,31 @@ class OptionsDialog(QDialog):
         self.unleech_form.setup_restorables(unleech_conf, Config.DEFAULT_CONFIG[Config.UN_LEECH_ACTIONS])
         self.reverse_form.setup_restorables(reverse_conf, Config.DEFAULT_CONFIG[Config.REVERSE_OPTIONS])
 
-    def append_apply_signals(self, signals: list[pyqtBoundSignal]):
+    def _append_apply_signals(self, signals: list[pyqtBoundSignal]):
         for signal in signals:
             signal.connect(lambda *args: self.apply_button.setEnabled(True))
 
     def apply(self):
+        """
+        Write options to add-on config, refresh the Anki window, and disable the apply button.
+        """
         self._write()
         bind_actions()
         refresh_window()
         self.apply_button.setEnabled(False)
 
     def restore_defaults(self):
+        """
+        Restore all options to their default values in the UI.
+        """
         self.config = Config.DEFAULT_CONFIG.copy()
         self._load()
         [button.setVisible(False) for button in self.restore_buttons]
 
     def accept(self) -> None:
+        """
+        Apply the options and close the dialog.
+        """
         self.apply()
         super().accept()
 
@@ -380,6 +465,9 @@ class OptionsDialog(QDialog):
         sync_tag_conf[Config.SYNC_TAG_TEXT] = self.ui.syncTagLineEdit.text()
 
     def _load(self):
+        """
+        Load all options.
+        """
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
         self.ui.syncUpdateCheckbox.setChecked(self.config[Config.SYNC_ENABLED])
 
@@ -392,6 +480,9 @@ class OptionsDialog(QDialog):
         self.reverse_form.load_ui(self.config[Config.REVERSE_OPTIONS])
 
     def _write(self):
+        """
+        Write all options.
+        """
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
         self.config[Config.SYNC_ENABLED] = self.ui.syncUpdateCheckbox.isChecked()
 
@@ -409,6 +500,14 @@ class OptionsDialog(QDialog):
 
 class ReverseWidget(QWidget):
     def __init__(self, flags, restore_buttons: list = None, global_conf=True):
+        """
+        Widget container for leech reverse UI options.
+
+        :param flags: QT window flags
+        :param restore_buttons: list of buttons to append the reverse widget's restore button to
+        :param global_conf: optional global config used for determining option scope and applying config options to
+        the widget
+        """
         super().__init__(parent=None, flags=flags)
         self.ui = Ui_ReverseForm()
         self.ui.setupUi(self)
@@ -461,6 +560,16 @@ class ReverseWidget(QWidget):
 
 class ActionsWidget(QWidget):
     def __init__(self, actions_type: str, parent=None, expanded=True, dids=None, restore_buttons: list = None):
+        """
+        Leech/Un-leech action options UI widget.
+
+        :param actions_type: action type string used for determining UI text elements and config values to read/write
+        :param parent: parent QObject
+        :param expanded: whether to expand the actions expandos by default, or not
+        :param dids: options list of deck id's, used to determine config scope (global vs deck) and apply
+        deck-specific values
+        :param restore_buttons: list of buttons to append the action widget's restore buttons to
+        """
         super().__init__(parent, mw.windowFlags())
         self.ui = Ui_ActionsForm()
         self.ui.setupUi(ActionsForm=self)
@@ -776,6 +885,11 @@ class ActionsWidget(QWidget):
         self.ui.queueSiblingCheckbox.setChecked(queue_input[QueueAction.NEAR_SIBLING])
 
     def update_queue_info(self, use_current_deck=False):
+        """
+        Updates the current queue label text using the current deck id's or global scope values.
+
+        :param use_current_deck: whether to use the current deck for the queue reference
+        """
         cmd = f'SELECT min(due), max(due) FROM cards WHERE type={CARD_TYPE_NEW} AND odid=0'
         cmd += f' AND did IN {anki.decks.ids2str(self.dids)}' if use_current_deck else ''
 
@@ -879,10 +993,15 @@ class ActionsWidget(QWidget):
         queue_input[QueueAction.SIMILAR_RATIO] = self.ui.queueRatioSlider.value() / 100
 
     def toggle_expando(self, button: aqt.qt.QToolButton, toggle: bool = None):
+        """
+        Toggles the action expando's expanded state to the input, or opposite of its current value.
+
+        :param button: expando QToolButton reference
+        :param toggle: optional toggle assignment, expands if true, else collapses
+        """
         toggle = not self.ui.actionsFrame.isVisible() if toggle is None else toggle
         button.setArrowType(arrow_types[toggle])
-        if button == self.ui.expandoButton:
-            self.ui.actionsFrame.setVisible(toggle)
+        self.ui.actionsFrame.setVisible(toggle) if button == self.ui.expandoButton else None
 
 
 class ExcludeFieldItem(QWidget):
@@ -890,7 +1009,8 @@ class ExcludeFieldItem(QWidget):
     @staticmethod
     def from_list_widget(field_list: QListWidget, item: QListWidgetItem) -> "ExcludeFieldItem":
         """
-    Returns an ExcludedFieldItem using a base QListWidgetItem.
+        Returns an ExcludedFieldItem using a base QListWidgetItem.
+
         :param field_list: reference list
         :param item: QListWidgetItem object located in the referenced list
         :return: an ExcludedFieldItem object
@@ -898,6 +1018,13 @@ class ExcludeFieldItem(QWidget):
         return field_list.itemWidget(item)
 
     def __init__(self, list_widget: QListWidget, mid: int, field_name: str):
+        """
+        Field item used in excluded field lists.
+
+        :param list_widget: QListWidget reference
+        :param mid: note-type/model id for the field
+        :param field_name: field name string
+        """
         super().__init__(flags=mw.windowFlags())
         self.list_widget = list_widget
         self.mid = mid
@@ -909,7 +1036,8 @@ class ExcludeFieldItem(QWidget):
 
         def remove_self(_):
             """
-        Removes the current item from its list widget.
+            Removes the current item from its list widget.
+
             :param _: placeholder argument given by QAction calls
             """
             for i in range(self.list_widget.count()):
@@ -921,11 +1049,26 @@ class ExcludeFieldItem(QWidget):
         self.widget.removeButton.clicked.connect(remove_self)
 
     def get_model_field_dict(self):
+        """
+        Retrieves a dictionary object for the current item.
+
+        :return: a dict object with the format {'note-type/model id': field-ord/field index}
+        """
         fields_names = mw.col.models.field_names(mw.col.models.get(self.mid))
         return {f'{self.mid}': fields_names.index(self.widget.fieldLabel.text())}
 
     class ExcludedFieldListItem(QListWidgetItem):
+        """
+        ExcludedFieldListItem used for comparing items against each other.
+        """
+
         def __lt__(self, other):
+            """
+            Custom less than function for ExcludedFieldItems.
+
+            :param other: other ExcludedFieldListItem object
+            :return: true if this item should be below another one, else false if not found or above it
+            """
             this_item = ExcludeFieldItem.from_list_widget(self.listWidget(), self)
             other_item = ExcludeFieldItem.from_list_widget(other.listWidget(), other)
             if other_item is None:
@@ -946,7 +1089,8 @@ class EditFieldItem(QWidget):
     @staticmethod
     def from_list_widget(edit_fields_list: QListWidget, item: QListWidgetItem) -> "EditFieldItem":
         """
-    Returns an EditFieldItem using a base QListWidgetItem.
+        Returns an EditFieldItem using a base QListWidgetItem.
+
         :param edit_fields_list: reference list
         :param item: QListWidgetItem object located in the referenced list
         :return: an EditFieldItem object
@@ -963,13 +1107,14 @@ class EditFieldItem(QWidget):
         text: str,
     ):
         """
-    NoteItem used for the field edit list.
-        :param edit_list:
-        :param mid:
-        :param field_name:
-        :param method_idx:
-        :param repl:
-        :param text:
+        Field item used in edit field lists.
+
+        :param edit_list: QListWidget object holding edit field items
+        :param mid: note-type/model id for the field
+        :param field_name: field name string
+        :param method_idx: index of the method to use when editing a field
+        :param repl: optional replacement text to search for replace-method edits
+        :param text: input text used to fill in the QLineEdit, used when applying the edit to the selected field
         """
         super().__init__(flags=mw.windowFlags())
         self.context_menu = QMenu(self)
@@ -984,10 +1129,11 @@ class EditFieldItem(QWidget):
 
         self.set_model(edit_list, mid, field_name)
 
-        def remove_self(_):
+        def remove_self(*args):
             """
-        Removes the current item from its list widget.
-            :param _: placeholder argument given by QAction calls
+            Removes the current item from its list widget.
+
+            :param args: unused arguments parameter
             """
             for i in range(self.list_widget.count()):
                 item = self.list_widget.item(i)
@@ -1006,6 +1152,13 @@ class EditFieldItem(QWidget):
         self._load()
 
     def set_model(self, list_widget, mid: int, field_name: str):
+        """
+        Set the list note-type/model and field.
+
+        :param list_widget: QListWidget object holding edit field items
+        :param mid: index of the method to use when editing a field
+        :param field_name: field name string
+        """
         self.list_widget = list_widget
         self.mid = mid
         self.field_name = field_name
@@ -1021,6 +1174,13 @@ class EditFieldItem(QWidget):
         self.widget.inputEdit.setText(self._text)
 
     def update_method(self, method_idx: int):
+        """
+        Function for updating UI elements and the current edit method index.
+
+        Does not update UI if method is negative.
+
+        :param method_idx: new method index
+        """
         self.method_idx = method_idx
         if self.method_idx >= 0:
             replace_selected = self.method_idx in (EditAction.REPLACE_METHOD, EditAction.REGEX_METHOD)
