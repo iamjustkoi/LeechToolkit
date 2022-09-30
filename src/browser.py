@@ -32,17 +32,27 @@ from ..res.ui.set_lapse_dialog import Ui_SetLapseDialog
 
 
 def build_hooks():
-    gui_hooks.browser_menus_did_init.append(init_browser)
+    gui_hooks.browser_menus_did_init.append(build_menus)
 
 
 def _get_menu(menu_bar: QMenuBar, menu_text):
+    """
+    Searches for the selected menu item.
+    :param menu_bar: QMenuBar to search through
+    :param menu_text: text string to search for
+    :return: the input menu, if found, else a new menu with the input text
+    """
     for action in menu_bar.actions():
         if action.text() == menu_text:
             return action.parent()
     return menu_bar.addMenu(menu_text)
 
 
-def init_browser(browser: Browser):
+def build_menus(browser: Browser):
+    """
+    Initializes toolkit menu options for the browser.
+    :param browser: Browser object to attach to
+    """
     manager = LeechToolkitConfigManager(mw)
 
     menu = _get_menu(browser.menuBar(), MENU_CARDS_TEXT)
@@ -51,22 +61,37 @@ def init_browser(browser: Browser):
     sub_menu = menu.addMenu(String.TOOLKIT_ACTIONS)
     sub_menu.addAction(
         String.ACTION_LEECH,
-        lambda *args: apply_leech_updates(manager, browser, Config.LEECH_ACTIONS)
+        lambda *args: apply_action_updates(manager, browser, Config.LEECH_ACTIONS)
     )
     sub_menu.addAction(
         String.ACTION_UNLEECH,
-        lambda *args: apply_leech_updates(manager, browser, Config.UN_LEECH_ACTIONS)
+        lambda *args: apply_action_updates(manager, browser, Config.UN_LEECH_ACTIONS)
     )
 
     menu.addAction(String.ACTION_SET_LAPSES, lambda *args: show_set_lapses(manager, browser))
 
 
 def show_set_lapses(manager: LeechToolkitConfigManager, browser: Browser):
+    """
+    Creates and shows a set lapses dialog.
+
+    :param manager: toolkit manager for referencing default dialog values
+    :param browser: Browser object for collection updates and selections
+    """
     dialog = SetLapseDialog(manager, browser)
     dialog.exec()
 
 
 def start_collection_op(browser, op_callback, tip_message: str, count):
+    """
+    Calls a collection operation, redraws the browser table, and shows a tooltip.
+
+    :param browser: browser to redraw after updates
+    :param op_callback: op function to call for updates
+    :param tip_message: message to show in the tooltip
+    :param count: numer of changes performed, will format the tip message with the count if it contains any '{}'
+    specifiers
+    """
     op = CollectionOp(browser, op_callback)
 
     def reset_and_show_tip():
@@ -78,8 +103,24 @@ def start_collection_op(browser, op_callback, tip_message: str, count):
     op.run_in_background()
 
 
-def apply_leech_updates(manager: LeechToolkitConfigManager, browser: Browser, action_type: str, skip_undo_entry=False):
+def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, action_type: str, skip_undo_entry=False):
+    """
+    Applies leech/un-leech action updates to selected cards.
+
+    :param manager: toolkit manager used to reference global and local config variables
+    :param browser: Anki Browser object for finding selected cards and creating undo entries
+    :param action_type: action type string used to determine config and undo entry values
+    :param skip_undo_entry: whether to skip the undo entry when updating
+    :return: OpChanges if undo entry was skipped, else None
+    """
+
     def action_operation(col: anki.collection.Collection) -> OpChanges or None:
+        """
+        Operation callback for performing action updates to the collection.
+
+        :param col: Collection used for retrieving and updating cards
+        :return: OpChanges if successful, else None
+        """
         toolkit_configs = manager.get_all_configs()
 
         changes = None
@@ -112,11 +153,18 @@ def apply_leech_updates(manager: LeechToolkitConfigManager, browser: Browser, ac
         tip_message = String.TIP_LEECHED_TEMPLATE
     else:
         tip_message = String.TIP_UNLEECHED_TEMPLATE
-    return start_collection_op(browser, lambda col: action_operation(col), tip_message, len(browser.selected_cards()))
+
+    start_collection_op(browser, lambda col: action_operation(col), tip_message, len(browser.selected_cards()))
 
 
 class SetLapseDialog(QDialog):
     def __init__(self, manager: LeechToolkitConfigManager, browser: Browser):
+        """
+        Set lapse QDialog object.
+
+        :param manager: toolkit manager used for retrieving global and local config values
+        :param browser: browser object to attach to/reference for changes/undo entries
+        """
         super().__init__(parent=browser, flags=browser.windowFlags())
         self.manager = manager
         self.config = manager.config
@@ -143,11 +191,20 @@ class SetLapseDialog(QDialog):
     @skip_if_selection_is_empty
     @ensure_editor_saved
     def accept(self):
+        """
+        Applies the lapse updates, including leech tagging if set, given cards are selected and the editor gets saved.
+        """
         raw_stripped_text = self.ui.lineEdit.text().strip()
         # Remove spaces and any duplicate/leading 0's
         formatted_text = re.sub(r'(?<!\d)0*(?!\D|$)', '', raw_stripped_text.replace(' ', ''))
 
         def set_lapses_operation(col: anki.collection.Collection) -> OpChanges or None:
+            """
+            Operation callback for performing updates to the collection.
+
+            :param col: Collection used for retrieving and updating cards
+            :return: OpChanges if successful, else None
+            """
             entry = col.add_custom_undo_entry(String.ENTRY_SET_LAPSES)
             changes = None
 
