@@ -121,12 +121,23 @@ class Ui_ReverseForm(object):
         )
         self.reverseGroup.setTitle(_translate("ReverseForm", "Leech Reverse"))
         self.reverseThresholdLabel.setText(_translate("ReverseForm", "Un-leech Threshold"))
+        self.useLeechThresholdCheckbox.setToolTip(
+            _translate(
+                "ReverseForm", "Use the same threshold as the current leech threshold (Anki Default:\n"
+                               "                                             8).\n"
+                               "                                         "
+            )
+        )
         self.useLeechThresholdCheckbox.setText(_translate("ReverseForm", "Same as Leech Threshold"))
         self.reverseThresholdSpinbox.setToolTip(
             _translate("ReverseForm", "Un-leeches any cards with a lapse count below this value.")
         )
         self.consPrefixLabel.setText(_translate("ReverseForm", "Every"))
+        self.consAnswerSpinbox.setToolTip(
+            _translate("ReverseForm", "Number of correct (not again) answers in a row to consider a card reversed.")
+        )
         self.consSuffixLabel.setText(_translate("ReverseForm", "correct answer(s) in a row:"))
+        self.reverseMethodDropdown.setToolTip(_translate("ReverseForm", "Method for reversing a card\'s leech count."))
         self.reverseMethodDropdown.setCurrentText(_translate("ReverseForm", "Decrease card\'s total lapse count"))
         self.reverseMethodDropdown.setItemText(0, _translate("ReverseForm", "Decrease card\'s total lapse count"))
         self.reverseMethodDropdown.setItemText(1, _translate("ReverseForm", "Reset card\'s total lapse count"))
