@@ -61,6 +61,12 @@ def on_options_called(*args):
 
 
 def append_restore_button(parent: QWidget, insert_col=4):
+    """
+    Appends a stylized, default restoration button to a parent QWidget using the widgets position and parent layout.
+    :param parent: parent QWidget that will have the button added to its own class attributes
+    :param insert_col: optional column to place the button into if the provided parent's surrounding layout supports it
+    :return: the newly appended restore button
+    """
     if not hasattr(parent, button_attr):
         parent.default_button = aqt.qt.QPushButton(parent)
 
@@ -70,7 +76,6 @@ def append_restore_button(parent: QWidget, insert_col=4):
 
         pixmap = QPixmap(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}')
         mask = pixmap.createMaskFromColor(QColor('black'), aqt.qt.Qt.MaskOutColor)
-        print(f'nm: {mw.pm.night_mode()}')
         # pixmap.fill(QColor('#adadad' if mw.pm.night_mode() else '#1a1a1a'))
         pixmap.fill(QColor('#adadad'))
         pixmap.setMask(mask)
