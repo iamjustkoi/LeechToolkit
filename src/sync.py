@@ -16,6 +16,12 @@ def build_hooks():
 
 
 def get_remeasured_lapses(cid: int, reverse_conf: dict):
+    """
+    Remeasures lapses based on consecutive correct streaks and again answers in review logs.
+    :param cid: referenced card id
+    :param reverse_conf: config to use for determining measurements/returned lapses
+    :return: the new lapse count
+    """
     remeasured_lapses = 0
     consecutive_correct = 0
 
@@ -48,6 +54,10 @@ def get_remeasured_lapses(cid: int, reverse_conf: dict):
 
 
 def sync_collection():
+    """
+    Syncs the collection's lapse count and, optionally, leech status based on the current user preferences and review
+    logs.
+    """
     global_conf = LeechToolkitConfigManager(mw).config
 
     if global_conf[Config.SYNC_ENABLED]:
