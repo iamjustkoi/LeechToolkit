@@ -1195,7 +1195,7 @@
                       <string>Add</string>
                      </property>
                      <property name="popupMode">
-                      <enum>QToolButton::DelayedPopup</enum>
+                      <enum>QToolButton::InstantPopup</enum>
                      </property>
                      <property name="toolButtonStyle">
                       <enum>Qt::ToolButtonIconOnly</enum>
