@@ -99,7 +99,7 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 16))
+        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 98, 16))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -133,7 +133,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 223))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 497, 223))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -212,11 +212,9 @@ class Ui_OptionsDialog(object):
         self.like_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon = QtGui.QIcon()
         icon.addPixmap(
-            QtGui.QPixmap(
-                "\n"
-                "                                                            "
-                "../../../StudyTimeStats/res/ui/res/img/anki_like.png"
-            ), QtGui.QIcon.Normal, QtGui.QIcon.Off
+            QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"),
+            QtGui.QIcon.Normal,
+            QtGui.QIcon.Off
         )
         self.like_button.setIcon(icon)
         self.like_button.setIconSize(QtCore.QSize(32, 32))
@@ -230,11 +228,9 @@ class Ui_OptionsDialog(object):
         self.kofi_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(
-            QtGui.QPixmap(
-                "\n"
-                "                                                            "
-                "../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"
-            ), QtGui.QIcon.Normal, QtGui.QIcon.Off
+            QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"),
+            QtGui.QIcon.Normal,
+            QtGui.QIcon.Off
         )
         self.kofi_button.setIcon(icon1)
         self.kofi_button.setIconSize(QtCore.QSize(32, 32))
@@ -248,11 +244,9 @@ class Ui_OptionsDialog(object):
         self.patreon_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(
-            QtGui.QPixmap(
-                "\n"
-                "                                                            "
-                "../../../StudyTimeStats/res/ui/res/img/patreon.png"
-            ), QtGui.QIcon.Normal, QtGui.QIcon.Off
+            QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"),
+            QtGui.QIcon.Normal,
+            QtGui.QIcon.Off
         )
         self.patreon_button.setIcon(icon2)
         self.patreon_button.setIconSize(QtCore.QSize(32, 32))
@@ -278,8 +272,7 @@ class Ui_OptionsDialog(object):
         self.buttonBox = QtWidgets.QDialogButtonBox(OptionsDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok |
-            QtWidgets.QDialogButtonBox.RestoreDefaults
+            QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.RestoreDefaults
             )
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_4.addWidget(self.buttonBox)
@@ -309,9 +302,8 @@ class Ui_OptionsDialog(object):
         self.almostLabel.setText(_translate("OptionsDialog", "Marker Position"))
         self.almostPosDropdown.setToolTip(
             _translate(
-                "OptionsDialog", "Position of the attached marker. Attaches to the bottom of the reveiwer with a\n"
-                                 "                                centered default value.\n"
-                                 "                            "
+                "OptionsDialog",
+                "Position of the attached marker. Attaches to the bottom of the reveiwer with a centered default value."
             )
         )
         self.almostPosDropdown.setItemText(0, _translate("OptionsDialog", "Default"))
@@ -337,9 +329,8 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox.setToolTip(
             _translate(
                 "OptionsDialog",
-                "Enables a Tools menu shortcut in the toolbar for accessing these options. These can also\n"
-                "                           be accessed in the Add-ons window from the \"Config\" button.\n"
-                "                       "
+                "Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be accessed "
+                "in the Add-ons window from the \"Config\" button."
             )
         )
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
@@ -383,8 +374,8 @@ class Ui_OptionsDialog(object):
         )
         self.syncUpdateButton.setToolTip(
             _translate(
-                "OptionsDialog", "Sync the entire collection based on the current, applied options and review logs.\n"
-                                 "                       "
+                "OptionsDialog",
+                "Sync the entire collection based on the current, applied options and review logs."
             )
         )
         self.syncUpdateButton.setText(_translate("OptionsDialog", "Update Collection"))
@@ -392,92 +383,64 @@ class Ui_OptionsDialog(object):
         self.about_label_header.setText(
             _translate(
                 "OptionsDialog", "## Leech Toolkit\n"
-                                 "                                                Adds a total and ranged study time "
-                                 "statistic to Anki\'s main window.\n"
+                                 "Adds a total and ranged study time statistic to Anki\'s main window.  \n"
                                  "\n"
-                                 "                                                Version: {version}\n"
-                                 "                                                Have any issues or feedback? Feel "
-                                 "free to post on the project\'s issue\n"
-                                 "                                                section on\n"
-                                 "                                                [GitHub]("
-                                 "https://github.com/iamjustkoi/StudyTimeStats/issues)!\n"
+                                 "Version: {version}  \n"
+                                 "Have any issues or feedback? Feel free to post on the project\'s issue section on ["
+                                 "GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  \n"
                                  "\n"
-                                 "                                                [Releases/Changelog]("
-                                 "https://github.com/iamjustkoi/StudyTimeStats/releases)\n"
-                                 "                                                [Source Code]("
-                                 "https://github.com/iamjustkoi/StudyTimeStats)\n"
+                                 "[Releases/Changelog](https://github.com/iamjustkoi/StudyTimeStats/releases)  \n"
+                                 "[Source Code](https://github.com/iamjustkoi/StudyTimeStats)  \n"
                                  "\n"
-                                 "                                                If you want to help support what I "
-                                 "do::\n"
-                                 "                                            "
+                                 "If you want to help support what I do::"
             )
         )
-        self.like_button.setText(_translate("OptionsDialog", "Review on AnkiWeb"))
-        self.kofi_button.setText(_translate("OptionsDialog", "Buy me a coffee"))
-        self.patreon_button.setText(_translate("OptionsDialog", "Become a patron"))
+        self.like_button.setText(_translate("OptionsDialog", "Review on AnkiWeb "))
+        self.kofi_button.setText(_translate("OptionsDialog", "  Buy me a coffee "))
+        self.patreon_button.setText(_translate("OptionsDialog", "  Become a patron "))
         self.about_label_body.setText(
             _translate(
-                "OptionsDialog", "Every bit helps with maintaining and developing the add-on and is\n"
-                                 "                                                greatly appreciated!\n"
-                                 "                                                ### Text Macros\n"
-                                 "                                                The add-on can also filter text in "
-                                 "the custom labels input to show\n"
-                                 "                                                information based on what\'s set in "
-                                 "the config (e.g. \"Past %range\"\n"
-                                 "                                                to \"Past Week\"). These can be "
-                                 "used multiple times and will\n"
-                                 "                                                update whenever Anki\'s main window "
-                                 "reloads.\n"
-                                 "\n"
-                                 "                                                ### Available Macros:\n"
-                                 "\n"
-                                 "                                                ##### General\n"
-                                 "                                                + `%range` - the currently selected "
-                                 "range format (Week, 2 Weeks, Month,\n"
-                                 "                                                Year)\n"
-                                 "                                                + `%from_date` - range filter\'s "
-                                 "start date using the system\'s locale\n"
-                                 "                                                (2022-06-30)\n"
-                                 "                                                + `%from_day` - range filter\'s "
-                                 "starting day using a compact format (Sun)\n"
-                                 "                                                + `%from_full_day` - range "
-                                 "filter\'s full start day (Sunday)\n"
-                                 "                                                + `%from_month` - range filter\'s "
-                                 "month name using a compact format (Sep)\n"
-                                 "                                                + `%from_full_month` - range "
-                                 "filter\'s full month name (September)\n"
-                                 "                                                + `%days` - total days the range "
-                                 "filter checks against (17)\n"
-                                 "                                                <br></br>\n"
-                                 "                                                ##### Advanced\n"
-                                 "                                                These macros will each index the received review logs and output its\n"
-                                 "                                                individual value-unit combination (e.g. \"%total_hrs\" ->\n"
-                                 "                                                \"3.14 hrs\").\n"
-                                 "                                                + `%total_hrs` - total study time\n"
-                                 "                                                + `%range_hrs` - ranged study time\n"
-                                 "                                                + `%prev_range_hrs` - total study time of the last calendar range\n"
-                                 "                                                <br></br>\n"
-                                 "\n"
-                                 "                                                Total time for a specific range (current week, current month, etc):\n"
-                                 "                                                + `%week_hrs`, `%two_week_hrs`, `%month_hrs`, `%year_hrs`\n"
-                                 "                                                <br></br>\n"
-                                 "\n"
-                                 "                                                Total time for a specific, previous range (previous week, previous\n"
-                                 "                                                month, etc):\n"
-                                 "                                                + `%prev_day_hrs`, `%prev_week_hrs`, `%prev_two_week_hrs`,\n"
-                                 "                                                `%prev_month_hrs`, `%prev_year_hrs`\n"
-                                 "                                                <br></br>\n"
-                                 "                                                ##### Misc\n"
-                                 "                                                + `%%` - returns a single % symbol and doesn\'t apply the text macro (%,\n"
-                                 "                                                %range, etc)\n"
-                                 "\n"
-                                 "                                                <br></br>\n"
-                                 "                                                Thanks for downloading and hope you enjoy!\n"
-                                 "                                                -koi\n"
-                                 "                                                <br></br>\n"
-                                 "                                                MIT License\n"
-                                 "                                                ©2022 JustKoi (iamjustkoi)\n"
-                                 "                                            "
+                "OptionsDialog",
+                "Every bit helps with maintaining and developing the add-on and is greatly appreciated!\n"
+                "### Text Macros\n"
+                "The add-on can also filter text in the custom labels input to show information based on what\'s set "
+                "in the config (e.g. \"Past %range\" to \"Past Week\"). These can be used multiple times and will "
+                "update whenever Anki\'s main window reloads.\n"
+                "\n"
+                "### Available Macros:\n"
+                "\n"
+                "##### General\n"
+                "+ `%range` - the currently selected range format (Week, 2 Weeks, Month, Year)\n"
+                "+ `%from_date` - range filter\'s start date using the system\'s locale (2022-06-30)\n"
+                "+ `%from_day` - range filter\'s starting day using a compact format (Sun)\n"
+                "+ `%from_full_day` - range filter\'s full start day (Sunday)\n"
+                "+ `%from_month` - range filter\'s month name using a compact format (Sep)\n"
+                "+ `%from_full_month` - range filter\'s full month name (September)\n"
+                "+ `%days` - total days the range filter checks against (17)\n"
+                "<br></br>\n"
+                "##### Advanced\n"
+                "These macros will each index the received review logs and output its individual value-unit combination (e.g. \"%total_hrs\" -> \"3.14 hrs\").\n"
+                "+ `%total_hrs` - total study time\n"
+                "+ `%range_hrs` - ranged study time\n"
+                "+ `%prev_range_hrs` - total study time of the last calendar range\n"
+                "<br></br>\n"
+                "\n"
+                "Total time for a specific range (current week, current month, etc):\n"
+                "+ `%week_hrs`, `%two_week_hrs`, `%month_hrs`, `%year_hrs`\n"
+                "<br></br>\n"
+                "\n"
+                "Total time for a specific, previous range (previous week, previous month, etc):\n"
+                "+ `%prev_day_hrs`, `%prev_week_hrs`, `%prev_two_week_hrs`, `%prev_month_hrs`, `%prev_year_hrs`\n"
+                "<br></br>\n"
+                "##### Misc\n"
+                "+ `%%` - returns a single % symbol and doesn\'t apply the text macro (%, %range, etc)\n"
+                "\n"
+                "<br></br>\n"
+                "Thanks for downloading and hope you enjoy!  \n"
+                "-koi  \n"
+                "<br></br>  \n"
+                "MIT License    \n"
+                "©2022 JustKoi (iamjustkoi)  "
             )
         )
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.aboutTab), _translate("OptionsDialog", "About"))

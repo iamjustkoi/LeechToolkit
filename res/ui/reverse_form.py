@@ -119,7 +119,7 @@ class Ui_ReverseForm(object):
         self.reverseGroup.setToolTip(
             _translate("ReverseForm", "Reverse card lapses based on the number of correct review answers they have.")
         )
-        self.reverseGroup.setTitle(_translate("ReverseForm", "Leech Reverse"))
+        self.reverseGroup.setTitle(_translate("ReverseForm", "Lapse Reverse"))
         self.reverseThresholdLabel.setText(_translate("ReverseForm", "Un-leech Threshold"))
         self.useLeechThresholdCheckbox.setToolTip(
             _translate(
