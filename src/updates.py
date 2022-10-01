@@ -20,7 +20,7 @@ from anki.notes import Note
 from aqt import utils
 
 from .consts import (
-    ANKI_LEGACY_VER, ANKI_UNDO_UPDATE_VER, Action,
+    ANKI_LEGACY_VER, Action,
     CURRENT_ANKI_VER, ErrorMsg, Macro,
     EditAction,
     RescheduleAction,

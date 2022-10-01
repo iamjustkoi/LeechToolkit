@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -69,19 +69,19 @@
               <bool>true</bool>
              </property>
              <layout class="QVBoxLayout" name="markerLayout">
-              <item>
-                  <widget class="QCheckBox" name="almostBackCheckbox">
-                      <property name="toolTip">
-                          <string>Disables the mark when only showing the front/answer in reviews.</string>
-                      </property>
-                      <property name="text">
-                          <string>Only show on back of cards</string>
-                      </property>
-                      <property name="checked">
-                          <bool>true</bool>
-                      </property>
-                  </widget>
-              </item>
+                 <item>
+                     <widget class="QCheckBox" name="almostBackCheckbox">
+                         <property name="toolTip">
+                             <string>Disables the mark when only showing the front/answer in reviews.</string>
+                         </property>
+                         <property name="text">
+                             <string>Only show on back of cards</string>
+                         </property>
+                         <property name="checked">
+                             <bool>true</bool>
+                         </property>
+                     </widget>
+                 </item>
               <item>
                <widget class="QCheckBox" name="almostCheckbox">
                 <property name="toolTip">
@@ -93,45 +93,45 @@
                </widget>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <item>
-                 <widget class="QLabel" name="almostLabel">
-                  <property name="text">
-                   <string>Marker Position</string>
-                  </property>
-                 </widget>
-                </item>
-                   <item>
-                       <widget class="QComboBox" name="almostPosDropdown">
-                           <property name="sizePolicy">
-                               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                                   <horstretch>0</horstretch>
-                                   <verstretch>0</verstretch>
-                               </sizepolicy>
-                           </property>
-                           <property name="toolTip">
-                               <string>Position of the attached marker. Attaches to the bottom of the reveiwer with a
-                                   centered default value.
-                               </string>
-                           </property>
-                           <item>
-                               <property name="text">
-                                   <string>Default</string>
-                               </property>
-                           </item>
-                           <item>
-                               <property name="text">
-                                   <string>Left</string>
-                               </property>
-                           </item>
-                           <item>
-                               <property name="text">
-                                   <string>Right</string>
-                               </property>
-                           </item>
-                       </widget>
-                   </item>
-               </layout>
+                  <layout class="QHBoxLayout" name="horizontalLayout_4">
+                      <item>
+                          <widget class="QLabel" name="almostLabel">
+                              <property name="text">
+                                  <string>Marker Position</string>
+                              </property>
+                          </widget>
+                      </item>
+                      <item>
+                          <widget class="QComboBox" name="almostPosDropdown">
+                              <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                  </sizepolicy>
+                              </property>
+                              <property name="toolTip">
+                                  <string>Position of the attached marker. Attaches to the bottom of the reveiwer with a
+                                      centered default value.
+                                  </string>
+                              </property>
+                              <item>
+                                  <property name="text">
+                                      <string>Default</string>
+                                  </property>
+                              </item>
+                              <item>
+                                  <property name="text">
+                                      <string>Left</string>
+                                  </property>
+                              </item>
+                              <item>
+                                  <property name="text">
+                                      <string>Right</string>
+                                  </property>
+                              </item>
+                          </widget>
+                      </item>
+                  </layout>
               </item>
              </layout>
             </widget>
@@ -147,28 +147,28 @@
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <layout class="QHBoxLayout" name="horizontalLayout">
-                 <item>
-                     <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
-                         <property name="toolTip">
-                             <string>Enables the button on the main, deck list page.</string>
-                         </property>
-                         <property name="text">
-                             <string>Deck Browser</string>
-                         </property>
-                     </widget>
-                 </item>
-                 <item>
-                     <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
-                         <property name="toolTip">
-                             <string>Enables the button for the page show when viewing a specific deck.</string>
-                         </property>
-                         <property name="text">
-                             <string>Deck Overview</string>
-                         </property>
-                     </widget>
-                 </item>
-             </layout>
+                <layout class="QHBoxLayout" name="horizontalLayout">
+                    <item>
+                        <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
+                            <property name="toolTip">
+                                <string>Enables the button on the main, deck list page.</string>
+                            </property>
+                            <property name="text">
+                                <string>Deck Browser</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
+                            <property name="toolTip">
+                                <string>Enables the button for the page show when viewing a specific deck.</string>
+                            </property>
+                            <property name="text">
+                                <string>Deck Overview</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
             </widget>
            </item>
           </layout>
@@ -201,7 +201,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-               <width>98</width>
+               <width>530</width>
             <height>16</height>
            </rect>
           </property>
@@ -265,43 +265,45 @@
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
          <widget class="QWidget" name="scrollAreaWidgetContents">
-          <property name="geometry">
-              <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>497</width>
-                  <height>223</height>
-              </rect>
-          </property>
+             <property name="geometry">
+                 <rect>
+                     <x>0</x>
+                     <y>0</y>
+                     <width>530</width>
+                     <height>314</height>
+                 </rect>
+             </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-              <item>
-                  <widget class="QCheckBox" name="toolsOptionsCheckBox">
-                      <property name="toolTip">
-                          <string>Enables a Tools menu shortcut in the toolbar for accessing these options. These can
-                              also be accessed in the Add-ons window from the &quot;Config&quot; button.
-                          </string>
-                      </property>
-                      <property name="text">
-                          <string>Show options in Tools menu</string>
-                      </property>
-                  </widget>
-              </item>
-           <item>
-            <widget class="QCheckBox" name="syncUpdateCheckbox">
-             <property name="toolTip">
-              <string>After syncing, updates the entire collection with the current options/actions based on the synced review logs.</string>
-             </property>
-             <property name="text">
-              <string>Update collection on-sync</string>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+                 <item>
+                     <widget class="QCheckBox" name="toolsOptionsCheckBox">
+                         <property name="toolTip">
+                             <string>Enables a Tools menu shortcut in the toolbar for accessing these options. These can
+                                 also be accessed in the Add-ons window from the &quot;Config&quot; button.
+                             </string>
+                         </property>
+                         <property name="text">
+                             <string>Show options in Tools menu</string>
+                         </property>
+                     </widget>
+                 </item>
+                 <item>
+                     <widget class="QCheckBox" name="syncUpdateCheckbox">
+                         <property name="toolTip">
+                             <string>After syncing, updates the entire collection with the current options/actions based
+                                 on the synced review logs.
+                             </string>
+                         </property>
+                         <property name="text">
+                             <string>Update collection on-sync</string>
+                         </property>
+                         <property name="checked">
+                             <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -332,48 +334,93 @@
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_7">
+                <layout class="QVBoxLayout" name="verticalLayout_7">
+                    <item>
+                        <widget class="QLineEdit" name="syncTagLineEdit">
+                            <property name="toolTip">
+                                <string>Custom tag text.</string>
+                            </property>
+                            <property name="text">
+                                <string>leech::toolkit-filtered</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="label">
+                            <property name="text">
+                                <string>* Before syncing/updating, should be updated to the same tag as any other Anki
+                                    client(s) where it might've also been changed and synced/uploaded.
+                                </string>
+                            </property>
+                            <property name="wordWrap">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </widget>
+           </item>
                  <item>
-                     <widget class="QLineEdit" name="syncTagLineEdit">
+                     <widget class="QPushButton" name="syncUpdateButton">
+                         <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                             </sizepolicy>
+                         </property>
                          <property name="toolTip">
-                             <string>Custom tag text.</string>
+                             <string>Sync the entire collection based on the current, applied options and review logs.
+                             </string>
                          </property>
                          <property name="text">
-                             <string>leech::toolkit-filtered</string>
+                             <string>Update Collection</string>
                          </property>
                      </widget>
                  </item>
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might've also been changed and synced/uploaded.</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
+                 <item>
+                     <widget class="QGroupBox" name="shortcutsGroupbox">
+                         <property name="title">
+                             <string>Shortcuts</string>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout">
+                             <item row="0" column="0">
+                                 <widget class="QLabel" name="label_3">
+                                     <property name="text">
+                                         <string>Leech</string>
+                                     </property>
+                                 </widget>
+                             </item>
+                             <item row="0" column="1">
+                                 <widget class="QPushButton" name="leechShortcutButton">
+                                     <property name="toolTip">
+                                         <string>May need to reset for shortcuts to update in reviewer.</string>
+                                     </property>
+                                     <property name="text">
+                                         <string>Ctrl+Shift+L</string>
+                                     </property>
+                                 </widget>
+                             </item>
+                             <item row="1" column="1">
+                                 <widget class="QPushButton" name="unleechShortcutButton">
+                                     <property name="toolTip">
+                                         <string>May need to reset for shortcuts to update in reviewer.</string>
+                                     </property>
+                                     <property name="text">
+                                         <string>Ctrl+Shift+U</string>
+                                     </property>
+                                 </widget>
+                             </item>
+                             <item row="1" column="0">
+                                 <widget class="QLabel" name="label_4">
+                                     <property name="text">
+                                         <string>Un-Leech</string>
+                                     </property>
+                                 </widget>
+                             </item>
+                         </layout>
+                     </widget>
+                 </item>
              </layout>
-            </widget>
-           </item>
-              <item>
-                  <widget class="QPushButton" name="syncUpdateButton">
-                      <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                          </sizepolicy>
-                      </property>
-                      <property name="toolTip">
-                          <string>Sync the entire collection based on the current, applied options and review logs.
-                          </string>
-                      </property>
-                      <property name="text">
-                          <string>Update Collection</string>
-                      </property>
-                  </widget>
-              </item>
-          </layout>
          </widget>
         </widget>
        </item>

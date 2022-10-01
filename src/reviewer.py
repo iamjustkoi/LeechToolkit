@@ -39,10 +39,10 @@ mark_html_template = '''
 <style>
     #{marker_id} {{
         color: transparent;  
-        text-shadow: 0 0 0 {marker_color};
         font-size: .4em !important;
-        float: {marker_float};
         display: none;
+        text-shadow: 0 0 0 {marker_color};
+        float: {marker_float};
     }}
 </style>
 <div id="{marker_id}">{marker_text}</div>
@@ -138,12 +138,14 @@ class ReviewWrapper:
             self.load_options(did)
 
             self.leech_action = aqt.qt.QAction(String.REVIEWER_ACTION_LEECH, mw)
-            leech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.LEECH_SHORTCUT])
+            leech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.SHORTCUT_OPTIONS][Config.LEECH_SHORTCUT])
             self.leech_action.setShortcut(leech_shortcut)
             self.leech_action.triggered.connect(lambda *args: self.run_action(Config.LEECH_ACTIONS))
 
             self.unleech_action = aqt.qt.QAction(String.REVIEWER_ACTION_UNLEECH, mw)
-            unleech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.MENU_OPTIONS][Config.UNLEECH_SHORTCUT])
+            unleech_shortcut = aqt.qt.QKeySequence(
+                self.toolkit_config[Config.SHORTCUT_OPTIONS][Config.UNLEECH_SHORTCUT]
+            )
             self.unleech_action.setShortcut(unleech_shortcut)
             self.unleech_action.triggered.connect(lambda *args: self.run_action(Config.UN_LEECH_ACTIONS))
 
@@ -188,23 +190,26 @@ class ReviewWrapper:
         :param action_type: action type string to use as a reference for the undo entry actions to take
         """
         msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
-        entry = self.reviewer.mw.col.add_custom_undo_entry(msg) if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER else None
 
-        pre_queue, pre_due, pre_note_text = (
-            self.card.queue,
-            self.card.due,
-            self.card.note().joined_fields(),
-        )
-
-        if action_type == Config.LEECH_ACTIONS:
-            self.card = run_action_updates(self.card, self.toolkit_config, Config.LEECH_ACTIONS)
-            self.card.note().add_tag(LEECH_TAG)
-            tooltip(String.TIP_LEECHED_TEMPLATE.format(1))
-        elif action_type == Config.UN_LEECH_ACTIONS:
-            self.card = run_action_updates(self.card, self.toolkit_config, Config.UN_LEECH_ACTIONS)
-            self.card.note().remove_tag(LEECH_TAG)
-            tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
         if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
+            entry = self.reviewer.mw.col.add_custom_undo_entry(msg)
+
+            pre_queue, pre_due, pre_note_text = (
+                self.card.queue,
+                self.card.due,
+                self.card.note().joined_fields(),
+            )
+
+            if action_type == Config.LEECH_ACTIONS:
+                self.card = run_action_updates(self.card, self.toolkit_config, Config.LEECH_ACTIONS)
+                self.card.note().add_tag(LEECH_TAG)
+                tooltip(String.TIP_LEECHED_TEMPLATE.format(1))
+
+            elif action_type == Config.UN_LEECH_ACTIONS:
+                self.card = run_action_updates(self.card, self.toolkit_config, Config.UN_LEECH_ACTIONS)
+                self.card.note().remove_tag(LEECH_TAG)
+                tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
+
             self.reviewer.mw.col.update_card(self.card)
             self.reviewer.mw.col.update_note(self.card.note())
 
@@ -213,9 +218,20 @@ class ReviewWrapper:
             changes.note_text = True if pre_note_text != self.card.note().joined_fields() else False
 
             self.refresh_if_needed(changes)
-        else:
+        elif CURRENT_ANKI_VER < ANKI_UNDO_UPDATE_VER:
+            if action_type == Config.LEECH_ACTIONS:
+                self.card = run_action_updates(self.card, self.toolkit_config, Config.LEECH_ACTIONS)
+                self.card.note().add_tag(LEECH_TAG)
+                tooltip(String.TIP_LEECHED_TEMPLATE.format(1))
+
+            elif action_type == Config.UN_LEECH_ACTIONS:
+                self.card = run_action_updates(self.card, self.toolkit_config, Config.UN_LEECH_ACTIONS)
+                self.card.note().remove_tag(LEECH_TAG)
+                tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
+
             self.card.flush()
             self.card.note().flush()
+
             mw.checkpoint(msg)
             mw.reset()
 
@@ -255,8 +271,10 @@ class ReviewWrapper:
     def append_context_menu(self, webview: AnkiWebView, menu: aqt.qt.QMenu):
         action_labels = [action.text() for action in menu.actions()]
         menu.addSeparator()
-        menu.addAction(self.leech_action) if String.REVIEWER_ACTION_LEECH not in action_labels else None
-        menu.addAction(self.unleech_action) if String.REVIEWER_ACTION_UNLEECH not in action_labels else None
+        menu.removeAction(self.leech_action) if String.REVIEWER_ACTION_LEECH in action_labels else None
+        menu.removeAction(self.unleech_action) if String.REVIEWER_ACTION_UNLEECH in action_labels else None
+        menu.addAction(self.leech_action)
+        menu.addAction(self.unleech_action)
 
     def remove_hooks(self):
         try:
