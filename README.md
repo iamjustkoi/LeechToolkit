@@ -67,41 +67,70 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 #### Reviewer Shortcuts
 
-##### Extra shortcuts to leech/un-leech cards during reviews
-
-######  
+##### Customizable shortcuts to leech/un-leech cards during reviews
 
 ## Options
 
-###### @Blurb
-
 ### General
 
-###### @Blurb
+###### General options for UI elements and Lapse Reversing.
 
 <img src="res/img/example/options-general.png">
 
 ### Actions
 
-###### @Blurb
+###### Optional leech/un-leech actions that can also override base Anki operations.
 
 <img src="res/img/example/options-actions.png">
 
+- `Set Flag` - set the current flag
+- `Suspend` - set suspended state to on/off
+- `Add Tag(s)` - add tags (with optional text macros see: [Text Macros](#text-macros))
+- `Remove Tag(s)` - remove tags (with optional text macros see: [Text Macros](#text-macros))
+- `Forget` - forget the card and restore its initial state
+- `Edit Field(s)` - append, prepend, and/or replace text to note fields
+    - <details>
+        <summary>Example</summary>    
+        <img src="res/img/example/options-edit-fields.png">  
+        </details>
+- `Move to Deck` - move the card to a specified deck
+- `Set Due Date` - reschedule the card between a range of days
+- `Add to New` - Add a card to the new queue with some custom match filters
+    - <details>
+        <summary>Example</summary>    
+        <img src="res/img/example/options-add-to-new.png">  
+        </details>
+
 ### Advanced
 
-###### @Blurb
+###### Options for hiding the config shortcut, syncing and updating the collection, and setting shortcuts.
 
 <img src="res/img/example/options-advanced.png">
 
 ### Deck Options
 
-###### @Blurb
+###### Custom settings, per-deck, for updating lapses and performing custom leech/un-leech actions.
+
+###### These can be accessed in the legacy deck options menu (Shift + Options).
 
 <img src="res/img/example/options-deckoptions.png">
 
 ## Text Macros
 
-###### @Blurb
+###### Custom macros that can be accessed inside tag and field edits.
+
+###### Also comes with some auto-complete features to see what can be used in a text box.
+
+#### Available Macros:
+
+- `%date` - the current date based on the system's locale (e.g. `2022-10-01`)
+- `%reviews` - the review count for the current card (e.g. `3`)
+- `%re:` - [Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+    - Example Syntax:
+        - `%re:captured_expression`
+        - `%re:".*captured with spaces\W"`
+        - `%re:\d\d\d\d-\d\d-\d\d` (capturing the above date format)
+- `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)
 
 #### Bugs/Issues:
 
