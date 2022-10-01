@@ -2,6 +2,7 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+import time
 import traceback
 from pathlib import Path
 from typing import List
@@ -11,6 +12,9 @@ from anki.consts import CARD_TYPE_NEW
 from aqt import mw
 from aqt.qt import (
     Qt,
+    QLabel,
+    QKeyEvent,
+    QVBoxLayout,
     QAction,
     QDialog,
     QIcon,
@@ -36,7 +40,7 @@ from .config import LeechToolkitConfigManager
 from .consts import (
     ANKI_LEGACY_VER,
     ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER,
-    ErrorMsg, LEGACY_FLAGS_PLACEHOLDER, String,
+    ErrorMsg, Keys, LEGACY_FLAGS_PLACEHOLDER, String,
     Config,
     Action,
     Macro,
@@ -330,6 +334,101 @@ def _redraw_list(list_widget: QListWidget, max_height=256):
 class OptionsDialog(QDialog):
     restore_buttons: List[QPushButton] = []
 
+    # def eventFilter(self, obj, evt):
+    #     print(f'event')
+    #     pressed_keys = None
+    #     active_keys = 0
+    #
+    #     if obj in (self.ui.unleechShortcutButton, self.ui.leechShortcutButton):
+    #         if evt.type() == QEvent.FocusIn:
+    #             evt: QFocusEvent
+    #
+    #         elif evt.type() == QEvent.FocusOut:
+    #             evt: QFocusEvent
+    #             obj.setText(self.config[Config.SHORTCUT_OPTIONS][Config.LEECH_SHORTCUT])
+    #
+    #         elif evt.type() == QEvent.KeyPress:
+    #             evt: QKeyEvent
+    #             obj.setText(evt.text())
+    #
+    #         elif evt.type() == QEvent.KeyRelease and self.active_keys == 0:
+    #             evt: QKeyEvent
+    #             obj.setText(String.SHORTCUT_ELLIPSES)
+    #
+    #     return QWidget.eventFilter(self, obj, evt)
+    #
+    # def _get_shortcut(self, button: QPushButton):
+    #     self.active_keys = 0
+    #     self._running = True
+    #     while self._running:
+    #         mw.app.processEvents()
+
+    class ShortcutHandler(QDialog):
+        def __init__(self, parent, button: QPushButton):
+            super().__init__(parent=parent)
+            self.button = button
+
+            self.layout = QVBoxLayout()
+
+            self.label = QLabel()
+
+            self.layout.addWidget(self.label)
+
+            self.setLayout(self.layout)
+
+            self.main = None
+            self.modifiers = []
+            self.combination = ''
+            self.update_combination()
+
+        def update_combination(self):
+            if not self.main and len(self.modifiers) > 0:
+                self.combination = f'{"+".join(self.modifiers)}'
+            elif self.main and len(self.modifiers) > 0:
+                self.combination = f'{"+".join(self.modifiers)}+{chr(self.main)}'
+            elif self.main and not len(self.modifiers) > 0:
+                self.combination = chr(self.main)
+            else:
+                self.combination = None
+
+            if not self.combination:
+                result = String.SHORTCUT_ELLIPSES
+            elif self.combination in Keys.DEFAULT_KEYS or self.main in Keys.DISABLED_KEYS:
+                result = String.SHORTCUT_UNRECOGNIZED_OR_DEFAULT
+            else:
+                result = self.combination
+                if self.main and self.main > 0:
+                    self.update_shortcut()
+
+            self.label.setText(result)
+
+        def keyPressEvent(self, evt: QKeyEvent):
+            if evt.key() in Keys.ESCAPE_KEYS:
+                self.close()
+
+            if 30 < evt.key() < 127:
+                self.main = evt.key()
+            elif evt.key() in Keys.MODIFIER_KEY_DICT.keys():
+                self.modifiers.append(Keys.MODIFIER_KEY_DICT[evt.key()])
+            else:
+                self.main = None
+                self.modifiers.clear()
+
+            if self.main or len(self.modifiers) > 0:
+                self.update_combination()
+
+        def keyReleaseEvent(self, evt: QKeyEvent):
+            if evt.key() in Keys.MODIFIER_KEY_DICT.keys():
+                self.modifiers.remove(Keys.MODIFIER_KEY_DICT.get(evt.key(), None))
+            else:
+                self.main = None
+
+            self.update_combination()
+
+        def update_shortcut(self):
+            self.button.setText(self.combination)
+            self.close()
+
     def __init__(self, manager: LeechToolkitConfigManager):
         """
         Add-on options window.
@@ -354,12 +453,20 @@ class OptionsDialog(QDialog):
         self.restore_buttons.append(append_restore_button(self.ui.markerGroup))
         self.restore_buttons.append(append_restore_button(self.ui.browseButtonGroup))
         self.restore_buttons.append(append_restore_button(self.ui.syncTagCheckbox))
+        self.restore_buttons.append(append_restore_button(self.ui.shortcutsGroupbox))
 
         self.apply_button = self.ui.buttonBox.button(QDialogButtonBox.Apply)
         self.apply_button.setEnabled(False)
 
         self.ui.buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.apply)
         self.ui.buttonBox.button(QDialogButtonBox.RestoreDefaults).clicked.connect(self.restore_defaults)
+
+        self.ui.leechShortcutButton.clicked.connect(
+            lambda *args: self.ShortcutHandler(self, self.ui.leechShortcutButton).exec_()
+        )
+        self.ui.unleechShortcutButton.clicked.connect(
+            lambda *args: self.ShortcutHandler(self, self.ui.unleechShortcutButton).exec_()
+        )
 
         self.ui.syncUpdateButton.clicked.connect(sync_collection)
 
@@ -395,6 +502,10 @@ class OptionsDialog(QDialog):
                 self.ui.syncTagCheckbox.clicked,
                 self.ui.syncTagLineEdit.textChanged,
             ],
+            'shortcut_signals': [
+                self.ui.leechShortcutButton.clicked,
+                self.ui.unleechShortcutButton.clicked,
+            ],
         }
 
         global_button_args = [
@@ -421,6 +532,14 @@ class OptionsDialog(QDialog):
                 self.load_sync_tag,
                 self.config[Config.SYNC_TAG_OPTIONS],
                 Config.DEFAULT_CONFIG[Config.SYNC_TAG_OPTIONS],
+            ),
+            (
+                self.ui.shortcutsGroupbox.default_button,
+                global_signals['shortcut_signals'],
+                self.write_shortcuts,
+                self.load_shortcuts,
+                self.config[Config.SHORTCUT_OPTIONS],
+                Config.DEFAULT_CONFIG[Config.SHORTCUT_OPTIONS],
             )
         ]
 
@@ -485,6 +604,10 @@ class OptionsDialog(QDialog):
         self.ui.syncTagCheckbox.setChecked(sync_tag_conf[Config.SYNC_TAG_ENABLED])
         self.ui.syncTagLineEdit.setText(sync_tag_conf[Config.SYNC_TAG_TEXT])
 
+    def load_shortcuts(self, shortcut_conf: dict):
+        self.ui.leechShortcutButton.setText(shortcut_conf[Config.LEECH_SHORTCUT])
+        self.ui.unleechShortcutButton.setText(shortcut_conf[Config.UNLEECH_SHORTCUT])
+
     def write_marker(self, marker_conf: dict):
         marker_conf[Config.SHOW_LEECH_MARKER] = self.ui.markerGroup.isChecked()
         marker_conf[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
@@ -500,6 +623,10 @@ class OptionsDialog(QDialog):
         sync_tag_conf[Config.SYNC_TAG_ENABLED] = self.ui.syncTagCheckbox.isChecked()
         sync_tag_conf[Config.SYNC_TAG_TEXT] = self.ui.syncTagLineEdit.text()
 
+    def write_shortcuts(self, shortcut_conf: dict):
+        shortcut_conf[Config.LEECH_SHORTCUT] = self.ui.leechShortcutButton.text()
+        shortcut_conf[Config.UNLEECH_SHORTCUT] = self.ui.unleechShortcutButton.text()
+
     def _load(self):
         """
         Load all options.
@@ -510,6 +637,7 @@ class OptionsDialog(QDialog):
         self.load_marker(self.config[Config.MARKER_OPTIONS])
         self.load_leech_button(self.config[Config.BUTTON_OPTIONS])
         self.load_sync_tag(self.config[Config.SYNC_TAG_OPTIONS])
+        self.load_shortcuts(self.config[Config.SHORTCUT_OPTIONS])
 
         self.leech_form.load_ui(self.config[Config.LEECH_ACTIONS])
         self.unleech_form.load_ui(self.config[Config.UN_LEECH_ACTIONS])
@@ -525,6 +653,7 @@ class OptionsDialog(QDialog):
         self.write_marker(self.config[Config.MARKER_OPTIONS])
         self.write_button(self.config[Config.BUTTON_OPTIONS])
         self.write_sync_tag(self.config[Config.SYNC_TAG_OPTIONS])
+        self.write_shortcuts(self.config[Config.SHORTCUT_OPTIONS])
 
         self.leech_form.write_all(self.config[Config.LEECH_ACTIONS])
         self.unleech_form.write_all(self.config[Config.UN_LEECH_ACTIONS])

@@ -134,7 +134,11 @@ class Ui_ReverseForm(object):
         )
         self.consPrefixLabel.setText(_translate("ReverseForm", "Every"))
         self.consAnswerSpinbox.setToolTip(
-            _translate("ReverseForm", "Number of correct (not again) answers in a row to consider a card reversed.")
+            _translate(
+                "ReverseForm", "Number of correct (not again) answers in a row to consider a card\n"
+                               "                                             reversed.\n"
+                               "                                         "
+            )
         )
         self.consSuffixLabel.setText(_translate("ReverseForm", "correct answer(s) in a row:"))
         self.reverseMethodDropdown.setToolTip(_translate("ReverseForm", "Method for reversing a card\'s leech count."))
