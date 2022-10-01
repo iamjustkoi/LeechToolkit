@@ -85,6 +85,48 @@ class String:
     TIP_UNLEECHED_TEMPLATE = 'Un-leeched {} cards'
     TIP_SET_LAPSES_TEMPLATE = 'Set lapses for {} cards'
 
+    SHORTCUT_ELLIPSES = '...'
+    SHORTCUT_UNRECOGNIZED_OR_DEFAULT = 'Shortcut Default or Invalid'
+
+
+class Keys:
+    from aqt import Qt
+
+    ESCAPE_KEYS = [
+        Qt.Key_Escape,
+    ]
+
+    MODIFIER_KEY_DICT = {
+        Qt.Key_Control: 'Ctrl',
+        Qt.Key_Alt: 'Alt',
+        Qt.Key_Shift: 'Shift',
+    }
+
+    DISABLED_KEYS = [
+        Qt.Key_F1,
+        Qt.Key_F2,
+        Qt.Key_F3,
+        Qt.Key_F4,
+        Qt.Key_F5,
+        Qt.Key_F6,
+        Qt.Key_F7,
+        Qt.Key_F8,
+        Qt.Key_F9,
+        Qt.Key_F10,
+        Qt.Key_F11,
+        Qt.Key_F12,
+    ]
+
+    DEFAULT_KEYS = [
+        "O", "1", "2", "3", "4", "5", "6", "7",
+        "A", "B", "D", "E", "F", "I", "S", "T", "V", "Y",
+        "/", " ", "=", "-",
+        "F1", "F5",
+        "Shift+V", "Shift+!", "Shift+@", "Shift+*",
+        "Ctrl+1", "Ctrl+2", "Ctrl+3", "Ctrl+4", "Ctrl+E", "Ctrl+P", "Ctrl+Q", "Ctrl+Z", "Ctrl+Delete",
+        "Ctrl+Shift+A", "Ctrl+Shift+I", "Ctrl+Shift+N", "Ctrl+Shift+P", "Ctrl+Shift+:",
+    ]
+
 
 class EditAction:
     FIELD = 'field'
