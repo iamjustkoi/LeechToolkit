@@ -141,14 +141,9 @@ class Action:
 class Config:
     TOOLBAR_ENABLED = 'showToolsMenuOptions'
 
-    MENU_OPTIONS = 'menuOptions'
+    SHORTCUT_OPTIONS = 'menuOptions'
     LEECH_SHORTCUT = 'leechShortcut'
     UNLEECH_SHORTCUT = 'unleechShortcut'
-
-    SYNC_ENABLED = 'applyOnSync'
-    SYNC_TAG_OPTIONS = 'syncOptions'
-    SYNC_TAG_ENABLED = 'syncTagEnabled'
-    SYNC_TAG_TEXT = 'syncTagText'
 
     MARKER_OPTIONS = 'markerOptions'
     SHOW_LEECH_MARKER = 'showLeechMarker'
@@ -170,6 +165,11 @@ class Config:
 
     SET_LAPSES_INPUT = 'setLapseInput'
     SET_LAPSE_UPDATE_LEECHES = 'setLapseUpdateLeeches'
+
+    SYNC_ENABLED = 'applyOnSync'
+    SYNC_TAG_OPTIONS = 'syncOptions'
+    SYNC_TAG_ENABLED = 'syncTagEnabled'
+    SYNC_TAG_TEXT = 'syncTagText'
 
     LEECH_ACTIONS = 'leechActions'
     UN_LEECH_ACTIONS = 'unLeechActions'
@@ -227,7 +227,7 @@ class Config:
             SYNC_TAG_ENABLED: True,
             SYNC_TAG_TEXT: String.SYNC_TAG_DEFAULT,
         },
-        MENU_OPTIONS: {
+        SHORTCUT_OPTIONS: {
             LEECH_SHORTCUT: 'Ctrl+Shift+L',
             UNLEECH_SHORTCUT: 'Ctrl+Shift+U',
         },
