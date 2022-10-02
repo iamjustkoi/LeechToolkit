@@ -304,9 +304,7 @@
            <item>
             <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser
-               actions, database edits, etc.).
-              </string>
+              <string>* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser actions, database edits, etc.). </string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -322,8 +320,7 @@
               <string>Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches.</string>
              </property>
              <property name="title">
-              <string>Use a custom tag to keep track of toolkit updates across devices
-                                            </string>
+              Use a custom tag to keep track of toolkit updates across devicess</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
