@@ -42,7 +42,7 @@ from .consts import (
     ANKI_LEGACY_VER,
     ANKI_LIKE_ICON_PATH, ANKI_UNDO_UPDATE_VER,
     ANKI_URL, CURRENT_ANKI_VER,
-    ErrorMsg,
+    CURRENT_VERSION, ErrorMsg,
     KOFI_ICON_PATH,
     KOFI_URL,
     Keys,
@@ -483,6 +483,10 @@ class OptionsDialog(QDialog):
         self.ui.syncUpdateButton.clicked.connect(sync_collection)
 
         self.build_about_page()
+
+        # Update about header text with the current version number
+        updated_about_header = self.ui.about_label_header.text().format(version=CURRENT_VERSION)
+        self.ui.about_label_header.setText(updated_about_header)
 
         self._load()
         self.setup_restorables()
