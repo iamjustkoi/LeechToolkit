@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
+    <width>533</width>
     <height>520</height>
    </rect>
   </property>
@@ -43,7 +43,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>519</width>
+            <width>489</width>
             <height>175</height>
            </rect>
           </property>
@@ -85,8 +85,7 @@
               <item>
                <widget class="QCheckBox" name="almostCheckbox">
                 <property name="toolTip">
-                 <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.
-                 </string>
+                 <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.</string>
                 </property>
                 <property name="text">
                  <string>Show unique marker for about-to-be-leeched cards</string>
@@ -111,9 +110,7 @@
                    </sizepolicy>
                   </property>
                   <property name="toolTip">
-                   <string>Position of the attached marker. Attaches to the bottom of the reveiwer with a centered
-                    default value.
-                   </string>
+                   <string>Position of the attached marker. Attaches to the bottom of the reveiwer with a centered default value.</string>
                   </property>
                   <item>
                    <property name="text">
@@ -202,7 +199,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>519</width>
+            <width>489</width>
             <height>16</height>
            </rect>
           </property>
@@ -270,7 +267,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>519</width>
+            <width>497</width>
             <height>314</height>
            </rect>
           </property>
@@ -284,9 +281,7 @@
            <item>
             <widget class="QCheckBox" name="toolsOptionsCheckBox">
              <property name="toolTip">
-              <string>Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be
-               accessed in the Add-ons window from the &quot;Config&quot; button.
-              </string>
+              <string>Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be accessed in the Add-ons window from the &quot;Config&quot; button.</string>
              </property>
              <property name="text">
               <string>Show options in Tools menu</string>
@@ -296,9 +291,7 @@
            <item>
             <widget class="QCheckBox" name="syncUpdateCheckbox">
              <property name="toolTip">
-              <string>After syncing, updates the entire collection with the current options/actions based on the synced
-               review logs.
-              </string>
+              <string>After syncing, updates the entire collection with the current options/actions based on the synced review logs.</string>
              </property>
              <property name="text">
               <string>Update collection on-sync</string>
@@ -326,13 +319,11 @@
            <item>
             <widget class="QGroupBox" name="syncTagCheckbox">
              <property name="toolTip">
-              <string>Keeps track of leech/unleech actions across devices using a custom tag that gets added to any
-               filtered leeches.
-              </string>
+              <string>Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches.</string>
              </property>
              <property name="title">
               <string>Use a custom tag to keep track of toolkit updates across devices
-              </string>
+                                            </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -351,9 +342,7 @@
               <item>
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where
-                  it might've also been changed and synced/uploaded.
-                 </string>
+                 <string>* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might've also been changed and synced/uploaded.</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -446,8 +435,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>519</width>
-            <height>427</height>
+            <width>472</width>
+            <height>516</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="scroll_layout" stretch="0,0,1">
@@ -464,17 +453,15 @@
              </property>
              <property name="text">
               <string>## Leech Toolkit 🩸
-               Add additional tools and functionality for handling leeches in Anki!
+Add additional tools and functionality for handling leeches in Anki!
 
-               Version: {version}
-               Have any issues or feedback? Feel free to post on the project's issue section on
-               [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!
+Version: {version}  
+Have any issues or feedback? Feel free to post on the project's issue section on [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  
 
-               [Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)
-               [Source Code](https://github.com/iamjustkoi/LeechToolkit)
+[Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)  
+[Source Code](https://github.com/iamjustkoi/LeechToolkit)  
 
-               If you want to help support what I do:
-              </string>
+If you want to help support what I do:</string>
              </property>
              <property name="textFormat">
               <enum>Qt::MarkdownText</enum>
@@ -525,13 +512,11 @@
                 <enum>Qt::CustomContextMenu</enum>
                </property>
                <property name="text">
-                <string>Review on AnkiWeb</string>
+                <string>Review on AnkiWeb </string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../StudyTimeStats/res/ui/res/img/anki_like.png</normaloff>
-                 ../../../StudyTimeStats/res/ui/res/img/anki_like.png
-                </iconset>
+                 <normaloff>../../../StudyTimeStats/res/ui/res/img/anki_like.png</normaloff>../../../StudyTimeStats/res/ui/res/img/anki_like.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -565,13 +550,11 @@
                 <enum>Qt::CustomContextMenu</enum>
                </property>
                <property name="text">
-                <string>Buy me a coffee</string>
+                <string>  Buy me a coffee </string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG</normaloff>
-                 ../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG
-                </iconset>
+                 <normaloff>../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG</normaloff>../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -605,13 +588,11 @@
                 <enum>Qt::CustomContextMenu</enum>
                </property>
                <property name="text">
-                <string>Become a patron</string>
+                <string>  Become a patron </string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../StudyTimeStats/res/ui/res/img/patreon.png</normaloff>
-                 ../../../StudyTimeStats/res/ui/res/img/patreon.png
-                </iconset>
+                 <normaloff>../../../StudyTimeStats/res/ui/res/img/patreon.png</normaloff>../../../StudyTimeStats/res/ui/res/img/patreon.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -632,20 +613,25 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Every bit helps with maintaining and developing the add-on and is greatly appreciated!
+              <string>Every bit helps and is greatly appreciated!
 
-               ### Text Macros:
+### Text Macros:
 
-               - `%date` - the current date based on the system's locale (e.g. `2022-10-01`)
-               - `%reviews` - the review count for the current card (e.g. `3`)
-               - `%re:` - [Regular
-               Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
-               - Example Syntax:
-               - `%re:captured_expression`
-               - `%re:&quot;.*captured with spaces\W&quot;`
-               - `%re:\d\d\d\d-\d\d-\d\d` (capturing the above date format)
-               - `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)
-              </string>
+- `%date` - the current date based on the system's locale (e.g. `2022-10-01`)
+- `%reviews` - the review count for the current card (e.g. `3`)
+- `%re:` - [Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+    - Example Syntax:
+        - `%re:captured_expression`
+        - `%re:&quot;.*captured with spaces\W&quot;`
+        - `%re:\d\d\d\d-\d\d-\d\d` (capturing the above date format)
+- `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)
+
+&lt;br&gt;&lt;/br&gt;
+Thanks for downloading and happy leeching!  
+-koi  
+&lt;br&gt;&lt;/br&gt;  
+MIT License    
+©2022 JustKoi (iamjustkoi)  </string>
              </property>
              <property name="textFormat">
               <enum>Qt::MarkdownText</enum>
@@ -657,7 +643,7 @@
               <bool>true</bool>
              </property>
              <property name="textInteractionFlags">
-              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+              <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
              </property>
             </widget>
            </item>

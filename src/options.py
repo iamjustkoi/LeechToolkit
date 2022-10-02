@@ -4,6 +4,7 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 import time
 import traceback
+import webbrowser
 from pathlib import Path
 from typing import List
 
@@ -39,8 +40,17 @@ from aqt.qt import (
 from .config import LeechToolkitConfigManager
 from .consts import (
     ANKI_LEGACY_VER,
-    ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER,
-    ErrorMsg, Keys, LEGACY_FLAGS_PLACEHOLDER, String,
+    ANKI_LIKE_ICON_PATH, ANKI_UNDO_UPDATE_VER,
+    ANKI_URL, CURRENT_ANKI_VER,
+    ErrorMsg,
+    KOFI_ICON_PATH,
+    KOFI_URL,
+    Keys,
+    LEECH_ICON_PATH,
+    LEGACY_FLAGS_PLACEHOLDER,
+    PATREON_ICON_PATH,
+    PATREON_URL,
+    String,
     Config,
     Action,
     Macro,
@@ -441,6 +451,8 @@ class OptionsDialog(QDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(OptionsDialog=self)
 
+        self.setWindowIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{LEECH_ICON_PATH}'))
+
         self.reverse_form = ReverseWidget(flags=mw.windowFlags(), restore_buttons=self.restore_buttons)
         self.ui.optionsScrollLayout.addWidget(self.reverse_form)
 
@@ -469,6 +481,8 @@ class OptionsDialog(QDialog):
         )
 
         self.ui.syncUpdateButton.clicked.connect(sync_collection)
+
+        self.build_about_page()
 
         self._load()
         self.setup_restorables()
@@ -588,6 +602,53 @@ class OptionsDialog(QDialog):
         """
         self.apply()
         super().accept()
+
+    def build_about_page(self):
+        # About page buttons
+        self.ui.context_menu = QMenu(self)
+
+        def on_copy_link(button):
+            """
+            Copies a link to the clipboard based on the input button.
+            :param button: button to use for determining which link to copy
+            """
+            cb = self.manager.mw.app.clipboard()
+            cb.clear(mode=cb.Clipboard)
+
+            if button.objectName() == self.ui.patreon_button.objectName():
+                cb.setText(PATREON_URL, mode=cb.Clipboard)
+            elif button.objectName() == self.ui.kofi_button.objectName():
+                cb.setText(KOFI_URL, mode=cb.Clipboard)
+            elif button.objectName() == self.ui.like_button.objectName():
+                cb.setText(ANKI_URL, mode=cb.Clipboard)
+
+        def on_line_context_menu(point, button):
+            """
+            Handles context menu actions for the input button.
+            :param point: input coordinate to display the menu
+            :param button: button being clicked/triggered
+            """
+            self.ui.context_menu = QMenu(self)
+            self.ui.context_menu.addAction(String.COPY_LINK_ACTION).triggered.connect(lambda: on_copy_link(button))
+            self.ui.context_menu.exec(button.mapToGlobal(point))
+
+        self.ui.kofi_button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{KOFI_ICON_PATH}'))
+        self.ui.kofi_button.released.connect(lambda: webbrowser.open(KOFI_URL))
+        self.ui.kofi_button.customContextMenuRequested.connect(
+            lambda point: on_line_context_menu(point, self.ui.kofi_button)
+        )
+
+        self.ui.patreon_button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{PATREON_ICON_PATH}'))
+        self.ui.patreon_button.released.connect(lambda: webbrowser.open(PATREON_URL))
+        self.ui.patreon_button.customContextMenuRequested.connect(
+            lambda point: on_line_context_menu(point, self.ui.patreon_button)
+        )
+
+        self.ui.like_button.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{ANKI_LIKE_ICON_PATH}'))
+        self.ui.like_button.released.connect(lambda: webbrowser.open(ANKI_URL))
+        self.ui.like_button.customContextMenuRequested.connect(
+            lambda point: on_line_context_menu(point, self.ui.like_button)
+        )
 
     def load_marker(self, marker_conf: dict):
         self.ui.markerGroup.setChecked(marker_conf[Config.SHOW_LEECH_MARKER])
