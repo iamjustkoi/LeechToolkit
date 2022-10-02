@@ -4,9 +4,9 @@
 
 ## Installation
 
-Install from [Anki-Web](https://ankiweb.net/shared/info/@addon_id)  
+Install from [Anki-Web](https://ankiweb.net/shared/info/368380974)  
 Or go to "Tools -> Add-ons -> Get Add-ons..." and paste these numbers in:
-> @addon_id
+> 368380974
 
 ## Features
 
