@@ -802,10 +802,10 @@ class ActionsWidget(QWidget):
         self.ui.queueLabelTop.setGraphicsEffect(QGraphicsOpacityEffect())
 
         self.ui.queueFromSpinbox.dropdown = self.ui.queueFromDropdown
-        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueFromSpinbox.refresh_window())
+        self.ui.queueFromDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueFromSpinbox.refresh())
 
         self.ui.queueToSpinbox.dropdown = self.ui.queueToDropdown
-        self.ui.queueToDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueToSpinbox.refresh_window())
+        self.ui.queueToDropdown.currentIndexChanged.connect(lambda *args: self.ui.queueToSpinbox.refresh())
 
         self.ui.queueCurrentDeckCheckbox.stateChanged.connect(lambda checked: self.update_queue_info(checked))
 
