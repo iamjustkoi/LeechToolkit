@@ -365,14 +365,14 @@ class OptionsDialog(QDialog):
 
     class ShortcutHandler(QDialog):
         def __init__(self, parent, button: QPushButton):
-            super().__init__(parent=parent)
+            super().__init__(parent=parent, flags=mw.windowFlags())
             self.button = button
 
             self.layout = QVBoxLayout()
 
             self.label = QLabel()
 
-            self.layout.addWidget(self.label)
+            self.layout.addWidget(self.label, alignment=Qt.AlignHCenter | Qt.AlignVCenter)
 
             self.setLayout(self.layout)
 
@@ -1322,6 +1322,10 @@ class EditFieldItem(QWidget):
             lambda action: _handle_new_field(self.list_widget, action, self.set_model)
         )
         _fill_menu_fields(self.widget.fieldButtonLabel)
+
+        self.completer = CustomCompleter(self.widget.inputEdit)
+        self.completer.set_list([suggestion for suggestion in Macro.MACROS if suggestion != Macro.REGEX])
+        self.widget.inputEdit.setCompleter(self.completer)
 
         self._load()
 

@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>574</width>
+    <width>563</width>
     <height>520</height>
    </rect>
   </property>
@@ -43,7 +43,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>530</width>
+               <width>519</width>
             <height>175</height>
            </rect>
           </property>
@@ -58,122 +58,123 @@
             <number>6</number>
            </property>
            <item>
-            <widget class="QGroupBox" name="markerGroup">
-             <property name="toolTip">
-              <string>Show a marker on leech cards during review.</string>
-             </property>
-             <property name="title">
-              <string>Leech Mark</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-                <layout class="QVBoxLayout" name="markerLayout">
-                    <item>
-                        <widget class="QCheckBox" name="almostBackCheckbox">
-                            <property name="toolTip">
-                                <string>Disables the mark when only showing the front/answer in reviews.</string>
-                            </property>
-                            <property name="text">
-                                <string>Only show on back of cards</string>
-                            </property>
-                            <property name="checked">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                    </item>
-                    <item>
-                        <widget class="QCheckBox" name="almostCheckbox">
-                            <property name="toolTip">
-                                <string>When reviewing, displays a mark below the current card if it's about to be
-                                    marked as a leech.
-                                </string>
-                            </property>
-                            <property name="text">
-                                <string>Show unique marker for about-to-be-leeched cards</string>
-                            </property>
-                        </widget>
-                    </item>
-                    <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_4">
-                            <item>
-                                <widget class="QLabel" name="almostLabel">
-                                    <property name="text">
-                                        <string>Marker Position</string>
-                                    </property>
-                                </widget>
-                            </item>
-                            <item>
-                                <widget class="QComboBox" name="almostPosDropdown">
-                                    <property name="sizePolicy">
-                                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                                            <horstretch>0</horstretch>
-                                            <verstretch>0</verstretch>
-                                        </sizepolicy>
-                                    </property>
-                                    <property name="toolTip">
-                                        <string>Position of the attached marker. Attaches to the bottom of the reveiwer
-                                            with a centered default value.
-                                        </string>
-                                    </property>
-                                    <item>
-                                        <property name="text">
-                                            <string>Default</string>
-                                        </property>
-                                    </item>
-                                    <item>
-                                        <property name="text">
-                                            <string>Left</string>
-                                        </property>
-                                    </item>
-                                    <item>
-                                        <property name="text">
-                                            <string>Right</string>
-                                        </property>
-                                    </item>
-                                </widget>
-                            </item>
-                        </layout>
-                    </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-               <widget class="QGroupBox" name="browseButtonGroup">
+               <widget class="QGroupBox" name="markerGroup">
                    <property name="toolTip">
-                       <string>Shows a button on bottom bar whenever cards with the leech tag are found in a deck.
-                       </string>
+                       <string>Show a marker on leech cards during review.</string>
                    </property>
                    <property name="title">
-                       <string>Bottom Bar Button</string>
+                       <string>Leech Mark</string>
                    </property>
                    <property name="checkable">
                        <bool>true</bool>
                    </property>
-                   <layout class="QHBoxLayout" name="horizontalLayout">
+                   <layout class="QVBoxLayout" name="markerLayout">
                        <item>
-                           <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
+                           <widget class="QCheckBox" name="almostBackCheckbox">
                                <property name="toolTip">
-                                   <string>Enables the button on the main, deck list page.</string>
+                                   <string>Disables the mark when only showing the front/answer in reviews.</string>
                                </property>
                                <property name="text">
-                                   <string>Deck Browser</string>
+                                   <string>Only show on back of cards</string>
+                               </property>
+                               <property name="checked">
+                                   <bool>true</bool>
                                </property>
                            </widget>
                        </item>
                        <item>
-                           <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
+                           <widget class="QCheckBox" name="almostCheckbox">
                                <property name="toolTip">
-                                   <string>Enables the button for the page show when viewing a specific deck.</string>
+                                   <string>When reviewing, displays a mark below the current card if it's about to be
+                                       marked as a leech.
+                                   </string>
                                </property>
                                <property name="text">
-                                   <string>Deck Overview</string>
+                                   <string>Show unique marker for about-to-be-leeched cards</string>
                                </property>
                            </widget>
+                       </item>
+                       <item>
+                           <layout class="QHBoxLayout" name="horizontalLayout_4">
+                               <item>
+                                   <widget class="QLabel" name="almostLabel">
+                                       <property name="text">
+                                           <string>Marker Position</string>
+                                       </property>
+                                   </widget>
+                               </item>
+                               <item>
+                                   <widget class="QComboBox" name="almostPosDropdown">
+                                       <property name="sizePolicy">
+                                           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                                               <horstretch>0</horstretch>
+                                               <verstretch>0</verstretch>
+                                           </sizepolicy>
+                                       </property>
+                                       <property name="toolTip">
+                                           <string>Position of the attached marker. Attaches to the bottom of the
+                                               reveiwer with a centered default value.
+                                           </string>
+                                       </property>
+                                       <item>
+                                           <property name="text">
+                                               <string>Default</string>
+                                           </property>
+                                       </item>
+                                       <item>
+                                           <property name="text">
+                                               <string>Left</string>
+                                           </property>
+                                       </item>
+                                       <item>
+                                           <property name="text">
+                                               <string>Right</string>
+                                           </property>
+                                       </item>
+                                   </widget>
+                               </item>
+                           </layout>
                        </item>
                    </layout>
                </widget>
            </item>
+              <item>
+                  <widget class="QGroupBox" name="browseButtonGroup">
+                      <property name="toolTip">
+                          <string>Shows a button on bottom bar whenever cards with the leech tag are found in a deck.
+                          </string>
+                      </property>
+                      <property name="title">
+                          <string>Bottom Bar Button</string>
+                      </property>
+                      <property name="checkable">
+                          <bool>true</bool>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout">
+                          <item>
+                              <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
+                                  <property name="toolTip">
+                                      <string>Enables the button on the main, deck list page.</string>
+                                  </property>
+                                  <property name="text">
+                                      <string>Deck Browser</string>
+                                  </property>
+                              </widget>
+                          </item>
+                          <item>
+                              <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
+                                  <property name="toolTip">
+                                      <string>Enables the button for the page show when viewing a specific deck.
+                                      </string>
+                                  </property>
+                                  <property name="text">
+                                      <string>Deck Overview</string>
+                                  </property>
+                              </widget>
+                          </item>
+                      </layout>
+                  </widget>
+              </item>
           </layout>
          </widget>
         </widget>
@@ -204,7 +205,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-               <width>530</width>
+               <width>519</width>
             <height>16</height>
            </rect>
           </property>
@@ -257,22 +258,22 @@
         <widget class="QScrollArea" name="advancedScrollArea">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
+            <property name="widgetResizable">
+                <bool>true</bool>
+            </property>
+            <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
             <widget class="QWidget" name="scrollAreaWidgetContents">
                 <property name="geometry">
                     <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>530</width>
+                        <width>519</width>
                         <height>314</height>
                     </rect>
                 </property>
@@ -318,54 +319,55 @@
                                     actions, database edits, etc.).
                                 </string>
                             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-             <property name="indent">
-              <number>12</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="syncTagCheckbox">
-                <property name="toolTip">
-                    <string>Keeps track of leech/unleech actions across devices using a custom tag that gets added to
-                        any filtered leeches.
-                    </string>
-                </property>
-                <property name="title">
-                    <string>Use a custom tag to keep track of toolkit updates across devices
-                    </string>
-                </property>
-                <property name="checkable">
-                    <bool>true</bool>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_7">
-                    <item>
-                        <widget class="QLineEdit" name="syncTagLineEdit">
-                            <property name="toolTip">
-                                <string>Custom tag text.</string>
-                            </property>
-                            <property name="text">
-                                <string>leech::toolkit-filtered</string>
-                            </property>
-                        </widget>
-                    </item>
-                    <item>
-                        <widget class="QLabel" name="label">
-                            <property name="text">
-                                <string>* Before syncing/updating, should be updated to the same tag as any other Anki
-                                    client(s) where it might've also been changed and synced/uploaded.
-                                </string>
-                            </property>
                             <property name="wordWrap">
                                 <bool>true</bool>
                             </property>
+                            <property name="indent">
+                                <number>12</number>
+                            </property>
                         </widget>
                     </item>
-                </layout>
-            </widget>
-           </item>
+                    <item>
+                        <widget class="QGroupBox" name="syncTagCheckbox">
+                            <property name="toolTip">
+                                <string>Keeps track of leech/unleech actions across devices using a custom tag that gets
+                                    added to any filtered leeches.
+                                </string>
+                            </property>
+                            <property name="title">
+                                <string>Use a custom tag to keep track of toolkit updates across devices
+                                </string>
+                            </property>
+                            <property name="checkable">
+                                <bool>true</bool>
+                            </property>
+                            <layout class="QVBoxLayout" name="verticalLayout_7">
+                                <item>
+                                    <widget class="QLineEdit" name="syncTagLineEdit">
+                                        <property name="toolTip">
+                                            <string>Custom tag text.</string>
+                                        </property>
+                                        <property name="text">
+                                            <string>leech::toolkit-filtered</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QLabel" name="label">
+                                        <property name="text">
+                                            <string>* Before syncing/updating, should be updated to the same tag as any
+                                                other Anki client(s) where it might've also been changed and
+                                                synced/uploaded.
+                                            </string>
+                                        </property>
+                                        <property name="wordWrap">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </widget>
+                    </item>
                     <item>
                         <widget class="QPushButton" name="syncUpdateButton">
                             <property name="sizePolicy">
@@ -440,13 +442,19 @@
             <layout class="QVBoxLayout" name="verticalLayout_8">
                 <item>
                     <widget class="QScrollArea" name="scroll_area">
+                        <property name="sizeAdjustPolicy">
+                            <enum>QAbstractScrollArea::AdjustToContents</enum>
+                        </property>
+                        <property name="widgetResizable">
+                            <bool>true</bool>
+                        </property>
                         <widget class="QWidget" name="about_scroll">
                             <property name="geometry">
                                 <rect>
                                     <x>0</x>
                                     <y>0</y>
-                                    <width>449</width>
-                                    <height>802</height>
+                                    <width>519</width>
+                                    <height>427</height>
                                 </rect>
                             </property>
                             <layout class="QVBoxLayout" name="scroll_layout" stretch="0,0,1">
@@ -462,18 +470,18 @@
                                             </sizepolicy>
                                         </property>
                                         <property name="text">
-                                            <string>## Leech Toolkit
-                                                Adds a total and ranged study time statistic to Anki's main window.
+                                            <string>## Leech Toolkit 🩸
+                                                Add additional tools and functionality for handling leeches in Anki!
 
                                                 Version: {version}
                                                 Have any issues or feedback? Feel free to post on the project's issue
                                                 section on
                                                 [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!
 
-                                                [Releases/Changelog](https://github.com/iamjustkoi/StudyTimeStats/releases)
-                                                [Source Code](https://github.com/iamjustkoi/StudyTimeStats)
+                                                [Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)
+                                                [Source Code](https://github.com/iamjustkoi/LeechToolkit)
 
-                                                If you want to help support what I do::
+                                                If you want to help support what I do:
                                             </string>
                                         </property>
                                         <property name="textFormat">
@@ -637,53 +645,20 @@
                                         <property name="text">
                                             <string>Every bit helps with maintaining and developing the add-on and is
                                                 greatly appreciated!
-                                                ### Text Macros
-                                                The add-on can also filter text in the custom labels input to show
-                                                information based on what's set in the config (e.g. &quot;Past %range&quot;
-                                                to &quot;Past Week&quot;). These can be used multiple times and will
-                                                update whenever Anki's main window reloads.
 
-                                                ### Available Macros:
+                                                ### Text Macros:
 
-                                                ##### General
-                                                + `%range` - the currently selected range format (Week, 2 Weeks, Month,
-                                                Year)
-                                                + `%from_date` - range filter's start date using the system's locale
-                                                (2022-06-30)
-                                                + `%from_day` - range filter's starting day using a compact format (Sun)
-                                                + `%from_full_day` - range filter's full start day (Sunday)
-                                                + `%from_month` - range filter's month name using a compact format (Sep)
-                                                + `%from_full_month` - range filter's full month name (September)
-                                                + `%days` - total days the range filter checks against (17)
-                                                &lt;br&gt;&lt;/br&gt;
-                                                ##### Advanced
-                                                These macros will each index the received review logs and output its
-                                                individual value-unit combination (e.g. &quot;%total_hrs&quot; -&gt;
-                                                &quot;3.14 hrs&quot;).
-                                                + `%total_hrs` - total study time
-                                                + `%range_hrs` - ranged study time
-                                                + `%prev_range_hrs` - total study time of the last calendar range
-                                                &lt;br&gt;&lt;/br&gt;
-
-                                                Total time for a specific range (current week, current month, etc):
-                                                + `%week_hrs`, `%two_week_hrs`, `%month_hrs`, `%year_hrs`
-                                                &lt;br&gt;&lt;/br&gt;
-
-                                                Total time for a specific, previous range (previous week, previous
-                                                month, etc):
-                                                + `%prev_day_hrs`, `%prev_week_hrs`, `%prev_two_week_hrs`,
-                                                `%prev_month_hrs`, `%prev_year_hrs`
-                                                &lt;br&gt;&lt;/br&gt;
-                                                ##### Misc
-                                                + `%%` - returns a single % symbol and doesn't apply the text macro (%,
-                                                %range, etc)
-
-                                                &lt;br&gt;&lt;/br&gt;
-                                                Thanks for downloading and hope you enjoy!
-                                                -koi
-                                                &lt;br&gt;&lt;/br&gt;
-                                                MIT License
-                                                ©2022 JustKoi (iamjustkoi)
+                                                - `%date` - the current date based on the system's locale (e.g.
+                                                `2022-10-01`)
+                                                - `%reviews` - the review count for the current card (e.g. `3`)
+                                                - `%re:` - [Regular
+                                                Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+                                                - Example Syntax:
+                                                - `%re:captured_expression`
+                                                - `%re:&quot;.*captured with spaces\W&quot;`
+                                                - `%re:\d\d\d\d-\d\d-\d\d` (capturing the above date format)
+                                                - `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of
+                                                applying the macro)
                                             </string>
                                         </property>
                                         <property name="textFormat">
@@ -694,6 +669,11 @@
                                         </property>
                                         <property name="wordWrap">
                                             <bool>true</bool>
+                                        </property>
+                                        <property name="textInteractionFlags">
+                                            <set>
+                                                Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse
+                                            </set>
                                         </property>
                                     </widget>
                                 </item>
