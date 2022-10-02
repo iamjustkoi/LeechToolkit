@@ -1013,9 +1013,10 @@ class ActionsWidget(QWidget):
     # DECK MOVE
     def load_move_deck(self, action_conf: dict):
         self.ui.deckMoveGroup.setChecked(action_conf[Action.ENABLED])
-        deck_names = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
+        suggestions = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
+        [suggestions.append(suggestion) for suggestion in Macro.MACROS if suggestion != Macro.REGEX]
         deck_name = _try_get_deck_name(action_conf[Action.INPUT])
-        self.deck_completer.set_list(deck_names)
+        self.deck_completer.set_list(suggestions)
         self.ui.deckMoveLine.setCompleter(self.deck_completer)
         self.ui.deckMoveLine.setText(deck_name)
 
