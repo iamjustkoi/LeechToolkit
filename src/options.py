@@ -2,7 +2,6 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-import time
 import traceback
 import webbrowser
 from pathlib import Path
