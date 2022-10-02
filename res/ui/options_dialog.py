@@ -15,7 +15,7 @@ class Ui_OptionsDialog(object):
     def setupUi(self, OptionsDialog):
         OptionsDialog.setObjectName("OptionsDialog")
         OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
-        OptionsDialog.resize(574, 520)
+        OptionsDialog.resize(563, 520)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(OptionsDialog)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabWidget = QtWidgets.QTabWidget(OptionsDialog)
@@ -30,7 +30,7 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 175))
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 519, 175))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -99,7 +99,7 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 530, 16))
+        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 519, 16))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -646,7 +646,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 530, 314))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 519, 314))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -713,9 +713,11 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.aboutTab)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.scroll_area = QtWidgets.QScrollArea(self.aboutTab)
+        self.scroll_area.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.about_scroll = QtWidgets.QWidget()
-        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 449, 802))
+        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 519, 427))
         self.about_scroll.setObjectName("about_scroll")
         self.scroll_layout = QtWidgets.QVBoxLayout(self.about_scroll)
         self.scroll_layout.setSpacing(6)
@@ -792,6 +794,9 @@ class Ui_OptionsDialog(object):
         self.about_label_body.setTextFormat(QtCore.Qt.MarkdownText)
         self.about_label_body.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.about_label_body.setWordWrap(True)
+        self.about_label_body.setTextInteractionFlags(
+            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse
+            )
         self.about_label_body.setObjectName("about_label_body")
         self.scroll_layout.addWidget(self.about_label_body)
         self.scroll_layout.setStretch(2, 1)
@@ -802,8 +807,7 @@ class Ui_OptionsDialog(object):
         self.buttonBox = QtWidgets.QDialogButtonBox(OptionsDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok |
-            QtWidgets.QDialogButtonBox.RestoreDefaults
+            QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.RestoreDefaults
             )
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_4.addWidget(self.buttonBox)
@@ -1016,17 +1020,17 @@ class Ui_OptionsDialog(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.advancedTab), _translate("OptionsDialog", "Advanced"))
         self.about_label_header.setText(
             _translate(
-                "OptionsDialog", "## Leech Toolkit\n"
-                                 "Adds a total and ranged study time statistic to Anki\'s main window.  \n"
+                "OptionsDialog", "## Leech Toolkit 🩸\n"
+                                 "Add additional tools and functionality for handling leeches in Anki!\n"
                                  "\n"
                                  "Version: {version}  \n"
                                  "Have any issues or feedback? Feel free to post on the project\'s issue section on ["
                                  "GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  \n"
                                  "\n"
-                                 "[Releases/Changelog](https://github.com/iamjustkoi/StudyTimeStats/releases)  \n"
-                                 "[Source Code](https://github.com/iamjustkoi/StudyTimeStats)  \n"
+                                 "[Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)  \n"
+                                 "[Source Code](https://github.com/iamjustkoi/LeechToolkit)  \n"
                                  "\n"
-                                 "If you want to help support what I do::"
+                                 "If you want to help support what I do:"
             )
         )
         self.like_button.setText(_translate("OptionsDialog", "Review on AnkiWeb "))
@@ -1036,45 +1040,17 @@ class Ui_OptionsDialog(object):
             _translate(
                 "OptionsDialog",
                 "Every bit helps with maintaining and developing the add-on and is greatly appreciated!\n"
-                "### Text Macros\n"
-                "The add-on can also filter text in the custom labels input to show information based on what\'s set "
-                "in the config (e.g. \"Past %range\" to \"Past Week\"). These can be used multiple times and will "
-                "update whenever Anki\'s main window reloads.\n"
                 "\n"
-                "### Available Macros:\n"
+                "### Text Macros:\n"
                 "\n"
-                "##### General\n"
-                "+ `%range` - the currently selected range format (Week, 2 Weeks, Month, Year)\n"
-                "+ `%from_date` - range filter\'s start date using the system\'s locale (2022-06-30)\n"
-                "+ `%from_day` - range filter\'s starting day using a compact format (Sun)\n"
-                "+ `%from_full_day` - range filter\'s full start day (Sunday)\n"
-                "+ `%from_month` - range filter\'s month name using a compact format (Sep)\n"
-                "+ `%from_full_month` - range filter\'s full month name (September)\n"
-                "+ `%days` - total days the range filter checks against (17)\n"
-                "<br></br>\n"
-                "##### Advanced\n"
-                "These macros will each index the received review logs and output its individual value-unit combination (e.g. \"%total_hrs\" -> \"3.14 hrs\").\n"
-                "+ `%total_hrs` - total study time\n"
-                "+ `%range_hrs` - ranged study time\n"
-                "+ `%prev_range_hrs` - total study time of the last calendar range\n"
-                "<br></br>\n"
-                "\n"
-                "Total time for a specific range (current week, current month, etc):\n"
-                "+ `%week_hrs`, `%two_week_hrs`, `%month_hrs`, `%year_hrs`\n"
-                "<br></br>\n"
-                "\n"
-                "Total time for a specific, previous range (previous week, previous month, etc):\n"
-                "+ `%prev_day_hrs`, `%prev_week_hrs`, `%prev_two_week_hrs`, `%prev_month_hrs`, `%prev_year_hrs`\n"
-                "<br></br>\n"
-                "##### Misc\n"
-                "+ `%%` - returns a single % symbol and doesn\'t apply the text macro (%, %range, etc)\n"
-                "\n"
-                "<br></br>\n"
-                "Thanks for downloading and hope you enjoy!  \n"
-                "-koi  \n"
-                "<br></br>  \n"
-                "MIT License    \n"
-                "©2022 JustKoi (iamjustkoi)  "
+                "- `%date` - the current date based on the system\'s locale (e.g. `2022-10-01`)\n"
+                "- `%reviews` - the review count for the current card (e.g. `3`)\n"
+                "- `%re:` - [Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)\n"
+                "    - Example Syntax:\n"
+                "        - `%re:captured_expression`\n"
+                "        - `%re:\".*captured with spaces\\W\"`\n"
+                "        - `%re:\\d\\d\\d\\d-\\d\\d-\\d\\d` (capturing the above date format)\n"
+                "- `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)"
             )
         )
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.aboutTab), _translate("OptionsDialog", "About"))

@@ -31,16 +31,16 @@ try:
     )
 except ImportError as error:
     def skip_if_selection_is_empty(*args):
-        pass
+        ...
 
 
     def ensure_editor_saved(*args):
-        pass
+        ...
 
 
     if error.name == 'tooltip':
         def tooltip():
-            pass
+            ...
 
 try:
     from anki.collection import OpChanges
