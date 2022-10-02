@@ -383,9 +383,7 @@
          <item row="1" column="0">
           <widget class="QCheckBox" name="forgetRestorePosCheckbox">
            <property name="toolTip">
-            <string>Restore's the cards position to the position it had when it was imported (before other
-             position-related actions).
-            </string>
+            <string>Restore's the cards position to the position it had when it was imported (before other position-related actions). </string>
            </property>
            <property name="text">
             <string>Restore imported position where possible</string>
@@ -838,10 +836,7 @@
             <item>
              <widget class="TipSlider" name="queueRatioSlider">
               <property name="toolTip">
-               <string>Controls how similar a card's fields must be for it to be considered &quot;similar&quot;.
-                (Default: 25%, e.g.&quot;ABCD&quot; will match with &quot;CDEF&quot; using the &quot;CD&quot;
-                characters)
-               </string>
+               <string>Controls how similar a card's fields must be for it to be considered &quot;similar&quot;. (Default: 25%, e.g.&quot;ABCD&quot; will match with &quot;CDEF&quot; using the &quot;CD&quot; characters) </string>
               </property>
               <property name="minimum">
                <number>0</number>
@@ -1047,12 +1042,10 @@
                    </size>
                   </property>
                   <property name="toolTip">
-                   <string>Words/characters ignored when determining card similarities.
-                    Separated by spaces/new lines.
-                    Can ignore lines of text by placing it in quotes (e.g. &quot;ignored text&quot;),
-                    and ignore/include quote characters by escaping with '\&quot;' (e.g. &quot;this will be included in
-                    the ignore: \&quot;&quot;).
-                   </string>
+                   <string>Words/characters ignored when determining card similarities. Separated by spaces/new lines.
+                   Can ignore lines of text by placing it in quotes (e.g. &quot;ignored text&quot;),
+                   and ignore/include quote characters by escaping with '\&quot;'
+                   (e.g. &quot;this will be included in the ignore: \&quot;&quot;). </string>
                   </property>
                   <property name="sizeAdjustPolicy">
                    <enum>QAbstractScrollArea::AdjustIgnored</enum>

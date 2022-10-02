@@ -107,9 +107,7 @@
                                          </sizepolicy>
                                      </property>
                                      <property name="toolTip">
-                                         <string>Use the same threshold as the current leech threshold (Anki Default:
-                                             8).
-                                         </string>
+                                         <string>Use the same threshold as the current leech threshold (Anki Default: 8).</string>
                                      </property>
                                      <property name="text">
                                          <string>Same as Leech Threshold</string>
@@ -161,8 +159,7 @@
                                          </sizepolicy>
                                      </property>
                                      <property name="toolTip">
-                                         <string>Number of correct (not again) answers in a row to consider a card
-                                             reversed.
+                                         <string>Number of correct (not again) answers in a row to consider a card reversed.
                                          </string>
                                      </property>
                                      <property name="suffix">

@@ -356,7 +356,7 @@ class Ui_OptionsDialog(object):
 "\n"
 "- `%date` - the current date based on the system\'s locale (e.g. `2022-10-01`)\n"
 "- `%reviews` - the review count for the current card (e.g. `3`)\n"
-"- `%re:` - [Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)\n"
+"- `%re:` - [Regular Expressions](https://learnxinyminutes.com/docs/pcre/)\n"
 "    - Example Syntax:\n"
 "        - `%re:captured_expression`\n"
 "        - `%re:\".*captured with spaces\\W\"`\n"
