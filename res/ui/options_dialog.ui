@@ -472,6 +472,12 @@ If you want to help support what I do:</string>
              <property name="wordWrap">
               <bool>true</bool>
              </property>
+             <property name="openExternalLinks">
+              <bool>true</bool>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
             </widget>
            </item>
            <item>
@@ -619,7 +625,7 @@ If you want to help support what I do:</string>
 
 - `%date` - the current date based on the system's locale (e.g. `2022-10-01`)
 - `%reviews` - the review count for the current card (e.g. `3`)
-- `%re:` - [Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+- `%re:` - [Regular Expressions](https://learnxinyminutes.com/docs/pcre/)
     - Example Syntax:
         - `%re:captured_expression`
         - `%re:&quot;.*captured with spaces\W&quot;`
@@ -640,6 +646,9 @@ MIT License
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
              <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="openExternalLinks">
               <bool>true</bool>
              </property>
              <property name="textInteractionFlags">
