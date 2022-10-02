@@ -14,6 +14,7 @@ from aqt.utils import tooltip
 from aqt.webview import WebContent, AnkiWebView
 from aqt import gui_hooks, mw
 from aqt.reviewer import Reviewer
+from aqt.qt import QShortcut, QKeySequence
 
 from .legacy import _try_check_filtered, _try_get_config_dict_for_did, _try_get_current_did
 from .updates import run_action_updates, run_reverse_updates, update_card, is_unique_card
@@ -137,24 +138,21 @@ class ReviewWrapper:
             self.reviewer = reviewer
             self.load_options(did)
 
+            leech_seq = QKeySequence(self.toolkit_config[Config.SHORTCUT_OPTIONS][Config.LEECH_SHORTCUT])
+            leech_shortcut = QShortcut(leech_seq, mw, lambda *args: self.run_action(Config.LEECH_ACTIONS))
+
             self.leech_action = aqt.qt.QAction(String.REVIEWER_ACTION_LEECH, mw)
-            leech_shortcut = aqt.qt.QKeySequence(self.toolkit_config[Config.SHORTCUT_OPTIONS][Config.LEECH_SHORTCUT])
-            self.leech_action.setShortcut(leech_shortcut)
+            self.leech_action.setShortcut(leech_seq)
             self.leech_action.triggered.connect(lambda *args: self.run_action(Config.LEECH_ACTIONS))
+            mw.stateShortcuts.append(leech_shortcut)
+
+            unleech_seq = QKeySequence(self.toolkit_config[Config.SHORTCUT_OPTIONS][Config.UNLEECH_SHORTCUT])
+            unleech_shortcut = QShortcut(unleech_seq, mw, lambda *args: self.run_action(Config.UN_LEECH_ACTIONS))
 
             self.unleech_action = aqt.qt.QAction(String.REVIEWER_ACTION_UNLEECH, mw)
-            unleech_shortcut = aqt.qt.QKeySequence(
-                self.toolkit_config[Config.SHORTCUT_OPTIONS][Config.UNLEECH_SHORTCUT]
-            )
-            self.unleech_action.setShortcut(unleech_shortcut)
+            self.unleech_action.setShortcut(unleech_seq)
             self.unleech_action.triggered.connect(lambda *args: self.run_action(Config.UN_LEECH_ACTIONS))
-
-            mw.setStateShortcuts(
-                [
-                    (leech_shortcut, lambda *args: self.run_action(Config.LEECH_ACTIONS)),
-                    (unleech_shortcut, lambda *args: self.run_action(Config.UN_LEECH_ACTIONS)),
-                ]
-            )
+            mw.stateShortcuts.append(unleech_shortcut)
 
     def load_options(self, did: DeckId = None):
         """
@@ -270,10 +268,10 @@ class ReviewWrapper:
         reviewer_will_end.append(self.remove_hooks)
 
     def append_context_menu(self, webview: AnkiWebView, menu: aqt.qt.QMenu):
-        action_labels = [action.text() for action in menu.actions()]
+        for action in menu.actions():
+            if action.text() in (String.REVIEWER_ACTION_LEECH, String.REVIEWER_ACTION_UNLEECH):
+                menu.removeAction(action)
         menu.addSeparator()
-        menu.removeAction(self.leech_action) if String.REVIEWER_ACTION_LEECH in action_labels else None
-        menu.removeAction(self.unleech_action) if String.REVIEWER_ACTION_UNLEECH in action_labels else None
         menu.addAction(self.leech_action)
         menu.addAction(self.unleech_action)
 
