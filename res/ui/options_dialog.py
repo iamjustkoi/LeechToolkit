@@ -16,10 +16,14 @@ class Ui_OptionsDialog(object):
         OptionsDialog.setObjectName("OptionsDialog")
         OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
 <<<<<<< HEAD
+<<<<<<< HEAD
         OptionsDialog.resize(563, 520)
 =======
         OptionsDialog.resize(533, 520)
 >>>>>>> 0b79892 (Recommits)
+=======
+        OptionsDialog.resize(533, 520)
+>>>>>>> b11dd05 (Reformatting commits)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(OptionsDialog)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabWidget = QtWidgets.QTabWidget(OptionsDialog)
@@ -35,10 +39,14 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 519, 175))
 =======
         self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 175))
 >>>>>>> 0b79892 (Recommits)
+=======
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 306, 175))
+>>>>>>> b11dd05 (Reformatting commits)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -105,6 +113,7 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setSizePolicy(sizePolicy)
         self.ActionsScrollArea.setWidgetResizable(True)
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
@@ -115,6 +124,12 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollWidget = QtWidgets.QWidget()
         self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
 >>>>>>> 0b79892 (Recommits)
+=======
+        self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.ActionsScrollArea.setObjectName("ActionsScrollArea")
+        self.ActionsScrollWidget = QtWidgets.QWidget()
+        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 98, 16))
+>>>>>>> b11dd05 (Reformatting commits)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -127,6 +142,7 @@ class Ui_OptionsDialog(object):
         self.actionsScrollFrame = QtWidgets.QFrame(self.ActionsScrollWidget)
         self.actionsScrollFrame.setMouseTracking(True)
         self.actionsScrollFrame.setObjectName("actionsScrollFrame")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
@@ -647,12 +663,17 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setWidget(self.ActionsScrollWidget)
 >>>>>>> 3c6e0cb (Add expando function to leech actions)
 =======
+=======
+>>>>>>> b11dd05 (Reformatting commits)
         self.actionsScrollLayout = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
         self.actionsScrollLayout.setContentsMargins(-1, 0, -1, 0)
         self.actionsScrollLayout.setObjectName("actionsScrollLayout")
         self.verticalLayout_6.addWidget(self.actionsScrollFrame)
         self.ActionsScrollArea.setWidget(self.ActionsScrollWidget)
+<<<<<<< HEAD
 >>>>>>> 0b79892 (Recommits)
+=======
+>>>>>>> b11dd05 (Reformatting commits)
         self.verticalLayout_5.addWidget(self.ActionsScrollArea)
         self.tabWidget.addTab(self.actionsTab, "")
         self.advancedTab = QtWidgets.QWidget()
@@ -667,6 +688,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setSizePolicy(sizePolicy)
         self.advancedScrollArea.setWidgetResizable(True)
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
@@ -677,6 +699,12 @@ class Ui_OptionsDialog(object):
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 497, 314))
 >>>>>>> 0b79892 (Recommits)
+=======
+        self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.advancedScrollArea.setObjectName("advancedScrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 489, 314))
+>>>>>>> b11dd05 (Reformatting commits)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -748,10 +776,14 @@ class Ui_OptionsDialog(object):
         self.scroll_area.setObjectName("scroll_area")
         self.about_scroll = QtWidgets.QWidget()
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.about_scroll.setGeometry(QtCore.QRect(0, 0, 519, 427))
 =======
         self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 516))
 >>>>>>> 0b79892 (Recommits)
+=======
+        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 516))
+>>>>>>> b11dd05 (Reformatting commits)
         self.about_scroll.setObjectName("about_scroll")
         self.scroll_layout = QtWidgets.QVBoxLayout(self.about_scroll)
         self.scroll_layout.setSpacing(6)
@@ -764,10 +796,14 @@ class Ui_OptionsDialog(object):
         self.about_label_header.setSizePolicy(sizePolicy)
         self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.about_label_header.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
 =======
         self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
 >>>>>>> 0b79892 (Recommits)
+=======
+        self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+>>>>>>> b11dd05 (Reformatting commits)
         self.about_label_header.setWordWrap(True)
         self.about_label_header.setOpenExternalLinks(True)
         self.about_label_header.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
@@ -784,6 +820,7 @@ class Ui_OptionsDialog(object):
         self.like_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon = QtGui.QIcon()
 <<<<<<< HEAD
+<<<<<<< HEAD
         icon.addPixmap(
             QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"),
             QtGui.QIcon.Normal,
@@ -792,6 +829,9 @@ class Ui_OptionsDialog(object):
 =======
         icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 >>>>>>> 0b79892 (Recommits)
+=======
+        icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> b11dd05 (Reformatting commits)
         self.like_button.setIcon(icon)
         self.like_button.setIconSize(QtCore.QSize(32, 32))
         self.like_button.setObjectName("like_button")
@@ -804,6 +844,7 @@ class Ui_OptionsDialog(object):
         self.kofi_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon1 = QtGui.QIcon()
 <<<<<<< HEAD
+<<<<<<< HEAD
         icon1.addPixmap(
             QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"),
             QtGui.QIcon.Normal,
@@ -812,6 +853,9 @@ class Ui_OptionsDialog(object):
 =======
         icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 >>>>>>> 0b79892 (Recommits)
+=======
+        icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> b11dd05 (Reformatting commits)
         self.kofi_button.setIcon(icon1)
         self.kofi_button.setIconSize(QtCore.QSize(32, 32))
         self.kofi_button.setObjectName("kofi_button")
@@ -824,6 +868,7 @@ class Ui_OptionsDialog(object):
         self.patreon_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon2 = QtGui.QIcon()
 <<<<<<< HEAD
+<<<<<<< HEAD
         icon2.addPixmap(
             QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"),
             QtGui.QIcon.Normal,
@@ -832,6 +877,9 @@ class Ui_OptionsDialog(object):
 =======
         icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 >>>>>>> 0b79892 (Recommits)
+=======
+        icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> b11dd05 (Reformatting commits)
         self.patreon_button.setIcon(icon2)
         self.patreon_button.setIconSize(QtCore.QSize(32, 32))
         self.patreon_button.setObjectName("patreon_button")
@@ -845,17 +893,23 @@ class Ui_OptionsDialog(object):
         self.about_label_body.setSizePolicy(sizePolicy)
         self.about_label_body.setTextFormat(QtCore.Qt.MarkdownText)
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.about_label_body.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.about_label_body.setWordWrap(True)
         self.about_label_body.setTextInteractionFlags(
             QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse
             )
 =======
+=======
+>>>>>>> b11dd05 (Reformatting commits)
         self.about_label_body.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.about_label_body.setWordWrap(True)
         self.about_label_body.setOpenExternalLinks(True)
         self.about_label_body.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
+<<<<<<< HEAD
 >>>>>>> 0b79892 (Recommits)
+=======
+>>>>>>> b11dd05 (Reformatting commits)
         self.about_label_body.setObjectName("about_label_body")
         self.scroll_layout.addWidget(self.about_label_body)
         self.scroll_layout.setStretch(2, 1)
@@ -866,21 +920,29 @@ class Ui_OptionsDialog(object):
         self.buttonBox = QtWidgets.QDialogButtonBox(OptionsDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.buttonBox.setStandardButtons(
             QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.RestoreDefaults
             )
 =======
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
 >>>>>>> 0b79892 (Recommits)
+=======
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
+>>>>>>> b11dd05 (Reformatting commits)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.tabWidget.setCurrentIndex(0)
 =======
         self.tabWidget.setCurrentIndex(3)
 >>>>>>> 0b79892 (Recommits)
+=======
+        self.tabWidget.setCurrentIndex(2)
+>>>>>>> b11dd05 (Reformatting commits)
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
@@ -890,6 +952,7 @@ class Ui_OptionsDialog(object):
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
         self.markerGroup.setToolTip(_translate("OptionsDialog", "Show a marker on leech cards during review."))
         self.markerGroup.setTitle(_translate("OptionsDialog", "Leech Mark"))
+<<<<<<< HEAD
 <<<<<<< HEAD
         self.almostBackCheckbox.setToolTip(
             _translate("OptionsDialog", "Disables the mark when only showing the front/answer in reviews.")
@@ -1122,6 +1185,8 @@ class Ui_OptionsDialog(object):
             )
         )
 =======
+=======
+>>>>>>> b11dd05 (Reformatting commits)
         self.almostBackCheckbox.setToolTip(_translate("OptionsDialog", "Disables the mark when only showing the front/answer in reviews."))
         self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
         self.almostCheckbox.setToolTip(_translate("OptionsDialog", "When reviewing, displays a mark below the current card if it\'s about to be marked as a leech."))
@@ -1139,6 +1204,7 @@ class Ui_OptionsDialog(object):
         self.browseButtonOverviewCheckbox.setText(_translate("OptionsDialog", "Deck Overview"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.generalTab), _translate("OptionsDialog", "General"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
+<<<<<<< HEAD
         self.toolsOptionsCheckBox.setToolTip(_translate("OptionsDialog", "Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be accessed in the Add-ons window from the \"Config\" button."))
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
         self.syncUpdateCheckbox.setToolTip(_translate("OptionsDialog", "After syncing, updates the entire collection with the current options/actions based on the synced review logs."))
@@ -1149,6 +1215,16 @@ class Ui_OptionsDialog(object):
         self.syncTagCheckbox.setToolTip(_translate("OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."))
         self.syncTagCheckbox.setTitle(_translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices\n"
 "                                            "))
+=======
+        self.toolsOptionsCheckBox.setToolTip(_translate("OptionsDialog", "Enables a Tools menu shortcut in the toolbar for accessing these options. \n"
+"These can also be accessed in the Add-ons window from the \"Config\" button."))
+        self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
+        self.syncUpdateCheckbox.setToolTip(_translate("OptionsDialog", "After syncing, updates the entire collection with the current options/actions based on the synced review logs."))
+        self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
+        self.label_2.setText(_translate("OptionsDialog", "* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser actions, database edits, etc.). "))
+        self.syncTagCheckbox.setToolTip(_translate("OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."))
+        self.syncTagCheckbox.setTitle(_translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices."))
+>>>>>>> b11dd05 (Reformatting commits)
         self.syncTagLineEdit.setToolTip(_translate("OptionsDialog", "Custom tag text."))
         self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
         self.label.setText(_translate("OptionsDialog", "* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded."))
@@ -1194,7 +1270,10 @@ class Ui_OptionsDialog(object):
 "<br></br>  \n"
 "MIT License    \n"
 "©2022 JustKoi (iamjustkoi)  "))
+<<<<<<< HEAD
 >>>>>>> 0b79892 (Recommits)
+=======
+>>>>>>> b11dd05 (Reformatting commits)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.aboutTab), _translate("OptionsDialog", "About"))
 
 
