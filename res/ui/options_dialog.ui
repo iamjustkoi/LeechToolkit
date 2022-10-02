@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -43,7 +43,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-               <width>519</width>
+            <width>519</width>
             <height>175</height>
            </rect>
           </property>
@@ -58,123 +58,120 @@
             <number>6</number>
            </property>
            <item>
-               <widget class="QGroupBox" name="markerGroup">
-                   <property name="toolTip">
-                       <string>Show a marker on leech cards during review.</string>
-                   </property>
-                   <property name="title">
-                       <string>Leech Mark</string>
-                   </property>
-                   <property name="checkable">
-                       <bool>true</bool>
-                   </property>
-                   <layout class="QVBoxLayout" name="markerLayout">
-                       <item>
-                           <widget class="QCheckBox" name="almostBackCheckbox">
-                               <property name="toolTip">
-                                   <string>Disables the mark when only showing the front/answer in reviews.</string>
-                               </property>
-                               <property name="text">
-                                   <string>Only show on back of cards</string>
-                               </property>
-                               <property name="checked">
-                                   <bool>true</bool>
-                               </property>
-                           </widget>
-                       </item>
-                       <item>
-                           <widget class="QCheckBox" name="almostCheckbox">
-                               <property name="toolTip">
-                                   <string>When reviewing, displays a mark below the current card if it's about to be
-                                       marked as a leech.
-                                   </string>
-                               </property>
-                               <property name="text">
-                                   <string>Show unique marker for about-to-be-leeched cards</string>
-                               </property>
-                           </widget>
-                       </item>
-                       <item>
-                           <layout class="QHBoxLayout" name="horizontalLayout_4">
-                               <item>
-                                   <widget class="QLabel" name="almostLabel">
-                                       <property name="text">
-                                           <string>Marker Position</string>
-                                       </property>
-                                   </widget>
-                               </item>
-                               <item>
-                                   <widget class="QComboBox" name="almostPosDropdown">
-                                       <property name="sizePolicy">
-                                           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                                               <horstretch>0</horstretch>
-                                               <verstretch>0</verstretch>
-                                           </sizepolicy>
-                                       </property>
-                                       <property name="toolTip">
-                                           <string>Position of the attached marker. Attaches to the bottom of the
-                                               reveiwer with a centered default value.
-                                           </string>
-                                       </property>
-                                       <item>
-                                           <property name="text">
-                                               <string>Default</string>
-                                           </property>
-                                       </item>
-                                       <item>
-                                           <property name="text">
-                                               <string>Left</string>
-                                           </property>
-                                       </item>
-                                       <item>
-                                           <property name="text">
-                                               <string>Right</string>
-                                           </property>
-                                       </item>
-                                   </widget>
-                               </item>
-                           </layout>
-                       </item>
-                   </layout>
-               </widget>
-           </item>
+            <widget class="QGroupBox" name="markerGroup">
+             <property name="toolTip">
+              <string>Show a marker on leech cards during review.</string>
+             </property>
+             <property name="title">
+              <string>Leech Mark</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="markerLayout">
               <item>
-                  <widget class="QGroupBox" name="browseButtonGroup">
-                      <property name="toolTip">
-                          <string>Shows a button on bottom bar whenever cards with the leech tag are found in a deck.
-                          </string>
-                      </property>
-                      <property name="title">
-                          <string>Bottom Bar Button</string>
-                      </property>
-                      <property name="checkable">
-                          <bool>true</bool>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout">
-                          <item>
-                              <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
-                                  <property name="toolTip">
-                                      <string>Enables the button on the main, deck list page.</string>
-                                  </property>
-                                  <property name="text">
-                                      <string>Deck Browser</string>
-                                  </property>
-                              </widget>
-                          </item>
-                          <item>
-                              <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
-                                  <property name="toolTip">
-                                      <string>Enables the button for the page show when viewing a specific deck.
-                                      </string>
-                                  </property>
-                                  <property name="text">
-                                      <string>Deck Overview</string>
-                                  </property>
-                              </widget>
-                          </item>
-                      </layout>
-                  </widget>
+               <widget class="QCheckBox" name="almostBackCheckbox">
+                <property name="toolTip">
+                 <string>Disables the mark when only showing the front/answer in reviews.</string>
+                </property>
+                <property name="text">
+                 <string>Only show on back of cards</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
+              <item>
+               <widget class="QCheckBox" name="almostCheckbox">
+                <property name="toolTip">
+                 <string>When reviewing, displays a mark below the current card if it's about to be marked as a leech.
+                 </string>
+                </property>
+                <property name="text">
+                 <string>Show unique marker for about-to-be-leeched cards</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QLabel" name="almostLabel">
+                  <property name="text">
+                   <string>Marker Position</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="almostPosDropdown">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Position of the attached marker. Attaches to the bottom of the reveiwer with a centered
+                    default value.
+                   </string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Default</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Left</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Right</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="browseButtonGroup">
+             <property name="toolTip">
+              <string>Shows a button on bottom bar whenever cards with the leech tag are found in a deck.</string>
+             </property>
+             <property name="title">
+              <string>Bottom Bar Button</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QCheckBox" name="browseButtonBrowserCheckbox">
+                <property name="toolTip">
+                 <string>Enables the button on the main, deck list page.</string>
+                </property>
+                <property name="text">
+                 <string>Deck Browser</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
+                <property name="toolTip">
+                 <string>Enables the button for the page show when viewing a specific deck.</string>
+                </property>
+                <property name="text">
+                 <string>Deck Overview</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
           </layout>
          </widget>
         </widget>
@@ -205,7 +202,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-               <width>519</width>
+            <width>519</width>
             <height>16</height>
            </rect>
           </property>
@@ -258,431 +255,418 @@
         <widget class="QScrollArea" name="advancedScrollArea">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-            <property name="widgetResizable">
-                <bool>true</bool>
-            </property>
-            <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents">
-                <property name="geometry">
-                    <rect>
-                        <x>0</x>
-                        <y>0</y>
-                        <width>519</width>
-                        <height>314</height>
-                    </rect>
-                </property>
-                <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                    </sizepolicy>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_2">
-                    <item>
-                        <widget class="QCheckBox" name="toolsOptionsCheckBox">
-                            <property name="toolTip">
-                                <string>Enables a Tools menu shortcut in the toolbar for accessing these options. These
-                                    can also be accessed in the Add-ons window from the &quot;Config&quot; button.
-                                </string>
-                            </property>
-                            <property name="text">
-                                <string>Show options in Tools menu</string>
-                            </property>
-                        </widget>
-                    </item>
-                    <item>
-                        <widget class="QCheckBox" name="syncUpdateCheckbox">
-                            <property name="toolTip">
-                                <string>After syncing, updates the entire collection with the current options/actions
-                                    based on the synced review logs.
-                                </string>
-                            </property>
-                            <property name="text">
-                                <string>Update collection on-sync</string>
-                            </property>
-                            <property name="checked">
-                                <bool>false</bool>
-                            </property>
-                        </widget>
-                    </item>
-                    <item>
-                        <widget class="QLabel" name="label_2">
-                            <property name="text">
-                                <string>* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech
-                                    Toolkit browser
-                                    actions, database edits, etc.).
-                                </string>
-                            </property>
-                            <property name="wordWrap">
-                                <bool>true</bool>
-                            </property>
-                            <property name="indent">
-                                <number>12</number>
-                            </property>
-                        </widget>
-                    </item>
-                    <item>
-                        <widget class="QGroupBox" name="syncTagCheckbox">
-                            <property name="toolTip">
-                                <string>Keeps track of leech/unleech actions across devices using a custom tag that gets
-                                    added to any filtered leeches.
-                                </string>
-                            </property>
-                            <property name="title">
-                                <string>Use a custom tag to keep track of toolkit updates across devices
-                                </string>
-                            </property>
-                            <property name="checkable">
-                                <bool>true</bool>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_7">
-                                <item>
-                                    <widget class="QLineEdit" name="syncTagLineEdit">
-                                        <property name="toolTip">
-                                            <string>Custom tag text.</string>
-                                        </property>
-                                        <property name="text">
-                                            <string>leech::toolkit-filtered</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <widget class="QLabel" name="label">
-                                        <property name="text">
-                                            <string>* Before syncing/updating, should be updated to the same tag as any
-                                                other Anki client(s) where it might've also been changed and
-                                                synced/uploaded.
-                                            </string>
-                                        </property>
-                                        <property name="wordWrap">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>
-                                </item>
-                            </layout>
-                        </widget>
-                    </item>
-                    <item>
-                        <widget class="QPushButton" name="syncUpdateButton">
-                            <property name="sizePolicy">
-                                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="toolTip">
-                                <string>Sync the entire collection based on the current, applied options and review
-                                    logs.
-                                </string>
-                            </property>
-                            <property name="text">
-                                <string>Update Collection</string>
-                            </property>
-                        </widget>
-                    </item>
-                    <item>
-                        <widget class="QGroupBox" name="shortcutsGroupbox">
-                            <property name="title">
-                                <string>Shortcuts</string>
-                            </property>
-                            <layout class="QGridLayout" name="gridLayout">
-                                <item row="0" column="0">
-                                    <widget class="QLabel" name="label_3">
-                                        <property name="text">
-                                            <string>Leech</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item row="0" column="1">
-                                    <widget class="QPushButton" name="leechShortcutButton">
-                                        <property name="toolTip">
-                                            <string>May need to reset for shortcuts to update in reviewer.</string>
-                                        </property>
-                                        <property name="text">
-                                            <string>Ctrl+Shift+L</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item row="1" column="1">
-                                    <widget class="QPushButton" name="unleechShortcutButton">
-                                        <property name="toolTip">
-                                            <string>May need to reset for shortcuts to update in reviewer.</string>
-                                        </property>
-                                        <property name="text">
-                                            <string>Ctrl+Shift+U</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item row="1" column="0">
-                                    <widget class="QLabel" name="label_4">
-                                        <property name="text">
-                                            <string>Un-Leech</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                            </layout>
-                        </widget>
-                    </item>
-                </layout>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>519</width>
+            <height>314</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QCheckBox" name="toolsOptionsCheckBox">
+             <property name="toolTip">
+              <string>Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be
+               accessed in the Add-ons window from the &quot;Config&quot; button.
+              </string>
+             </property>
+             <property name="text">
+              <string>Show options in Tools menu</string>
+             </property>
             </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="syncUpdateCheckbox">
+             <property name="toolTip">
+              <string>After syncing, updates the entire collection with the current options/actions based on the synced
+               review logs.
+              </string>
+             </property>
+             <property name="text">
+              <string>Update collection on-sync</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser
+               actions, database edits, etc.).
+              </string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="indent">
+              <number>12</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="syncTagCheckbox">
+             <property name="toolTip">
+              <string>Keeps track of leech/unleech actions across devices using a custom tag that gets added to any
+               filtered leeches.
+              </string>
+             </property>
+             <property name="title">
+              <string>Use a custom tag to keep track of toolkit updates across devices
+              </string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QLineEdit" name="syncTagLineEdit">
+                <property name="toolTip">
+                 <string>Custom tag text.</string>
+                </property>
+                <property name="text">
+                 <string>leech::toolkit-filtered</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where
+                  it might've also been changed and synced/uploaded.
+                 </string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="syncUpdateButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Sync the entire collection based on the current, applied options and review logs.</string>
+             </property>
+             <property name="text">
+              <string>Update Collection</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="shortcutsGroupbox">
+             <property name="title">
+              <string>Shortcuts</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Leech</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="leechShortcutButton">
+                <property name="toolTip">
+                 <string>May need to reset for shortcuts to update in reviewer.</string>
+                </property>
+                <property name="text">
+                 <string>Ctrl+Shift+L</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="unleechShortcutButton">
+                <property name="toolTip">
+                 <string>May need to reset for shortcuts to update in reviewer.</string>
+                </property>
+                <property name="text">
+                 <string>Ctrl+Shift+U</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Un-Leech</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
      </widget>
-        <widget class="QWidget" name="aboutTab">
-            <attribute name="title">
-                <string>About</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_8">
-                <item>
-                    <widget class="QScrollArea" name="scroll_area">
-                        <property name="sizeAdjustPolicy">
-                            <enum>QAbstractScrollArea::AdjustToContents</enum>
-                        </property>
-                        <property name="widgetResizable">
-                            <bool>true</bool>
-                        </property>
-                        <widget class="QWidget" name="about_scroll">
-                            <property name="geometry">
-                                <rect>
-                                    <x>0</x>
-                                    <y>0</y>
-                                    <width>519</width>
-                                    <height>427</height>
-                                </rect>
-                            </property>
-                            <layout class="QVBoxLayout" name="scroll_layout" stretch="0,0,1">
-                                <property name="spacing">
-                                    <number>6</number>
-                                </property>
-                                <item>
-                                    <widget class="QLabel" name="about_label_header">
-                                        <property name="sizePolicy">
-                                            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="text">
-                                            <string>## Leech Toolkit 🩸
-                                                Add additional tools and functionality for handling leeches in Anki!
+     <widget class="QWidget" name="aboutTab">
+      <attribute name="title">
+       <string>About</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QScrollArea" name="scroll_area">
+         <property name="sizeAdjustPolicy">
+          <enum>QAbstractScrollArea::AdjustToContents</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="about_scroll">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>519</width>
+            <height>427</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="scroll_layout" stretch="0,0,1">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="about_label_header">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>## Leech Toolkit 🩸
+               Add additional tools and functionality for handling leeches in Anki!
 
-                                                Version: {version}
-                                                Have any issues or feedback? Feel free to post on the project's issue
-                                                section on
-                                                [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!
+               Version: {version}
+               Have any issues or feedback? Feel free to post on the project's issue section on
+               [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!
 
-                                                [Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)
-                                                [Source Code](https://github.com/iamjustkoi/LeechToolkit)
+               [Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)
+               [Source Code](https://github.com/iamjustkoi/LeechToolkit)
 
-                                                If you want to help support what I do:
-                                            </string>
-                                        </property>
-                                        <property name="textFormat">
-                                            <enum>Qt::MarkdownText</enum>
-                                        </property>
-                                        <property name="alignment">
-                                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                                        </property>
-                                        <property name="wordWrap">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <layout class="QHBoxLayout" name="support_buttons">
-                                        <property name="leftMargin">
-                                            <number>6</number>
-                                        </property>
-                                        <property name="topMargin">
-                                            <number>6</number>
-                                        </property>
-                                        <property name="rightMargin">
-                                            <number>6</number>
-                                        </property>
-                                        <property name="bottomMargin">
-                                            <number>6</number>
-                                        </property>
-                                        <item>
-                                            <widget class="QPushButton" name="like_button">
-                                                <property name="minimumSize">
-                                                    <size>
-                                                        <width>0</width>
-                                                        <height>42</height>
-                                                    </size>
-                                                </property>
-                                                <property name="maximumSize">
-                                                    <size>
-                                                        <width>200</width>
-                                                        <height>16777215</height>
-                                                    </size>
-                                                </property>
-                                                <property name="cursor">
-                                                    <cursorShape>PointingHandCursor</cursorShape>
-                                                </property>
-                                                <property name="focusPolicy">
-                                                    <enum>Qt::NoFocus</enum>
-                                                </property>
-                                                <property name="contextMenuPolicy">
-                                                    <enum>Qt::CustomContextMenu</enum>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Review on AnkiWeb</string>
-                                                </property>
-                                                <property name="icon">
-                                                    <iconset>
-                                                        <normaloff>
-                                                            ../../../StudyTimeStats/res/ui/res/img/anki_like.png</normaloff>
-                                                        ../../../StudyTimeStats/res/ui/res/img/anki_like.png
-                                                    </iconset>
-                                                </property>
-                                                <property name="iconSize">
-                                                    <size>
-                                                        <width>32</width>
-                                                        <height>32</height>
-                                                    </size>
-                                                </property>
-                                            </widget>
-                                        </item>
-                                        <item>
-                                            <widget class="QPushButton" name="kofi_button">
-                                                <property name="minimumSize">
-                                                    <size>
-                                                        <width>0</width>
-                                                        <height>42</height>
-                                                    </size>
-                                                </property>
-                                                <property name="maximumSize">
-                                                    <size>
-                                                        <width>200</width>
-                                                        <height>16777215</height>
-                                                    </size>
-                                                </property>
-                                                <property name="cursor">
-                                                    <cursorShape>PointingHandCursor</cursorShape>
-                                                </property>
-                                                <property name="focusPolicy">
-                                                    <enum>Qt::NoFocus</enum>
-                                                </property>
-                                                <property name="contextMenuPolicy">
-                                                    <enum>Qt::CustomContextMenu</enum>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Buy me a coffee</string>
-                                                </property>
-                                                <property name="icon">
-                                                    <iconset>
-                                                        <normaloff>
-                                                            ../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG</normaloff>
-                                                        ../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG
-                                                    </iconset>
-                                                </property>
-                                                <property name="iconSize">
-                                                    <size>
-                                                        <width>32</width>
-                                                        <height>32</height>
-                                                    </size>
-                                                </property>
-                                            </widget>
-                                        </item>
-                                        <item>
-                                            <widget class="QPushButton" name="patreon_button">
-                                                <property name="minimumSize">
-                                                    <size>
-                                                        <width>0</width>
-                                                        <height>42</height>
-                                                    </size>
-                                                </property>
-                                                <property name="maximumSize">
-                                                    <size>
-                                                        <width>200</width>
-                                                        <height>16777215</height>
-                                                    </size>
-                                                </property>
-                                                <property name="cursor">
-                                                    <cursorShape>PointingHandCursor</cursorShape>
-                                                </property>
-                                                <property name="focusPolicy">
-                                                    <enum>Qt::NoFocus</enum>
-                                                </property>
-                                                <property name="contextMenuPolicy">
-                                                    <enum>Qt::CustomContextMenu</enum>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Become a patron</string>
-                                                </property>
-                                                <property name="icon">
-                                                    <iconset>
-                                                        <normaloff>
-                                                            ../../../StudyTimeStats/res/ui/res/img/patreon.png</normaloff>
-                                                        ../../../StudyTimeStats/res/ui/res/img/patreon.png
-                                                    </iconset>
-                                                </property>
-                                                <property name="iconSize">
-                                                    <size>
-                                                        <width>32</width>
-                                                        <height>32</height>
-                                                    </size>
-                                                </property>
-                                            </widget>
-                                        </item>
-                                    </layout>
-                                </item>
-                                <item>
-                                    <widget class="QLabel" name="about_label_body">
-                                        <property name="sizePolicy">
-                                            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="text">
-                                            <string>Every bit helps with maintaining and developing the add-on and is
-                                                greatly appreciated!
-
-                                                ### Text Macros:
-
-                                                - `%date` - the current date based on the system's locale (e.g.
-                                                `2022-10-01`)
-                                                - `%reviews` - the review count for the current card (e.g. `3`)
-                                                - `%re:` - [Regular
-                                                Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
-                                                - Example Syntax:
-                                                - `%re:captured_expression`
-                                                - `%re:&quot;.*captured with spaces\W&quot;`
-                                                - `%re:\d\d\d\d-\d\d-\d\d` (capturing the above date format)
-                                                - `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of
-                                                applying the macro)
-                                            </string>
-                                        </property>
-                                        <property name="textFormat">
-                                            <enum>Qt::MarkdownText</enum>
-                                        </property>
-                                        <property name="alignment">
-                                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                                        </property>
-                                        <property name="wordWrap">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="textInteractionFlags">
-                                            <set>
-                                                Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse
-                                            </set>
-                                        </property>
-                                    </widget>
-                                </item>
-                            </layout>
-                        </widget>
-                    </widget>
-                </item>
+               If you want to help support what I do:
+              </string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::MarkdownText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="support_buttons">
+             <property name="leftMargin">
+              <number>6</number>
+             </property>
+             <property name="topMargin">
+              <number>6</number>
+             </property>
+             <property name="rightMargin">
+              <number>6</number>
+             </property>
+             <property name="bottomMargin">
+              <number>6</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="like_button">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>42</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+               <property name="text">
+                <string>Review on AnkiWeb</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../../../StudyTimeStats/res/ui/res/img/anki_like.png</normaloff>
+                 ../../../StudyTimeStats/res/ui/res/img/anki_like.png
+                </iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="kofi_button">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>42</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+               <property name="text">
+                <string>Buy me a coffee</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG</normaloff>
+                 ../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG
+                </iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="patreon_button">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>42</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+               <property name="text">
+                <string>Become a patron</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../../../StudyTimeStats/res/ui/res/img/patreon.png</normaloff>
+                 ../../../StudyTimeStats/res/ui/res/img/patreon.png
+                </iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="about_label_body">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Every bit helps with maintaining and developing the add-on and is greatly appreciated!
+
+               ### Text Macros:
+
+               - `%date` - the current date based on the system's locale (e.g. `2022-10-01`)
+               - `%reviews` - the review count for the current card (e.g. `3`)
+               - `%re:` - [Regular
+               Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+               - Example Syntax:
+               - `%re:captured_expression`
+               - `%re:&quot;.*captured with spaces\W&quot;`
+               - `%re:\d\d\d\d-\d\d-\d\d` (capturing the above date format)
+               - `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)
+              </string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::MarkdownText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
