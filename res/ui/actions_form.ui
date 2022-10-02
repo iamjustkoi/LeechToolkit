@@ -1043,9 +1043,9 @@
                   </property>
                   <property name="toolTip">
                    <string>Words/characters ignored when determining card similarities. Separated by spaces/new lines.
-                   Can ignore lines of text by placing it in quotes (e.g. &quot;ignored text&quot;),
-                   and ignore/include quote characters by escaping with '\&quot;'
-                   (e.g. &quot;this will be included in the ignore: \&quot;&quot;). </string>
+Can ignore lines of text by placing it in quotes (e.g. &quot;ignored text&quot;),
+and ignore/include quote characters by escaping with '\&quot;'
+(e.g. &quot;this will be included in the ignore: \&quot;&quot;). </string>
                   </property>
                   <property name="sizeAdjustPolicy">
                    <enum>QAbstractScrollArea::AdjustIgnored</enum>

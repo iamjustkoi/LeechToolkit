@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -43,7 +43,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>489</width>
+            <width>306</width>
             <height>175</height>
            </rect>
           </property>
@@ -199,7 +199,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>489</width>
+            <width>98</width>
             <height>16</height>
            </rect>
           </property>
@@ -267,7 +267,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>497</width>
+            <width>489</width>
             <height>314</height>
            </rect>
           </property>
@@ -281,7 +281,8 @@
            <item>
             <widget class="QCheckBox" name="toolsOptionsCheckBox">
              <property name="toolTip">
-              <string>Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be accessed in the Add-ons window from the &quot;Config&quot; button.</string>
+              <string>Enables a Tools menu shortcut in the toolbar for accessing these options. 
+These can also be accessed in the Add-ons window from the &quot;Config&quot; button.</string>
              </property>
              <property name="text">
               <string>Show options in Tools menu</string>
@@ -320,7 +321,7 @@
               <string>Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches.</string>
              </property>
              <property name="title">
-              Use a custom tag to keep track of toolkit updates across devicess</string>
+              <string>Use a custom tag to keep track of toolkit updates across devices.</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
