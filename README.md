@@ -125,7 +125,7 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 - `%date` - the current date based on the system's locale (e.g. `2022-10-01`)
 - `%reviews` - the review count for the current card (e.g. `3`)
-- `%re:` - [Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+- `%re:` - [Regular Expressions](https://learnxinyminutes.com/docs/pcre/)
     - Example Syntax:
         - `%re:captured_expression`
         - `%re:".*captured with spaces\W"`

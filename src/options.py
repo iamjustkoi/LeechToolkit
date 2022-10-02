@@ -458,6 +458,18 @@ class OptionsDialog(QDialog):
         updated_about_header = self.ui.about_label_header.text().format(version=CURRENT_VERSION)
         self.ui.about_label_header.setText(updated_about_header)
 
+        # Allow link navigation
+        # text_flags = (
+        #         Qt.TextBrowserInteraction |
+        #         Qt.TextSelectableByMouse |
+        #         Qt.TextSelectableByKeyboard |
+        #         Qt.LinksAccessibleByMouse |
+        #         Qt.LinksAccessibleByKeyboard |
+        #
+        # )
+        self.ui.about_label_body.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        self.ui.about_label_header.setTextInteractionFlags(Qt.TextBrowserInteraction)
+
         self._load()
         self.setup_restorables()
 
