@@ -7,7 +7,7 @@ from typing import NewType
 from anki import buildinfo
 from aqt.utils import tr
 
-CURRENT_VERSION = '1.0.1'
+CURRENT_VERSION = '1.0.2'
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_LEGACY_VER = 35
