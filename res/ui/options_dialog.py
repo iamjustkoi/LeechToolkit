@@ -15,7 +15,11 @@ class Ui_OptionsDialog(object):
     def setupUi(self, OptionsDialog):
         OptionsDialog.setObjectName("OptionsDialog")
         OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
+<<<<<<< HEAD
         OptionsDialog.resize(563, 520)
+=======
+        OptionsDialog.resize(533, 520)
+>>>>>>> 0b79892 (Recommits)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(OptionsDialog)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabWidget = QtWidgets.QTabWidget(OptionsDialog)
@@ -30,7 +34,11 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
+<<<<<<< HEAD
         self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 519, 175))
+=======
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 175))
+>>>>>>> 0b79892 (Recommits)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -96,10 +104,17 @@ class Ui_OptionsDialog(object):
         sizePolicy.setHeightForWidth(self.ActionsScrollArea.sizePolicy().hasHeightForWidth())
         self.ActionsScrollArea.setSizePolicy(sizePolicy)
         self.ActionsScrollArea.setWidgetResizable(True)
+<<<<<<< HEAD
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
         self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 519, 16))
+=======
+        self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.ActionsScrollArea.setObjectName("ActionsScrollArea")
+        self.ActionsScrollWidget = QtWidgets.QWidget()
+        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
+>>>>>>> 0b79892 (Recommits)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -112,6 +127,7 @@ class Ui_OptionsDialog(object):
         self.actionsScrollFrame = QtWidgets.QFrame(self.ActionsScrollWidget)
         self.actionsScrollFrame.setMouseTracking(True)
         self.actionsScrollFrame.setObjectName("actionsScrollFrame")
+<<<<<<< HEAD
 <<<<<<< HEAD
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
         self.verticalLayout_7.setContentsMargins(-1, 0, -1, 0)
@@ -630,6 +646,13 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_6.addWidget(self.actionsScrollFrame)
         self.ActionsScrollArea.setWidget(self.ActionsScrollWidget)
 >>>>>>> 3c6e0cb (Add expando function to leech actions)
+=======
+        self.actionsScrollLayout = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
+        self.actionsScrollLayout.setContentsMargins(-1, 0, -1, 0)
+        self.actionsScrollLayout.setObjectName("actionsScrollLayout")
+        self.verticalLayout_6.addWidget(self.actionsScrollFrame)
+        self.ActionsScrollArea.setWidget(self.ActionsScrollWidget)
+>>>>>>> 0b79892 (Recommits)
         self.verticalLayout_5.addWidget(self.ActionsScrollArea)
         self.tabWidget.addTab(self.actionsTab, "")
         self.advancedTab = QtWidgets.QWidget()
@@ -643,10 +666,17 @@ class Ui_OptionsDialog(object):
         sizePolicy.setHeightForWidth(self.advancedScrollArea.sizePolicy().hasHeightForWidth())
         self.advancedScrollArea.setSizePolicy(sizePolicy)
         self.advancedScrollArea.setWidgetResizable(True)
+<<<<<<< HEAD
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 519, 314))
+=======
+        self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.advancedScrollArea.setObjectName("advancedScrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 497, 314))
+>>>>>>> 0b79892 (Recommits)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -717,7 +747,11 @@ class Ui_OptionsDialog(object):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.about_scroll = QtWidgets.QWidget()
+<<<<<<< HEAD
         self.about_scroll.setGeometry(QtCore.QRect(0, 0, 519, 427))
+=======
+        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 516))
+>>>>>>> 0b79892 (Recommits)
         self.about_scroll.setObjectName("about_scroll")
         self.scroll_layout = QtWidgets.QVBoxLayout(self.about_scroll)
         self.scroll_layout.setSpacing(6)
@@ -729,7 +763,11 @@ class Ui_OptionsDialog(object):
         sizePolicy.setHeightForWidth(self.about_label_header.sizePolicy().hasHeightForWidth())
         self.about_label_header.setSizePolicy(sizePolicy)
         self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
+<<<<<<< HEAD
         self.about_label_header.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+=======
+        self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+>>>>>>> 0b79892 (Recommits)
         self.about_label_header.setWordWrap(True)
         self.about_label_header.setObjectName("about_label_header")
         self.scroll_layout.addWidget(self.about_label_header)
@@ -743,11 +781,15 @@ class Ui_OptionsDialog(object):
         self.like_button.setFocusPolicy(QtCore.Qt.NoFocus)
         self.like_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon = QtGui.QIcon()
+<<<<<<< HEAD
         icon.addPixmap(
             QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"),
             QtGui.QIcon.Normal,
             QtGui.QIcon.Off
         )
+=======
+        icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> 0b79892 (Recommits)
         self.like_button.setIcon(icon)
         self.like_button.setIconSize(QtCore.QSize(32, 32))
         self.like_button.setObjectName("like_button")
@@ -759,11 +801,15 @@ class Ui_OptionsDialog(object):
         self.kofi_button.setFocusPolicy(QtCore.Qt.NoFocus)
         self.kofi_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon1 = QtGui.QIcon()
+<<<<<<< HEAD
         icon1.addPixmap(
             QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"),
             QtGui.QIcon.Normal,
             QtGui.QIcon.Off
         )
+=======
+        icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> 0b79892 (Recommits)
         self.kofi_button.setIcon(icon1)
         self.kofi_button.setIconSize(QtCore.QSize(32, 32))
         self.kofi_button.setObjectName("kofi_button")
@@ -775,11 +821,15 @@ class Ui_OptionsDialog(object):
         self.patreon_button.setFocusPolicy(QtCore.Qt.NoFocus)
         self.patreon_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon2 = QtGui.QIcon()
+<<<<<<< HEAD
         icon2.addPixmap(
             QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"),
             QtGui.QIcon.Normal,
             QtGui.QIcon.Off
         )
+=======
+        icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> 0b79892 (Recommits)
         self.patreon_button.setIcon(icon2)
         self.patreon_button.setIconSize(QtCore.QSize(32, 32))
         self.patreon_button.setObjectName("patreon_button")
@@ -792,11 +842,17 @@ class Ui_OptionsDialog(object):
         sizePolicy.setHeightForWidth(self.about_label_body.sizePolicy().hasHeightForWidth())
         self.about_label_body.setSizePolicy(sizePolicy)
         self.about_label_body.setTextFormat(QtCore.Qt.MarkdownText)
+<<<<<<< HEAD
         self.about_label_body.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.about_label_body.setWordWrap(True)
         self.about_label_body.setTextInteractionFlags(
             QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse
             )
+=======
+        self.about_label_body.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.about_label_body.setWordWrap(True)
+        self.about_label_body.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
+>>>>>>> 0b79892 (Recommits)
         self.about_label_body.setObjectName("about_label_body")
         self.scroll_layout.addWidget(self.about_label_body)
         self.scroll_layout.setStretch(2, 1)
@@ -806,14 +862,22 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_4.addWidget(self.tabWidget)
         self.buttonBox = QtWidgets.QDialogButtonBox(OptionsDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+<<<<<<< HEAD
         self.buttonBox.setStandardButtons(
             QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.RestoreDefaults
             )
+=======
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
+>>>>>>> 0b79892 (Recommits)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
+<<<<<<< HEAD
         self.tabWidget.setCurrentIndex(0)
+=======
+        self.tabWidget.setCurrentIndex(3)
+>>>>>>> 0b79892 (Recommits)
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
@@ -823,6 +887,7 @@ class Ui_OptionsDialog(object):
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
         self.markerGroup.setToolTip(_translate("OptionsDialog", "Show a marker on leech cards during review."))
         self.markerGroup.setTitle(_translate("OptionsDialog", "Leech Mark"))
+<<<<<<< HEAD
         self.almostBackCheckbox.setToolTip(
             _translate("OptionsDialog", "Disables the mark when only showing the front/answer in reviews.")
         )
@@ -1053,6 +1118,80 @@ class Ui_OptionsDialog(object):
                 "- `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)"
             )
         )
+=======
+        self.almostBackCheckbox.setToolTip(_translate("OptionsDialog", "Disables the mark when only showing the front/answer in reviews."))
+        self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
+        self.almostCheckbox.setToolTip(_translate("OptionsDialog", "When reviewing, displays a mark below the current card if it\'s about to be marked as a leech."))
+        self.almostCheckbox.setText(_translate("OptionsDialog", "Show unique marker for about-to-be-leeched cards"))
+        self.almostLabel.setText(_translate("OptionsDialog", "Marker Position"))
+        self.almostPosDropdown.setToolTip(_translate("OptionsDialog", "Position of the attached marker. Attaches to the bottom of the reveiwer with a centered default value."))
+        self.almostPosDropdown.setItemText(0, _translate("OptionsDialog", "Default"))
+        self.almostPosDropdown.setItemText(1, _translate("OptionsDialog", "Left"))
+        self.almostPosDropdown.setItemText(2, _translate("OptionsDialog", "Right"))
+        self.browseButtonGroup.setToolTip(_translate("OptionsDialog", "Shows a button on bottom bar whenever cards with the leech tag are found in a deck."))
+        self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
+        self.browseButtonBrowserCheckbox.setToolTip(_translate("OptionsDialog", "Enables the button on the main, deck list page."))
+        self.browseButtonBrowserCheckbox.setText(_translate("OptionsDialog", "Deck Browser"))
+        self.browseButtonOverviewCheckbox.setToolTip(_translate("OptionsDialog", "Enables the button for the page show when viewing a specific deck."))
+        self.browseButtonOverviewCheckbox.setText(_translate("OptionsDialog", "Deck Overview"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.generalTab), _translate("OptionsDialog", "General"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
+        self.toolsOptionsCheckBox.setToolTip(_translate("OptionsDialog", "Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be accessed in the Add-ons window from the \"Config\" button."))
+        self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
+        self.syncUpdateCheckbox.setToolTip(_translate("OptionsDialog", "After syncing, updates the entire collection with the current options/actions based on the synced review logs."))
+        self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
+        self.label_2.setText(_translate("OptionsDialog", "* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser\n"
+"               actions, database edits, etc.).\n"
+"              "))
+        self.syncTagCheckbox.setToolTip(_translate("OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."))
+        self.syncTagCheckbox.setTitle(_translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices\n"
+"                                            "))
+        self.syncTagLineEdit.setToolTip(_translate("OptionsDialog", "Custom tag text."))
+        self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
+        self.label.setText(_translate("OptionsDialog", "* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded."))
+        self.syncUpdateButton.setToolTip(_translate("OptionsDialog", "Sync the entire collection based on the current, applied options and review logs."))
+        self.syncUpdateButton.setText(_translate("OptionsDialog", "Update Collection"))
+        self.shortcutsGroupbox.setTitle(_translate("OptionsDialog", "Shortcuts"))
+        self.label_3.setText(_translate("OptionsDialog", "Leech"))
+        self.leechShortcutButton.setToolTip(_translate("OptionsDialog", "May need to reset for shortcuts to update in reviewer."))
+        self.leechShortcutButton.setText(_translate("OptionsDialog", "Ctrl+Shift+L"))
+        self.unleechShortcutButton.setToolTip(_translate("OptionsDialog", "May need to reset for shortcuts to update in reviewer."))
+        self.unleechShortcutButton.setText(_translate("OptionsDialog", "Ctrl+Shift+U"))
+        self.label_4.setText(_translate("OptionsDialog", "Un-Leech"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.advancedTab), _translate("OptionsDialog", "Advanced"))
+        self.about_label_header.setText(_translate("OptionsDialog", "## Leech Toolkit 🩸\n"
+"Add additional tools and functionality for handling leeches in Anki!\n"
+"\n"
+"Version: {version}  \n"
+"Have any issues or feedback? Feel free to post on the project\'s issue section on [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  \n"
+"\n"
+"[Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)  \n"
+"[Source Code](https://github.com/iamjustkoi/LeechToolkit)  \n"
+"\n"
+"If you want to help support what I do:"))
+        self.like_button.setText(_translate("OptionsDialog", "Review on AnkiWeb "))
+        self.kofi_button.setText(_translate("OptionsDialog", "  Buy me a coffee "))
+        self.patreon_button.setText(_translate("OptionsDialog", "  Become a patron "))
+        self.about_label_body.setText(_translate("OptionsDialog", "Every bit helps and is greatly appreciated!\n"
+"\n"
+"### Text Macros:\n"
+"\n"
+"- `%date` - the current date based on the system\'s locale (e.g. `2022-10-01`)\n"
+"- `%reviews` - the review count for the current card (e.g. `3`)\n"
+"- `%re:` - [Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)\n"
+"    - Example Syntax:\n"
+"        - `%re:captured_expression`\n"
+"        - `%re:\".*captured with spaces\\W\"`\n"
+"        - `%re:\\d\\d\\d\\d-\\d\\d-\\d\\d` (capturing the above date format)\n"
+"- `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)\n"
+"\n"
+"<br></br>\n"
+"Thanks for downloading and happy leeching!  \n"
+"-koi  \n"
+"<br></br>  \n"
+"MIT License    \n"
+"©2022 JustKoi (iamjustkoi)  "))
+>>>>>>> 0b79892 (Recommits)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.aboutTab), _translate("OptionsDialog", "About"))
 
 
