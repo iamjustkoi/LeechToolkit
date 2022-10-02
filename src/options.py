@@ -344,35 +344,6 @@ def _redraw_list(list_widget: QListWidget, max_height=256):
 class OptionsDialog(QDialog):
     restore_buttons: List[QPushButton] = []
 
-    # def eventFilter(self, obj, evt):
-    #     print(f'event')
-    #     pressed_keys = None
-    #     active_keys = 0
-    #
-    #     if obj in (self.ui.unleechShortcutButton, self.ui.leechShortcutButton):
-    #         if evt.type() == QEvent.FocusIn:
-    #             evt: QFocusEvent
-    #
-    #         elif evt.type() == QEvent.FocusOut:
-    #             evt: QFocusEvent
-    #             obj.setText(self.config[Config.SHORTCUT_OPTIONS][Config.LEECH_SHORTCUT])
-    #
-    #         elif evt.type() == QEvent.KeyPress:
-    #             evt: QKeyEvent
-    #             obj.setText(evt.text())
-    #
-    #         elif evt.type() == QEvent.KeyRelease and self.active_keys == 0:
-    #             evt: QKeyEvent
-    #             obj.setText(String.SHORTCUT_ELLIPSES)
-    #
-    #     return QWidget.eventFilter(self, obj, evt)
-    #
-    # def _get_shortcut(self, button: QPushButton):
-    #     self.active_keys = 0
-    #     self._running = True
-    #     while self._running:
-    #         mw.app.processEvents()
-
     class ShortcutHandler(QDialog):
         def __init__(self, parent, button: QPushButton):
             super().__init__(parent=parent, flags=mw.windowFlags())
@@ -616,7 +587,7 @@ class OptionsDialog(QDialog):
             Copies a link to the clipboard based on the input button.
             :param button: button to use for determining which link to copy
             """
-            cb = self.manager.mw.app.clipboard()
+            cb = mw.app.clipboard()
             cb.clear(mode=cb.Clipboard)
 
             if button.objectName() == self.ui.patreon_button.objectName():
