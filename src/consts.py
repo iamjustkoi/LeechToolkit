@@ -18,8 +18,17 @@ LEGACY_FLAGS_PLACEHOLDER = ['Red', 'Orange', 'Green', 'Blue', 'Pink', 'Turquoise
 LEECH_TAG = 'leech'
 LEECHES_URL = 'viewleeches'
 
+LEECH_ICON_PATH = '../res/img/blood_drop.svg'
 REMOVE_ICON_PATH = '../res/img/remove_icon.svg'
 RESTORE_ICON_PATH = '../res/img/restore_icon.svg'
+
+KOFI_ICON_PATH = '../res/img/kofilogo_blue.PNG'
+PATREON_ICON_PATH = '../res/img/patreon.png'
+ANKI_LIKE_ICON_PATH = '../res/img/anki_like.png'
+
+PATREON_URL = 'https://www.patreon.com/iamjustkoi'
+KOFI_URL = 'https://ko-fi.com/iamjustkoi'
+ANKI_URL = 'https://ankiweb.net/shared/info/1247171202'
 
 MENU_CARDS_TEXT = tr.qt_accel_cards() if CURRENT_ANKI_VER > ANKI_LEGACY_VER else 'Cards'
 
@@ -87,6 +96,8 @@ class String:
 
     SHORTCUT_ELLIPSES = '...'
     SHORTCUT_UNRECOGNIZED_OR_DEFAULT = 'Shortcut Default or Invalid'
+
+    COPY_LINK_ACTION = 'Copy &Link Location'
 
 
 class Keys:
