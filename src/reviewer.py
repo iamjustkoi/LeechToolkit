@@ -189,14 +189,14 @@ class ReviewWrapper:
 
         :param action_type: action type string to use as a reference for the undo entry actions to take
         """
-        msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
+        msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
 
         if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
             entry = self.reviewer.mw.col.add_custom_undo_entry(msg)
 
             pre_queue, pre_due, pre_note_text = (
-                self.card.queue,
-                self.card.due,
+                self.card.queue.real,
+                self.card.due.real,
                 self.card.note().joined_fields(),
             )
 
@@ -218,6 +218,7 @@ class ReviewWrapper:
             changes.note_text = True if pre_note_text != self.card.note().joined_fields() else False
 
             self.refresh_if_needed(changes)
+
         elif CURRENT_ANKI_VER < ANKI_UNDO_UPDATE_VER:
             if action_type == Config.LEECH_ACTIONS:
                 self.card = run_action_updates(self.card, self.toolkit_config, Config.LEECH_ACTIONS)
@@ -295,7 +296,7 @@ class ReviewWrapper:
         self.on_front = False
         self.card = card
         if self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
-            setattr(card, prev_type_attr, card.type)
+            setattr(self.card, prev_type_attr, self.card.type)
         self.update_marker()
 
     def on_show_front(self, card: anki.cards.Card):
