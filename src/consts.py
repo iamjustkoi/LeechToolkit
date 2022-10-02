@@ -7,7 +7,7 @@ from typing import NewType
 from anki import buildinfo
 from aqt.utils import tr
 
-CURRENT_VERSION = '1.0.0'
+CURRENT_VERSION = '1.0.1'
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_LEGACY_VER = 35
@@ -28,7 +28,7 @@ ANKI_LIKE_ICON_PATH = '../res/img/anki_like.png'
 
 PATREON_URL = 'https://www.patreon.com/iamjustkoi'
 KOFI_URL = 'https://ko-fi.com/iamjustkoi'
-ANKI_URL = 'https://ankiweb.net/shared/info/@addon_id'
+ANKI_URL = 'https://ankiweb.net/shared/info/368380974'
 
 MENU_CARDS_TEXT = tr.qt_accel_cards() if CURRENT_ANKI_VER > ANKI_LEGACY_VER else 'Cards'
 
