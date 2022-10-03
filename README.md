@@ -1,4 +1,4 @@
-# <p align="center">Leech Toolkit <span style="color: transparent; font-size: .6em; text-shadow: 0 0 0 rgb(248, 105, 86);">🩸</span></p>
+# <p align="center">Leech Toolkit <span style="color: transparent; font-size: .6em; text-shadow: 0 0 0 rgb(248, 105, 86);"><img src="res/img/blood_drop.svg"></span></p>
 
 <p align="center">Add additional tools and functionality for handling leeches in Anki!</p>
 
