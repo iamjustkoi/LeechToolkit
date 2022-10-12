@@ -17,7 +17,7 @@ from aqt.reviewer import Reviewer
 from aqt.qt import QShortcut, QKeySequence
 
 from .legacy import _try_check_filtered, _try_get_config_dict_for_did, _try_get_current_did
-from .updates import run_action_updates, run_reverse_updates, update_card, is_unique_card
+from .actions import handle_actions, handle_reverse
 from .config import LeechToolkitConfigManager, merge_fields
 from .consts import (
     ANKI_LEGACY_VER,
@@ -107,7 +107,7 @@ def set_marker_color(color: str):
 
 def show_marker(show=False):
     """
-    Changes the display state of the run_action marker.
+    Changes the display state of the handle_input_action marker.
 
     :param show: new visibility
     """
@@ -117,7 +117,7 @@ def show_marker(show=False):
         mw.web.eval(f'document.getElementById("{marker_id}").style.display = "none"')
 
 
-def leech_check(context, card: anki.cards.Card, ease):
+def check_did_leech(context, card: anki.cards.Card, ease):
     threshold = mw.col.decks.config_dict_for_deck_id(card.did)['lapse']['leechFails']
     if ease < 1 and card.lapses >= threshold and (card.lapses - threshold) % (max(threshold // 2, 1)) == 0:
         mark_leeched(card)
@@ -130,6 +130,8 @@ class ReviewWrapper:
     content: aqt.webview.WebContent
     card: anki.cards.Card
     on_front: bool
+
+    # queued_undo_entry: int = -1
 
     def __init__(self, reviewer: Reviewer, content: aqt.webview.WebContent, did: DeckId):
         """
@@ -145,19 +147,23 @@ class ReviewWrapper:
             self.load_options(did)
 
             leech_seq = QKeySequence(self.toolkit_config[Config.SHORTCUT_OPTIONS][Config.LEECH_SHORTCUT])
-            leech_shortcut = QShortcut(leech_seq, mw, lambda *args: self.run_action(Config.LEECH_ACTIONS))
+            leech_shortcut = QShortcut(leech_seq, mw, lambda *args: self.handle_input_action(Config.LEECH_ACTIONS))
 
             self.leech_action = aqt.qt.QAction(String.REVIEWER_ACTION_LEECH, mw)
             self.leech_action.setShortcut(leech_seq)
-            self.leech_action.triggered.connect(lambda *args: self.run_action(Config.LEECH_ACTIONS))
+            self.leech_action.triggered.connect(lambda *args: self.handle_input_action(Config.LEECH_ACTIONS))
             mw.stateShortcuts.append(leech_shortcut)
 
             unleech_seq = QKeySequence(self.toolkit_config[Config.SHORTCUT_OPTIONS][Config.UNLEECH_SHORTCUT])
-            unleech_shortcut = QShortcut(unleech_seq, mw, lambda *args: self.run_action(Config.UN_LEECH_ACTIONS))
+            unleech_shortcut = QShortcut(
+                unleech_seq,
+                mw,
+                lambda *args: self.handle_input_action(Config.UN_LEECH_ACTIONS)
+            )
 
             self.unleech_action = aqt.qt.QAction(String.REVIEWER_ACTION_UNLEECH, mw)
             self.unleech_action.setShortcut(unleech_seq)
-            self.unleech_action.triggered.connect(lambda *args: self.run_action(Config.UN_LEECH_ACTIONS))
+            self.unleech_action.triggered.connect(lambda *args: self.handle_input_action(Config.UN_LEECH_ACTIONS))
             mw.stateShortcuts.append(unleech_shortcut)
 
     def load_options(self, did: DeckId = None):
@@ -187,59 +193,6 @@ class ReviewWrapper:
         if not self.reviewer.refresh_if_needed():
             self.update_marker()
 
-    def run_action(self, action_type: str):
-        """
-        Function for handling action calls via shortcuts/context menu actions.
-
-        :param action_type: action type string to use as a reference for the undo entry actions to take
-        """
-        msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
-
-        if CURRENT_ANKI_VER < ANKI_UNDO_UPDATE_VER:
-            if action_type == Config.LEECH_ACTIONS:
-                self.card = run_action_updates(self.card, self.toolkit_config, Config.LEECH_ACTIONS)
-                self.card.note().add_tag(LEECH_TAG)
-                tooltip(String.TIP_LEECHED_TEMPLATE.format(1))
-
-            elif action_type == Config.UN_LEECH_ACTIONS:
-                self.card = run_action_updates(self.card, self.toolkit_config, Config.UN_LEECH_ACTIONS)
-                self.card.note().remove_tag(LEECH_TAG)
-                tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
-
-            self.card.flush()
-            self.card.note().flush()
-
-            mw.checkpoint(msg)
-            mw.reset()
-
-        elif CURRENT_ANKI_VER < ANKI_UNDO_UPDATE_VER:
-            entry = self.reviewer.mw.col.add_custom_undo_entry(msg)
-
-            pre_queue, pre_due, pre_note_text = (
-                self.card.queue.real,
-                self.card.due.real,
-                self.card.note().joined_fields(),
-            )
-
-            if action_type == Config.LEECH_ACTIONS:
-                self.card = run_action_updates(self.card, self.toolkit_config, Config.LEECH_ACTIONS)
-                self.card.note().add_tag(LEECH_TAG)
-                tooltip(String.TIP_LEECHED_TEMPLATE.format(1))
-
-            elif action_type == Config.UN_LEECH_ACTIONS:
-                self.card = run_action_updates(self.card, self.toolkit_config, Config.UN_LEECH_ACTIONS)
-                self.card.note().remove_tag(LEECH_TAG)
-                tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
-
-            self.reviewer.mw.col.update_card(self.card)
-            self.reviewer.mw.col.update_note(self.card.note())
-
-            changes = self.reviewer.mw.col.merge_undo_entries(entry)
-            changes.study_queues = True if (pre_queue != self.card.queue) or (pre_due != self.card.due) else False
-            changes.note_text = True if pre_note_text != self.card.note().joined_fields() else False
-
-            self.refresh_if_needed(changes)
-
     def append_marker_html(self):
         """
         Appends a leech marker to the review window's html.
@@ -262,10 +215,10 @@ class ReviewWrapper:
             reviewer_did_show_answer,
             reviewer_did_answer_card,
             reviewer_will_end,
-            reviewer_will_show_context_menu,
+            reviewer_will_show_context_menu
         )
         if mw.col.v3_scheduler():
-            reviewer_did_answer_card.append(leech_check)
+            reviewer_did_answer_card.append(check_did_leech)
         else:
             card_did_leech.append(mark_leeched)
 
@@ -286,7 +239,7 @@ class ReviewWrapper:
 
     def remove_hooks(self):
         try:
-            gui_hooks.reviewer_did_answer_card.remove(leech_check)
+            gui_hooks.reviewer_did_answer_card.remove(check_did_leech)
             hooks.card_did_leech.remove(mark_leeched)
         except NameError:
             print(ErrorMsg.ACTION_MANAGER_NOT_DEFINED)
@@ -294,6 +247,70 @@ class ReviewWrapper:
         gui_hooks.reviewer_did_show_question.remove(self.on_show_front)
         gui_hooks.reviewer_did_show_answer.remove(self.on_show_back)
         gui_hooks.reviewer_did_answer_card.remove(self.on_answer)
+
+    def handle_card_updates(self, card: anki.cards.Card, update_callback, undo_msg=None):
+        current_data = {
+            'queue': card.queue.real,
+            'due': card.due.real,
+            'lapses': card.lapses,
+            'fields': card.note().joined_fields(),
+            'tags': card.note().tags,
+        }
+        updated_card = update_callback()
+        updated_data = {
+            'queue': updated_card.queue.real,
+            'due': updated_card.due.real,
+            'lapses': updated_card.lapses,
+            'fields': updated_card.note().joined_fields(),
+            'tags': updated_card.note().tags,
+        }
+
+        if CURRENT_ANKI_VER < ANKI_UNDO_UPDATE_VER:
+            if current_data != updated_data:
+                card.flush()
+                card.note().flush()
+                # Let Anki handle undo status updates
+                mw.checkpoint(undo_msg)
+                mw.reset()
+        else:
+            if current_data != updated_data:
+                if undo_msg:
+                    entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
+                    self.reviewer.mw.col.update_card(updated_card)
+                    self.reviewer.mw.col.update_note(updated_card.note())
+                    changes = self.reviewer.mw.col.merge_undo_entries(entry)
+                    self.refresh_if_needed(changes)
+                else:
+                    # Don't create new undo entry so reviewer handles final updates
+                    updated_card.flush()
+                    if (current_data['fields'], current_data['tags']) != (updated_data['fields'], updated_data['tags']):
+                        updated_card.note().flush()
+
+        return card
+
+    def handle_input_action(self, action_type: str):
+        """
+        Function for handling action calls via shortcuts/context menu actions.
+
+        :param action_type: action type string to use as a reference for the undo entry actions to take
+        """
+        msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
+        updated_card = mw.col.get_card(self.card.id)
+
+        def perform_actions():
+            card = handle_actions(updated_card, self.toolkit_config, action_type)
+
+            if action_type == Config.LEECH_ACTIONS:
+                card.note().add_tag(LEECH_TAG)
+                tooltip(String.TIP_LEECHED_TEMPLATE.format(1))
+
+            elif action_type == Config.UN_LEECH_ACTIONS:
+                card.note().remove_tag(LEECH_TAG)
+                tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
+
+            return card
+
+        self.handle_card_updates(self.card, perform_actions, msg)
 
     def on_show_back(self, card: anki.cards.Card):
         """
@@ -329,21 +346,19 @@ class ReviewWrapper:
         if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
             card.col.get_card = lambda cid: anki.cards.Card(mw.col, cid)
 
-        updated_card = card.col.get_card(card.id)
-        if hasattr(card, prev_type_attr):
-            updated_card = run_reverse_updates(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
-            delattr(card, prev_type_attr)
+        def handle_card_answer():
+            updated_card = card.col.get_card(card.id)
+            if hasattr(card, prev_type_attr):
+                updated_card = handle_reverse(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
+                delattr(card, prev_type_attr)
 
-        if hasattr(card, was_leech_attr):
-            updated_card = run_action_updates(card, self.toolkit_config, Config.LEECH_ACTIONS)
-            delattr(card, was_leech_attr)
+            if hasattr(card, was_leech_attr):
+                updated_card = handle_actions(card, self.toolkit_config, Config.LEECH_ACTIONS)
+                delattr(card, was_leech_attr)
 
-        if is_unique_card(card, updated_card):
-            if CURRENT_ANKI_VER < ANKI_UNDO_UPDATE_VER:
-                update_card(updated_card)
-                mw.checkpoint(String.ENTRY_LEECH_ACTIONS)
-            else:
-                update_card(updated_card, aqt.reviewer.OpChanges)
+            return updated_card
+
+        self.handle_card_updates(card, handle_card_answer)
 
     def update_marker(self):
         """
@@ -358,7 +373,6 @@ class ReviewWrapper:
             almost_leech = is_review and self.card.lapses + ALMOST_DISTANCE >= self.max_fails
 
             if (not self.on_front and only_show_on_back) or not only_show_on_back:
-
                 if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
                     self.card.note().has_tag = lambda tag: tag.lower() in [t.lower() for t in self.card.note().tags]
 
