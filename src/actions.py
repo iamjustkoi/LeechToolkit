@@ -19,8 +19,8 @@ from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUT
 from aqt import utils
 
 from .consts import (
-    ANKI_LEGACY_VER, Action,
-    CURRENT_ANKI_VER, ErrorMsg, Macro,
+    Action,
+    ErrorMsg, Macro,
     EditAction,
     RescheduleAction,
     QueueAction,
