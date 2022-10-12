@@ -194,7 +194,7 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
     updated_card = card.col.get_card(card.id) if reload else card
     actions_conf = toolkit_conf[action_type]
 
-    def try_deck_move():
+    def handle_deck_move():
         if actions_conf[Action.MOVE_DECK][Action.ENABLED]:
             # If the card was also in a cram/custom study deck, set it back to its original deck and due date:
             updated_card.odid = 0
@@ -204,20 +204,20 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
             if actions_conf[Action.MOVE_DECK][Action.INPUT]:
                 updated_card.did = int(actions_conf[Action.MOVE_DECK][Action.INPUT])
 
-    def try_flag():
+    def handle_flag():
         if actions_conf[Action.FLAG][Action.ENABLED]:
             updated_card.set_user_flag(actions_conf[Action.FLAG][Action.INPUT])
 
-    def try_suspend():
+    def handle_suspend():
         if actions_conf[Action.SUSPEND][Action.ENABLED] and actions_conf[Action.SUSPEND][Action.INPUT]:
             updated_card.queue = QUEUE_TYPE_SUSPENDED
 
-    def try_add_tags():
+    def handle_add_tags():
         if actions_conf[Action.ADD_TAGS][Action.ENABLED]:
             for tag in str(actions_conf[Action.ADD_TAGS][Action.INPUT]).split(' '):
                 updated_card.note().add_tag(apply_tag_macros(updated_card, tag))
 
-    def try_remove_tags():
+    def handle_remove_tags():
         if actions_conf[Action.REMOVE_TAGS][Action.ENABLED]:
             for tag in actions_conf[Action.REMOVE_TAGS][Action.INPUT].split(' '):
                 # Formats the tag's macros then retrieves the regex pattern and replaces it from the tags string
@@ -234,7 +234,7 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
                 else:
                     updated_card.note().remove_tag(formatted_tag)
 
-    def try_forget():
+    def handle_forget():
         if actions_conf[Action.FORGET][Action.ENABLED] and actions_conf[Action.FORGET][Action.INPUT][0]:
             if updated_card.odid:
                 updated_card.odid = 0
@@ -244,7 +244,7 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
                 updated_card.reps = 0
                 updated_card.lapses = 0
 
-    def try_edit_fields():
+    def handle_edit_fields():
         if actions_conf[Action.EDIT_FIELDS][Action.ENABLED]:
             inputs: List[str] = actions_conf[Action.EDIT_FIELDS][Action.INPUT]
 
@@ -267,7 +267,7 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
 
                     updated_card.note().fields[conf_meta[EditAction.FIELD]] = card_field
 
-    def try_reschedule():
+    def handle_reschedule():
         if actions_conf[Action.RESCHEDULE][Action.ENABLED]:
             from_days = actions_conf[Action.RESCHEDULE][Action.INPUT][RescheduleAction.FROM]
             to_days = actions_conf[Action.RESCHEDULE][Action.INPUT][RescheduleAction.TO]
@@ -278,7 +278,7 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
             if actions_conf[Action.RESCHEDULE][Action.INPUT][RescheduleAction.RESET]:
                 updated_card.ivl = delta.days
 
-    def try_add_to_queue():
+    def handle_add_to_queue():
         if actions_conf[Action.ADD_TO_QUEUE][Action.ENABLED]:
             queue_inputs = actions_conf[Action.ADD_TO_QUEUE][Action.INPUT]
 
@@ -317,7 +317,7 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
             filtered_ids, filtered_positions = [], []
             if queue_inputs[QueueAction.NEAR_SIBLING] or queue_inputs[QueueAction.NEAR_SIMILAR]:
                 # Just in case (modular function)
-                try_deck_move() if str(updated_card.did) != actions_conf[Action.MOVE_DECK][Action.INPUT] else None
+                handle_deck_move() if str(updated_card.did) != actions_conf[Action.MOVE_DECK][Action.INPUT] else None
 
                 cmd = f'''
                     SELECT {{get}} FROM cards
@@ -407,15 +407,16 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
             elif action_type == Config.UN_LEECH_ACTIONS:
                 updated_card.note().remove_tag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
 
-    try_flag()
-    try_deck_move()
-    try_suspend()
-    try_add_tags()
-    try_remove_tags()
-    try_forget()
-    try_edit_fields()
-    try_reschedule()
-    try_add_to_queue()
+    handle_flag()
+    handle_deck_move()
+    handle_suspend()
+    handle_add_tags()
+    handle_remove_tags()
+    handle_forget()
+    handle_edit_fields()
+    handle_reschedule()
+    handle_add_to_queue()
+
     update_sync_tag()
 
     return updated_card
