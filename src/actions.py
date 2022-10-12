@@ -16,7 +16,6 @@ import anki.cards
 import anki.decks
 
 from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUTTON_ONE
-from anki.notes import Note
 from aqt import utils
 
 from .consts import (
@@ -68,18 +67,18 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
-def update_card(updated_card: anki.cards.Card, changes=None, note=True) -> 'OpChanges' or None:
-    """
-    Flushes and updates a card, as well as its parent note, with an optional (undo) change callback.
-
-    :param updated_card: card to update
-    :param changes: OpChanges callback to call after updating the card
-    :param note: optional boolean to include note updates
-    :return: OpChanges message if changes provided, else None
-    """
-    updated_card.flush()
-    updated_card.note().flush() if note else None
-    return changes(card=True, note=True) if changes else None
+# def update_card(updated_card: anki.cards.Card, changes=None, note=True) -> 'OpChanges' or None:
+#     """
+#     Flushes and updates a card, as well as its parent note, with an optional (undo) change callback.
+#
+#     :param updated_card: card to update
+#     :param changes: OpChanges callback to call after updating the card
+#     :param note: optional boolean to include note updates
+#     :return: OpChanges message if changes provided, else None
+#     """
+#     updated_card.flush()
+#     updated_card.note().flush() if note else None
+#     return changes(card=True, note=True) if changes else None
 
 
 def was_consecutively_correct(card: anki.cards.Card, times: int):
@@ -94,25 +93,25 @@ def was_consecutively_correct(card: anki.cards.Card, times: int):
     return total_correct > 0 and total_correct % times == 0
 
 
-def is_unique_card(original_card: anki.cards.Card, modified_card: anki.cards.Card):
-    """
-    Checks if fields, note tags, and note fields are different between two cards.
-    
-    :param original_card: base card to check against, assumed original
-    :param modified_card: updated/modified card to check against
-    :return: true if cards are different in any way, else false
-    """
-    changed_items = {}
-    for key, val in modified_card.__dict__.items():
-        if key == '_note':
-            note: Note = val
-            orig_note = original_card.note()
-            if note and orig_note:
-                if (note.fields, note.id, note.tags) != (orig_note.fields, orig_note.id, orig_note.tags):
-                    changed_items[key] = val
-        elif val != original_card.__dict__.get(key):
-            changed_items[key] = val
-    return len(changed_items) > 0
+# def is_unique_card(original_card: anki.cards.Card, modified_card: anki.cards.Card):
+#     """
+#     Checks if fields, note tags, and note fields are different between two cards.
+#
+#     :param original_card: base card to check against, assumed original
+#     :param modified_card: updated/modified card to check against
+#     :return: true if cards are different in any way, else false
+#     """
+#     changed_items = {}
+#     for key, val in modified_card.__dict__.items():
+#         if key == '_note':
+#             note: Note = val
+#             orig_note = original_card.note()
+#             if note and orig_note:
+#                 if (note.fields, note.id, note.tags) != (orig_note.fields, orig_note.id, orig_note.tags):
+#                     changed_items[key] = val
+#         elif val != original_card.__dict__.get(key):
+#             changed_items[key] = val
+#     return len(changed_items) > 0
 
 
 def get_correct_answers(card: anki.cards.Card):
@@ -132,7 +131,7 @@ def get_correct_answers(card: anki.cards.Card):
     return answers[:last_index]
 
 
-def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_type: anki.consts.CardType):
+def handle_reverse(config: dict, card: anki.cards.Card, ease: int, prev_type: anki.consts.CardType):
     """
     Runs reverse leech updates to the input card and returns an updated card object.
     
@@ -171,7 +170,7 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
                 updated_card.note().remove_tag(LEECH_TAG)
                 tooltip_items.append(String.LEECH_REVERSED)
 
-                updated_card = run_action_updates(
+                updated_card = handle_actions(
                     updated_card,
                     config,
                     Config.UN_LEECH_ACTIONS,
@@ -222,7 +221,7 @@ def run_reverse_updates(config: dict, card: anki.cards.Card, ease: int, prev_typ
 
 
 # Actions format: actionName: {enabled: bool, key: val}
-def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Config.LEECH_ACTIONS, reload=True):
+def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config.LEECH_ACTIONS, reload=True):
     """
     Performs updates to a card based on user preferences and the leech/un-leech action type.
 
@@ -249,17 +248,18 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
         if actions_conf[Action.FLAG][Action.ENABLED]:
             updated_card.set_user_flag(actions_conf[Action.FLAG][Action.INPUT])
 
-    def try_everything_else():
+    def try_suspend():
         if actions_conf[Action.SUSPEND][Action.ENABLED] and actions_conf[Action.SUSPEND][Action.INPUT]:
             updated_card.queue = QUEUE_TYPE_SUSPENDED
 
+    def try_add_tags():
         if actions_conf[Action.ADD_TAGS][Action.ENABLED]:
             for tag in str(actions_conf[Action.ADD_TAGS][Action.INPUT]).split(' '):
                 updated_card.note().add_tag(get_formatted_tag(updated_card, tag))
 
+    def try_remove_tags():
         if actions_conf[Action.REMOVE_TAGS][Action.ENABLED]:
             for tag in actions_conf[Action.REMOVE_TAGS][Action.INPUT].split(' '):
-
                 # Formats the tag's macros then retrieves the regex pattern and replaces it from the tags string
                 formatted_tag = get_formatted_tag(updated_card, tag)
 
@@ -274,6 +274,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 else:
                     updated_card.note().remove_tag(formatted_tag)
 
+    def try_forget():
         if actions_conf[Action.FORGET][Action.ENABLED] and actions_conf[Action.FORGET][Action.INPUT][0]:
             if updated_card.odid:
                 updated_card.odid = 0
@@ -283,6 +284,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
                 updated_card.reps = 0
                 updated_card.lapses = 0
 
+    def try_edit_fields():
         if actions_conf[Action.EDIT_FIELDS][Action.ENABLED]:
             inputs: List[str] = actions_conf[Action.EDIT_FIELDS][Action.INPUT]
 
@@ -305,6 +307,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
 
                     updated_card.note().fields[conf_meta[EditAction.FIELD]] = card_field
 
+    def try_reschedule():
         if actions_conf[Action.RESCHEDULE][Action.ENABLED]:
             from_days = actions_conf[Action.RESCHEDULE][Action.INPUT][RescheduleAction.FROM]
             to_days = actions_conf[Action.RESCHEDULE][Action.INPUT][RescheduleAction.TO]
@@ -315,6 +318,7 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
             if actions_conf[Action.RESCHEDULE][Action.INPUT][RescheduleAction.RESET]:
                 updated_card.ivl = delta.days
 
+    def try_add_to_queue():
         if actions_conf[Action.ADD_TO_QUEUE][Action.ENABLED]:
             queue_inputs = actions_conf[Action.ADD_TO_QUEUE][Action.INPUT]
 
@@ -445,7 +449,13 @@ def run_action_updates(card: anki.cards.Card, toolkit_conf: dict, action_type=Co
 
     try_flag()
     try_deck_move()
-    try_everything_else()
+    try_suspend()
+    try_add_tags()
+    try_remove_tags()
+    try_forget()
+    try_edit_fields()
+    try_reschedule()
+    try_add_to_queue()
     update_sync_tag()
 
     return updated_card
