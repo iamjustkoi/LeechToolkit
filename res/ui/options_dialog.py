@@ -40,6 +40,7 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollWidget = QtWidgets.QWidget()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 519, 175))
 =======
         self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 175))
@@ -47,6 +48,9 @@ class Ui_OptionsDialog(object):
 =======
         self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 306, 175))
 >>>>>>> b11dd05 (Reformatting commits)
+=======
+        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 175))
+>>>>>>> aa3ba4c (Added temporary patches for 2.1.26 or below)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -128,8 +132,12 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
+<<<<<<< HEAD
         self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 98, 16))
 >>>>>>> b11dd05 (Reformatting commits)
+=======
+        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
+>>>>>>> aa3ba4c (Added temporary patches for 2.1.26 or below)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -936,6 +944,7 @@ class Ui_OptionsDialog(object):
         self.retranslateUi(OptionsDialog)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.tabWidget.setCurrentIndex(0)
 =======
         self.tabWidget.setCurrentIndex(3)
@@ -943,6 +952,9 @@ class Ui_OptionsDialog(object):
 =======
         self.tabWidget.setCurrentIndex(2)
 >>>>>>> b11dd05 (Reformatting commits)
+=======
+        self.tabWidget.setCurrentIndex(3)
+>>>>>>> aa3ba4c (Added temporary patches for 2.1.26 or below)
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)

@@ -23,6 +23,13 @@ def _try_get_current_did(card: anki.cards.Card = None):
         return col.decks.current()["id"]
 
 
+def _try_get_deck_and_child_ids(did: int):
+    if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+        return mw.col.decks.deck_and_child_ids(did)
+    else:
+        return [did] + mw.col.decks.childDids(did, mw.col.decks.childMap())
+
+
 def _try_get_config_dict_for_did(did: int):
     if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
         return mw.col.decks.config_dict_for_deck_id(did)
