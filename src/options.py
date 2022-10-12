@@ -454,7 +454,7 @@ class OptionsDialog(QDialog):
             lambda *args: self.ShortcutHandler(self, self.ui.unleechShortcutButton).exec_()
         )
 
-        self.ui.syncUpdateButton.clicked.connect(sync_collection)
+        self.ui.syncUpdateButton.clicked.connect(lambda: sync_collection(True))
 
         self.build_about_page()
 

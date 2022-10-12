@@ -100,6 +100,7 @@ class String:
     TIP_LEECHED_TEMPLATE = 'Leeched {} cards'
     TIP_UNLEECHED_TEMPLATE = 'Un-leeched {} cards'
     TIP_SET_LAPSES_TEMPLATE = 'Set lapses for {} cards'
+    TIP_UPDATED_TEMPLATE = 'Lapse/Leech status updated for {} cards'
 
     SHORTCUT_ELLIPSES = '...'
     SHORTCUT_UNRECOGNIZED_OR_DEFAULT = 'Shortcut Default or Invalid'
