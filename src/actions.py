@@ -30,7 +30,7 @@ from .consts import (
     REV_DECREASE,
     REV_RESET,
 )
-from .legacy import _try_get_config_dict_for_did, _try_get_current_did
+from .legacy import _try_get_config_dict_for_did, _try_get_current_did, _try_has_tag
 
 try:
     from anki.collection import OpChanges
@@ -41,7 +41,7 @@ TOOLTIP_ENABLED = True
 TOOLTIP_TIME = 5000
 
 
-def get_formatted_tag(card: anki.cards.Card, tag: str):
+def apply_tag_macros(card: anki.cards.Card, tag: str):
     """
     Formats the input tag string with its filled-in text macro values.
     
@@ -67,20 +67,6 @@ def get_formatted_tag(card: anki.cards.Card, tag: str):
     return result
 
 
-# def update_card(updated_card: anki.cards.Card, changes=None, note=True) -> 'OpChanges' or None:
-#     """
-#     Flushes and updates a card, as well as its parent note, with an optional (undo) change callback.
-#
-#     :param updated_card: card to update
-#     :param changes: OpChanges callback to call after updating the card
-#     :param note: optional boolean to include note updates
-#     :return: OpChanges message if changes provided, else None
-#     """
-#     updated_card.flush()
-#     updated_card.note().flush() if note else None
-#     return changes(card=True, note=True) if changes else None
-
-
 def was_consecutively_correct(card: anki.cards.Card, times: int):
     """
     Checks if the card was correct for a certain amount of consecutive times.
@@ -91,27 +77,6 @@ def was_consecutively_correct(card: anki.cards.Card, times: int):
     """
     total_correct = len(get_correct_answers(card))
     return total_correct > 0 and total_correct % times == 0
-
-
-# def is_unique_card(original_card: anki.cards.Card, modified_card: anki.cards.Card):
-#     """
-#     Checks if fields, note tags, and note fields are different between two cards.
-#
-#     :param original_card: base card to check against, assumed original
-#     :param modified_card: updated/modified card to check against
-#     :return: true if cards are different in any way, else false
-#     """
-#     changed_items = {}
-#     for key, val in modified_card.__dict__.items():
-#         if key == '_note':
-#             note: Note = val
-#             orig_note = original_card.note()
-#             if note and orig_note:
-#                 if (note.fields, note.id, note.tags) != (orig_note.fields, orig_note.id, orig_note.tags):
-#                     changed_items[key] = val
-#         elif val != original_card.__dict__.get(key):
-#             changed_items[key] = val
-#     return len(changed_items) > 0
 
 
 def get_correct_answers(card: anki.cards.Card):
@@ -162,14 +127,9 @@ def handle_reverse(config: dict, card: anki.cards.Card, ease: int, prev_type: an
 
         # Un-leech
         if updated_card.lapses < threshold:
-
-            if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
-                updated_card.note().has_tag = lambda tag: tag.lower() in [t.lower() for t in updated_card.note().tags]
-
-            if ease > 1 and updated_card.note().has_tag(LEECH_TAG) and prev_type == anki.cards.CARD_TYPE_REV:
+            if ease > 1 and _try_has_tag(updated_card.note(), LEECH_TAG) and prev_type == anki.cards.CARD_TYPE_REV:
                 updated_card.note().remove_tag(LEECH_TAG)
                 tooltip_items.append(String.LEECH_REVERSED)
-
                 updated_card = handle_actions(
                     updated_card,
                     config,
@@ -255,13 +215,13 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
     def try_add_tags():
         if actions_conf[Action.ADD_TAGS][Action.ENABLED]:
             for tag in str(actions_conf[Action.ADD_TAGS][Action.INPUT]).split(' '):
-                updated_card.note().add_tag(get_formatted_tag(updated_card, tag))
+                updated_card.note().add_tag(apply_tag_macros(updated_card, tag))
 
     def try_remove_tags():
         if actions_conf[Action.REMOVE_TAGS][Action.ENABLED]:
             for tag in actions_conf[Action.REMOVE_TAGS][Action.INPUT].split(' '):
                 # Formats the tag's macros then retrieves the regex pattern and replaces it from the tags string
-                formatted_tag = get_formatted_tag(updated_card, tag)
+                formatted_tag = apply_tag_macros(updated_card, tag)
 
                 if re.search(f'(?<!%){Macro.REGEX}:.*', formatted_tag):
                     reg_cmd = formatted_tag.replace(f'{Macro.REGEX}:', '', 1)
