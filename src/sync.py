@@ -8,7 +8,7 @@ from aqt import gui_hooks, mw
 
 from .actions import handle_actions
 from .config import LeechToolkitConfigManager, merge_fields
-from .consts import ANKI_SYNC_ISSUE_VER, ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER, Config, ErrorMsg, LEECH_TAG, String
+from .consts import ANKI_SYNC_ISSUE_VER, CURRENT_ANKI_VER, Config, ErrorMsg, LEECH_TAG, String
 from anki.consts import *
 
 try:
@@ -20,16 +20,6 @@ except ModuleNotFoundError:
 def build_hooks():
     if CURRENT_ANKI_VER != ANKI_SYNC_ISSUE_VER:
         gui_hooks.sync_did_finish.append(sync_collection)
-
-        from aqt.undo import UndoActionsInfo
-
-        def print_undo_state(info: UndoActionsInfo):
-            print(f'    .--undo infO--.')
-            print(f'    {info}')
-            print(f'    last_step: {mw.col.undo_status().last_step}')
-            print()
-
-        gui_hooks.undo_state_did_change.append(print_undo_state)
 
 
 def get_remeasured_lapses(cid: int, reverse_conf: dict):
