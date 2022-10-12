@@ -23,6 +23,13 @@ def _try_get_current_did(card: anki.cards.Card = None):
         return col.decks.current()["id"]
 
 
+def _try_has_tag(note: anki.cards.Note, tag: str):
+    if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+        return note.has_tag(tag)
+    else:
+        return tag.lower() in [t.lower() for t in note.tags]
+
+
 def _try_get_deck_and_child_ids(did: int):
     if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
         return mw.col.decks.deck_and_child_ids(did)
