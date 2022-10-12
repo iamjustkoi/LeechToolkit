@@ -20,7 +20,7 @@ from aqt.qt import (
 
 from .config import LeechToolkitConfigManager, merge_fields
 from .consts import ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER, ErrorMsg, MENU_CARDS_TEXT, Config, LEECH_TAG, String
-from .updates import run_action_updates
+from .actions import handle_actions
 from ..res.ui.set_lapse_dialog import Ui_SetLapseDialog
 
 try:
@@ -30,17 +30,14 @@ try:
         tooltip,
     )
 except ImportError as error:
-    def skip_if_selection_is_empty(*args):
-        ...
+    def skip_if_selection_is_empty(*args): ...
 
 
-    def ensure_editor_saved(*args):
-        ...
+    def ensure_editor_saved(*args): ...
 
 
     if error.name == 'tooltip':
-        def tooltip():
-            ...
+        def tooltip(): ...
 
 try:
     from anki.collection import OpChanges
@@ -154,10 +151,10 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
             for cid in browser.selectedCards():
                 card = col.get_card(cid)
                 if action_type == Config.LEECH_ACTIONS:
-                    run_action_updates(card, toolkit_configs[str(card.did)], Config.LEECH_ACTIONS, reload=False)
+                    handle_actions(card, toolkit_configs[str(card.did)], Config.LEECH_ACTIONS, reload=False)
                     card.note().add_tag(LEECH_TAG)
                 elif action_type == Config.UN_LEECH_ACTIONS:
-                    run_action_updates(card, toolkit_configs[str(card.did)], Config.UN_LEECH_ACTIONS, reload=False)
+                    handle_actions(card, toolkit_configs[str(card.did)], Config.UN_LEECH_ACTIONS, reload=False)
                     card.note().remove_tag(LEECH_TAG)
 
                 if not skip_undo_entry:
@@ -186,7 +183,7 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
         for legacy_cid in browser.selectedCards():
             legacy_card = browser.col.get_card(legacy_cid)
             if action_type == Config.LEECH_ACTIONS:
-                run_action_updates(
+                handle_actions(
                     legacy_card,
                     legacy_toolkit_configs[str(legacy_card.did)],
                     Config.LEECH_ACTIONS,
@@ -194,7 +191,7 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
                 )
                 legacy_card.note().add_tag(LEECH_TAG)
             elif action_type == Config.UN_LEECH_ACTIONS:
-                run_action_updates(
+                handle_actions(
                     legacy_card,
                     legacy_toolkit_configs[str(legacy_card.did)],
                     Config.UN_LEECH_ACTIONS,
@@ -285,10 +282,10 @@ class SetLapseDialog(QDialog):
                             reverse_threshold = reverse_conf[Config.REVERSE_THRESHOLD]
 
                         if card.lapses < reverse_threshold:
-                            run_action_updates(card, toolkit_config, Config.UN_LEECH_ACTIONS, reload=False)
+                            handle_actions(card, toolkit_config, Config.UN_LEECH_ACTIONS, reload=False)
                             card.note().remove_tag(LEECH_TAG)
                         else:
-                            run_action_updates(card, toolkit_config, Config.LEECH_ACTIONS, reload=False)
+                            handle_actions(card, toolkit_config, Config.LEECH_ACTIONS, reload=False)
                             card.note().add_tag(LEECH_TAG)
 
                         # Add note update to undo logs
@@ -339,10 +336,10 @@ class SetLapseDialog(QDialog):
                         legacy_reverse_threshold = legacy_reverse_conf[Config.REVERSE_THRESHOLD]
 
                     if legacy_card.lapses < legacy_reverse_threshold:
-                        run_action_updates(legacy_card, legacy_toolkit_config, Config.UN_LEECH_ACTIONS, reload=False)
+                        handle_actions(legacy_card, legacy_toolkit_config, Config.UN_LEECH_ACTIONS, reload=False)
                         legacy_card.note().remove_tag(LEECH_TAG)
                     else:
-                        run_action_updates(legacy_card, legacy_toolkit_config, Config.LEECH_ACTIONS, reload=False)
+                        handle_actions(legacy_card, legacy_toolkit_config, Config.LEECH_ACTIONS, reload=False)
                         legacy_card.note().add_tag(LEECH_TAG)
 
         self.config[Config.SET_LAPSES_INPUT] = raw_stripped_text
