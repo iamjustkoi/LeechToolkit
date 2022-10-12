@@ -8,7 +8,7 @@ from aqt import gui_hooks, mw
 
 from .updates import run_action_updates, update_card, is_unique_card
 from .config import LeechToolkitConfigManager, merge_fields
-from .consts import ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER, Config, ErrorMsg, LEECH_TAG, String
+from .consts import ANKI_SYNC_ISSUE_VER, ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER, Config, ErrorMsg, LEECH_TAG, String
 from anki.consts import *
 
 try:
@@ -18,7 +18,8 @@ except ModuleNotFoundError:
 
 
 def build_hooks():
-    gui_hooks.sync_did_finish.append(sync_collection)
+    if CURRENT_ANKI_VER != ANKI_SYNC_ISSUE_VER:
+        gui_hooks.sync_did_finish.append(sync_collection)
 
 
 def get_remeasured_lapses(cid: int, reverse_conf: dict):

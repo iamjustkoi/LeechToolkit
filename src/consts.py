@@ -6,12 +6,19 @@ from typing import NewType
 
 from anki import buildinfo
 from aqt.utils import tr
+from aqt.qt import QT_VERSION_STR
 
-CURRENT_VERSION = '1.0.3'
+CURRENT_VERSION = '1.0.3-anki2.1.26'
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
+ANKI_SYNC_ISSUE_VER = 26
 ANKI_LEGACY_VER = 35
 ANKI_UNDO_UPDATE_VER = 45
+
+CURRENT_QT_VER = int(QT_VERSION_STR.split('.')[1])
+QT_MARKDOWN_VER = 14
+
+ADDON_ID = 368380974
 
 LEGACY_FLAGS_PLACEHOLDER = ['Red', 'Orange', 'Green', 'Blue', 'Pink', 'Turquoise', 'Purple']
 

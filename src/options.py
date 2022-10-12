@@ -5,7 +5,7 @@ Full license text available in "LICENSE" file packaged with the program.
 import traceback
 import webbrowser
 from pathlib import Path
-from typing import List
+from typing import List, re
 
 import anki.decks
 from anki.consts import CARD_TYPE_NEW
@@ -419,6 +419,10 @@ class OptionsDialog(QDialog):
         self.manager = manager
         self.config = manager.config
         self.ui = Ui_OptionsDialog()
+        if int(aqt.qt.QT_VERSION_STR.split('.')[1]) < 14:
+            self.ui.QTCore = aqt.qt
+            self.ui.QTCore.Qt = aqt.qt.Qt
+            self.ui.QTCore.Qt.MarkdownText = aqt.qt.Qt.AutoText
         self.ui.setupUi(OptionsDialog=self)
 
         self.setWindowIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{LEECH_ICON_PATH}'))

@@ -12,6 +12,7 @@ from aqt.qt import (
 
 from .config import LeechToolkitConfigManager
 from .consts import Config, ErrorMsg
+from .legacy import _try_get_deck_and_child_ids
 from .options import ActionsWidget
 from .options import ReverseWidget
 from ..res.ui.deck_options_form import Ui_DeckOptionsPlaceholder
@@ -39,7 +40,7 @@ class DeckOptions(QWidget):
         self.reverse_form = ReverseWidget(flags=mw.windowFlags(), global_conf=False)
         self.ui.reverseWidget.layout().addWidget(self.reverse_form)
 
-        dids = [int(i) for i in mw.col.decks.deck_and_child_ids(did)]
+        dids = [int(i) for i in _try_get_deck_and_child_ids(did)]
 
         self.leech_actions_form = ActionsWidget(Config.LEECH_ACTIONS, expanded=False, dids=dids)
         self.ui.scrollAreaLayout.addWidget(self.leech_actions_form)
