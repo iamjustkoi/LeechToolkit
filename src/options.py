@@ -159,12 +159,12 @@ def append_restore_button(parent: QWidget, insert_col=4):
         if layout is not None:
             if isinstance(layout, QGridLayout):
                 layout.addItem(parent.default_button, pos, insert_col)
-            elif isinstance(layout, QBoxLayout):
+            elif isinstance(layout, QBoxLayout) or isinstance(layout, QVBoxLayout):
                 layout.insertWidget(pos, parent.default_button, alignment=AlignRight | AlignBottom)
             else:
                 layout.addWidget(parent.default_button)
 
-            layout.insertSpacing(layout.indexOf(parent), 6)
+            layout.insertSpacing(pos - 1, 6)
 
     return parent.default_button
 
