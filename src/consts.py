@@ -4,22 +4,26 @@ Full license text available in "LICENSE" file packaged with the program.
 """
 from typing import NewType
 
+import aqt
 from anki import buildinfo
 from aqt.utils import tr
 from aqt.qt import QT_VERSION_STR
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 CURRENT_VERSION = '1.1.0'
 =======
 CURRENT_VERSION = '1.0.4'
 >>>>>>> refs/rewritten/private-main-3
+=======
+CURRENT_VERSION = '1.1.1-a1'
+>>>>>>> 3ca5e68 (Updates for Qt6 support)
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_SYNC_ISSUE_VER = 26
 ANKI_LEGACY_VER = 35
 ANKI_UNDO_UPDATE_VER = 45
 
-# CURRENT_QT_VER = int(QT_VERSION_STR.split('.')[1])
 CURRENT_QT_VER = int(QT_VERSION_STR.split('.')[0])
 QT5_MARKDOWN_VER = 14
 
@@ -114,31 +118,34 @@ class String:
 
 
 class Keys:
-    from aqt import Qt
+    if CURRENT_QT_VER == 6:
+        QtCont = aqt.Qt.Key
+    else:
+        QtCont = aqt.Qt
 
     ESCAPE_KEYS = [
-        Qt.Key_Escape,
+        QtCont.Key_Escape,
     ]
 
     MODIFIER_KEY_DICT = {
-        Qt.Key_Control: 'Ctrl',
-        Qt.Key_Alt: 'Alt',
-        Qt.Key_Shift: 'Shift',
+        QtCont.Key_Control: 'Ctrl',
+        QtCont.Key_Alt: 'Alt',
+        QtCont.Key_Shift: 'Shift',
     }
 
     DISABLED_KEYS = [
-        Qt.Key_F1,
-        Qt.Key_F2,
-        Qt.Key_F3,
-        Qt.Key_F4,
-        Qt.Key_F5,
-        Qt.Key_F6,
-        Qt.Key_F7,
-        Qt.Key_F8,
-        Qt.Key_F9,
-        Qt.Key_F10,
-        Qt.Key_F11,
-        Qt.Key_F12,
+        QtCont.Key_F1,
+        QtCont.Key_F2,
+        QtCont.Key_F3,
+        QtCont.Key_F4,
+        QtCont.Key_F5,
+        QtCont.Key_F6,
+        QtCont.Key_F7,
+        QtCont.Key_F8,
+        QtCont.Key_F9,
+        QtCont.Key_F10,
+        QtCont.Key_F11,
+        QtCont.Key_F12,
     ]
 
     DEFAULT_KEYS = [

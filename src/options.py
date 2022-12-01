@@ -9,8 +9,8 @@ from typing import List
 
 import anki.decks
 from anki.consts import CARD_TYPE_NEW
-from aqt import mw, QT_VERSION_STR
-
+from .consts import CURRENT_QT_VER
+from aqt import mw
 from aqt.qt import (
     Qt,
     QLabel,
@@ -37,10 +37,28 @@ from aqt.qt import (
     QBoxLayout,
 )
 
-if int(QT_VERSION_STR.split('.')[0]) == 6:
-    from aqt.qt.qt6 import Qt
+# AlignHCenter | AlignVCenter
+if CURRENT_QT_VER == 6:
+    AutoText = Qt.TextFormat.AutoText
+    AlignHCenter, AlignVCenter = Qt.AlignmentFlag.AlignHCenter, Qt.AlignmentFlag.AlignVCenter
+    AlignRight, AlignBottom = Qt.AlignmentFlag.AlignRight, Qt.AlignmentFlag.AlignBottom
+    arrow_types = [Qt.ArrowType.RightArrow, Qt.ArrowType.DownArrow]
 
     Qt.MaskOutColor = Qt.MaskMode(1)
+    Qt.TextBrowserInteraction = Qt.TextInteractionFlag.TextBrowserInteraction
+    Qt.NoItemFlags = Qt.ItemFlag.NoItemFlags
+    QDialogButtonBox.Apply = QDialogButtonBox.StandardButton.Apply
+    QDialogButtonBox.RestoreDefaults = QDialogButtonBox.StandardButton.RestoreDefaults
+    QSizePolicy.Fixed = QSizePolicy.Policy.Fixed
+else:
+    # noinspection PyUnresolvedReferences
+    AutoText = Qt.AutoText
+    # noinspection PyUnresolvedReferences
+    arrow_types = [Qt.RightArrow, Qt.DownArrow]
+    # noinspection PyUnresolvedReferences
+    AlignHCenter, AlignVCenter = Qt.AlignHCenter, Qt.AlignVCenter
+    # noinspection PyUnresolvedReferences
+    AlignRight, AlignBottom = Qt.AlignRight, Qt.AlignBottom
 
 from .config import LeechToolkitConfigManager
 from .consts import (
@@ -55,7 +73,7 @@ from .consts import (
     LEGACY_FLAGS_PLACEHOLDER,
     PATREON_ICON_PATH,
     PATREON_URL,
-    String,
+    QT5_MARKDOWN_VER, String,
     Config,
     Action,
     Macro,
@@ -65,6 +83,7 @@ from .consts import (
     QueueAction,
     RESTORE_ICON_PATH,
 )
+
 from .sync import sync_collection
 from ..res.ui.actions_form import Ui_ActionsForm
 from ..res.ui.edit_field_item import Ui_EditFieldItem
@@ -81,9 +100,9 @@ try:
 except ModuleNotFoundError:
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
+
 max_fields_height = 572
 max_queue_height = 256
-arrow_types = [Qt.RightArrow, Qt.DownArrow]
 button_attr = 'button'
 
 
@@ -141,7 +160,7 @@ def append_restore_button(parent: QWidget, insert_col=4):
             if isinstance(layout, QGridLayout):
                 layout.addItem(parent.default_button, pos, insert_col)
             elif isinstance(layout, QBoxLayout):
-                layout.insertWidget(pos, parent.default_button, alignment=Qt.AlignRight | Qt.AlignBottom)
+                layout.insertWidget(pos, parent.default_button, alignment=AlignRight | AlignBottom)
             else:
                 layout.addWidget(parent.default_button)
 
@@ -256,6 +275,7 @@ def _bind_tools_options(*args):
     config = LeechToolkitConfigManager(mw).config
     if config[Config.TOOLBAR_ENABLED]:
         options_action = QAction(String.LEECH_TOOLKIT_OPTIONS, mw)
+        # noinspection PyUnresolvedReferences
         options_action.triggered.connect(on_options_called)
 
         # Handles edge cases where toolbar action already exists in the tools menu
@@ -358,7 +378,7 @@ class OptionsDialog(QDialog):
 
             self.label = QLabel()
 
-            self.layout.addWidget(self.label, alignment=Qt.AlignHCenter | Qt.AlignVCenter)
+            self.layout.addWidget(self.label, alignment=AlignHCenter | AlignVCenter)
 
             self.setLayout(self.layout)
 
@@ -425,10 +445,10 @@ class OptionsDialog(QDialog):
         self.manager = manager
         self.config = manager.config
         self.ui = Ui_OptionsDialog()
-        if int(aqt.qt.QT_VERSION_STR.split('.')[1]) < 14:
+        if int(aqt.qt.QT_VERSION_STR.split('.')[1]) < QT5_MARKDOWN_VER:
             self.ui.QTCore = aqt.qt
             self.ui.QTCore.Qt = aqt.qt.Qt
-            self.ui.QTCore.Qt.MarkdownText = aqt.qt.Qt.AutoText
+            self.ui.QTCore.Qt.MarkdownText = AutoText
         self.ui.setupUi(OptionsDialog=self)
 
         self.setWindowIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{LEECH_ICON_PATH}'))
@@ -609,14 +629,19 @@ class OptionsDialog(QDialog):
             :param button: button to use for determining which link to copy
             """
             cb = mw.app.clipboard()
-            cb.clear(mode=cb.Clipboard)
+            if CURRENT_QT_VER == 6:
+                clip_mode = cb.Mode.Clipboard
+            else:
+                # noinspection PyUnresolvedReferences
+                clip_mode = cb.Clipboard
+            cb.clear(mode=clip_mode)
 
             if button.objectName() == self.ui.patreon_button.objectName():
-                cb.setText(PATREON_URL, mode=cb.Clipboard)
+                cb.setText(PATREON_URL, mode=clip_mode)
             elif button.objectName() == self.ui.kofi_button.objectName():
-                cb.setText(KOFI_URL, mode=cb.Clipboard)
+                cb.setText(KOFI_URL, mode=clip_mode)
             elif button.objectName() == self.ui.like_button.objectName():
-                cb.setText(ANKI_URL, mode=cb.Clipboard)
+                cb.setText(ANKI_URL, mode=clip_mode)
 
         def on_line_context_menu(point, button):
             """

@@ -3,7 +3,6 @@ from typing import List
 
 import aqt
 import aqt.qt
-from PyQt6.QtCore import QT_VERSION_STR
 from aqt import Qt
 from aqt.qt import (
     QLabel,
@@ -24,6 +23,16 @@ from aqt.qt import (
 )
 
 from ...src.consts import CURRENT_QT_VER, QueueAction
+
+if CURRENT_QT_VER == 6:
+    from aqt.qt import (
+        QPointF
+    )
+
+    Qt.ElideRight = Qt.TextElideMode.ElideRight
+    Qt.MatchContains = Qt.MatchFlag.MatchContains
+    QSizePolicy.Expanding = QSizePolicy.Policy.Expanding
+    QSizePolicy.Preferred = QSizePolicy.Policy.Preferred
 
 
 class ElidingLabel(QLabel):
@@ -76,7 +85,13 @@ class ElidingLabel(QLabel):
             line.setLineWidth(self.width())
             if text_width <= self.width():
                 painter.drawText(QPoint(0, metrics.ascent()), self._contents)
-                line.draw(painter, QPoint(0, 0))
+
+                if CURRENT_QT_VER == 6:
+                    line.draw(painter, QPointF(0, 0))
+                else:
+                    # noinspection PyTypeChecker
+                    line.draw(painter, QPoint(0, 0))
+
             else:
                 self._elided_text = metrics.elidedText(self._contents, self._mode, self.width())
                 painter.drawText(QPoint(0, metrics.ascent()), self._elided_text)
@@ -137,6 +152,7 @@ class TipSlider(QSlider):
         x = rect_handle.right() + (self.sliderPosition() * self.rect().width() / 101) + x_offset
         y = rect_handle.top() + y_offset
         global_pos = self.mapToGlobal(QPoint(x, y))
+        # noinspection PyArgumentList
         QToolTip.showText(global_pos, f'{self.value()}%')
 
 

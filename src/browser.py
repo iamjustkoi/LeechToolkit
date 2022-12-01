@@ -16,19 +16,28 @@ from aqt.qt import (
     QMenuBar,
 )
 
-from aqt.qt import QT_VERSION_STR
+from .config import LeechToolkitConfigManager, merge_fields
+from .consts import (
+    ANKI_UNDO_UPDATE_VER,
+    CURRENT_ANKI_VER,
+    CURRENT_QT_VER,
+    ErrorMsg,
+    MENU_CARDS_TEXT,
+    Config,
+    LEECH_TAG,
+    String,
+)
+from .actions import handle_actions
+from ..res.ui.set_lapse_dialog import Ui_SetLapseDialog
 
-if int(QT_VERSION_STR.split('.')[0]) == 5:
-    from aqt.qt import QRegExpValidator
-    from aqt.qt import QRegExp
-else:
+if CURRENT_QT_VER == 6:
     from aqt.qt import QRegularExpression as QRegExp
     from aqt.qt import QRegularExpressionValidator as QRegExpValidator
 
-from .config import LeechToolkitConfigManager, merge_fields
-from .consts import ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER, ErrorMsg, MENU_CARDS_TEXT, Config, LEECH_TAG, String
-from .actions import handle_actions
-from ..res.ui.set_lapse_dialog import Ui_SetLapseDialog
+    QDialogButtonBox.Ok = QDialogButtonBox.StandardButton.Ok
+else:
+    # noinspection PyUnresolvedReferences
+    from aqt.qt import QRegExpValidator, QRegExp
 
 try:
     from aqt.utils import (
