@@ -11,6 +11,7 @@ from aqt.qt import QT_VERSION_STR
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 CURRENT_VERSION = '1.1.0'
 =======
 CURRENT_VERSION = '1.0.4'
@@ -18,6 +19,9 @@ CURRENT_VERSION = '1.0.4'
 =======
 CURRENT_VERSION = '1.1.1-a1'
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
+=======
+CURRENT_VERSION = '1.1.2-rc1'
+>>>>>>> 6731f0b (Version Update)
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_SYNC_ISSUE_VER = 26
