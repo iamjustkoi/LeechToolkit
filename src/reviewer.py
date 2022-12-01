@@ -213,8 +213,12 @@ class ReviewWrapper:
             reviewer_will_end,
             reviewer_will_show_context_menu
         )
+<<<<<<< HEAD
         if mw.col.v3_scheduler():
 <<<<<<< HEAD
+=======
+        if CURRENT_ANKI_VER > ANKI_LEGACY_VER and mw.col.v3_scheduler():
+>>>>>>> 7b28ad3 (Fixed issues with editing notes for legacy builds)
             reviewer_did_answer_card.append(self.on_answer_v3)
 =======
             reviewer_did_answer_card.append(check_did_leech)
@@ -272,7 +276,7 @@ class ReviewWrapper:
             'queue': card.queue.real,
             'due': card.due.real,
             'lapses': card.lapses,
-            'fields': card.note().joined_fields(),
+            'fields': card.note().joined_fields() if CURRENT_ANKI_VER > ANKI_LEGACY_VER else card.note().joinedFields(),
             'tags': card.note().tags,
         }
         updated_card = update_callback()
@@ -280,7 +284,7 @@ class ReviewWrapper:
             'queue': updated_card.queue.real,
             'due': updated_card.due.real,
             'lapses': updated_card.lapses,
-            'fields': updated_card.note().joined_fields(),
+            'fields': card.note().joined_fields() if CURRENT_ANKI_VER > ANKI_LEGACY_VER else card.note().joinedFields(),
             'tags': updated_card.note().tags,
         }
 

@@ -19,8 +19,8 @@ from anki.consts import QUEUE_TYPE_SUSPENDED, QUEUE_TYPE_NEW, CARD_TYPE_NEW, BUT
 from aqt import utils
 
 from .consts import (
-    Action,
-    ErrorMsg, Macro,
+    ANKI_LEGACY_VER, Action,
+    CURRENT_ANKI_VER, ErrorMsg, Macro,
     EditAction,
     RescheduleAction,
     QueueAction,
@@ -206,7 +206,10 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
 
     def handle_flag():
         if actions_conf[Action.FLAG][Action.ENABLED]:
-            updated_card.set_user_flag(actions_conf[Action.FLAG][Action.INPUT])
+            if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
+                updated_card.setUserFlag(actions_conf[Action.FLAG][Action.INPUT])
+            else:
+                updated_card.set_user_flag(actions_conf[Action.FLAG][Action.INPUT])
 
     def handle_suspend():
         if actions_conf[Action.SUSPEND][Action.ENABLED] and actions_conf[Action.SUSPEND][Action.INPUT]:
@@ -215,7 +218,10 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
     def handle_add_tags():
         if actions_conf[Action.ADD_TAGS][Action.ENABLED]:
             for tag in str(actions_conf[Action.ADD_TAGS][Action.INPUT]).split(' '):
-                updated_card.note().add_tag(apply_tag_macros(updated_card, tag))
+                if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
+                    updated_card.note().addTag(apply_tag_macros(updated_card, tag))
+                else:
+                    updated_card.note().add_tag(apply_tag_macros(updated_card, tag))
 
     def handle_remove_tags():
         if actions_conf[Action.REMOVE_TAGS][Action.ENABLED]:
@@ -229,10 +235,18 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
                     reg_match = re.search(f'((?<=^\")(.*)(?=\"$))|(^(?!\")(.*))', reg_cmd)
                     reg_string = reg_match.group(0).replace(f'.', r'\S')
                     # Remove tags from the tags string
-                    result_tags = ''.join(re.split(reg_string, updated_card.note().string_tags())).strip()
-                    updated_card.note().set_tags_from_str(result_tags)
+                    if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+                        result_tags = ''.join(re.split(reg_string, updated_card.note().string_tags())).strip()
+                        updated_card.note().set_tags_from_str(result_tags)
+                    else:
+                        result_tags = ''.join(re.split(reg_string, updated_card.note().stringTags())).strip()
+                        updated_card.note().setTagsFromStr(result_tags)
+
                 else:
-                    updated_card.note().remove_tag(formatted_tag)
+                    if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+                        updated_card.note().remove_tag(formatted_tag)
+                    else:
+                        updated_card.note().delTag(formatted_tag)
 
     def handle_forget():
         if actions_conf[Action.FORGET][Action.ENABLED] and actions_conf[Action.FORGET][Action.INPUT][0]:
@@ -246,12 +260,13 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
 
     def handle_edit_fields():
         if actions_conf[Action.EDIT_FIELDS][Action.ENABLED]:
-            inputs: List[str] = actions_conf[Action.EDIT_FIELDS][Action.INPUT]
+            inputs: list[str] = [list(input_dict.keys())[0] for input_dict in
+                                 actions_conf[Action.EDIT_FIELDS][Action.INPUT]]
 
-            for filtered_nid in inputs:
-                nid = int(filtered_nid.split('.')[0])
+            for nid in inputs:
+                # nid = int(filtered_nid.split('.')[0])
                 if updated_card.note_type()['id'] == nid:
-                    conf_meta = actions_conf[Action.EDIT_FIELDS][Action.INPUT][filtered_nid]
+                    conf_meta = actions_conf[Action.EDIT_FIELDS][Action.INPUT][nid]
 
                     new_text: str = conf_meta[EditAction.TEXT]
                     card_field = updated_card.note().fields[conf_meta[EditAction.FIELD]]
@@ -403,9 +418,15 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
         """
         if toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_ENABLED]:
             if action_type == Config.LEECH_ACTIONS:
-                updated_card.note().add_tag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+                if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+                    updated_card.note().add_tag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+                else:
+                    updated_card.note().addTag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
             elif action_type == Config.UN_LEECH_ACTIONS:
-                updated_card.note().remove_tag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+                if CURRENT_ANKI_VER > ANKI_LEGACY_VER:
+                    updated_card.note().remove_tag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
+                else:
+                    updated_card.note().delTag(toolkit_conf[Config.SYNC_TAG_OPTIONS][Config.SYNC_TAG_TEXT])
 
     handle_flag()
     handle_deck_move()
