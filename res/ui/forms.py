@@ -3,6 +3,7 @@ from typing import List
 
 import aqt
 import aqt.qt
+from PyQt6.QtCore import QT_VERSION_STR
 from aqt import Qt
 from aqt.qt import (
     QLabel,
@@ -127,7 +128,14 @@ class TipSlider(QSlider):
         self.sliderPressed.connect(self.show_tip)
 
     def show_tip(self):
-        rect_handle = self.style.subControlRect(self.style.CC_Slider, self.opt, self.style.SC_SliderHandle)
+        cc_slider = self.style.CC_Slider if int(QT_VERSION_STR.split('.')[0]) == 5 else \
+            self.style.ComplexControl.CC_Slider
+        sc_slider = self.style.SC_SliderHandle if int(QT_VERSION_STR.split('.')[0]) == 5 else \
+            self.style.SubControl.SC_SliderHandle
+        print(f'{int(QT_VERSION_STR.split(".")[0])=}')
+        print(f'{cc_slider=}')
+        print(f'{sc_slider=}')
+        rect_handle = self.style.subControlRect(cc_slider, self.opt, sc_slider)
         x_offset, y_offset = ((rect_handle.width() * 1.5) * -1), -30
         x = rect_handle.right() + (self.sliderPosition() * self.rect().width() / 101) + x_offset
         y = rect_handle.top() + y_offset
