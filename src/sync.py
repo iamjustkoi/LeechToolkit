@@ -12,16 +12,19 @@ from .consts import ANKI_SYNC_ISSUE_VER, CURRENT_ANKI_VER, Config, ErrorMsg, LEE
 from anki.consts import *
 
 try:
+    # noinspection PyUnresolvedReferences
     import aqt.operations
 except ModuleNotFoundError:
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
 
 def build_hooks():
-    if CURRENT_ANKI_VER != ANKI_SYNC_ISSUE_VER:
-        gui_hooks.sync_did_finish.append(sync_collection)
-
+    if CURRENT_ANKI_VER > ANKI_SYNC_ISSUE_VER:
+        # noinspection PyUnresolvedReferences
         from aqt.undo import UndoActionsInfo
+
+        # noinspection PyUnresolvedReferences
+        gui_hooks.sync_did_finish.append(sync_collection)
 
 
 def get_remeasured_lapses(cid: int, reverse_conf: dict):
@@ -61,6 +64,7 @@ def get_remeasured_lapses(cid: int, reverse_conf: dict):
     return remeasured_lapses
 
 
+# noinspection PyArgumentList
 def sync_collection(is_manual_sync=False):
     """
     Syncs the collection's lapse count and, optionally, leech status based on the current user preferences and review
@@ -87,7 +91,8 @@ def sync_collection(is_manual_sync=False):
         for cid, did, lapses, card_type, nid in cards:
             # Only updates status for cards in the review queue; otherwise handled by User/Anki.
             if card_type == QUEUE_TYPE_REV:
-                card = mw.col.get_card(cid)
+                # noinspection PyUnresolvedReferences
+                card = mw.col.getCard(cid) if CURRENT_ANKI_VER <= ANKI_SYNC_ISSUE_VER else mw.col.get_card(cid)
                 toolkit_config = toolkit_configs[str(did)]
 
                 if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
@@ -100,8 +105,11 @@ def sync_collection(is_manual_sync=False):
                     if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_USE_LEECH_THRESHOLD] \
                     else toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_THRESHOLD]
 
-                has_toolkit_tag = card.note().has_tag(String.SYNC_TAG_DEFAULT) and nid not in tagged_nids
-                has_leech_tag = card.note().has_tag(LEECH_TAG)
+                note = card.note()
+                if CURRENT_ANKI_VER <= ANKI_SYNC_ISSUE_VER:
+                    note.has_tag = note.hasTag
+                has_toolkit_tag = note.has_tag(String.SYNC_TAG_DEFAULT) and nid not in tagged_nids
+                has_leech_tag = note.has_tag(LEECH_TAG)
 
                 if toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED] and card.lapses < threshold:
                     # Unleech
@@ -110,7 +118,10 @@ def sync_collection(is_manual_sync=False):
                         updated_cids.add(cid)
 
                     if has_leech_tag:
-                        card.note().remove_tag(LEECH_TAG)
+                        note = card.note()
+                        if CURRENT_ANKI_VER <= ANKI_SYNC_ISSUE_VER:
+                            note.remove_tag = note.delTag
+                        note.remove_tag(LEECH_TAG)
                         updated_cids.add(cid)
 
                 elif card.lapses >= threshold:
@@ -121,7 +132,10 @@ def sync_collection(is_manual_sync=False):
                         updated_cids.add(cid)
 
                     if not has_leech_tag:
-                        card.note().add_tag(LEECH_TAG)
+                        note = card.note()
+                        if CURRENT_ANKI_VER <= ANKI_SYNC_ISSUE_VER:
+                            note.add_tag = note.addTag
+                        note.add_tag(LEECH_TAG)
                         updated_cids.add(cid)
 
                 if cid in updated_cids:
