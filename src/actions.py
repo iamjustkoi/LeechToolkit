@@ -30,7 +30,7 @@ from .consts import (
     REV_DECREASE,
     REV_RESET,
 )
-from .legacy import _try_get_config_dict_for_did, _try_get_current_did, _try_has_tag
+from .legacy import _try_get_config_dict_for_did, _try_get_current_did, _try_get_deck_and_child_ids, _try_has_tag
 
 try:
     from anki.collection import OpChanges
@@ -202,7 +202,9 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
                 updated_card.due = updated_card.odue
                 updated_card.odue = 0
             if actions_conf[Action.MOVE_DECK][Action.INPUT]:
-                updated_card.did = int(actions_conf[Action.MOVE_DECK][Action.INPUT])
+                updated_card.did = int(
+                    updated_card.col.decks.get(int(actions_conf[Action.MOVE_DECK][Action.INPUT]))["id"]
+                )
 
     def handle_flag():
         if actions_conf[Action.FLAG][Action.ENABLED]:
@@ -310,7 +312,9 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
                     queue_cmd = f'SELECT min(due), max(due) FROM cards WHERE type={CARD_TYPE_NEW} AND odid=0'
 
                     if queue_inputs[QueueAction.CURRENT_DECK]:
-                        deck_and_child_ids = updated_card.col.decks.deck_and_child_ids(updated_card.current_deck_id())
+                        current_did = updated_card.current_deck_id() if CURRENT_ANKI_VER > ANKI_LEGACY_VER else \
+                            updated_card.did
+                        deck_and_child_ids = _try_get_deck_and_child_ids(current_did)
                         dids = [int(i) for i in deck_and_child_ids]
                         queue_cmd += f' AND did IN {anki.decks.ids2str(dids)}'
 
