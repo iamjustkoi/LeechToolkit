@@ -35,6 +35,7 @@ from aqt.qt import (
     pyqtBoundSignal,
     QGridLayout,
     QBoxLayout,
+    QT_VERSION_STR
 )
 
 # AlignHCenter | AlignVCenter
@@ -99,6 +100,16 @@ try:
     from anki.notes import NoteId
 except ModuleNotFoundError:
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
+
+
+class DeckNameId:
+    def __init__(self, name, did):
+        self.name = name
+        self.id = did
+
+
+def legacy_name_id_handler(*args):
+    return [DeckNameId(deck["name"], deck["id"]) for deck in mw.col.decks.all()]
 
 
 max_fields_height = 572
@@ -445,7 +456,7 @@ class OptionsDialog(QDialog):
         self.manager = manager
         self.config = manager.config
         self.ui = Ui_OptionsDialog()
-        if int(aqt.qt.QT_VERSION_STR.split('.')[1]) < QT5_MARKDOWN_VER:
+        if int(QT_VERSION_STR.split('.')[1]) < QT5_MARKDOWN_VER:
             self.ui.QTCore = aqt.qt
             self.ui.QTCore.Qt = aqt.qt.Qt
             self.ui.QTCore.Qt.MarkdownText = AutoText
@@ -828,6 +839,9 @@ class ActionsWidget(QWidget):
 
         self.ui.expandoButton.setText(expando_text)
 
+        if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
+            mw.col.decks.all_names_and_ids = legacy_name_id_handler
+
         self.dids = [int(name_id.id) for name_id in mw.col.decks.all_names_and_ids()] if not dids else dids
 
         self.ui.editFieldsList.setStyleSheet('#editFieldsList {background-color: transparent;}')
@@ -1095,6 +1109,8 @@ class ActionsWidget(QWidget):
     # DECK MOVE
     def load_move_deck(self, action_conf: dict):
         self.ui.deckMoveGroup.setChecked(action_conf[Action.ENABLED])
+        if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
+            mw.col.decks.all_names_and_ids = legacy_name_id_handler
         suggestions = [dnid.name for dnid in mw.col.decks.all_names_and_ids()]
         [suggestions.append(suggestion) for suggestion in Macro.MACROS if suggestion != Macro.REGEX]
         deck_name = _try_get_deck_name(action_conf[Action.INPUT])
@@ -1133,7 +1149,10 @@ class ActionsWidget(QWidget):
             mid = list(note_dict)[0]
             for field_ord in list(note_dict.values()):
                 note = mw.col.models.get(NotetypeId(int(mid)) if CURRENT_ANKI_VER > ANKI_LEGACY_VER else int(mid))
+                if not note:
+                    continue
                 field_name = _try_get_field_names(note)[field_ord]
+
                 add_excluded_field(self.ui.queueExcludedFieldList, mid, field_name)
         self.ui.queueExcludedFieldList.sortItems()
         _redraw_list(self.ui.queueExcludedFieldList)
