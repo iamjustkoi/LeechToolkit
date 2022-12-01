@@ -5,11 +5,12 @@ Full license text available in "LICENSE" file packaged with the program.
 import traceback
 import webbrowser
 from pathlib import Path
-from typing import List, re
+from typing import List
 
 import anki.decks
 from anki.consts import CARD_TYPE_NEW
-from aqt import mw
+from aqt import mw, QT_VERSION_STR
+
 from aqt.qt import (
     Qt,
     QLabel,
@@ -35,6 +36,11 @@ from aqt.qt import (
     QGridLayout,
     QBoxLayout,
 )
+
+if int(QT_VERSION_STR.split('.')[0]) == 6:
+    from aqt.qt.qt6 import Qt
+
+    Qt.MaskOutColor = Qt.MaskMode(1)
 
 from .config import LeechToolkitConfigManager
 from .consts import (

@@ -14,9 +14,16 @@ from aqt.qt import (
     QDialog,
     QDialogButtonBox,
     QMenuBar,
-    QRegExpValidator,
-    QRegExp,
 )
+
+from aqt.qt import QT_VERSION_STR
+
+if int(QT_VERSION_STR.split('.')[0]) == 5:
+    from aqt.qt import QRegExpValidator
+    from aqt.qt import QRegExp
+else:
+    from aqt.qt import QRegularExpression as QRegExp
+    from aqt.qt import QRegularExpressionValidator as QRegExpValidator
 
 from .config import LeechToolkitConfigManager, merge_fields
 from .consts import ANKI_UNDO_UPDATE_VER, CURRENT_ANKI_VER, ErrorMsg, MENU_CARDS_TEXT, Config, LEECH_TAG, String

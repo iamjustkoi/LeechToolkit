@@ -23,14 +23,6 @@ def build_hooks():
 
         from aqt.undo import UndoActionsInfo
 
-        def print_undo_state(info: UndoActionsInfo):
-            print(f'    .--undo infO--.')
-            print(f'    {info}')
-            print(f'    last_step: {mw.col.undo_status().last_step}')
-            print()
-
-        gui_hooks.undo_state_did_change.append(print_undo_state)
-
 
 def get_remeasured_lapses(cid: int, reverse_conf: dict):
     """
