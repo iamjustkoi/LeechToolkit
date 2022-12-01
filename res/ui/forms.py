@@ -23,7 +23,7 @@ from aqt.qt import (
     QCompleter,
 )
 
-from ...src.consts import QueueAction
+from ...src.consts import CURRENT_QT_VER, QueueAction
 
 
 class ElidingLabel(QLabel):
@@ -128,13 +128,10 @@ class TipSlider(QSlider):
         self.sliderPressed.connect(self.show_tip)
 
     def show_tip(self):
-        cc_slider = self.style.CC_Slider if int(QT_VERSION_STR.split('.')[0]) == 5 else \
+        cc_slider = self.style.CC_Slider if CURRENT_QT_VER == 5 else \
             self.style.ComplexControl.CC_Slider
-        sc_slider = self.style.SC_SliderHandle if int(QT_VERSION_STR.split('.')[0]) == 5 else \
+        sc_slider = self.style.SC_SliderHandle if CURRENT_QT_VER == 5 else \
             self.style.SubControl.SC_SliderHandle
-        print(f'{int(QT_VERSION_STR.split(".")[0])=}')
-        print(f'{cc_slider=}')
-        print(f'{sc_slider=}')
         rect_handle = self.style.subControlRect(cc_slider, self.opt, sc_slider)
         x_offset, y_offset = ((rect_handle.width() * 1.5) * -1), -30
         x = rect_handle.right() + (self.sliderPosition() * self.rect().width() / 101) + x_offset
