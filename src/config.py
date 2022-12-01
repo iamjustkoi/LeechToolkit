@@ -55,7 +55,7 @@ class LeechToolkitConfigManager:
         """
         self._mw.addonManager.writeAddonMeta(self._addon, self._meta)
 
-        # Refresh reviewer if currently active
+        # Refresh reviewer if active
         try:
             self._mw.reviewer.toolkit_wrapper.load_options() if self._mw.state == 'review' else None
         except AttributeError:
