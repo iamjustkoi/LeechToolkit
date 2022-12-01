@@ -296,20 +296,31 @@ class ReviewWrapper:
                 if undo_msg:
                     entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
                     self.reviewer.mw.col.update_card(updated_card)
+                    # If entry was null, set it to this last update
+                    entry = mw.col.undo_status().last_step if not entry else entry
                     self.reviewer.mw.col.update_note(updated_card.note())
                     changes = self.reviewer.mw.col.merge_undo_entries(entry)
                     self.refresh_if_needed(changes)
+
                 else:
 <<<<<<< HEAD
                     if mw.col.v3_scheduler():
+                        # merge entries to last review (remove layered undo issues)
                         last_step = mw.col.undo_status().last_step
                         self.reviewer.mw.col.update_card(updated_card)
+
+                        # If last step was null, set it to this last update
+                        last_step = mw.col.undo_status().last_step if not last_step else last_step
+
                         self.reviewer.mw.col.update_note(updated_card.note())
                         changes = self.reviewer.mw.col.merge_undo_entries(last_step)
+
                         self.refresh_if_needed(changes)
+
                     else:
                         # Let reviewer handle future undo entry
                         updated_card.flush()
+
                         if (current_data['fields'], current_data['tags']) \
                                 != (updated_data['fields'], updated_data['tags']):
                             updated_card.note().flush()
