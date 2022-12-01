@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -434,7 +434,7 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
             <x>0</x>
             <y>0</y>
             <width>472</width>
-            <height>516</height>
+            <height>527</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="scroll_layout" stretch="0,0,1">
@@ -450,16 +450,16 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
               </sizepolicy>
              </property>
              <property name="text">
-              <string>## Leech Toolkit 🩸
+              <string>## Leech Toolkit
 Add additional tools and functionality for handling leeches in Anki!
 
 Version: {version}  
-Have any issues or feedback? Feel free to post on the project's issue section on [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  
+Have any issues, feedback,or questions? Feel free to post on the project's issue section on [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  
 
 [Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)  
 [Source Code](https://github.com/iamjustkoi/LeechToolkit)  
 
-If you want to help support what I do:</string>
+If you like the add-on want to support my stuff:</string>
              </property>
              <property name="textFormat">
               <enum>Qt::MarkdownText</enum>
@@ -631,7 +631,7 @@ If you want to help support what I do:</string>
 - `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)
 
 &lt;br&gt;&lt;/br&gt;
-Thanks for downloading and happy leeching!  
+Thanks for downloading and happy studies!  
 -koi  
 &lt;br&gt;&lt;/br&gt;  
 MIT License    

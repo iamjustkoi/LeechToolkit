@@ -807,6 +807,7 @@ class Ui_OptionsDialog(object):
         self.about_scroll = QtWidgets.QWidget()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.about_scroll.setGeometry(QtCore.QRect(0, 0, 519, 427))
 =======
         self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 516))
@@ -814,6 +815,9 @@ class Ui_OptionsDialog(object):
 =======
         self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 516))
 >>>>>>> b11dd05 (Reformatting commits)
+=======
+        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 527))
+>>>>>>> 43ec270 (Updated some text to be less harsh, hopefully)
         self.about_scroll.setObjectName("about_scroll")
         self.scroll_layout = QtWidgets.QVBoxLayout(self.about_scroll)
         self.scroll_layout.setSpacing(6)
@@ -997,6 +1001,7 @@ class Ui_OptionsDialog(object):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.tabWidget.setCurrentIndex(0)
 =======
         self.tabWidget.setCurrentIndex(3)
@@ -1011,6 +1016,9 @@ class Ui_OptionsDialog(object):
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
 =======
+=======
+        self.tabWidget.setCurrentIndex(0)
+>>>>>>> 43ec270 (Updated some text to be less harsh, hopefully)
         self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
         self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
@@ -1307,16 +1315,16 @@ class Ui_OptionsDialog(object):
         self.unleechShortcutButton.setText(_translate("OptionsDialog", "Ctrl+Shift+U"))
         self.label_4.setText(_translate("OptionsDialog", "Un-Leech"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.advancedTab), _translate("OptionsDialog", "Advanced"))
-        self.about_label_header.setText(_translate("OptionsDialog", "## Leech Toolkit 🩸\n"
+        self.about_label_header.setText(_translate("OptionsDialog", "## Leech Toolkit\n"
 "Add additional tools and functionality for handling leeches in Anki!\n"
 "\n"
 "Version: {version}  \n"
-"Have any issues or feedback? Feel free to post on the project\'s issue section on [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  \n"
+"Have any issues, feedback,or questions? Feel free to post on the project\'s issue section on [GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  \n"
 "\n"
 "[Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)  \n"
 "[Source Code](https://github.com/iamjustkoi/LeechToolkit)  \n"
 "\n"
-"If you want to help support what I do:"))
+"If you like the add-on want to support my stuff:"))
         self.like_button.setText(_translate("OptionsDialog", "Review on AnkiWeb "))
         self.kofi_button.setText(_translate("OptionsDialog", "  Buy me a coffee "))
         self.patreon_button.setText(_translate("OptionsDialog", "  Become a patron "))
@@ -1334,7 +1342,7 @@ class Ui_OptionsDialog(object):
 "- `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)\n"
 "\n"
 "<br></br>\n"
-"Thanks for downloading and happy leeching!  \n"
+"Thanks for downloading and happy studies!  \n"
 "-koi  \n"
 "<br></br>  \n"
 "MIT License    \n"
