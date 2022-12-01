@@ -14,13 +14,13 @@ Or go to "Tools -> Add-ons -> Get Add-ons..." and paste these numbers in:
 
 ###### Show a marker on cards that have been leeched.
 
-<img src="res/img/example/leech-mark.png">
+<img src=".github/example/leech-mark.png">
 
 #### Almost-Leech Marker
 
 ###### Show a marker on cards that are about to be leeched.
 
-<img src="res/img/example/almost-leech-mark.png">
+<img src=".github/example/almost-leech-mark.png">
 
 #### Bottom Bar Leech Button
 
@@ -53,7 +53,7 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ###### New options for leeching, un-leeching, and setting lapses on cards!
 
-<img src="res/img/example/browser-options.png">
+<img src=".github/example/browser-options.png">
 
 ##### Leech/Un-leech
 
@@ -63,7 +63,7 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ###### Set lapse counts on cards and (optionally) update their leech status based on the new lapse count.
 
-<img src="res/img/example/set-lapses.png">
+<img src=".github/example/set-lapses.png">
 
 #### Reviewer Shortcuts
 
@@ -75,13 +75,13 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ###### General options for UI elements and Lapse Reversing.
 
-<img src="res/img/example/options-general.png">
+<img src=".github/example/options-general.png">
 
 ### Actions
 
 ###### Optional leech/un-leech actions that can also override base Anki operations.
 
-<img src="res/img/example/options-actions.png">
+<img src=".github/example/options-actions.png">
 
 - `Set Flag` - set the current flag
 - `Suspend` - set suspended state to on/off
@@ -91,21 +91,21 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 - `Edit Field(s)` - append, prepend, and/or replace text to note fields
     - <details>
         <summary>Example</summary>    
-        <img src="res/img/example/options-edit-fields.png">  
+        <img src=".github/example/options-edit-fields.png">  
         </details>
 - `Move to Deck` - move the card to a specified deck
 - `Set Due Date` - reschedule the card between a range of days
 - `Add to New` - Add a card to the new queue with some custom match filters
     - <details>
         <summary>Example</summary>    
-        <img src="res/img/example/options-add-to-new.png">  
+        <img src=".github/example/options-add-to-new.png">  
         </details>
 
 ### Advanced
 
 ###### Options for hiding the config shortcut, syncing and updating the collection, and setting shortcuts.
 
-<img src="res/img/example/options-advanced.png">
+<img src=".github/example/options-advanced.png">
 
 ### Deck Options
 
@@ -113,7 +113,7 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ###### These can be accessed in the legacy deck options menu (Shift + Options).
 
-<img src="res/img/example/options-deckoptions.png">
+<img src=".github/example/options-deckoptions.png">
 
 ## Text Macros
 
