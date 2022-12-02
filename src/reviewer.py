@@ -5,6 +5,7 @@ Full license text available in "LICENSE" file packaged with the program.
 
 from __future__ import annotations
 
+import os
 import traceback
 
 import anki.cards
@@ -27,7 +28,7 @@ from .consts import (
     ErrorMsg,
     MARKER_POS_STYLES,
     LEECH_TAG,
-    String,
+    MARK_HTML_TEMPLATE, String,
 )
 
 try:
@@ -36,30 +37,9 @@ except ImportError:
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
     DeckId = int
 
-mark_html_template = '''
-<style>
-    #{marker_id} {{
-        color: transparent;  
-        font-size: .4em !important;
-        display: none;
-        text-shadow: 0 0 0 {marker_color};
-        float: {marker_float};
-    }}
-</style>
-<div id="{marker_id}">{marker_text}</div>
-'''
-
-marker_id = 'leech_marker'
-prev_type_attr = 'prevtype'
-wrapper_attr = 'toolkit_manager'
-
-MARKER_TEXT = '🩸'
-LEECH_COLOR = 'rgb(248, 105, 86)'
-ALMOST_COLOR = 'rgb(248, 197, 86)'
-ALMOST_DISTANCE = 1
-
-TOOLTIP_ENABLED = True
-TOOLTIP_TIME = 5000
+MARKER_ID = 'leech_marker'
+PREV_TYPE_ATTR = 'prevtype'
+WRAPPER_ATTR = 'toolkit_manager'
 
 
 def build_hooks():
@@ -79,8 +59,8 @@ def try_append_wrapper(content: aqt.webview.WebContent, context: object):
     """
     if isinstance(context, Reviewer):
         reviewer: aqt.reviewer.Reviewer = context
-        if _try_check_filtered(_try_get_current_did()) and hasattr(mw.reviewer, wrapper_attr):
-            mw.reviewer.__delattr__(wrapper_attr)
+        if _try_check_filtered(_try_get_current_did()) and hasattr(mw.reviewer, WRAPPER_ATTR):
+            mw.reviewer.__delattr__(WRAPPER_ATTR)
         else:
             # Attached for calls and any future garbage collection, potentially, idk
             reviewer.toolkit_wrapper = ReviewWrapper(reviewer, content, _try_get_current_did())
@@ -92,7 +72,7 @@ def set_marker_color(color: str):
 
     :param color: color (style) string to update the marker color to
     """
-    mw.web.eval(f'document.getElementById("{marker_id}").style.textShadow = "0 0 0 {color}";')
+    mw.web.eval(f'document.getElementById("{MARKER_ID}").style.textShadow = "0 0 0 {color}";')
 
 
 def show_marker(show=False):
@@ -102,9 +82,9 @@ def show_marker(show=False):
     :param show: new visibility
     """
     if show:
-        mw.web.eval(f'document.getElementById("{marker_id}").style.display = "unset"')
+        mw.web.eval(f'document.getElementById("{MARKER_ID}").style.display = "unset"')
     else:
-        mw.web.eval(f'document.getElementById("{marker_id}").style.display = "none"')
+        mw.web.eval(f'document.getElementById("{MARKER_ID}").style.display = "none"')
 
 
 <<<<<<< HEAD
@@ -124,6 +104,7 @@ class ReviewWrapper:
     card: anki.cards.Card
     on_front: bool
     leeched_cids: set[int] = set()
+    marker_html: str
 
     # queued_undo_entry: int = -1
 
@@ -162,6 +143,12 @@ class ReviewWrapper:
             self.unleech_action.triggered.connect(lambda *args: self.handle_input_action(Config.UN_LEECH_ACTIONS))
             mw.stateShortcuts.append(unleech_shortcut)
 
+            if os.path.isfile('marker_html.html'):
+                with open('marker_html.html', 'r') as f:
+                    self.marker_html = f.read()
+            else:
+                self.marker_html = MARK_HTML_TEMPLATE
+
     def load_options(self, did: DeckId = None):
         """
         Loads options to UI elements and config-based actions, as well as appends hooks to the initialized reviewer.
@@ -193,12 +180,13 @@ class ReviewWrapper:
         """
         Appends a leech marker to the review window's html.
         """
+
         marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
-        self.content.body += mark_html_template.format(
-            marker_id=marker_id,
-            marker_text=MARKER_TEXT,
-            marker_color=LEECH_COLOR,
-            marker_float=marker_float,
+        self.content.body += self.marker_html.format(
+            MARKER_ID=MARKER_ID,
+            marker_text=self.toolkit_config[Config.MARKER_TEXT],
+            marker_color=self.toolkit_config[Config.LEECH_COLOR],
+            MARKER_FLOAT=marker_float,
         )
 
     def append_hooks(self):
@@ -370,7 +358,7 @@ class ReviewWrapper:
         self.on_front = False
         self.card = card
         if self.toolkit_config[Config.REVERSE_OPTIONS][Config.REVERSE_ENABLED]:
-            setattr(self.card, prev_type_attr, self.card.type)
+            setattr(self.card, PREV_TYPE_ATTR, self.card.type)
         self.update_marker()
 
     def on_show_front(self, card: anki.cards.Card):
@@ -397,9 +385,9 @@ class ReviewWrapper:
 
         def handle_card_answer():
             updated_card = card.col.get_card(card.id)
-            if hasattr(card, prev_type_attr):
-                updated_card = handle_reverse(self.toolkit_config, card, ease, card.__getattribute__(prev_type_attr))
-                delattr(card, prev_type_attr)
+            if hasattr(card, PREV_TYPE_ATTR):
+                updated_card = handle_reverse(self.toolkit_config, card, ease, card.__getattribute__(PREV_TYPE_ATTR))
+                delattr(card, PREV_TYPE_ATTR)
 
 <<<<<<< HEAD
             if card.id in self.leeched_cids:
@@ -425,15 +413,16 @@ class ReviewWrapper:
         if marker_conf[Config.SHOW_LEECH_MARKER]:
             only_show_on_back = marker_conf[Config.ONLY_SHOW_BACK_MARKER]
             is_review = self.card.type == anki.cards.CARD_TYPE_REV
-            almost_leech = is_review and self.card.lapses + ALMOST_DISTANCE >= self.max_fails
+            almost_leech = \
+                is_review and self.card.lapses + self.toolkit_config[Config.ALMOST_DISTANCE] >= self.max_fails
 
             if (not self.on_front and only_show_on_back) or not only_show_on_back:
                 if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
                     self.card.note().has_tag = lambda tag: tag.lower() in [t.lower() for t in self.card.note().tags]
 
                 if self.card.note().has_tag(LEECH_TAG):
-                    set_marker_color(LEECH_COLOR)
+                    set_marker_color(self.toolkit_config[Config.LEECH_COLOR])
                     show_marker(True)
                 elif marker_conf[Config.USE_ALMOST_MARKER] and almost_leech:
-                    set_marker_color(ALMOST_COLOR)
+                    set_marker_color(self.toolkit_config[Config.ALMOST_COLOR])
                     show_marker(True)

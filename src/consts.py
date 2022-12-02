@@ -62,6 +62,19 @@ ReverseType = NewType('ReverseType', int)
 REV_DECREASE = ReverseType(0)
 REV_RESET = ReverseType(1)
 
+MARK_HTML_TEMPLATE = '''
+    <style>
+        #{marker_id} {{
+            color: transparent;  
+            font-size: .4em !important;
+            display: none;
+            text-shadow: 0 0 0 {marker_color};
+            float: {marker_float};
+        }}
+    </style>
+    <div id="{marker_id}">{marker_text}</div>
+'''
+
 
 class ErrorMsg:
     ACTION_MANAGER_NOT_DEFINED = 'Action manager not yet defined.'
@@ -250,6 +263,14 @@ class Config:
 
     LEECH_ACTIONS = 'leechActions'
     UN_LEECH_ACTIONS = 'unLeechActions'
+
+    MARKER_TEXT = "markerIconText"
+    LEECH_COLOR = "leechColor"
+    ALMOST_COLOR = "almostColor"
+    ALMOST_DISTANCE = "almostDistance"
+    TOOLTIP_ENABLED = "tooltipEnabled"
+    TOOLTIP_TIME = "tooltipTimeMs"
+
     DEFAULT_ACTIONS = {
         Action.FLAG: {Action.ENABLED: False, Action.INPUT: 0},
         Action.SUSPEND: {Action.ENABLED: False, Action.INPUT: True},
@@ -296,7 +317,6 @@ class Config:
         LEECH_ACTIONS,
         UN_LEECH_ACTIONS,
     ]
-
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SYNC_ENABLED: False,
@@ -326,6 +346,12 @@ class Config:
             REVERSE_CONS_ANS: 2,
             REVERSE_METHOD: 0,
         },
+        MARKER_TEXT: '🩸',
+        LEECH_COLOR: 'rgb(248, 105, 86)',
+        ALMOST_COLOR: 'rgb(248, 197, 86)',
+        ALMOST_DISTANCE: 1,
+        TOOLTIP_ENABLED: True,
+        TOOLTIP_TIME: 5000,
         LEECH_ACTIONS: DEFAULT_ACTIONS,
         UN_LEECH_ACTIONS: DEFAULT_ACTIONS,
     }
