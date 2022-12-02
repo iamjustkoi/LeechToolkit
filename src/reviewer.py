@@ -10,6 +10,7 @@ import traceback
 import anki.cards
 import aqt.reviewer
 from anki import hooks
+from anki.errors import InvalidInput
 from aqt.utils import tooltip
 from aqt.webview import WebContent, AnkiWebView
 from aqt import gui_hooks, mw
@@ -273,41 +274,30 @@ class ReviewWrapper:
                 mw.reset()
         else:
             if current_data != updated_data:
+
                 def push_updates():
                     entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
                     self.reviewer.mw.col.update_card(updated_card)
+
+                    # If entry was null, set it to this last update
+                    entry = mw.col.undo_status().last_step if not entry else entry
+
                     self.reviewer.mw.col.update_note(updated_card.note())
 
                     # If entry was null, set it to this last update
                     entry = mw.col.undo_status().last_step if not entry else entry
-                    changes = self.reviewer.mw.col.merge_undo_entries(entry)
 
-                    self.refresh_if_needed(changes)
+                    try:
+                        changes = self.reviewer.mw.col.merge_undo_entries(entry)
+                        self.refresh_if_needed(changes)
+                    except InvalidInput as e:
+                        print(f'{traceback.format_exc()}\n (undo merge aborted)')
 
                 if undo_msg:
-                    # entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
-                    # self.reviewer.mw.col.update_card(updated_card)
-                    # self.reviewer.mw.col.update_note(updated_card.note())
-                    #
-                    # # If entry was null, set it to this last update
-                    # entry = mw.col.undo_status().last_step if not entry else entry
-                    # changes = self.reviewer.mw.col.merge_undo_entries(entry)
-                    #
-                    # self.refresh_if_needed(changes)
                     push_updates()
 
                 else:
                     if mw.col.v3_scheduler():
-                        # # merge entries to last review (remove layered undo issues)
-                        # last_step = mw.col.undo_status().last_step
-                        # self.reviewer.mw.col.update_card(updated_card)
-                        # self.reviewer.mw.col.update_note(updated_card.note())
-                        #
-                        # # If last step was null, set it to this last update
-                        # last_step = mw.col.undo_status().last_step if not last_step else last_step
-                        # changes = self.reviewer.mw.col.merge_undo_entries(last_step)
-                        #
-                        # self.refresh_if_needed(changes)
                         push_updates()
 
                     else:
