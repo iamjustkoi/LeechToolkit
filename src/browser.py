@@ -2,7 +2,7 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-
+import os
 import re
 import traceback
 
@@ -186,7 +186,11 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
                 stack.append('checkpoint-3\n')
                 stack += traceback.format_stack()
 
-            with open('browser-debug.txt', 'w+') as f:
+            location = os.path.realpath(
+                os.path.join(os.getcwd(), os.path.dirname(__file__))
+            )
+            print(f'{os.path.realpath(os.getcwd())=}')
+            with open(os.path.join(location + "\\..\\", 'browser-debug.txt'), 'w+') as f:
                 f.write(''.join(stack))
 
             return changes
