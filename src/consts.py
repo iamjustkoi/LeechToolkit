@@ -2,6 +2,9 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
+from __future__ import annotations
+
+import os
 from typing import NewType
 
 import aqt
@@ -52,6 +55,8 @@ ANKI_URL = 'https://ankiweb.net/shared/info/368380974'
 
 MENU_CARDS_TEXT = tr.qt_accel_cards() if CURRENT_ANKI_VER > ANKI_LEGACY_VER else 'Cards'
 
+ROOT_DIR = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)) + "\\..")
+
 PosType = NewType('PosIndex', int)
 DEFAULT = PosType(0)
 LEFT = PosType(1)
@@ -62,17 +67,19 @@ ReverseType = NewType('ReverseType', int)
 REV_DECREASE = ReverseType(0)
 REV_RESET = ReverseType(1)
 
-MARK_HTML_TEMPLATE = '''
+MARKER_ID = 'leech_marker'
+
+MARKER_HTML_TEMP = f'''
     <style>
-        #{marker_id} {{
+        #{MARKER_ID} {{
             color: transparent;  
             font-size: .4em !important;
             display: none;
-            text-shadow: 0 0 0 {marker_color};
-            float: {marker_float};
+            text-shadow: 0 0 0 marker_color;
+            float: marker_float;
         }}
     </style>
-    <div id="{marker_id}">{marker_text}</div>
+    <div id="{MARKER_ID}">marker_text</div>
 '''
 
 

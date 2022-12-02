@@ -26,9 +26,9 @@ from .consts import (
     CURRENT_ANKI_VER,
     Config,
     ErrorMsg,
-    MARKER_POS_STYLES,
+    MARKER_ID, MARKER_POS_STYLES,
     LEECH_TAG,
-    MARK_HTML_TEMPLATE, String,
+    MARKER_HTML_TEMP, ROOT_DIR, String,
 )
 
 try:
@@ -37,7 +37,6 @@ except ImportError:
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
     DeckId = int
 
-MARKER_ID = 'leech_marker'
 PREV_TYPE_ATTR = 'prevtype'
 WRAPPER_ATTR = 'toolkit_manager'
 
@@ -104,7 +103,6 @@ class ReviewWrapper:
     card: anki.cards.Card
     on_front: bool
     leeched_cids: set[int] = set()
-    marker_html: str
 
     # queued_undo_entry: int = -1
 
@@ -143,12 +141,6 @@ class ReviewWrapper:
             self.unleech_action.triggered.connect(lambda *args: self.handle_input_action(Config.UN_LEECH_ACTIONS))
             mw.stateShortcuts.append(unleech_shortcut)
 
-            if os.path.isfile('marker_html.html'):
-                with open('marker_html.html', 'r') as f:
-                    self.marker_html = f.read()
-            else:
-                self.marker_html = MARK_HTML_TEMPLATE
-
     def load_options(self, did: DeckId = None):
         """
         Loads options to UI elements and config-based actions, as well as appends hooks to the initialized reviewer.
@@ -176,18 +168,28 @@ class ReviewWrapper:
         if not self.reviewer.refresh_if_needed():
             self.update_marker()
 
+    def marker_html(self):
+        out_html = MARKER_HTML_TEMP
+
+        if os.path.isfile(f'{ROOT_DIR}\\marker_html.html'):
+            with open(f'{ROOT_DIR}\\marker_html.html', 'r') as f:
+                out_html = f.read()
+
+        marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
+
+        out_html = out_html \
+            .replace('marker_color', self.toolkit_config[Config.LEECH_COLOR]) \
+            .replace('marker_float', marker_float) \
+            .replace('marker_text', self.toolkit_config[Config.MARKER_TEXT])
+
+        return out_html
+
     def append_marker_html(self):
         """
         Appends a leech marker to the review window's html.
         """
 
-        marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
-        self.content.body += self.marker_html.format(
-            MARKER_ID=MARKER_ID,
-            marker_text=self.toolkit_config[Config.MARKER_TEXT],
-            marker_color=self.toolkit_config[Config.LEECH_COLOR],
-            MARKER_FLOAT=marker_float,
-        )
+        self.content.body += self.marker_html()
 
     def append_hooks(self):
         """

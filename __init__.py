@@ -5,7 +5,7 @@ Full license text available in "LICENSE" file packaged with the program.
 import os.path
 
 from .src import options, reviewer, bottombar, deckoptions, sync, browser
-from .src.consts import MARK_HTML_TEMPLATE
+from .src.consts import MARKER_HTML_TEMP, ROOT_DIR
 
 options.bind_actions()
 reviewer.build_hooks()
@@ -14,6 +14,6 @@ deckoptions.build_hooks()
 sync.build_hooks()
 browser.build_hooks()
 
-if not os.path.isfile('marker_html.html'):
-    with open('marker_html.html', 'w') as f:
-        f.write(MARK_HTML_TEMPLATE)
+if not os.path.isfile(f'{ROOT_DIR}\\marker_html.html'):
+    with open(f'{ROOT_DIR}\\marker_html.html', 'w') as f:
+        f.write(MARKER_HTML_TEMP)
