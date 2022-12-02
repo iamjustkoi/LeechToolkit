@@ -10,6 +10,7 @@ from aqt.qt import QT_VERSION_STR
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 CURRENT_VERSION = '1.1.0'
 =======
 CURRENT_VERSION = '1.0.4'
@@ -17,6 +18,9 @@ CURRENT_VERSION = '1.0.4'
 =======
 CURRENT_VERSION = '1.1.1-a2'
 >>>>>>> a8cbaca (Added debug code)
+=======
+CURRENT_VERSION = '1.1.1-a3'
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_SYNC_ISSUE_VER = 26
