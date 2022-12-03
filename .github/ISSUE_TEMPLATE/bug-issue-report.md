@@ -17,6 +17,9 @@ Steps to reproduce:
 3. Scroll down to '....'
 4. See error
 
+**Error Message**
+If applicable, feel free to add any error message that shows up here.
+
 **Screenshots/Visuals**
 If necessary/applicable, add some screenshots to help explain the issue.
 
