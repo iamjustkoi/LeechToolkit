@@ -139,7 +139,6 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
     :param skip_undo_entry: whether to skip the undo entry when updating
     :return: OpChanges if undo entry was skipped, else None
     """
-    stack = []
 
     msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
 
@@ -154,11 +153,6 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
             """
             toolkit_configs = manager.get_all_configs()
 
-            nonlocal stack
-
-            stack.append('checkpoint-1\n')
-            stack += traceback.format_stack()
-
             changes = None
             entry = col.add_custom_undo_entry(msg)
 
@@ -171,9 +165,6 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
                     handle_actions(card, toolkit_configs[str(card.did)], Config.UN_LEECH_ACTIONS, reload=False)
                     card.note().remove_tag(LEECH_TAG)
 
-                stack.append('checkpoint-2\n')
-                stack += traceback.format_stack()
-
                 if not skip_undo_entry:
                     # MAX 30 UNDO ENTRIES STORED #
                     col.update_card(card)
@@ -182,16 +173,6 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
                     # Single update + merge also steps around the differences between
                     #  Anki ~.45 and >=~.46 update functions
                     changes = col.merge_undo_entries(entry)
-
-                stack.append('checkpoint-3\n')
-                stack += traceback.format_stack()
-
-            location = os.path.realpath(
-                os.path.join(os.getcwd(), os.path.dirname(__file__))
-            )
-            print(f'{os.path.realpath(os.getcwd())=}')
-            with open(os.path.join(location + "\\..\\", 'browser-debug.txt'), 'w+') as f:
-                f.write(''.join(stack))
 
             return changes
 
@@ -203,11 +184,7 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
         else:
             tip_message = String.TIP_UNLEECHED_TEMPLATE
 
-        stack.append('checkpoint-0\n')
-        stack += traceback.format_stack()
         start_collection_op(browser, lambda col: action_operation(col), tip_message, len(browser.selected_cards()))
-        stack.append('checkpoint-post\n')
-        stack += traceback.format_stack()
 
     else:
         legacy_toolkit_configs = manager.get_all_configs()
