@@ -11,7 +11,8 @@ import traceback
 import anki.cards
 import aqt.reviewer
 from anki import hooks
-from aqt.utils import tooltip
+from anki.errors import InvalidInput
+from aqt.utils import showInfo, tooltip
 from aqt.webview import WebContent, AnkiWebView
 from aqt import gui_hooks, mw
 from aqt.reviewer import Reviewer
@@ -287,18 +288,36 @@ class ReviewWrapper:
                 mw.reset()
         else:
             if current_data != updated_data:
-                if undo_msg:
-                    entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
+                def push_updates():
+                    if undo_msg:
+                        entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
+                    else:
+                        entry = mw.col.undo_status().last_step
+
                     self.reviewer.mw.col.update_card(updated_card)
                     # If entry was null, set it to this last update
                     entry = mw.col.undo_status().last_step if not entry else entry
                     self.reviewer.mw.col.update_note(updated_card.note())
+<<<<<<< HEAD
                     changes = self.reviewer.mw.col.merge_undo_entries(entry)
                     self.refresh_if_needed(changes)
 
+=======
+
+                    try:
+                        changes = self.reviewer.mw.col.merge_undo_entries(entry)
+                        self.refresh_if_needed(changes)
+                    except InvalidInput:
+                        showInfo(ErrorMsg.ERROR_TRACEBACK)
+
+                if undo_msg or mw.col.v3_scheduler():
+                    push_updates()
+>>>>>>> refs/rewritten/unstable
                 else:
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if mw.col.v3_scheduler():
+<<<<<<< HEAD
                         # merge entries to last review (remove layered undo issues)
                         last_step = mw.col.undo_status().last_step
                         self.reviewer.mw.col.update_card(updated_card)
@@ -315,6 +334,18 @@ class ReviewWrapper:
                         # Let reviewer handle future undo entry
                         updated_card.flush()
 
+=======
+                        push_updates()
+=======
+                    # Let reviewer handle entry and flush updates pre-logging, instead.
+                    updated_card.flush()
+>>>>>>> 7248e41 (Added error handling and fixed issue with V3 scheduler undo entries using a bad undo step for versions 2.1.45-2.1.49.)
+
+                    current_field_tags = (current_data['fields'], current_data['tags'])
+                    updated_field_tags = (updated_data['fields'], updated_data['tags'])
+
+<<<<<<< HEAD
+>>>>>>> refs/rewritten/unstable
                         if (current_data['fields'], current_data['tags']) \
                                 != (updated_data['fields'], updated_data['tags']):
                             updated_card.note().flush()
@@ -324,6 +355,10 @@ class ReviewWrapper:
                     if (current_data['fields'], current_data['tags']) != (updated_data['fields'], updated_data['tags']):
                         updated_card.note().flush()
 >>>>>>> refs/rewritten/private-main-3
+=======
+                    if current_field_tags != updated_field_tags:
+                        updated_card.note().flush()
+>>>>>>> 7248e41 (Added error handling and fixed issue with V3 scheduler undo entries using a bad undo step for versions 2.1.45-2.1.49.)
 
         return card
 

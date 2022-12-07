@@ -23,10 +23,17 @@ class Ui_OptionsDialog(object):
 =======
 =======
         OptionsDialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
 =======
         OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+=======
+        OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         OptionsDialog.resize(533, 520)
 >>>>>>> 0b79892 (Recommits)
 =======
@@ -64,10 +71,17 @@ class Ui_OptionsDialog(object):
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
 =======
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
 =======
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+=======
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.OptionsScrollWidget.sizePolicy().hasHeightForWidth())
@@ -163,14 +177,22 @@ class Ui_OptionsDialog(object):
         self.ActionsScrollWidget = QtWidgets.QWidget()
         self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+>>>>>>> refs/rewritten/unstable
 =======
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
         self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+<<<<<<< HEAD
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ActionsScrollWidget.sizePolicy().hasHeightForWidth())
@@ -754,14 +776,22 @@ class Ui_OptionsDialog(object):
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 489, 314))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+>>>>>>> refs/rewritten/unstable
 =======
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 489, 314))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+<<<<<<< HEAD
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
@@ -869,11 +899,19 @@ class Ui_OptionsDialog(object):
 =======
         self.about_label_header.setTextFormat(QtCore.Qt.TextFormat.MarkdownText)
         self.about_label_header.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
 =======
         self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
         self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+=======
+        self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
+        self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         self.about_label_header.setWordWrap(True)
         self.about_label_header.setOpenExternalLinks(True)
         self.about_label_header.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
@@ -906,10 +944,17 @@ class Ui_OptionsDialog(object):
 >>>>>>> b11dd05 (Reformatting commits)
 =======
         icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
 =======
         icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+=======
+        icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         self.like_button.setIcon(icon)
         self.like_button.setIconSize(QtCore.QSize(32, 32))
         self.like_button.setObjectName("like_button")
@@ -938,10 +983,17 @@ class Ui_OptionsDialog(object):
 >>>>>>> b11dd05 (Reformatting commits)
 =======
         icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
 =======
         icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+=======
+        icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         self.kofi_button.setIcon(icon1)
         self.kofi_button.setIconSize(QtCore.QSize(32, 32))
         self.kofi_button.setObjectName("kofi_button")
@@ -970,10 +1022,17 @@ class Ui_OptionsDialog(object):
 >>>>>>> b11dd05 (Reformatting commits)
 =======
         icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
 =======
         icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+=======
+        icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         self.patreon_button.setIcon(icon2)
         self.patreon_button.setIconSize(QtCore.QSize(32, 32))
         self.patreon_button.setObjectName("patreon_button")
@@ -1012,14 +1071,22 @@ class Ui_OptionsDialog(object):
         self.about_label_body.setWordWrap(True)
         self.about_label_body.setOpenExternalLinks(True)
         self.about_label_body.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByKeyboard|QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextBrowserInteraction|QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+>>>>>>> refs/rewritten/unstable
 =======
         self.about_label_body.setTextFormat(QtCore.Qt.MarkdownText)
         self.about_label_body.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.about_label_body.setWordWrap(True)
         self.about_label_body.setOpenExternalLinks(True)
         self.about_label_body.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
+<<<<<<< HEAD
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         self.about_label_body.setObjectName("about_label_body")
         self.scroll_layout.addWidget(self.about_label_body)
         self.scroll_layout.setStretch(2, 1)
@@ -1045,11 +1112,19 @@ class Ui_OptionsDialog(object):
 =======
         self.buttonBox.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok|QtWidgets.QDialogButtonBox.StandardButton.RestoreDefaults)
+<<<<<<< HEAD
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
 =======
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
+=======
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+=======
+        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
+>>>>>>> 010fc78 (Updates for paths and Qt imports)
+>>>>>>> refs/rewritten/unstable
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_4.addWidget(self.buttonBox)
 
@@ -1072,12 +1147,18 @@ class Ui_OptionsDialog(object):
         self.buttonBox.accepted.connect(OptionsDialog.accept)
         self.buttonBox.rejected.connect(OptionsDialog.reject)
 =======
+<<<<<<< HEAD
 =======
         self.tabWidget.setCurrentIndex(0)
 >>>>>>> 43ec270 (Updated some text to be less harsh, hopefully)
         self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
         self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
+=======
+        self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
+        self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
+>>>>>>> cb207ce (Auto-formatted to Qt5)
+>>>>>>> refs/rewritten/unstable
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
 
     def retranslateUi(self, OptionsDialog):

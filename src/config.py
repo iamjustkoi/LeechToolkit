@@ -7,6 +7,7 @@ import traceback
 from aqt import AnkiQt
 
 from .consts import Config, ErrorMsg
+from .legacy import _try_get_config_dict_for_did
 
 
 def merge_fields(config: dict, default_config: dict):
@@ -43,10 +44,36 @@ class LeechToolkitConfigManager:
         """
         Retrieves a dictionary of deck configs with global defaults.
         """
+
         toolkit_configs: dict = {}
+
         for deck_name_id in self._mw.col.decks.all_names_and_ids():
-            config_id = self._mw.col.decks.get(deck_name_id.id)['conf']
-            toolkit_configs[f'{deck_name_id.id}'] = merge_fields(self.config.get(str(config_id), {}), self.config)
+            config_id = None
+
+            try:
+                config_id = _try_get_config_dict_for_did(deck_name_id.id)['id']
+
+            except KeyError:
+                try:
+                    config_id = self._mw.col.decks.config_dict_for_deck_id(deck_name_id.id)['id']
+
+                except KeyError or ModuleNotFoundError:
+                    from aqt.utils import showInfo
+
+                    print(f'{self._mw.col.decks.get(deck_name_id.id)=}')
+                    print(f'{self._mw.col.decks.config_dict_for_deck_id(deck_name_id.id)=}')
+
+                    showInfo(
+                        f'{ErrorMsg.ERROR_TRACEBACK}\n'
+                        f'Couldn\'t find config deck: "{deck_name_id.name}" ({deck_name_id.id}), using Default.'
+                    )
+
+                    # Shallow copy default config
+                    toolkit_configs[f'{deck_name_id.id}'] = {k: v for k, v in self.config.items()}
+
+            if config_id:
+                toolkit_configs[f'{deck_name_id.id}'] = merge_fields(self.config.get(str(config_id), {}), self.config)
+
         return toolkit_configs
 
     def save_config(self):

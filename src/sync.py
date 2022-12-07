@@ -70,17 +70,17 @@ def sync_collection(is_manual_sync=False):
     Syncs the collection's lapse count and, optionally, leech status based on the current user preferences and review
     logs.
     """
-    global_conf = LeechToolkitConfigManager(mw).config
+    manager = LeechToolkitConfigManager(mw)
+    global_conf = manager.config
 
     if global_conf[Config.SYNC_ENABLED] or is_manual_sync:
         # Stash config data
-        toolkit_configs: dict = {}
+        toolkit_configs: dict = manager.get_all_configs()
+
         thresholds: dict = {}
-        for deck_name_id in mw.col.decks.all_names_and_ids():
-            deck_conf = mw.col.decks.config_dict_for_deck_id(deck_name_id.id)
-            config_id = mw.col.decks.get(deck_name_id.id)['conf']
-            toolkit_configs[f'{deck_name_id.id}'] = merge_fields(global_conf.get(str(config_id), {}), global_conf)
-            thresholds[f'{deck_name_id.id}'] = deck_conf['lapse']['leechFails']
+        for key, val in toolkit_configs.items():
+            deck_conf = mw.col.decks.config_dict_for_deck_id(int(key))
+            thresholds[key] = deck_conf['lapse']['leechFails']
 
         cards = mw.col.db.all(f'SELECT id, did, lapses, type, nid FROM cards WHERE reps > 0 ORDER BY id DESC')
 

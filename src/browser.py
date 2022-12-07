@@ -2,7 +2,7 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-
+import os
 import re
 import traceback
 
@@ -152,6 +152,7 @@ def apply_action_updates(manager: LeechToolkitConfigManager, browser: Browser, a
     msg = String.ENTRY_LEECH_ACTIONS if action_type == Config.UN_LEECH_ACTIONS else String.ENTRY_UNLEECH_ACTIONS
 
     if CURRENT_ANKI_VER >= ANKI_UNDO_UPDATE_VER:
+
         def action_operation(col: anki.collection.Collection) -> OpChanges or None:
             """
             Operation callback for performing action updates to the collection.
@@ -272,14 +273,15 @@ class SetLapseDialog(QDialog):
                 changes = None
 
                 # Stash all the dictionaries, but should be replaced with fewer calls based on selected cards
-                toolkit_configs: dict = {}
-                if self.ui.updateLeechesCheckbox.isChecked():
-                    for deck_name_id in col.decks.all_names_and_ids():
-                        config_id = col.decks.get(deck_name_id.id)['conf']
-                        toolkit_configs[f'{deck_name_id.id}'] = merge_fields(
-                            self.config.get(str(config_id), {}),
-                            self.config,
-                        )
+                toolkit_configs: dict = self.manager.get_all_configs()
+                # toolkit_configs: dict = {}
+                # if self.ui.updateLeechesCheckbox.isChecked():
+                #     for deck_name_id in col.decks.all_names_and_ids():
+                #         config_id = col.decks.get(deck_name_id.id)['conf']
+                #         toolkit_configs[f'{deck_name_id.id}'] = merge_fields(
+                #             self.config.get(str(config_id), {}),
+                #             self.config,
+                #         )
 
                 for cid in self.browser.selectedCards():
                     card = self.browser.col.get_card(cid)
@@ -324,14 +326,7 @@ class SetLapseDialog(QDialog):
             )
         else:
             # Stash all the dictionaries, but should be replaced with fewer calls based on selected cards
-            legacy_toolkit_configs: dict = {}
-            if self.ui.updateLeechesCheckbox.isChecked():
-                for legacy_deck_name_id in self.browser.col.decks.all_names_and_ids():
-                    legacy_config_id = self.browser.col.decks.get(legacy_deck_name_id.id)['conf']
-                    legacy_toolkit_configs[f'{legacy_deck_name_id.id}'] = merge_fields(
-                        self.config.get(str(legacy_config_id), {}),
-                        self.config,
-                    )
+            legacy_toolkit_configs: dict = self.manager.get_all_configs()
 
             for legacy_cid in self.browser.selectedCards():
                 legacy_card = self.browser.col.get_card(legacy_cid)
