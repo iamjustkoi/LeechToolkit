@@ -11,7 +11,7 @@ import anki.cards
 import aqt.reviewer
 from anki import hooks
 from anki.errors import InvalidInput
-from aqt.utils import tooltip
+from aqt.utils import showInfo, tooltip
 from aqt.webview import WebContent, AnkiWebView
 from aqt import gui_hooks, mw
 from aqt.reviewer import Reviewer
@@ -274,39 +274,32 @@ class ReviewWrapper:
                 mw.reset()
         else:
             if current_data != updated_data:
-
                 def push_updates():
-                    entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
+                    if undo_msg:
+                        entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
+                    else:
+                        entry = mw.col.undo_status().last_step
+
                     self.reviewer.mw.col.update_card(updated_card)
-
-                    # If entry was null, set it to this last update
-                    entry = mw.col.undo_status().last_step if not entry else entry
-
                     self.reviewer.mw.col.update_note(updated_card.note())
-
-                    # If entry was null, set it to this last update
-                    entry = mw.col.undo_status().last_step if not entry else entry
 
                     try:
                         changes = self.reviewer.mw.col.merge_undo_entries(entry)
                         self.refresh_if_needed(changes)
-                    except InvalidInput as e:
-                        print(f'{traceback.format_exc()}\n (undo merge aborted)')
+                    except InvalidInput:
+                        showInfo(ErrorMsg.ERROR_TRACEBACK)
 
-                if undo_msg:
+                if undo_msg or mw.col.v3_scheduler():
                     push_updates()
-
                 else:
-                    if mw.col.v3_scheduler():
-                        push_updates()
+                    # Let reviewer handle entry and flush updates pre-logging, instead.
+                    updated_card.flush()
 
-                    else:
-                        # Let reviewer handle future undo entry
-                        updated_card.flush()
+                    current_field_tags = (current_data['fields'], current_data['tags'])
+                    updated_field_tags = (updated_data['fields'], updated_data['tags'])
 
-                        if (current_data['fields'], current_data['tags']) \
-                                != (updated_data['fields'], updated_data['tags']):
-                            updated_card.note().flush()
+                    if current_field_tags != updated_field_tags:
+                        updated_card.note().flush()
 
         return card
 
