@@ -19,6 +19,7 @@ from aqt.qt import QT_VERSION_STR
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -53,6 +54,9 @@ CURRENT_VERSION = '1.1.3-rc1'
 =======
 CURRENT_VERSION = '1.1.2-rc1'
 >>>>>>> 8cbc178 (Revert "Version Update")
+=======
+CURRENT_VERSION = '1.3.1-rc1'
+>>>>>>> 7cfc3b3 (Version Update)
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_SYNC_ISSUE_VER = 26
