@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -137,7 +137,7 @@
            <item>
             <widget class="QGroupBox" name="browseButtonGroup">
              <property name="toolTip">
-              <string>Shows a button on bottom bar whenever cards with the leech tag are found in a deck.</string>
+              <string>Shows a button on the bottom bar whenever cards marked as leeches are found in a deck.</string>
              </property>
              <property name="title">
               <string>Bottom Bar Button</string>
@@ -159,7 +159,7 @@
               <item>
                <widget class="QCheckBox" name="browseButtonOverviewCheckbox">
                 <property name="toolTip">
-                 <string>Enables the button for the page show when viewing a specific deck.</string>
+                 <string>Enables the button for the page shown when viewing a specific deck.</string>
                 </property>
                 <property name="text">
                  <string>Deck Overview</string>
@@ -268,7 +268,7 @@
             <x>0</x>
             <y>0</y>
             <width>472</width>
-            <height>513</height>
+            <height>538</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -327,7 +327,7 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
               <item>
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might've also been changed and synced/uploaded.</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;* Should be updated to the same tag used in other Anki client(s) that were already synced using Leech Toolkit.&lt;/p&gt;&lt;p&gt;* Recommended: Don't use the default &amp;quot;leech&amp;quot; tag here or else you might run into some unexpected problems.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>

@@ -785,7 +785,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 472, 513))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 472, 538))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
 <<<<<<< HEAD
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
@@ -1137,6 +1137,7 @@ class Ui_OptionsDialog(object):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.tabWidget.setCurrentIndex(0)
 =======
         self.tabWidget.setCurrentIndex(3)
@@ -1158,6 +1159,9 @@ class Ui_OptionsDialog(object):
 =======
         self.tabWidget.setCurrentIndex(2)
 >>>>>>> 701d38e (Added a marker HTML option to the advanced tab.)
+=======
+        self.tabWidget.setCurrentIndex(0)
+>>>>>>> 8cbd5db (Updated some grammar and sync tagging warnings)
         self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
         self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
@@ -1417,11 +1421,11 @@ class Ui_OptionsDialog(object):
         self.almostPosDropdown.setItemText(0, _translate("OptionsDialog", "Default"))
         self.almostPosDropdown.setItemText(1, _translate("OptionsDialog", "Left"))
         self.almostPosDropdown.setItemText(2, _translate("OptionsDialog", "Right"))
-        self.browseButtonGroup.setToolTip(_translate("OptionsDialog", "Shows a button on bottom bar whenever cards with the leech tag are found in a deck."))
+        self.browseButtonGroup.setToolTip(_translate("OptionsDialog", "Shows a button on the bottom bar whenever cards marked as leeches are found in a deck."))
         self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
         self.browseButtonBrowserCheckbox.setToolTip(_translate("OptionsDialog", "Enables the button on the main, deck list page."))
         self.browseButtonBrowserCheckbox.setText(_translate("OptionsDialog", "Deck Browser"))
-        self.browseButtonOverviewCheckbox.setToolTip(_translate("OptionsDialog", "Enables the button for the page show when viewing a specific deck."))
+        self.browseButtonOverviewCheckbox.setToolTip(_translate("OptionsDialog", "Enables the button for the page shown when viewing a specific deck."))
         self.browseButtonOverviewCheckbox.setText(_translate("OptionsDialog", "Deck Overview"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.generalTab), _translate("OptionsDialog", "General"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
@@ -1447,7 +1451,7 @@ class Ui_OptionsDialog(object):
 >>>>>>> b11dd05 (Reformatting commits)
         self.syncTagLineEdit.setToolTip(_translate("OptionsDialog", "Custom tag text."))
         self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
-        self.label.setText(_translate("OptionsDialog", "* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it might\'ve also been changed and synced/uploaded."))
+        self.label.setText(_translate("OptionsDialog", "<html><head/><body><p>* Should be updated to the same tag used in other Anki client(s) that were already synced using Leech Toolkit.</p><p>* Recommended: Don\'t use the default &quot;leech&quot; tag here or else you might run into some unexpected problems.</p></body></html>"))
         self.syncUpdateButton.setToolTip(_translate("OptionsDialog", "Sync the entire collection based on the current, applied options and review logs."))
         self.syncUpdateButton.setText(_translate("OptionsDialog", "Update Collection"))
         self.shortcutsGroupbox.setTitle(_translate("OptionsDialog", "Shortcuts"))
