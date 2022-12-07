@@ -9,7 +9,7 @@ from typing import List
 
 import anki.decks
 from anki.consts import CARD_TYPE_NEW
-from .consts import CURRENT_QT_VER
+from .consts import CURRENT_QT_VER, MARKER_HTML_TEMP, ROOT_DIR
 from aqt import mw
 from aqt.qt import (
     Qt,
@@ -35,7 +35,8 @@ from aqt.qt import (
     pyqtBoundSignal,
     QGridLayout,
     QBoxLayout,
-    QT_VERSION_STR
+    QFontMetrics,
+    QT_VERSION_STR,
 )
 
 # AlignHCenter | AlignVCenter
@@ -185,8 +186,10 @@ def setup_restore_button(
     signals: List[pyqtBoundSignal],
     write_callback,
     load_callback,
-    scoped_conf: dict,
+    scoped_conf: dict = None,
     default_scoped_conf: dict = None,
+    str_callback=None,
+    default_str: str = None,
 ):
     """
     Fills and applies action and signal updates to restore buttons.
@@ -198,6 +201,8 @@ def setup_restore_button(
     :param load_callback: function to read config data to when applying default config data from the button
     :param scoped_conf: config meta that holds a set of data to read/write to
     :param default_scoped_conf: default config meta with the same scope as the scoped config parameter
+    :param str_callback: [Optional] string getter function to retrieve an updated string holder
+    :param default_str: [Optional] string to use as a default comparable base instead of a dict
     """
     default_copy = default_scoped_conf.copy() if default_scoped_conf else None
 
@@ -207,8 +212,11 @@ def setup_restore_button(
             Intercept function for the created button. Refreshes the button's visibility after running the input
             write-callback.
             """
-            write_callback(scoped_conf)
-            button.setVisible(scoped_conf != default_copy)
+            if scoped_conf:
+                write_callback(scoped_conf)
+                button.setVisible(scoped_conf != default_copy)
+            elif str_callback:
+                button.setVisible(str_callback() != default_str)
 
         signal.connect(refresh_button_visibility)
 
@@ -217,13 +225,20 @@ def setup_restore_button(
         Broadcast function for the created button. Refreshes the button's visibility after running the input
         load_ui-callback.
         """
-        load_callback(default_copy)
+        if default_copy:
+            load_callback(default_copy)
+        elif default_str:
+            load_callback(default_str)
         refresh_button_visibility()
 
     button.clicked.connect(restore_defaults)
 
     # Initial update
-    button.setVisible(scoped_conf != default_copy)
+    if scoped_conf:
+        write_callback(scoped_conf)
+        button.setVisible(scoped_conf != default_copy)
+    elif str_callback:
+        button.setVisible(str_callback() != default_str)
 
 
 def add_edit_field(list_widget: QListWidget, mid: int, field_name: str, method_idx=0, repl='', text=''):
@@ -446,6 +461,7 @@ class OptionsDialog(QDialog):
             self.button.setText(self.combination)
             self.close()
 
+    # noinspection PyUnresolvedReferences
     def __init__(self, manager: LeechToolkitConfigManager):
         """
         Add-on options window.
@@ -477,6 +493,7 @@ class OptionsDialog(QDialog):
         self.restore_buttons.append(append_restore_button(self.ui.browseButtonGroup))
         self.restore_buttons.append(append_restore_button(self.ui.syncTagCheckbox))
         self.restore_buttons.append(append_restore_button(self.ui.shortcutsGroupbox))
+        self.restore_buttons.append(append_restore_button(self.ui.markHtmlGroupbox))
 
         self.apply_button = self.ui.buttonBox.button(QDialogButtonBox.Apply)
         self.apply_button.setEnabled(False)
@@ -490,6 +507,8 @@ class OptionsDialog(QDialog):
         self.ui.unleechShortcutButton.clicked.connect(
             lambda *args: self.ShortcutHandler(self, self.ui.unleechShortcutButton).exec_()
         )
+        tab_width = QFontMetrics(self.ui.markHtmlTextEdit.font()).horizontalAdvance('    ')
+        self.ui.markHtmlTextEdit.setTabStopDistance(tab_width)
 
         self.ui.syncUpdateButton.clicked.connect(lambda: sync_collection(True))
 
@@ -543,6 +562,9 @@ class OptionsDialog(QDialog):
                 self.ui.syncTagCheckbox.clicked,
                 self.ui.syncTagLineEdit.textChanged,
             ],
+            'mark_html_signals': [
+                self.ui.markHtmlTextEdit.textChanged,
+            ],
             'shortcut_signals': [
                 self.ui.leechShortcutButton.clicked,
                 self.ui.unleechShortcutButton.clicked,
@@ -581,6 +603,16 @@ class OptionsDialog(QDialog):
                 self.load_shortcuts,
                 self.config[Config.SHORTCUT_OPTIONS],
                 Config.DEFAULT_CONFIG[Config.SHORTCUT_OPTIONS],
+            ),
+            (
+                self.ui.markHtmlGroupbox.default_button,
+                global_signals['mark_html_signals'],
+                self.write_mark_html,
+                self.load_mark_html,
+                None,
+                None,
+                self.ui.markHtmlTextEdit.toPlainText,
+                MARKER_HTML_TEMP,
             )
         ]
 
@@ -701,6 +733,13 @@ class OptionsDialog(QDialog):
         self.ui.leechShortcutButton.setText(shortcut_conf[Config.LEECH_SHORTCUT])
         self.ui.unleechShortcutButton.setText(shortcut_conf[Config.UNLEECH_SHORTCUT])
 
+    def load_mark_html(self, html_str: str = None):
+        with open(f'{ROOT_DIR}\\marker_html.html', 'r') as f:
+            if not html_str:
+                self.ui.markHtmlTextEdit.setPlainText(f.read())
+            else:
+                self.ui.markHtmlTextEdit.setPlainText(html_str)
+
     def write_marker(self, marker_conf: dict):
         marker_conf[Config.SHOW_LEECH_MARKER] = self.ui.markerGroup.isChecked()
         marker_conf[Config.USE_ALMOST_MARKER] = self.ui.almostCheckbox.isChecked()
@@ -720,6 +759,13 @@ class OptionsDialog(QDialog):
         shortcut_conf[Config.LEECH_SHORTCUT] = self.ui.leechShortcutButton.text()
         shortcut_conf[Config.UNLEECH_SHORTCUT] = self.ui.unleechShortcutButton.text()
 
+    def write_mark_html(self, html_str: str = None):
+        with open(f'{ROOT_DIR}\\marker_html.html', 'w') as f:
+            if not html_str:
+                f.write(self.ui.markHtmlTextEdit.toPlainText())
+            else:
+                f.write(html_str)
+
     def _load(self):
         """
         Load all options.
@@ -731,6 +777,7 @@ class OptionsDialog(QDialog):
         self.load_leech_button(self.config[Config.BUTTON_OPTIONS])
         self.load_sync_tag(self.config[Config.SYNC_TAG_OPTIONS])
         self.load_shortcuts(self.config[Config.SHORTCUT_OPTIONS])
+        self.load_mark_html()
 
         self.leech_form.load_ui(self.config[Config.LEECH_ACTIONS])
         self.unleech_form.load_ui(self.config[Config.UN_LEECH_ACTIONS])
@@ -747,6 +794,7 @@ class OptionsDialog(QDialog):
         self.write_button(self.config[Config.BUTTON_OPTIONS])
         self.write_sync_tag(self.config[Config.SYNC_TAG_OPTIONS])
         self.write_shortcuts(self.config[Config.SHORTCUT_OPTIONS])
+        self.write_mark_html()
 
         self.leech_form.write_all(self.config[Config.LEECH_ACTIONS])
         self.unleech_form.write_all(self.config[Config.UN_LEECH_ACTIONS])

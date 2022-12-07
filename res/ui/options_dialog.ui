@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -267,8 +267,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>489</width>
-            <height>314</height>
+            <width>472</width>
+            <height>513</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -299,19 +299,6 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
              </property>
              <property name="checked">
               <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser actions, database edits, etc.). </string>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-             <property name="indent">
-              <number>12</number>
              </property>
             </widget>
            </item>
@@ -373,7 +360,7 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
              </property>
              <layout class="QGridLayout" name="gridLayout">
               <item row="0" column="0">
-               <widget class="QLabel" name="label_3">
+               <widget class="QLabel" name="leechShortcutLabel">
                 <property name="text">
                  <string>Leech</string>
                 </property>
@@ -400,11 +387,26 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QLabel" name="label_4">
+               <widget class="QLabel" name="unleechShortcutLabel">
                 <property name="text">
                  <string>Un-Leech</string>
                 </property>
                </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="markHtmlGroupbox">
+             <property name="toolTip">
+              <string>Set some custom HTML for how the marker for leech/almost leech cards shows up during reviews.</string>
+             </property>
+             <property name="title">
+              <string>Marker HTML</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <item>
+               <widget class="QTextEdit" name="markHtmlTextEdit"/>
               </item>
              </layout>
             </widget>

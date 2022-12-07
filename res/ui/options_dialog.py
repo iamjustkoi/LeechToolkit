@@ -785,7 +785,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 489, 314))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 472, 513))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
 <<<<<<< HEAD
 >>>>>>> a3fa886 (Stashed changes for migrating style config options)
@@ -806,11 +806,6 @@ class Ui_OptionsDialog(object):
         self.syncUpdateCheckbox.setChecked(False)
         self.syncUpdateCheckbox.setObjectName("syncUpdateCheckbox")
         self.verticalLayout_2.addWidget(self.syncUpdateCheckbox)
-        self.label_2 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_2.setWordWrap(True)
-        self.label_2.setIndent(12)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout_2.addWidget(self.label_2)
         self.syncTagCheckbox = QtWidgets.QGroupBox(self.scrollAreaWidgetContents)
         self.syncTagCheckbox.setCheckable(True)
         self.syncTagCheckbox.setObjectName("syncTagCheckbox")
@@ -836,19 +831,27 @@ class Ui_OptionsDialog(object):
         self.shortcutsGroupbox.setObjectName("shortcutsGroupbox")
         self.gridLayout = QtWidgets.QGridLayout(self.shortcutsGroupbox)
         self.gridLayout.setObjectName("gridLayout")
-        self.label_3 = QtWidgets.QLabel(self.shortcutsGroupbox)
-        self.label_3.setObjectName("label_3")
-        self.gridLayout.addWidget(self.label_3, 0, 0, 1, 1)
+        self.leechShortcutLabel = QtWidgets.QLabel(self.shortcutsGroupbox)
+        self.leechShortcutLabel.setObjectName("leechShortcutLabel")
+        self.gridLayout.addWidget(self.leechShortcutLabel, 0, 0, 1, 1)
         self.leechShortcutButton = QtWidgets.QPushButton(self.shortcutsGroupbox)
         self.leechShortcutButton.setObjectName("leechShortcutButton")
         self.gridLayout.addWidget(self.leechShortcutButton, 0, 1, 1, 1)
         self.unleechShortcutButton = QtWidgets.QPushButton(self.shortcutsGroupbox)
         self.unleechShortcutButton.setObjectName("unleechShortcutButton")
         self.gridLayout.addWidget(self.unleechShortcutButton, 1, 1, 1, 1)
-        self.label_4 = QtWidgets.QLabel(self.shortcutsGroupbox)
-        self.label_4.setObjectName("label_4")
-        self.gridLayout.addWidget(self.label_4, 1, 0, 1, 1)
+        self.unleechShortcutLabel = QtWidgets.QLabel(self.shortcutsGroupbox)
+        self.unleechShortcutLabel.setObjectName("unleechShortcutLabel")
+        self.gridLayout.addWidget(self.unleechShortcutLabel, 1, 0, 1, 1)
         self.verticalLayout_2.addWidget(self.shortcutsGroupbox)
+        self.markHtmlGroupbox = QtWidgets.QGroupBox(self.scrollAreaWidgetContents)
+        self.markHtmlGroupbox.setObjectName("markHtmlGroupbox")
+        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.markHtmlGroupbox)
+        self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.markHtmlTextEdit = QtWidgets.QTextEdit(self.markHtmlGroupbox)
+        self.markHtmlTextEdit.setObjectName("markHtmlTextEdit")
+        self.verticalLayout_9.addWidget(self.markHtmlTextEdit)
+        self.verticalLayout_2.addWidget(self.markHtmlGroupbox)
         self.advancedScrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.advancedScrollArea)
         self.tabWidget.addTab(self.advancedTab, "")
@@ -1133,6 +1136,7 @@ class Ui_OptionsDialog(object):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.tabWidget.setCurrentIndex(0)
 =======
         self.tabWidget.setCurrentIndex(3)
@@ -1151,6 +1155,9 @@ class Ui_OptionsDialog(object):
 =======
         self.tabWidget.setCurrentIndex(0)
 >>>>>>> 43ec270 (Updated some text to be less harsh, hopefully)
+=======
+        self.tabWidget.setCurrentIndex(2)
+>>>>>>> 701d38e (Added a marker HTML option to the advanced tab.)
         self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
         self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
 >>>>>>> 3ca5e68 (Updates for Qt6 support)
@@ -1435,7 +1442,6 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
         self.syncUpdateCheckbox.setToolTip(_translate("OptionsDialog", "After syncing, updates the entire collection with the current options/actions based on the synced review logs."))
         self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
-        self.label_2.setText(_translate("OptionsDialog", "* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser actions, database edits, etc.). "))
         self.syncTagCheckbox.setToolTip(_translate("OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."))
         self.syncTagCheckbox.setTitle(_translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices."))
 >>>>>>> b11dd05 (Reformatting commits)
@@ -1445,12 +1451,14 @@ class Ui_OptionsDialog(object):
         self.syncUpdateButton.setToolTip(_translate("OptionsDialog", "Sync the entire collection based on the current, applied options and review logs."))
         self.syncUpdateButton.setText(_translate("OptionsDialog", "Update Collection"))
         self.shortcutsGroupbox.setTitle(_translate("OptionsDialog", "Shortcuts"))
-        self.label_3.setText(_translate("OptionsDialog", "Leech"))
+        self.leechShortcutLabel.setText(_translate("OptionsDialog", "Leech"))
         self.leechShortcutButton.setToolTip(_translate("OptionsDialog", "May need to reset for shortcuts to update in reviewer."))
         self.leechShortcutButton.setText(_translate("OptionsDialog", "Ctrl+Shift+L"))
         self.unleechShortcutButton.setToolTip(_translate("OptionsDialog", "May need to reset for shortcuts to update in reviewer."))
         self.unleechShortcutButton.setText(_translate("OptionsDialog", "Ctrl+Shift+U"))
-        self.label_4.setText(_translate("OptionsDialog", "Un-Leech"))
+        self.unleechShortcutLabel.setText(_translate("OptionsDialog", "Un-Leech"))
+        self.markHtmlGroupbox.setToolTip(_translate("OptionsDialog", "Set some custom HTML for how the marker for leech/almost leech cards shows up during reviews."))
+        self.markHtmlGroupbox.setTitle(_translate("OptionsDialog", "Marker HTML"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.advancedTab), _translate("OptionsDialog", "Advanced"))
         self.about_label_header.setText(_translate("OptionsDialog", "## Leech Toolkit\n"
 "Add additional tools and functionality for handling leeches in Anki!\n"
