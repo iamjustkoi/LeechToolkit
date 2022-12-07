@@ -2,12 +2,10 @@
 MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjustkoi>
 Full license text available in "LICENSE" file packaged with the program.
 """
-from __future__ import annotations
-
+import traceback
 import os
-from typing import NewType
-
 import aqt
+from typing import NewType
 from anki import buildinfo
 from aqt.utils import tr
 from aqt.qt import QT_VERSION_STR
@@ -87,6 +85,7 @@ class ErrorMsg:
     ACTION_MANAGER_NOT_DEFINED = 'Action manager not yet defined.'
     TOOLKIT_MANAGER_NOT_FOUND = 'Toolkit manager not found.'
     MODULE_NOT_FOUND_LEGACY = 'Module could not be found, may be due to running a legacy version of Anki.'
+    ERROR_TRACEBACK = f'Leech Toolkit ran into an error:\n{traceback.format_exc()}'
 
 
 class Macro:
@@ -324,6 +323,7 @@ class Config:
         LEECH_ACTIONS,
         UN_LEECH_ACTIONS,
     ]
+
     DEFAULT_CONFIG = {
         TOOLBAR_ENABLED: True,
         SYNC_ENABLED: False,
