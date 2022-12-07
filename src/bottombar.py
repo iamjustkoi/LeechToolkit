@@ -84,5 +84,6 @@ class BarButton:
         :param shortcut_key: optional shortcut key
         """
         attributes = f'onclick="pycmd(\'{url}\')"'
+        attributes += f' id="main"'  # For compatibility with Advanced Review Bottom Bar (1136455830)
         attributes += f' title="{String.BUTTON_SHORTCUT_HINT}: {shortcut_key}"' if shortcut_key else ''
         self.html = f'<button {attributes}>{text}</button>'
