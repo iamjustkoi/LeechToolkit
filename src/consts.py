@@ -3,60 +3,14 @@ MIT License: Copyright (c) 2022 JustKoi (iamjustkoi) <https://github.com/iamjust
 Full license text available in "LICENSE" file packaged with the program.
 """
 import traceback
-<<<<<<< HEAD
 import os
 import aqt
-=======
->>>>>>> refs/rewritten/unstable
 from typing import NewType
 from anki import buildinfo
 from aqt.utils import tr
 from aqt.qt import QT_VERSION_STR
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> refs/rewritten/unstable
-CURRENT_VERSION = '1.1.0'
-=======
-CURRENT_VERSION = '1.0.4'
->>>>>>> refs/rewritten/private-main-3
-=======
-<<<<<<< HEAD
-CURRENT_VERSION = '1.1.1-a1'
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
-CURRENT_VERSION = '1.1.2-rc1'
->>>>>>> 6731f0b (Version Update)
-=======
-CURRENT_VERSION = '1.1.1-a2'
->>>>>>> a8cbaca (Added debug code)
-=======
-CURRENT_VERSION = '1.1.1-a3'
->>>>>>> 010fc78 (Updates for paths and Qt imports)
-=======
-CURRENT_VERSION = '1.1.1-a4'
->>>>>>> cb485b2 (Removed debug info to prep for actual fix)
-=======
-CURRENT_VERSION = '1.1.1-a5'
->>>>>>> fa6aacb (Version Update)
->>>>>>> refs/rewritten/unstable
-=======
-CURRENT_VERSION = '1.1.3-rc1'
->>>>>>> 81f57af (Version Update)
-=======
-CURRENT_VERSION = '1.1.2-rc1'
->>>>>>> 8cbc178 (Revert "Version Update")
-=======
 CURRENT_VERSION = '1.3.1-rc1'
->>>>>>> 7cfc3b3 (Version Update)
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_SYNC_ISSUE_VER = 26

@@ -87,15 +87,6 @@ def show_marker(show=False):
         mw.web.eval(f'document.getElementById("{MARKER_ID}").style.display = "none"')
 
 
-<<<<<<< HEAD
-=======
-def check_did_leech(context, card: anki.cards.Card, ease):
-    threshold = mw.col.decks.config_dict_for_deck_id(card.did)['lapse']['leechFails']
-    if ease < 1 and card.lapses >= threshold and (card.lapses - threshold) % (max(threshold // 2, 1)) == 0:
-        mark_leeched(card)
-
-
->>>>>>> refs/rewritten/private-main-3
 class ReviewWrapper:
     toolkit_config: dict
     max_fails: int
@@ -104,8 +95,6 @@ class ReviewWrapper:
     card: anki.cards.Card
     on_front: bool
     leeched_cids: set[int] = set()
-
-    # queued_undo_entry: int = -1
 
     # queued_undo_entry: int = -1
 
@@ -202,18 +191,10 @@ class ReviewWrapper:
             reviewer_did_show_answer,
             reviewer_did_answer_card,
             reviewer_will_end,
-            reviewer_will_show_context_menu
+            reviewer_will_show_context_menu,
         )
-<<<<<<< HEAD
-        if mw.col.v3_scheduler():
-<<<<<<< HEAD
-=======
         if CURRENT_ANKI_VER > ANKI_LEGACY_VER and mw.col.v3_scheduler():
->>>>>>> 7b28ad3 (Fixed issues with editing notes for legacy builds)
             reviewer_did_answer_card.append(self.on_answer_v3)
-=======
-            reviewer_did_answer_card.append(check_did_leech)
->>>>>>> refs/rewritten/private-main-3
         else:
             card_did_leech.append(self.save_leech)
             reviewer_did_answer_card.append(self.on_answer)
@@ -248,13 +229,8 @@ class ReviewWrapper:
 
     def remove_hooks(self):
         try:
-<<<<<<< HEAD
             gui_hooks.reviewer_did_answer_card.remove(self.on_answer_v3)
             hooks.card_did_leech.remove(self.save_leech)
-=======
-            gui_hooks.reviewer_did_answer_card.remove(check_did_leech)
-            hooks.card_did_leech.remove(mark_leeched)
->>>>>>> refs/rewritten/private-main-3
         except NameError:
             print(ErrorMsg.ACTION_MANAGER_NOT_DEFINED)
 
@@ -298,11 +274,6 @@ class ReviewWrapper:
                     # If entry was null, set it to this last update
                     entry = mw.col.undo_status().last_step if not entry else entry
                     self.reviewer.mw.col.update_note(updated_card.note())
-<<<<<<< HEAD
-                    changes = self.reviewer.mw.col.merge_undo_entries(entry)
-                    self.refresh_if_needed(changes)
-
-=======
 
                     try:
                         changes = self.reviewer.mw.col.merge_undo_entries(entry)
@@ -312,53 +283,15 @@ class ReviewWrapper:
 
                 if undo_msg or mw.col.v3_scheduler():
                     push_updates()
->>>>>>> refs/rewritten/unstable
                 else:
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    if mw.col.v3_scheduler():
-<<<<<<< HEAD
-                        # merge entries to last review (remove layered undo issues)
-                        last_step = mw.col.undo_status().last_step
-                        self.reviewer.mw.col.update_card(updated_card)
-
-                        # If last step was null, set it to this last update
-                        last_step = mw.col.undo_status().last_step if not last_step else last_step
-
-                        self.reviewer.mw.col.update_note(updated_card.note())
-                        changes = self.reviewer.mw.col.merge_undo_entries(last_step)
-
-                        self.refresh_if_needed(changes)
-
-                    else:
-                        # Let reviewer handle future undo entry
-                        updated_card.flush()
-
-=======
-                        push_updates()
-=======
                     # Let reviewer handle entry and flush updates pre-logging, instead.
                     updated_card.flush()
->>>>>>> 7248e41 (Added error handling and fixed issue with V3 scheduler undo entries using a bad undo step for versions 2.1.45-2.1.49.)
 
                     current_field_tags = (current_data['fields'], current_data['tags'])
                     updated_field_tags = (updated_data['fields'], updated_data['tags'])
 
-<<<<<<< HEAD
->>>>>>> refs/rewritten/unstable
-                        if (current_data['fields'], current_data['tags']) \
-                                != (updated_data['fields'], updated_data['tags']):
-                            updated_card.note().flush()
-=======
-                    # Don't create new undo entry so reviewer handles final updates
-                    updated_card.flush()
-                    if (current_data['fields'], current_data['tags']) != (updated_data['fields'], updated_data['tags']):
-                        updated_card.note().flush()
->>>>>>> refs/rewritten/private-main-3
-=======
                     if current_field_tags != updated_field_tags:
                         updated_card.note().flush()
->>>>>>> 7248e41 (Added error handling and fixed issue with V3 scheduler undo entries using a bad undo step for versions 2.1.45-2.1.49.)
 
         return card
 
@@ -426,15 +359,9 @@ class ReviewWrapper:
                 updated_card = handle_reverse(self.toolkit_config, card, ease, card.__getattribute__(PREV_TYPE_ATTR))
                 delattr(card, PREV_TYPE_ATTR)
 
-<<<<<<< HEAD
             if card.id in self.leeched_cids:
                 updated_card = handle_actions(card, self.toolkit_config, Config.LEECH_ACTIONS, reload=False)
                 self.leeched_cids.remove(card.id)
-=======
-            if hasattr(card, was_leech_attr):
-                updated_card = handle_actions(card, self.toolkit_config, Config.LEECH_ACTIONS)
-                delattr(card, was_leech_attr)
->>>>>>> refs/rewritten/private-main-3
 
             return updated_card
 

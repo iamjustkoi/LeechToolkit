@@ -14,31 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_OptionsDialog(object):
     def setupUi(self, OptionsDialog):
         OptionsDialog.setObjectName("OptionsDialog")
-<<<<<<< HEAD
-<<<<<<< HEAD
         OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        OptionsDialog.resize(563, 520)
-=======
-=======
-        OptionsDialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
-        OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
-=======
-        OptionsDialog.setWindowModality(QtCore.Qt.WindowModal)
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         OptionsDialog.resize(533, 520)
->>>>>>> 0b79892 (Recommits)
-=======
-        OptionsDialog.resize(533, 520)
->>>>>>> b11dd05 (Reformatting commits)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(OptionsDialog)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabWidget = QtWidgets.QTabWidget(OptionsDialog)
@@ -53,35 +30,8 @@ class Ui_OptionsDialog(object):
         self.OptionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.OptionsScrollArea.setObjectName("OptionsScrollArea")
         self.OptionsScrollWidget = QtWidgets.QWidget()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 519, 175))
-=======
         self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 175))
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 0b79892 (Recommits)
-=======
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 306, 175))
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        self.OptionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 175))
->>>>>>> aa3ba4c (Added temporary patches for 2.1.26 or below)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-=======
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
-=======
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.OptionsScrollWidget.sizePolicy().hasHeightForWidth())
@@ -146,53 +96,11 @@ class Ui_OptionsDialog(object):
         sizePolicy.setHeightForWidth(self.ActionsScrollArea.sizePolicy().hasHeightForWidth())
         self.ActionsScrollArea.setSizePolicy(sizePolicy)
         self.ActionsScrollArea.setWidgetResizable(True)
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.ActionsScrollArea.setObjectName("ActionsScrollArea")
-        self.ActionsScrollWidget = QtWidgets.QWidget()
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 519, 16))
-=======
-        self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.ActionsScrollArea.setObjectName("ActionsScrollArea")
-        self.ActionsScrollWidget = QtWidgets.QWidget()
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
->>>>>>> 0b79892 (Recommits)
-=======
-        self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.ActionsScrollArea.setObjectName("ActionsScrollArea")
-        self.ActionsScrollWidget = QtWidgets.QWidget()
-<<<<<<< HEAD
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 98, 16))
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
->>>>>>> aa3ba4c (Added temporary patches for 2.1.26 or below)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-=======
-        self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.ActionsScrollArea.setObjectName("ActionsScrollArea")
-        self.ActionsScrollWidget = QtWidgets.QWidget()
-        self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
->>>>>>> refs/rewritten/unstable
-=======
         self.ActionsScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.ActionsScrollArea.setObjectName("ActionsScrollArea")
         self.ActionsScrollWidget = QtWidgets.QWidget()
         self.ActionsScrollWidget.setGeometry(QtCore.QRect(0, 0, 489, 16))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-<<<<<<< HEAD
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ActionsScrollWidget.sizePolicy().hasHeightForWidth())
@@ -204,538 +112,11 @@ class Ui_OptionsDialog(object):
         self.actionsScrollFrame = QtWidgets.QFrame(self.ActionsScrollWidget)
         self.actionsScrollFrame.setMouseTracking(True)
         self.actionsScrollFrame.setObjectName("actionsScrollFrame")
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
-        self.verticalLayout_7.setContentsMargins(-1, 0, -1, 0)
-        self.verticalLayout_7.setObjectName("verticalLayout_7")
-<<<<<<< HEAD
-        self.leechActionExpandoWidget = ExpandoWidget(self.actionsScrollFrame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.leechActionExpandoWidget.sizePolicy().hasHeightForWidth())
-        self.leechActionExpandoWidget.setSizePolicy(sizePolicy)
-        self.leechActionExpandoWidget.setFocusPolicy(QtCore.Qt.StrongFocus)
-        self.leechActionExpandoWidget.setObjectName("leechActionExpandoWidget")
-        self.leechActionsExpandoLayout = QtWidgets.QHBoxLayout(self.leechActionExpandoWidget)
-        self.leechActionsExpandoLayout.setContentsMargins(0, 0, 0, 0)
-        self.leechActionsExpandoLayout.setSpacing(0)
-        self.leechActionsExpandoLayout.setObjectName("leechActionsExpandoLayout")
-        self.leechExpandoButton = QtWidgets.QToolButton(self.leechActionExpandoWidget)
-        self.leechExpandoButton.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.leechExpandoButton.setStyleSheet("border: none;")
-        self.leechExpandoButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
-        self.leechExpandoButton.setArrowType(QtCore.Qt.RightArrow)
-        self.leechExpandoButton.setObjectName("leechExpandoButton")
-        self.leechActionsExpandoLayout.addWidget(self.leechExpandoButton)
-        self.leechExpandoLine = QtWidgets.QFrame(self.leechActionExpandoWidget)
-        self.leechExpandoLine.setFrameShape(QtWidgets.QFrame.HLine)
-        self.leechExpandoLine.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.leechExpandoLine.setObjectName("leechExpandoLine")
-        self.leechActionsExpandoLayout.addWidget(self.leechExpandoLine)
-        self.verticalLayout_7.addWidget(self.leechActionExpandoWidget)
-        self.leechActionFrame = QtWidgets.QFrame(self.actionsScrollFrame)
-        self.leechActionFrame.setObjectName("leechActionFrame")
-        self.leechActionsLayout = QtWidgets.QFormLayout(self.leechActionFrame)
-        self.leechActionsLayout.setContentsMargins(12, 0, 0, 0)
-        self.leechActionsLayout.setObjectName("leechActionsLayout")
-        self.flagCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.flagCheckbox.setObjectName("flagCheckbox")
-        self.leechActionsLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.flagCheckbox)
-        self.flagDropdown = QtWidgets.QComboBox(self.leechActionFrame)
-        self.flagDropdown.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.flagDropdown.setObjectName("flagDropdown")
-        self.flagDropdown.addItem("")
-        self.flagDropdown.addItem("")
-        self.flagDropdown.addItem("")
-        self.flagDropdown.addItem("")
-        self.flagDropdown.addItem("")
-        self.flagDropdown.addItem("")
-        self.flagDropdown.addItem("")
-        self.flagDropdown.addItem("")
-        self.leechActionsLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.flagDropdown)
-        self.suspendCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.suspendCheckbox.setObjectName("suspendCheckbox")
-        self.leechActionsLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.suspendCheckbox)
-        self.suspendFrame = QtWidgets.QFrame(self.leechActionFrame)
-        self.suspendFrame.setObjectName("suspendFrame")
-        self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.suspendFrame)
-        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.suspendOnButton = QtWidgets.QRadioButton(self.suspendFrame)
-        self.suspendOnButton.setObjectName("suspendOnButton")
-        self.horizontalLayout_9.addWidget(self.suspendOnButton)
-        self.suspendOffButton = QtWidgets.QRadioButton(self.suspendFrame)
-        self.suspendOffButton.setObjectName("suspendOffButton")
-        self.horizontalLayout_9.addWidget(self.suspendOffButton)
-        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_9.addItem(spacerItem)
-        self.leechActionsLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.suspendFrame)
-        self.addTagsCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.addTagsCheckbox.setObjectName("addTagsCheckbox")
-        self.leechActionsLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.addTagsCheckbox)
-        self.addTagsLine = QtWidgets.QLineEdit(self.leechActionFrame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.addTagsLine.sizePolicy().hasHeightForWidth())
-        self.addTagsLine.setSizePolicy(sizePolicy)
-        self.addTagsLine.setClearButtonEnabled(True)
-        self.addTagsLine.setObjectName("addTagsLine")
-        self.leechActionsLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.addTagsLine)
-        self.removeTagsCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.removeTagsCheckbox.setObjectName("removeTagsCheckbox")
-        self.leechActionsLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.removeTagsCheckbox)
-        self.removeTagsLine = QtWidgets.QLineEdit(self.leechActionFrame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.removeTagsLine.sizePolicy().hasHeightForWidth())
-        self.removeTagsLine.setSizePolicy(sizePolicy)
-        self.removeTagsLine.setClearButtonEnabled(True)
-        self.removeTagsLine.setObjectName("removeTagsLine")
-        self.leechActionsLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.removeTagsLine)
-        self.forgetCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.forgetCheckbox.setObjectName("forgetCheckbox")
-        self.leechActionsLayout.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.forgetCheckbox)
-        self.forgetFrame = QtWidgets.QFrame(self.leechActionFrame)
-        self.forgetFrame.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.forgetFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.forgetFrame.setObjectName("forgetFrame")
-        self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.forgetFrame)
-        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
-        self.forgetOnRadio = QtWidgets.QRadioButton(self.forgetFrame)
-        self.forgetOnRadio.setObjectName("forgetOnRadio")
-        self.horizontalLayout_13.addWidget(self.forgetOnRadio)
-        self.forgetOffRadio = QtWidgets.QRadioButton(self.forgetFrame)
-        self.forgetOffRadio.setObjectName("forgetOffRadio")
-        self.horizontalLayout_13.addWidget(self.forgetOffRadio)
-        spacerItem1 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_13.addItem(spacerItem1)
-        self.leechActionsLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.forgetFrame)
-        self.forgetRestorePosCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.forgetRestorePosCheckbox.setObjectName("forgetRestorePosCheckbox")
-        self.leechActionsLayout.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.forgetRestorePosCheckbox)
-        self.forgetResetCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.forgetResetCheckbox.setObjectName("forgetResetCheckbox")
-        self.leechActionsLayout.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.forgetResetCheckbox)
-        self.editFieldsCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.editFieldsCheckbox.setObjectName("editFieldsCheckbox")
-        self.leechActionsLayout.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.editFieldsCheckbox)
-        self.deckMoveCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.deckMoveCheckbox.setObjectName("deckMoveCheckbox")
-        self.leechActionsLayout.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.deckMoveCheckbox)
-        self.deckMoveLine = QtWidgets.QLineEdit(self.leechActionFrame)
-        self.deckMoveLine.setClearButtonEnabled(True)
-        self.deckMoveLine.setObjectName("deckMoveLine")
-        self.leechActionsLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.deckMoveLine)
-        self.rescheduleCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.rescheduleCheckbox.setObjectName("rescheduleCheckbox")
-        self.leechActionsLayout.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.rescheduleCheckbox)
-        self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
-        self.rescheduleText1 = QtWidgets.QLabel(self.leechActionFrame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rescheduleText1.sizePolicy().hasHeightForWidth())
-        self.rescheduleText1.setSizePolicy(sizePolicy)
-        self.rescheduleText1.setObjectName("rescheduleText1")
-        self.horizontalLayout_14.addWidget(self.rescheduleText1)
-        self.rescheduleFromDays = QtWidgets.QSpinBox(self.leechActionFrame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rescheduleFromDays.sizePolicy().hasHeightForWidth())
-        self.rescheduleFromDays.setSizePolicy(sizePolicy)
-        self.rescheduleFromDays.setMaximum(9999)
-        self.rescheduleFromDays.setObjectName("rescheduleFromDays")
-        self.horizontalLayout_14.addWidget(self.rescheduleFromDays)
-        self.rescheduleText2 = QtWidgets.QLabel(self.leechActionFrame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rescheduleText2.sizePolicy().hasHeightForWidth())
-        self.rescheduleText2.setSizePolicy(sizePolicy)
-        self.rescheduleText2.setObjectName("rescheduleText2")
-        self.horizontalLayout_14.addWidget(self.rescheduleText2)
-        self.rescheduleToDays = QtWidgets.QSpinBox(self.leechActionFrame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rescheduleToDays.sizePolicy().hasHeightForWidth())
-        self.rescheduleToDays.setSizePolicy(sizePolicy)
-        self.rescheduleToDays.setMaximum(9999)
-        self.rescheduleToDays.setObjectName("rescheduleToDays")
-        self.horizontalLayout_14.addWidget(self.rescheduleToDays)
-        spacerItem2 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_14.addItem(spacerItem2)
-        self.leechActionsLayout.setLayout(9, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_14)
-        self.rescheduleResetCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.rescheduleResetCheckbox.setObjectName("rescheduleResetCheckbox")
-        self.leechActionsLayout.setWidget(10, QtWidgets.QFormLayout.FieldRole, self.rescheduleResetCheckbox)
-        self.queueCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.queueCheckbox.setObjectName("queueCheckbox")
-        self.leechActionsLayout.setWidget(12, QtWidgets.QFormLayout.LabelRole, self.queueCheckbox)
-        self.frame_6 = QtWidgets.QFrame(self.leechActionFrame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_6.sizePolicy().hasHeightForWidth())
-        self.frame_6.setSizePolicy(sizePolicy)
-        self.frame_6.setObjectName("frame_6")
-        self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.frame_6)
-        self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
-        self.verticalLayout_15 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_15.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
-        self.verticalLayout_15.setObjectName("verticalLayout_15")
-        self.horizontalLayout_16 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_16.setObjectName("horizontalLayout_16")
-        self.queueFromDropdown = QtWidgets.QComboBox(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueFromDropdown.sizePolicy().hasHeightForWidth())
-        self.queueFromDropdown.setSizePolicy(sizePolicy)
-        self.queueFromDropdown.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.queueFromDropdown.setObjectName("queueFromDropdown")
-        self.queueFromDropdown.addItem("")
-        self.queueFromDropdown.addItem("")
-        self.queueFromDropdown.addItem("")
-        self.horizontalLayout_16.addWidget(self.queueFromDropdown)
-        self.queueFromSpinbox = QueueSpinBox(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueFromSpinbox.sizePolicy().hasHeightForWidth())
-        self.queueFromSpinbox.setSizePolicy(sizePolicy)
-        self.queueFromSpinbox.setMinimum(-9999999)
-        self.queueFromSpinbox.setMaximum(9999999)
-        self.queueFromSpinbox.setObjectName("queueFromSpinbox")
-        self.horizontalLayout_16.addWidget(self.queueFromSpinbox)
-        self.queueTilda = QtWidgets.QLabel(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueTilda.sizePolicy().hasHeightForWidth())
-        self.queueTilda.setSizePolicy(sizePolicy)
-        self.queueTilda.setObjectName("queueTilda")
-        self.horizontalLayout_16.addWidget(self.queueTilda)
-        self.queueToDropdown = QtWidgets.QComboBox(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueToDropdown.sizePolicy().hasHeightForWidth())
-        self.queueToDropdown.setSizePolicy(sizePolicy)
-        self.queueToDropdown.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.queueToDropdown.setObjectName("queueToDropdown")
-        self.queueToDropdown.addItem("")
-        self.queueToDropdown.addItem("")
-        self.queueToDropdown.addItem("")
-        self.horizontalLayout_16.addWidget(self.queueToDropdown)
-        self.queueToSpinbox = QueueSpinBox(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueToSpinbox.sizePolicy().hasHeightForWidth())
-        self.queueToSpinbox.setSizePolicy(sizePolicy)
-        self.queueToSpinbox.setMinimum(-9999999)
-        self.queueToSpinbox.setMaximum(9999999)
-        self.queueToSpinbox.setObjectName("queueToSpinbox")
-        self.horizontalLayout_16.addWidget(self.queueToSpinbox)
-        self.verticalLayout_15.addLayout(self.horizontalLayout_16)
-        self.horizontalLayout_17 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_17.setObjectName("horizontalLayout_17")
-        self.label_3 = QtWidgets.QLabel(self.frame_6)
-        self.label_3.setObjectName("label_3")
-        self.horizontalLayout_17.addWidget(self.label_3)
-        self.queueLabelTop = QtWidgets.QLabel(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueLabelTop.sizePolicy().hasHeightForWidth())
-        self.queueLabelTop.setSizePolicy(sizePolicy)
-        self.queueLabelTop.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
-        self.queueLabelTop.setObjectName("queueLabelTop")
-        self.horizontalLayout_17.addWidget(self.queueLabelTop)
-        self.queueLabelTopPos = QtWidgets.QLabel(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueLabelTopPos.sizePolicy().hasHeightForWidth())
-        self.queueLabelTopPos.setSizePolicy(sizePolicy)
-        self.queueLabelTopPos.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
-        self.queueLabelTopPos.setObjectName("queueLabelTopPos")
-        self.horizontalLayout_17.addWidget(self.queueLabelTopPos)
-        spacerItem3 = QtWidgets.QSpacerItem(6, 0, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_17.addItem(spacerItem3)
-        self.queueLabelBottom = QtWidgets.QLabel(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueLabelBottom.sizePolicy().hasHeightForWidth())
-        self.queueLabelBottom.setSizePolicy(sizePolicy)
-        self.queueLabelBottom.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
-        self.queueLabelBottom.setObjectName("queueLabelBottom")
-        self.horizontalLayout_17.addWidget(self.queueLabelBottom)
-        self.queueLabelBottomPos = QtWidgets.QLabel(self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueLabelBottomPos.sizePolicy().hasHeightForWidth())
-        self.queueLabelBottomPos.setSizePolicy(sizePolicy)
-        self.queueLabelBottomPos.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
-        self.queueLabelBottomPos.setObjectName("queueLabelBottomPos")
-        self.horizontalLayout_17.addWidget(self.queueLabelBottomPos)
-        spacerItem4 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-<<<<<<< HEAD
-        self.horizontalLayout_11.addItem(spacerItem4)
-        self.verticalLayout_11.addLayout(self.horizontalLayout_11)
-        self.horizontalLayout_12.addLayout(self.verticalLayout_11)
-        self.leechActionsLayout.setWidget(12, QtWidgets.QFormLayout.FieldRole, self.frame)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.verticalLayout_10 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_10.setObjectName("verticalLayout_10")
->>>>>>> 1ad25cb (Adjusted field editables expansion and draw properties)
-        self.queueSimilarCheckbox = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
-=======
-        self.horizontalLayout_17.addItem(spacerItem4)
-        self.verticalLayout_15.addLayout(self.horizontalLayout_17)
-        self.horizontalLayout_15.addLayout(self.verticalLayout_15)
-        self.leechActionsLayout.setWidget(12, QtWidgets.QFormLayout.FieldRole, self.frame_6)
-        self.horizontalLayout_18 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
-        self.verticalLayout_16 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_16.setObjectName("verticalLayout_16")
-        self.queueSimilarCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
->>>>>>> 3c6e0cb (Add expando function to leech actions)
-        self.queueSimilarCheckbox.setObjectName("queueSimilarCheckbox")
-        self.verticalLayout_16.addWidget(self.queueSimilarCheckbox)
-        self.frame_7 = QtWidgets.QFrame(self.leechActionFrame)
-        self.frame_7.setObjectName("frame_7")
-        self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.frame_7)
-        self.verticalLayout_17.setContentsMargins(-1, 0, 0, 0)
-        self.verticalLayout_17.setObjectName("verticalLayout_17")
-        self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_19.setObjectName("horizontalLayout_19")
-        self.verticalLayout_18 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_18.setObjectName("verticalLayout_18")
-        self.groupBox_4 = QtWidgets.QGroupBox(self.frame_7)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
-        self.groupBox_4.setSizePolicy(sizePolicy)
-        self.groupBox_4.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.groupBox_4.setObjectName("groupBox_4")
-        self.verticalLayout_19 = QtWidgets.QVBoxLayout(self.groupBox_4)
-        self.verticalLayout_19.setObjectName("verticalLayout_19")
-        self.queueExcludeTextEdit = QtWidgets.QTextEdit(self.groupBox_4)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueExcludeTextEdit.sizePolicy().hasHeightForWidth())
-        self.queueExcludeTextEdit.setSizePolicy(sizePolicy)
-        self.queueExcludeTextEdit.setMinimumSize(QtCore.QSize(0, 0))
-        self.queueExcludeTextEdit.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.queueExcludeTextEdit.setTabChangesFocus(True)
-        self.queueExcludeTextEdit.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
-        self.queueExcludeTextEdit.setObjectName("queueExcludeTextEdit")
-        self.verticalLayout_19.addWidget(self.queueExcludeTextEdit)
-        self.verticalLayout_18.addWidget(self.groupBox_4)
-        spacerItem5 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_18.addItem(spacerItem5)
-        self.horizontalLayout_19.addLayout(self.verticalLayout_18)
-        self.verticalLayout_20 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_20.setObjectName("verticalLayout_20")
-        self.groupBox_5 = QtWidgets.QGroupBox(self.frame_7)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox_5.sizePolicy().hasHeightForWidth())
-        self.groupBox_5.setSizePolicy(sizePolicy)
-        self.groupBox_5.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.groupBox_5.setObjectName("groupBox_5")
-        self._4 = QtWidgets.QVBoxLayout(self.groupBox_5)
-        self._4.setObjectName("_4")
-        self.queueIncludeFieldsCheckbox = QtWidgets.QCheckBox(self.groupBox_5)
-        self.queueIncludeFieldsCheckbox.setObjectName("queueIncludeFieldsCheckbox")
-        self._4.addWidget(self.queueIncludeFieldsCheckbox)
-        self.queueExcludedFieldList = QtWidgets.QListWidget(self.groupBox_5)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueExcludedFieldList.sizePolicy().hasHeightForWidth())
-        self.queueExcludedFieldList.setSizePolicy(sizePolicy)
-        self.queueExcludedFieldList.setMaximumSize(QtCore.QSize(16777215, 256))
-        self.queueExcludedFieldList.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.queueExcludedFieldList.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.queueExcludedFieldList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.queueExcludedFieldList.setProperty("showDropIndicator", False)
-        self.queueExcludedFieldList.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
-        self.queueExcludedFieldList.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
-        self.queueExcludedFieldList.setItemAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
-        self.queueExcludedFieldList.setObjectName("queueExcludedFieldList")
-        self._4.addWidget(self.queueExcludedFieldList)
-        self.frame_8 = QtWidgets.QFrame(self.groupBox_5)
-        self.frame_8.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_8.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.frame_8.setObjectName("frame_8")
-        self._5 = QtWidgets.QHBoxLayout(self.frame_8)
-        self._5.setContentsMargins(0, 0, 0, 0)
-        self._5.setObjectName("_5")
-        self.queueAddFieldButton = QtWidgets.QToolButton(self.frame_8)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.queueAddFieldButton.sizePolicy().hasHeightForWidth())
-        self.queueAddFieldButton.setSizePolicy(sizePolicy)
-        self.queueAddFieldButton.setMinimumSize(QtCore.QSize(64, 24))
-        self.queueAddFieldButton.setPopupMode(QtWidgets.QToolButton.InstantPopup)
-        self.queueAddFieldButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
-        self.queueAddFieldButton.setArrowType(QtCore.Qt.NoArrow)
-        self.queueAddFieldButton.setObjectName("queueAddFieldButton")
-        self._5.addWidget(self.queueAddFieldButton)
-        self._4.addWidget(self.frame_8)
-        self.verticalLayout_20.addWidget(self.groupBox_5)
-        spacerItem6 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_20.addItem(spacerItem6)
-        self.horizontalLayout_19.addLayout(self.verticalLayout_20)
-        self.verticalLayout_17.addLayout(self.horizontalLayout_19)
-        self.verticalLayout_16.addWidget(self.frame_7)
-        self.horizontalLayout_18.addLayout(self.verticalLayout_16)
-        self.leechActionsLayout.setLayout(14, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout_18)
-        self.queueSiblingCheckbox = QtWidgets.QCheckBox(self.leechActionFrame)
-        self.queueSiblingCheckbox.setObjectName("queueSiblingCheckbox")
-<<<<<<< HEAD
-        self.leechActionsLayout.setWidget(15, QtWidgets.QFormLayout.FieldRole, self.queueSiblingCheckbox)
-=======
-        self.checkBox = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
-        self.checkBox.setObjectName("checkBox")
-        self.leechActionsLayout.setWidget(13, QtWidgets.QFormLayout.FieldRole, self.checkBox)
-        self.checkBox_2 = QtWidgets.QCheckBox(self.collapsibleLeechActionsGroup)
-        self.checkBox_2.setObjectName("checkBox_2")
-        self.leechActionsLayout.setWidget(15, QtWidgets.QFormLayout.FieldRole, self.checkBox_2)
->>>>>>> refs/rewritten/private-main-2
-        self.pushButton = QtWidgets.QPushButton(self.collapsibleLeechActionsGroup)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy)
-        self.pushButton.setObjectName("pushButton")
-        self.leechActionsLayout.setWidget(14, QtWidgets.QFormLayout.FieldRole, self.pushButton)
-=======
-        self.leechActionsLayout.setWidget(16, QtWidgets.QFormLayout.FieldRole, self.queueSiblingCheckbox)
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 1ad25cb (Adjusted field editables expansion and draw properties)
-=======
-        self.editFieldsGroup = QtWidgets.QGroupBox(self.collapsibleLeechActionsGroup)
-=======
-        self.editFieldsGroup = QtWidgets.QGroupBox(self.leechActionFrame)
->>>>>>> 3c6e0cb (Add expando function to leech actions)
-        self.editFieldsGroup.setObjectName("editFieldsGroup")
-        self.verticalLayout_21 = QtWidgets.QVBoxLayout(self.editFieldsGroup)
-        self.verticalLayout_21.setObjectName("verticalLayout_21")
-        self.editFieldsList = QtWidgets.QListWidget(self.editFieldsGroup)
-        self.editFieldsList.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.editFieldsList.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.editFieldsList.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.editFieldsList.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.editFieldsList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.editFieldsList.setProperty("showDropIndicator", False)
-        self.editFieldsList.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
-        self.editFieldsList.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
-        self.editFieldsList.setItemAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.editFieldsList.setObjectName("editFieldsList")
-        self.verticalLayout_21.addWidget(self.editFieldsList)
-        self.editAddFieldButton = QtWidgets.QPushButton(self.editFieldsGroup)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.editAddFieldButton.sizePolicy().hasHeightForWidth())
-        self.editAddFieldButton.setSizePolicy(sizePolicy)
-        self.editAddFieldButton.setObjectName("editAddFieldButton")
-        self.verticalLayout_21.addWidget(self.editAddFieldButton)
-        self.leechActionsLayout.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.editFieldsGroup)
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> df3bb70 (Added queue exclusions with auto-height updates)
-=======
-        self.frame_3 = QtWidgets.QFrame(self.collapsibleLeechActionsGroup)
-        self.frame_3.setMinimumSize(QtCore.QSize(0, 20))
-        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_3.setObjectName("frame_3")
-        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame_3)
-        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.label_2 = QtWidgets.QLabel(self.frame_3)
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout_7.addWidget(self.label_2)
-        self.queueRatioSlider = TipSlider(self.frame_3)
-=======
-        self.frame_9 = QtWidgets.QFrame(self.leechActionFrame)
-        self.frame_9.setMinimumSize(QtCore.QSize(0, 20))
-        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_9.setObjectName("frame_9")
-        self.horizontalLayout_20 = QtWidgets.QHBoxLayout(self.frame_9)
-        self.horizontalLayout_20.setObjectName("horizontalLayout_20")
-        self.label_4 = QtWidgets.QLabel(self.frame_9)
-        self.label_4.setObjectName("label_4")
-        self.horizontalLayout_20.addWidget(self.label_4)
-        self.queueRatioSlider = TipSlider(self.frame_9)
->>>>>>> 3c6e0cb (Add expando function to leech actions)
-        self.queueRatioSlider.setMinimum(0)
-        self.queueRatioSlider.setMaximum(100)
-        self.queueRatioSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.queueRatioSlider.setObjectName("queueRatioSlider")
-<<<<<<< HEAD
-        self.horizontalLayout_7.addWidget(self.queueRatioSlider)
-        self.leechActionsLayout.setWidget(15, QtWidgets.QFormLayout.FieldRole, self.frame_3)
->>>>>>> 2780ab1 (Implemented similarity slider and some performance improvements)
-        self.verticalLayout_7.addLayout(self.leechActionsLayout)
-        self.verticalLayout_6.addWidget(self.collapsibleLeechActionsGroup)
-        self.ActionsScrollArea.setWidget(self.scrollAreaWidgetContents)
-=======
-        self.horizontalLayout_20.addWidget(self.queueRatioSlider)
-        self.leechActionsLayout.setWidget(15, QtWidgets.QFormLayout.FieldRole, self.frame_9)
-        self.verticalLayout_7.addWidget(self.leechActionFrame)
-=======
->>>>>>> a2aa2d5 (Changed how actions are appended to options and added reverse leech expando)
-=======
-        self.actionsScrollLayout = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
-        self.actionsScrollLayout.setContentsMargins(-1, 0, -1, 0)
-        self.actionsScrollLayout.setObjectName("actionsScrollLayout")
->>>>>>> ca6d77e (Different insert method for reverse options and fix for parent issues with actions forms)
-        self.verticalLayout_6.addWidget(self.actionsScrollFrame)
-        self.ActionsScrollArea.setWidget(self.ActionsScrollWidget)
->>>>>>> 3c6e0cb (Add expando function to leech actions)
-=======
-=======
->>>>>>> b11dd05 (Reformatting commits)
         self.actionsScrollLayout = QtWidgets.QVBoxLayout(self.actionsScrollFrame)
         self.actionsScrollLayout.setContentsMargins(-1, 0, -1, 0)
         self.actionsScrollLayout.setObjectName("actionsScrollLayout")
         self.verticalLayout_6.addWidget(self.actionsScrollFrame)
         self.ActionsScrollArea.setWidget(self.ActionsScrollWidget)
-<<<<<<< HEAD
->>>>>>> 0b79892 (Recommits)
-=======
->>>>>>> b11dd05 (Reformatting commits)
         self.verticalLayout_5.addWidget(self.ActionsScrollArea)
         self.tabWidget.addTab(self.actionsTab, "")
         self.advancedTab = QtWidgets.QWidget()
@@ -749,49 +130,11 @@ class Ui_OptionsDialog(object):
         sizePolicy.setHeightForWidth(self.advancedScrollArea.sizePolicy().hasHeightForWidth())
         self.advancedScrollArea.setSizePolicy(sizePolicy)
         self.advancedScrollArea.setWidgetResizable(True)
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.advancedScrollArea.setObjectName("advancedScrollArea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 519, 314))
-=======
-        self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.advancedScrollArea.setObjectName("advancedScrollArea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 497, 314))
->>>>>>> 0b79892 (Recommits)
-=======
-        self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.advancedScrollArea.setObjectName("advancedScrollArea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 489, 314))
->>>>>>> b11dd05 (Reformatting commits)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-=======
-        self.advancedScrollArea.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.advancedScrollArea.setObjectName("advancedScrollArea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 489, 314))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
->>>>>>> refs/rewritten/unstable
-=======
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 472, 538))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-<<<<<<< HEAD
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
@@ -864,19 +207,7 @@ class Ui_OptionsDialog(object):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.about_scroll = QtWidgets.QWidget()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 519, 427))
-=======
-        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 516))
->>>>>>> 0b79892 (Recommits)
-=======
-        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 516))
->>>>>>> b11dd05 (Reformatting commits)
-=======
         self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 527))
->>>>>>> 43ec270 (Updated some text to be less harsh, hopefully)
         self.about_scroll.setObjectName("about_scroll")
         self.scroll_layout = QtWidgets.QVBoxLayout(self.about_scroll)
         self.scroll_layout.setSpacing(6)
@@ -887,34 +218,8 @@ class Ui_OptionsDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.about_label_header.sizePolicy().hasHeightForWidth())
         self.about_label_header.setSizePolicy(sizePolicy)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.about_label_header.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-=======
-        self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
->>>>>>> 0b79892 (Recommits)
-=======
-        self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        self.about_label_header.setTextFormat(QtCore.Qt.TextFormat.MarkdownText)
-        self.about_label_header.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
         self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
         self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
-=======
-        self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
-        self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         self.about_label_header.setWordWrap(True)
         self.about_label_header.setOpenExternalLinks(True)
         self.about_label_header.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
@@ -930,34 +235,7 @@ class Ui_OptionsDialog(object):
         self.like_button.setFocusPolicy(QtCore.Qt.NoFocus)
         self.like_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon = QtGui.QIcon()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        icon.addPixmap(
-            QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off
-        )
-=======
         icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> 0b79892 (Recommits)
-=======
-        icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
-        icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
-=======
-        icon.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/anki_like.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         self.like_button.setIcon(icon)
         self.like_button.setIconSize(QtCore.QSize(32, 32))
         self.like_button.setObjectName("like_button")
@@ -969,34 +247,7 @@ class Ui_OptionsDialog(object):
         self.kofi_button.setFocusPolicy(QtCore.Qt.NoFocus)
         self.kofi_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon1 = QtGui.QIcon()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        icon1.addPixmap(
-            QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off
-        )
-=======
         icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> 0b79892 (Recommits)
-=======
-        icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
-        icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
-=======
-        icon1.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/kofilogo_blue.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         self.kofi_button.setIcon(icon1)
         self.kofi_button.setIconSize(QtCore.QSize(32, 32))
         self.kofi_button.setObjectName("kofi_button")
@@ -1008,34 +259,7 @@ class Ui_OptionsDialog(object):
         self.patreon_button.setFocusPolicy(QtCore.Qt.NoFocus)
         self.patreon_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon2 = QtGui.QIcon()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        icon2.addPixmap(
-            QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off
-        )
-=======
         icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> 0b79892 (Recommits)
-=======
-        icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
-        icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
-=======
-        icon2.addPixmap(QtGui.QPixmap("../../../StudyTimeStats/res/ui/res/img/patreon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         self.patreon_button.setIcon(icon2)
         self.patreon_button.setIconSize(QtCore.QSize(32, 32))
         self.patreon_button.setObjectName("patreon_button")
@@ -1047,49 +271,11 @@ class Ui_OptionsDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.about_label_body.sizePolicy().hasHeightForWidth())
         self.about_label_body.setSizePolicy(sizePolicy)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.about_label_body.setTextFormat(QtCore.Qt.MarkdownText)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.about_label_body.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.about_label_body.setWordWrap(True)
-        self.about_label_body.setTextInteractionFlags(
-            QtCore.Qt.LinksAccessibleByMouse | QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse
-            )
-=======
-=======
->>>>>>> b11dd05 (Reformatting commits)
-        self.about_label_body.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.about_label_body.setWordWrap(True)
-        self.about_label_body.setOpenExternalLinks(True)
-        self.about_label_body.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
-<<<<<<< HEAD
->>>>>>> 0b79892 (Recommits)
-=======
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        self.about_label_body.setTextFormat(QtCore.Qt.TextFormat.MarkdownText)
-        self.about_label_body.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
-        self.about_label_body.setWordWrap(True)
-        self.about_label_body.setOpenExternalLinks(True)
-        self.about_label_body.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByKeyboard|QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextBrowserInteraction|QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
->>>>>>> refs/rewritten/unstable
-=======
         self.about_label_body.setTextFormat(QtCore.Qt.MarkdownText)
         self.about_label_body.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.about_label_body.setWordWrap(True)
         self.about_label_body.setOpenExternalLinks(True)
         self.about_label_body.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByKeyboard|QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextBrowserInteraction|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
-<<<<<<< HEAD
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         self.about_label_body.setObjectName("about_label_body")
         self.scroll_layout.addWidget(self.about_label_body)
         self.scroll_layout.setStretch(2, 1)
@@ -1098,78 +284,15 @@ class Ui_OptionsDialog(object):
         self.tabWidget.addTab(self.aboutTab, "")
         self.verticalLayout_4.addWidget(self.tabWidget)
         self.buttonBox = QtWidgets.QDialogButtonBox(OptionsDialog)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.buttonBox.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.RestoreDefaults
-            )
-=======
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
->>>>>>> 0b79892 (Recommits)
-=======
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        self.buttonBox.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok|QtWidgets.QDialogButtonBox.StandardButton.RestoreDefaults)
-<<<<<<< HEAD
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
->>>>>>> a3fa886 (Stashed changes for migrating style config options)
-=======
->>>>>>> cb207ce (Auto-formatted to Qt5)
-=======
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Apply|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.RestoreDefaults)
->>>>>>> 010fc78 (Updates for paths and Qt imports)
->>>>>>> refs/rewritten/unstable
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         self.tabWidget.setCurrentIndex(0)
-=======
-        self.tabWidget.setCurrentIndex(3)
-<<<<<<< HEAD
->>>>>>> 0b79892 (Recommits)
-=======
-        self.tabWidget.setCurrentIndex(2)
->>>>>>> b11dd05 (Reformatting commits)
-=======
-        self.tabWidget.setCurrentIndex(3)
->>>>>>> aa3ba4c (Added temporary patches for 2.1.26 or below)
-        self.buttonBox.accepted.connect(OptionsDialog.accept)
-        self.buttonBox.rejected.connect(OptionsDialog.reject)
-=======
-<<<<<<< HEAD
-=======
-        self.tabWidget.setCurrentIndex(0)
->>>>>>> 43ec270 (Updated some text to be less harsh, hopefully)
-=======
-        self.tabWidget.setCurrentIndex(2)
->>>>>>> 701d38e (Added a marker HTML option to the advanced tab.)
-=======
-        self.tabWidget.setCurrentIndex(0)
->>>>>>> 8cbd5db (Updated some grammar and sync tagging warnings)
         self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
         self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
->>>>>>> 3ca5e68 (Updates for Qt6 support)
-=======
-        self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
-        self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
->>>>>>> cb207ce (Auto-formatted to Qt5)
->>>>>>> refs/rewritten/unstable
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
 
     def retranslateUi(self, OptionsDialog):
@@ -1177,241 +300,6 @@ class Ui_OptionsDialog(object):
         OptionsDialog.setWindowTitle(_translate("OptionsDialog", "Leech Toolkit"))
         self.markerGroup.setToolTip(_translate("OptionsDialog", "Show a marker on leech cards during review."))
         self.markerGroup.setTitle(_translate("OptionsDialog", "Leech Mark"))
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.almostBackCheckbox.setToolTip(
-            _translate("OptionsDialog", "Disables the mark when only showing the front/answer in reviews.")
-        )
-        self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
-        self.almostCheckbox.setToolTip(
-            _translate(
-                "OptionsDialog",
-                "When reviewing, displays a mark below the current card if it\'s about to be marked as a leech."
-            )
-        )
-        self.almostCheckbox.setText(_translate("OptionsDialog", "Show unique marker for about-to-be-leeched cards"))
-        self.almostLabel.setText(_translate("OptionsDialog", "Marker Position"))
-        self.almostPosDropdown.setToolTip(
-            _translate(
-                "OptionsDialog",
-                "Position of the attached marker. Attaches to the bottom of the reveiwer with a centered default value."
-            )
-        )
-        self.almostPosDropdown.setItemText(0, _translate("OptionsDialog", "Default"))
-        self.almostPosDropdown.setItemText(1, _translate("OptionsDialog", "Left"))
-        self.almostPosDropdown.setItemText(2, _translate("OptionsDialog", "Right"))
-        self.browseButtonGroup.setToolTip(
-            _translate(
-                "OptionsDialog",
-                "Shows a button on bottom bar whenever cards with the leech tag are found in a deck."
-            )
-        )
-        self.browseButtonGroup.setTitle(_translate("OptionsDialog", "Bottom Bar Button"))
-        self.browseButtonBrowserCheckbox.setToolTip(
-            _translate("OptionsDialog", "Enables the button on the main, deck list page.")
-        )
-        self.browseButtonBrowserCheckbox.setText(_translate("OptionsDialog", "Deck Browser"))
-        self.browseButtonOverviewCheckbox.setToolTip(
-            _translate("OptionsDialog", "Enables the button for the page show when viewing a specific deck.")
-        )
-        self.browseButtonOverviewCheckbox.setText(_translate("OptionsDialog", "Deck Overview"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.generalTab), _translate("OptionsDialog", "General"))
-<<<<<<< HEAD
-        self.leechExpandoButton.setText(_translate("OptionsDialog", "Leech Actions"))
-        self.flagCheckbox.setText(_translate("OptionsDialog", "Set Flag"))
-        self.flagDropdown.setItemText(0, _translate("OptionsDialog", "No Flag"))
-        self.flagDropdown.setItemText(1, _translate("OptionsDialog", "Red"))
-        self.flagDropdown.setItemText(2, _translate("OptionsDialog", "Orange"))
-        self.flagDropdown.setItemText(3, _translate("OptionsDialog", "Green"))
-        self.flagDropdown.setItemText(4, _translate("OptionsDialog", "Blue"))
-        self.flagDropdown.setItemText(5, _translate("OptionsDialog", "Pink"))
-        self.flagDropdown.setItemText(6, _translate("OptionsDialog", "Turquise"))
-        self.flagDropdown.setItemText(7, _translate("OptionsDialog", "Purple"))
-        self.suspendCheckbox.setText(_translate("OptionsDialog", "Suspend"))
-        self.suspendOnButton.setText(_translate("OptionsDialog", "On"))
-        self.suspendOffButton.setText(_translate("OptionsDialog", "Off"))
-        self.addTagsCheckbox.setText(_translate("OptionsDialog", "Add Tag(s)"))
-        self.removeTagsCheckbox.setText(_translate("OptionsDialog", "Remove Tag(s)"))
-        self.forgetCheckbox.setText(_translate("OptionsDialog", "Forget"))
-        self.forgetOnRadio.setText(_translate("OptionsDialog", "On"))
-        self.forgetOffRadio.setText(_translate("OptionsDialog", "Off"))
-        self.forgetRestorePosCheckbox.setText(_translate("OptionsDialog", "Restore imported position where possible"))
-        self.forgetResetCheckbox.setText(_translate("OptionsDialog", "Reset total reviews and lapses"))
-        self.editFieldsCheckbox.setText(_translate("OptionsDialog", "Edit Field(s)"))
-        self.deckMoveCheckbox.setText(_translate("OptionsDialog", "Move to Deck"))
-        self.rescheduleCheckbox.setText(_translate("OptionsDialog", "Set Due Date"))
-        self.rescheduleText1.setText(_translate("OptionsDialog", "Between"))
-        self.rescheduleText2.setText(_translate("OptionsDialog", "and"))
-        self.rescheduleToDays.setSuffix(_translate("OptionsDialog", " days"))
-        self.rescheduleResetCheckbox.setToolTip(_translate("OptionsDialog", "Updates the card\'s interval using the time between the current day and the updated date."))
-        self.rescheduleResetCheckbox.setText(_translate("OptionsDialog", "Update interval"))
-        self.queueCheckbox.setToolTip(_translate("OptionsDialog", "Adds the card to the new queue using the specified range."))
-        self.queueCheckbox.setText(_translate("OptionsDialog", "Add to New"))
-        self.queueFromDropdown.setItemText(0, _translate("OptionsDialog", "Top"))
-        self.queueFromDropdown.setItemText(1, _translate("OptionsDialog", "Bottom"))
-        self.queueFromDropdown.setItemText(2, _translate("OptionsDialog", "Position"))
-        self.queueTilda.setText(_translate("OptionsDialog", "～"))
-        self.queueToDropdown.setItemText(0, _translate("OptionsDialog", "Top"))
-        self.queueToDropdown.setItemText(1, _translate("OptionsDialog", "Bottom"))
-        self.queueToDropdown.setItemText(2, _translate("OptionsDialog", "Position"))
-        self.label_3.setText(_translate("OptionsDialog", "(Current)"))
-        self.queueLabelTop.setText(_translate("OptionsDialog", "Top:"))
-        self.queueLabelTopPos.setText(_translate("OptionsDialog", "0"))
-        self.queueLabelBottom.setText(_translate("OptionsDialog", "Bottom:"))
-        self.queueLabelBottomPos.setText(_translate("OptionsDialog", "0"))
-<<<<<<< HEAD
-        self.queueSimilarCheckbox.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
-                                                                         "Places the card near another one in the queue based on how similar they are."))
-        self.queueSimilarCheckbox.setText(_translate("OptionsDialog", "Place near similar cards"))
-        self.groupBox_4.setTitle(_translate("OptionsDialog", "Ignored Text"))
-        self.groupBox_5.setTitle(_translate("OptionsDialog", "Filtered Fields"))
-        self.queueIncludeFieldsCheckbox.setToolTip(
-            _translate("OptionsDialog", "Filters to only match the following fields instead of filtering them out."))
-        self.queueIncludeFieldsCheckbox.setText(_translate("OptionsDialog", "Inclusive"))
-        self.queueExcludedFieldList.setSortingEnabled(True)
-        self.queueAddFieldButton.setText(_translate("OptionsDialog", "Add"))
-        self.queueSiblingCheckbox.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
-                                                                         "Place the card next to another one if they\'re each siblings of the same note-type."))
-        self.queueSiblingCheckbox.setText(_translate("OptionsDialog", "Place near sibling cards"))
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        self.checkBox.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
-"Place the card next to another one if the other card matches a preset filter."))
-        self.checkBox.setText(_translate("OptionsDialog", "Place near similar cards"))
-        self.checkBox_2.setToolTip(_translate("OptionsDialog", "Using the given range:\n"
-"Place the card next to another one if they\'re each siblings of the same note-type."))
-        self.checkBox_2.setText(_translate("OptionsDialog", "Place near sibling cards"))
->>>>>>> refs/rewritten/private-main-2
-        self.pushButton.setText(_translate("OptionsDialog", "Filters..."))
-=======
->>>>>>> 1ad25cb (Adjusted field editables expansion and draw properties)
-=======
-        self.editFieldsGroup.setTitle(_translate("OptionsDialog", "Fields"))
-        self.editFieldsList.setSortingEnabled(True)
-<<<<<<< HEAD
-        self.addFieldButton.setText(_translate("OptionsDialog", "Add..."))
->>>>>>> df3bb70 (Added queue exclusions with auto-height updates)
-=======
-        self.editAddFieldButton.setText(_translate("OptionsDialog", "Add..."))
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 7ea230d (Added context menu to queue options for adding excluded fields)
-=======
-        self.label_2.setText(_translate("OptionsDialog", "Similarity"))
-        self.queueRatioSlider.setToolTip(_translate("OptionsDialog", "Controls how similar a card\'s fields must be for it to be considered \"similar\"."))
->>>>>>> 2780ab1 (Implemented similarity slider and some performance improvements)
-=======
-        self.label_4.setText(_translate("OptionsDialog", "Similarity"))
-        self.queueRatioSlider.setToolTip(_translate("OptionsDialog",
-                                                    "Controls how similar a card\'s fields must be for it to be considered \"similar\"."))
->>>>>>> 3c6e0cb (Add expando function to leech actions)
-=======
->>>>>>> a2aa2d5 (Changed how actions are appended to options and added reverse leech expando)
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
-        self.toolsOptionsCheckBox.setToolTip(
-            _translate(
-                "OptionsDialog",
-                "Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be accessed "
-                "in the Add-ons window from the \"Config\" button."
-            )
-        )
-        self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
-        self.syncUpdateCheckbox.setToolTip(
-            _translate(
-                "OptionsDialog",
-                "After syncing, updates the entire collection with the current options/actions based on the synced "
-                "review logs."
-            )
-        )
-        self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
-        self.label_2.setText(
-            _translate(
-                "OptionsDialog",
-                "* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser\n"
-                "               actions, database edits, etc.).\n"
-                "              "
-            )
-        )
-        self.syncTagCheckbox.setToolTip(
-            _translate(
-                "OptionsDialog",
-                "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any "
-                "filtered leeches."
-            )
-        )
-        self.syncTagCheckbox.setTitle(
-            _translate(
-                "OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices\n"
-                                 "                                            "
-            )
-        )
-        self.syncTagLineEdit.setToolTip(_translate("OptionsDialog", "Custom tag text."))
-        self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
-        self.label.setText(
-            _translate(
-                "OptionsDialog",
-                "* Before syncing/updating, should be updated to the same tag as any other Anki client(s) where it "
-                "might\'ve also been changed and synced/uploaded."
-            )
-        )
-        self.syncUpdateButton.setToolTip(
-            _translate(
-                "OptionsDialog",
-                "Sync the entire collection based on the current, applied options and review logs."
-            )
-        )
-        self.syncUpdateButton.setText(_translate("OptionsDialog", "Update Collection"))
-        self.shortcutsGroupbox.setTitle(_translate("OptionsDialog", "Shortcuts"))
-        self.label_3.setText(_translate("OptionsDialog", "Leech"))
-        self.leechShortcutButton.setToolTip(
-            _translate("OptionsDialog", "May need to reset for shortcuts to update in reviewer.")
-        )
-        self.leechShortcutButton.setText(_translate("OptionsDialog", "Ctrl+Shift+L"))
-        self.unleechShortcutButton.setToolTip(
-            _translate("OptionsDialog", "May need to reset for shortcuts to update in reviewer.")
-        )
-        self.unleechShortcutButton.setText(_translate("OptionsDialog", "Ctrl+Shift+U"))
-        self.label_4.setText(_translate("OptionsDialog", "Un-Leech"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.advancedTab), _translate("OptionsDialog", "Advanced"))
-        self.about_label_header.setText(
-            _translate(
-                "OptionsDialog", "## Leech Toolkit 🩸\n"
-                                 "Add additional tools and functionality for handling leeches in Anki!\n"
-                                 "\n"
-                                 "Version: {version}  \n"
-                                 "Have any issues or feedback? Feel free to post on the project\'s issue section on ["
-                                 "GitHub](https://github.com/iamjustkoi/StudyTimeStats/issues)!  \n"
-                                 "\n"
-                                 "[Releases/Changelog](https://github.com/iamjustkoi/LeechToolkit/releases)  \n"
-                                 "[Source Code](https://github.com/iamjustkoi/LeechToolkit)  \n"
-                                 "\n"
-                                 "If you want to help support what I do:"
-            )
-        )
-        self.like_button.setText(_translate("OptionsDialog", "Review on AnkiWeb "))
-        self.kofi_button.setText(_translate("OptionsDialog", "  Buy me a coffee "))
-        self.patreon_button.setText(_translate("OptionsDialog", "  Become a patron "))
-        self.about_label_body.setText(
-            _translate(
-                "OptionsDialog",
-                "Every bit helps with maintaining and developing the add-on and is greatly appreciated!\n"
-                "\n"
-                "### Text Macros:\n"
-                "\n"
-                "- `%date` - the current date based on the system\'s locale (e.g. `2022-10-01`)\n"
-                "- `%reviews` - the review count for the current card (e.g. `3`)\n"
-                "- `%re:` - [Regular Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)\n"
-                "    - Example Syntax:\n"
-                "        - `%re:captured_expression`\n"
-                "        - `%re:\".*captured with spaces\\W\"`\n"
-                "        - `%re:\\d\\d\\d\\d-\\d\\d-\\d\\d` (capturing the above date format)\n"
-                "- `%%` - single % (e.g. `%%reviews` outputs `%reviews` instead of applying the macro)"
-            )
-        )
-=======
-=======
->>>>>>> b11dd05 (Reformatting commits)
         self.almostBackCheckbox.setToolTip(_translate("OptionsDialog", "Disables the mark when only showing the front/answer in reviews."))
         self.almostBackCheckbox.setText(_translate("OptionsDialog", "Only show on back of cards"))
         self.almostCheckbox.setToolTip(_translate("OptionsDialog", "When reviewing, displays a mark below the current card if it\'s about to be marked as a leech."))
@@ -1429,18 +317,6 @@ class Ui_OptionsDialog(object):
         self.browseButtonOverviewCheckbox.setText(_translate("OptionsDialog", "Deck Overview"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.generalTab), _translate("OptionsDialog", "General"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.actionsTab), _translate("OptionsDialog", "Actions"))
-<<<<<<< HEAD
-        self.toolsOptionsCheckBox.setToolTip(_translate("OptionsDialog", "Enables a Tools menu shortcut in the toolbar for accessing these options. These can also be accessed in the Add-ons window from the \"Config\" button."))
-        self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
-        self.syncUpdateCheckbox.setToolTip(_translate("OptionsDialog", "After syncing, updates the entire collection with the current options/actions based on the synced review logs."))
-        self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
-        self.label_2.setText(_translate("OptionsDialog", "* Overwrites non-review/non-reschedule changes to card lapse counts ( Leech Toolkit browser\n"
-"               actions, database edits, etc.).\n"
-"              "))
-        self.syncTagCheckbox.setToolTip(_translate("OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."))
-        self.syncTagCheckbox.setTitle(_translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices\n"
-"                                            "))
-=======
         self.toolsOptionsCheckBox.setToolTip(_translate("OptionsDialog", "Enables a Tools menu shortcut in the toolbar for accessing these options. \n"
 "These can also be accessed in the Add-ons window from the \"Config\" button."))
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
@@ -1448,7 +324,6 @@ class Ui_OptionsDialog(object):
         self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
         self.syncTagCheckbox.setToolTip(_translate("OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."))
         self.syncTagCheckbox.setTitle(_translate("OptionsDialog", "Use a custom tag to keep track of toolkit updates across devices."))
->>>>>>> b11dd05 (Reformatting commits)
         self.syncTagLineEdit.setToolTip(_translate("OptionsDialog", "Custom tag text."))
         self.syncTagLineEdit.setText(_translate("OptionsDialog", "leech::toolkit-filtered"))
         self.label.setText(_translate("OptionsDialog", "<html><head/><body><p>* Should be updated to the same tag used in other Anki client(s) that were already synced using Leech Toolkit.</p><p>* Recommended: Don\'t use the default &quot;leech&quot; tag here or else you might run into some unexpected problems.</p></body></html>"))
@@ -1496,10 +371,6 @@ class Ui_OptionsDialog(object):
 "<br></br>  \n"
 "MIT License    \n"
 "©2022 JustKoi (iamjustkoi)  "))
-<<<<<<< HEAD
->>>>>>> 0b79892 (Recommits)
-=======
->>>>>>> b11dd05 (Reformatting commits)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.aboutTab), _translate("OptionsDialog", "About"))
 
 
