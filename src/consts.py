@@ -55,18 +55,16 @@ REV_RESET = ReverseType(1)
 
 MARKER_ID = 'leech_marker'
 
-MARKER_HTML_TEMP = f'''
-    <style>
-        #{MARKER_ID} {{
-            color: transparent;  
-            font-size: .4em !important;
-            display: none;
-            text-shadow: 0 0 0 marker_color;
-            float: marker_float;
-        }}
-    </style>
-    <div id="{MARKER_ID}">marker_text</div>
-'''
+MARKER_HTML_TEMP = f'''<style>
+    #{MARKER_ID} {{
+        color: transparent;  
+        font-size: .4em !important;
+        display: none;
+        text-shadow: 0 0 0 marker_color;
+        float: marker_float;
+    }}
+</style>
+<div id="{MARKER_ID}">marker_text</div>'''
 
 
 class ErrorMsg:
