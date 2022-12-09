@@ -202,9 +202,7 @@ def handle_actions(card: anki.cards.Card, toolkit_conf: dict, action_type=Config
                 updated_card.due = updated_card.odue
                 updated_card.odue = 0
             if actions_conf[Action.MOVE_DECK][Action.INPUT]:
-                updated_card.did = int(
-                    updated_card.col.decks.get(int(actions_conf[Action.MOVE_DECK][Action.INPUT]))["id"]
-                )
+                updated_card.did = updated_card.col.decks.id(int(actions_conf[Action.MOVE_DECK][Action.INPUT]))
 
     def handle_flag():
         if actions_conf[Action.FLAG][Action.ENABLED]:
