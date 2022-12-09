@@ -14,13 +14,13 @@ Or go to "Tools -> Add-ons -> Get Add-ons..." and paste these numbers in:
 
 ###### Show a marker on cards that have been leeched.
 
-<img src=".github/example/leech-mark.png">
+<div style="text-align: center;"><img src=".github/example/leech-mark.png"></div>
 
 #### Almost-Leech Marker
 
 ###### Show a marker on cards that are about to be leeched.
 
-<img src=".github/example/almost-leech-mark.png">
+<div style="text-align: center;"><img src=".github/example/almost-leech-mark.png"></div>
 
 #### Bottom Bar Leech Button
 
@@ -53,7 +53,7 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ###### New options for leeching, un-leeching, and setting lapses on cards!
 
-<img src=".github/example/browser-options.png">
+<div style="text-align: center;"><img src=".github/example/browser-options.png"></div>
 
 ##### Leech/Un-leech
 
@@ -63,7 +63,7 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ###### Set lapse counts on cards and (optionally) update their leech status based on the new lapse count.
 
-<img src=".github/example/set-lapses.png">
+<div style="text-align: center;"><img src=".github/example/set-lapses.png"></div>
 
 #### Reviewer Shortcuts
 
@@ -75,13 +75,13 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ###### General options for UI elements and Lapse Reversing.
 
-<img src=".github/example/options-general.png">
+<div style="text-align: center;"><img src=".github/example/options-general.png"></div>
 
 ### Actions
 
 ###### Optional leech/un-leech actions that can also override base Anki operations.
 
-<img src=".github/example/options-actions.png">
+<div style="text-align: center;"><img src=".github/example/options-actions.png"></div>
 
 - `Set Flag` - set the current flag
 - `Suspend` - set suspended state to on/off
@@ -103,9 +103,9 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ### Advanced
 
-###### Options for hiding the config shortcut, syncing and updating the collection, and setting shortcuts.
+###### Options for hiding the config shortcut, syncing and updating the collection, setting shortcuts, and adding some custom HTML for the leech marker.
 
-<img src=".github/example/options-advanced.png">
+<div style="text-align: center;"><img src=".github/example/options-advanced.png"></div>
 
 ### Deck Options
 
@@ -113,7 +113,7 @@ Sync reviews/performance with AnkiWeb and add a custom tag to leech cards
 
 ###### These can be accessed in the legacy deck options menu (Shift + Options).
 
-<img src=".github/example/options-deckoptions.png">
+<div style="text-align: center;"><img src=".github/example/options-deckoptions.png"></div>
 
 ## Text Macros
 
