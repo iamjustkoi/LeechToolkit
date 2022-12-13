@@ -215,10 +215,19 @@ class ReviewWrapper:
         self.leeched_cids.add(card.id)
         # setattr(card, was_leech_attr, True)
 
-    def on_answer_v3(self, context, card: anki.cards.Card, ease):
-        if card.note().has_tag(LEECH_TAG):
+    def on_answer_v3(self, reviewer: aqt.reviewer.Reviewer, card: anki.cards.Card, ease):
+        rating = aqt.reviewer.V3CardInfo.rating_from_ease(ease)
+        answer = card.col.sched.build_answer(
+            card=self.card, states=reviewer.get_next_states(), rating=rating
+        )
+
+        if card.col.sched.state_is_leech(answer.new_state):
             self.save_leech(card)
-        self.on_answer(context, card, ease)
+
+        self.on_answer(reviewer, card, ease)
+        # Handle card overwrites for reviewer (missing due to executed actions, potentially)
+        if not reviewer.card:
+            reviewer.card = card
 
     def append_context_menu(self, webview: AnkiWebView, menu: aqt.qt.QMenu):
         for action in menu.actions():
@@ -263,8 +272,7 @@ class ReviewWrapper:
                 # Let Anki handle undo status updates
                 mw.checkpoint(undo_msg)
                 mw.reset()
-        else:
-            if current_data != updated_data:
+            else:
                 def push_updates():
                     if undo_msg:
                         entry = self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
@@ -358,6 +366,7 @@ class ReviewWrapper:
 
         def handle_card_answer():
             updated_card = card.col.get_card(card.id)
+
             if hasattr(card, PREV_TYPE_ATTR):
                 updated_card = handle_reverse(self.toolkit_config, card, ease, card.__getattribute__(PREV_TYPE_ATTR))
                 delattr(card, PREV_TYPE_ATTR)
