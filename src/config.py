@@ -59,10 +59,6 @@ class LeechToolkitConfigManager:
 
                 except KeyError or ModuleNotFoundError:
                     from aqt.utils import showInfo
-
-                    print(f'{self._mw.col.decks.get(deck_name_id.id)=}')
-                    print(f'{self._mw.col.decks.config_dict_for_deck_id(deck_name_id.id)=}')
-
                     showInfo(
                         f'{ErrorMsg.ERROR_TRACEBACK}\n'
                         f'Couldn\'t find config deck: "{deck_name_id.name}" ({deck_name_id.id}), using Default.'
