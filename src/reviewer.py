@@ -11,7 +11,6 @@ import traceback
 import anki.cards
 import aqt.reviewer
 from anki import hooks
-from anki.errors import InvalidInput
 from aqt.utils import showInfo, tooltip
 from aqt.webview import WebContent, AnkiWebView
 from aqt import gui_hooks, mw
@@ -34,6 +33,7 @@ from .consts import (
 
 try:
     from anki.decks import DeckId
+    from anki.errors import InvalidInput
 except ImportError:
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
     DeckId = int
