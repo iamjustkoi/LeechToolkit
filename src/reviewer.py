@@ -143,7 +143,9 @@ class ReviewWrapper:
         self.max_fails = deck_conf_dict['lapse']['leechFails']
 
         global_conf = LeechToolkitConfigManager(mw).config
+        print(f'{global_conf=}')
         self.toolkit_config = merge_fields(global_conf.get(str(deck_conf_dict['id']), {}), global_conf)
+        print(f'{self.toolkit_config=}')
 
         self.append_marker_html()
         self.append_hooks()
@@ -160,17 +162,18 @@ class ReviewWrapper:
 
     def marker_html(self):
         out_html = MARKER_HTML_TEMP
+        marker_conf = self.toolkit_config[Config.MARKER_OPTIONS]
 
         if os.path.isfile(f'{ROOT_DIR}\\marker_html.html'):
             with open(f'{ROOT_DIR}\\marker_html.html', 'r') as f:
                 out_html = f.read()
 
-        marker_float = MARKER_POS_STYLES[self.toolkit_config[Config.MARKER_OPTIONS][Config.MARKER_POSITION]]
+        marker_float = MARKER_POS_STYLES[marker_conf[Config.MARKER_POSITION]]
 
         out_html = out_html \
-            .replace('marker_color', self.toolkit_config[Config.LEECH_COLOR]) \
+            .replace('marker_color', marker_conf[Config.LEECH_COLOR]) \
             .replace('marker_float', marker_float) \
-            .replace('marker_text', self.toolkit_config[Config.MARKER_TEXT])
+            .replace('marker_text', marker_conf[Config.MARKER_TEXT])
 
         return out_html
 
@@ -378,15 +381,15 @@ class ReviewWrapper:
             only_show_on_back = marker_conf[Config.ONLY_SHOW_BACK_MARKER]
             is_review = self.card.type == anki.cards.CARD_TYPE_REV
             almost_leech = \
-                is_review and self.card.lapses + self.toolkit_config[Config.ALMOST_DISTANCE] >= self.max_fails
+                is_review and self.card.lapses + marker_conf[Config.ALMOST_DISTANCE] >= self.max_fails
 
             if (not self.on_front and only_show_on_back) or not only_show_on_back:
                 if CURRENT_ANKI_VER <= ANKI_LEGACY_VER:
                     self.card.note().has_tag = lambda tag: tag.lower() in [t.lower() for t in self.card.note().tags]
 
                 if self.card.note().has_tag(LEECH_TAG):
-                    set_marker_color(self.toolkit_config[Config.LEECH_COLOR])
+                    set_marker_color(marker_conf[Config.LEECH_COLOR])
                     show_marker(True)
                 elif marker_conf[Config.USE_ALMOST_MARKER] and almost_leech:
-                    set_marker_color(self.toolkit_config[Config.ALMOST_COLOR])
+                    set_marker_color(marker_conf[Config.ALMOST_COLOR])
                     show_marker(True)
