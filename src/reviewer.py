@@ -256,10 +256,10 @@ class ReviewWrapper:
             'tags': updated_card.note().tags,
         }
 
-        if CURRENT_ANKI_VER < ANKI_UNDO_UPDATE_VER:
-            if current_data != updated_data:
-                card.flush()
-                card.note().flush()
+        if current_data != updated_data:
+            if CURRENT_ANKI_VER < ANKI_UNDO_UPDATE_VER:
+                updated_card.flush()
+                updated_card.note().flush()
                 # Let Anki handle undo status updates
                 mw.checkpoint(undo_msg)
                 mw.reset()
