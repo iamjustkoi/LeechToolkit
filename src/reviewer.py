@@ -143,9 +143,7 @@ class ReviewWrapper:
         self.max_fails = deck_conf_dict['lapse']['leechFails']
 
         global_conf = LeechToolkitConfigManager(mw).config
-        print(f'{global_conf=}')
         self.toolkit_config = merge_fields(global_conf.get(str(deck_conf_dict['id']), {}), global_conf)
-        print(f'{self.toolkit_config=}')
 
         self.append_marker_html()
         self.append_hooks()
