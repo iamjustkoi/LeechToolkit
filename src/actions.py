@@ -127,7 +127,8 @@ def handle_reverse(config: dict, card: anki.cards.Card, ease: int, prev_type: an
 
         # Un-leech
         if updated_card.lapses < threshold:
-            if ease > 1 and _try_has_tag(updated_card.note(), LEECH_TAG) and prev_type == anki.cards.CARD_TYPE_REV:
+            if ease > 1 and prev_type == anki.cards.CARD_TYPE_REV:
+                # if _try_has_tag(updated_card.note(), LEECH_TAG):
                 updated_card.note().remove_tag(LEECH_TAG)
                 tooltip_items.append(String.LEECH_REVERSED)
                 updated_card = handle_actions(
