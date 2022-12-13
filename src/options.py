@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import List
 
 import anki.decks
+import markdown
 from anki.consts import CARD_TYPE_NEW
 from .consts import CURRENT_QT_VER, MARKER_HTML_TEMP, ROOT_DIR
 from aqt import mw
@@ -514,22 +515,6 @@ class OptionsDialog(QDialog):
 
         self.build_about_page()
 
-        # Update about header text with the current version number
-        updated_about_header = self.ui.about_label_header.text().format(version=CURRENT_VERSION)
-        self.ui.about_label_header.setText(updated_about_header)
-
-        # Allow link navigation
-        # text_flags = (
-        #         Qt.TextBrowserInteraction |
-        #         Qt.TextSelectableByMouse |
-        #         Qt.TextSelectableByKeyboard |
-        #         Qt.LinksAccessibleByMouse |
-        #         Qt.LinksAccessibleByKeyboard |
-        #
-        # )
-        self.ui.about_label_body.setTextInteractionFlags(Qt.TextBrowserInteraction)
-        self.ui.about_label_header.setTextInteractionFlags(Qt.TextBrowserInteraction)
-
         self._load()
         self.setup_restorables()
 
@@ -713,6 +698,18 @@ class OptionsDialog(QDialog):
         self.ui.like_button.customContextMenuRequested.connect(
             lambda point: on_line_context_menu(point, self.ui.like_button)
         )
+
+        # Update about header text with the current version number
+        updated_about_header = self.ui.about_label_header.text().format(version=CURRENT_VERSION)
+        self.ui.about_label_header.setText(updated_about_header)
+
+        # Allow link navigation
+        self.ui.about_label_body.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        self.ui.about_label_header.setTextInteractionFlags(Qt.TextBrowserInteraction)
+
+        # Convert markdown to HTML and update
+        self.ui.about_label_header.setText(markdown.markdown(self.ui.about_label_header.text()))
+        self.ui.about_label_body.setText(markdown.markdown(self.ui.about_label_body.text()))
 
     def load_marker(self, marker_conf: dict):
         self.ui.markerGroup.setChecked(marker_conf[Config.SHOW_LEECH_MARKER])

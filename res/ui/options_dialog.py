@@ -207,7 +207,7 @@ class Ui_OptionsDialog(object):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.about_scroll = QtWidgets.QWidget()
-        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 527))
+        self.about_scroll.setGeometry(QtCore.QRect(0, 0, 472, 474))
         self.about_scroll.setObjectName("about_scroll")
         self.scroll_layout = QtWidgets.QVBoxLayout(self.about_scroll)
         self.scroll_layout.setSpacing(6)
@@ -218,7 +218,6 @@ class Ui_OptionsDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.about_label_header.sizePolicy().hasHeightForWidth())
         self.about_label_header.setSizePolicy(sizePolicy)
-        self.about_label_header.setTextFormat(QtCore.Qt.MarkdownText)
         self.about_label_header.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.about_label_header.setWordWrap(True)
         self.about_label_header.setOpenExternalLinks(True)
@@ -271,7 +270,6 @@ class Ui_OptionsDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.about_label_body.sizePolicy().hasHeightForWidth())
         self.about_label_body.setSizePolicy(sizePolicy)
-        self.about_label_body.setTextFormat(QtCore.Qt.MarkdownText)
         self.about_label_body.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.about_label_body.setWordWrap(True)
         self.about_label_body.setOpenExternalLinks(True)
@@ -290,7 +288,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
         self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
         self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)

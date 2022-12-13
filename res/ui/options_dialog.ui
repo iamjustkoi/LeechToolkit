@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -436,7 +436,7 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
             <x>0</x>
             <y>0</y>
             <width>472</width>
-            <height>527</height>
+            <height>474</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="scroll_layout" stretch="0,0,1">
@@ -462,9 +462,6 @@ Have any issues, feedback,or questions? Feel free to post on the project's issue
 [Source Code](https://github.com/iamjustkoi/LeechToolkit)  
 
 If you like the add-on want to support my stuff:</string>
-             </property>
-             <property name="textFormat">
-              <enum>Qt::MarkdownText</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -638,9 +635,6 @@ Thanks for downloading and happy studies!
 &lt;br&gt;&lt;/br&gt;  
 MIT License    
 ©2022 JustKoi (iamjustkoi)  </string>
-             </property>
-             <property name="textFormat">
-              <enum>Qt::MarkdownText</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
