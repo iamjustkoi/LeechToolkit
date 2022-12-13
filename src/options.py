@@ -1241,7 +1241,7 @@ class ActionsWidget(QWidget):
         self.write_remove_tags(actions_config[Action.REMOVE_TAGS])
         self.write_forget(actions_config[Action.FORGET])
         self.write_edit_fields(actions_config[Action.EDIT_FIELDS])
-        self.write_move_deck(actions_config[Action.MOVE_DECK])
+        self.write_move_deck(actions_config[Action.MOVE_DECK], True)
         self.write_reschedule(actions_config[Action.RESCHEDULE])
         self.write_add_to_queue(actions_config[Action.ADD_TO_QUEUE])
 
@@ -1278,10 +1278,10 @@ class ActionsWidget(QWidget):
             item = EditFieldItem.from_list_widget(self.ui.editFieldsList, self.ui.editFieldsList.item(i))
             edit_input.append(item.get_field_edit_dict()) if item is not None else None
 
-    def write_move_deck(self, actions_config: dict):
+    def write_move_deck(self, actions_config: dict, should_write=False):
         actions_config[Action.ENABLED] = self.ui.deckMoveGroup.isChecked()
-        stored_did = self.ui.deckMoveLine.text()
-        actions_config[Action.INPUT] = mw.col.decks.id(stored_did) if stored_did else ''
+        stored_deckname = self.ui.deckMoveLine.text()
+        actions_config[Action.INPUT] = mw.col.decks.id(stored_deckname, should_write) if stored_deckname else ''
 
     def write_reschedule(self, actions_config: dict):
         actions_config[Action.ENABLED] = self.ui.rescheduleGroup.isChecked()
