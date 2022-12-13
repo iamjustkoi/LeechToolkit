@@ -294,6 +294,8 @@ class ReviewWrapper:
                     if current_field_tags != updated_field_tags:
                         updated_card.note().flush()
 
+            return updated_card
+
         return card
 
     def handle_input_action(self, action_type: str):
