@@ -217,8 +217,14 @@ class ReviewWrapper:
 
     def on_answer_v3(self, reviewer: aqt.reviewer.Reviewer, card: anki.cards.Card, ease):
         rating = aqt.reviewer.V3CardInfo.rating_from_ease(ease)
+
+        if CURRENT_ANKI_VER >= 55:
+            states = reviewer.get_scheduling_states()
+        else:
+            states = reviewer.get_next_states()
+
         answer = card.col.sched.build_answer(
-            card=self.card, states=reviewer.get_next_states(), rating=rating
+            card=self.card, states=states, rating=rating
         )
 
         if card.col.sched.state_is_leech(answer.new_state):
