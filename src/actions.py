@@ -126,17 +126,16 @@ def handle_reverse(config: dict, card: anki.cards.Card, ease: int, prev_type: an
                     tooltip_items.append(String.LAPSES_RESET)
 
         # Un-leech
-        if updated_card.lapses < threshold:
-            if ease > 1 and prev_type == anki.cards.CARD_TYPE_REV:
-                # if _try_has_tag(updated_card.note(), LEECH_TAG):
-                updated_card.note().remove_tag(LEECH_TAG)
-                tooltip_items.append(String.LEECH_REVERSED)
-                updated_card = handle_actions(
-                    updated_card,
-                    config,
-                    Config.UN_LEECH_ACTIONS,
-                    reload=False
-                )
+        if 0 < updated_card.lapses < threshold and ease > 1 and prev_type == anki.cards.CARD_TYPE_REV:
+            # if _try_has_tag(updated_card.note(), LEECH_TAG):
+            updated_card.note().remove_tag(LEECH_TAG)
+            tooltip_items.append(String.LEECH_REVERSED)
+            updated_card = handle_actions(
+                updated_card,
+                config,
+                Config.UN_LEECH_ACTIONS,
+                reload=False
+            )
 
         if TOOLTIP_ENABLED and len(tooltip_items) > 0:
             utils.tooltip('\n\n'.join(tooltip_items), period=TOOLTIP_TIME)
