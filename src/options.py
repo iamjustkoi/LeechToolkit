@@ -163,6 +163,7 @@ def append_restore_button(parent: QWidget, insert_col=4):
         size_policy.setHorizontalStretch(0)
         size_policy.setVerticalStretch(0)
         size_policy.setHeightForWidth(parent.default_button.sizePolicy().hasHeightForWidth())
+
         parent.default_button.setSizePolicy(size_policy)
         parent.default_button.setContentsMargins(0, 0, 0, 0)
 
@@ -171,7 +172,12 @@ def append_restore_button(parent: QWidget, insert_col=4):
 
         if layout is not None:
             if isinstance(layout, QGridLayout):
-                layout.addItem(parent.default_button, pos, insert_col)
+                if CURRENT_QT_VER == 5:
+                    # noinspection PyTypeChecker
+                    layout.addItem(parent.default_button, pos, insert_col)
+                else:
+                    layout.addItem(parent.default_button.layout(), pos, insert_col)
+
             elif isinstance(layout, QBoxLayout) or isinstance(layout, QVBoxLayout):
                 layout.insertWidget(pos, parent.default_button, alignment=AlignRight | AlignBottom)
             else:
