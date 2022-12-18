@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -199,7 +199,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>489</width>
+            <width>98</width>
             <height>16</height>
            </rect>
           </property>
@@ -290,7 +290,7 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox">
+            <widget class="QCheckBox" name="toastCheckbox">
              <property name="toolTip">
               <string>Shows a popup whenever a card has its leech/lapse status updated during reviews.</string>
              </property>
@@ -445,8 +445,8 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>472</width>
-            <height>474</height>
+            <width>449</width>
+            <height>487</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="scroll_layout" stretch="0,0,1">
