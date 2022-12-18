@@ -37,9 +37,6 @@ try:
 except (ModuleNotFoundError, ImportError):
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
-TOOLTIP_ENABLED = True
-TOOLTIP_TIME = 5000
-
 
 def apply_tag_macros(card: anki.cards.Card, tag: str):
     """
@@ -137,8 +134,9 @@ def handle_reverse(config: dict, card: anki.cards.Card, ease: int, prev_type: an
                 reload=False
             )
 
-        if TOOLTIP_ENABLED and len(tooltip_items) > 0:
-            utils.tooltip('\n\n'.join(tooltip_items), period=TOOLTIP_TIME)
+        if config[Config.TOOLTIP_ENABLED] and len(tooltip_items) > 0:
+            utils.tooltip('\n\n'.join(tooltip_items), period=config[Config.TOOLTIP_TIME])
+
     return updated_card
 
 
