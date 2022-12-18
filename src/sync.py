@@ -7,7 +7,7 @@ import traceback
 from aqt import gui_hooks, mw
 
 from .actions import handle_actions
-from .config import LeechToolkitConfigManager, merge_fields
+from .config import LeechToolkitConfigManager
 from .consts import ANKI_SYNC_ISSUE_VER, CURRENT_ANKI_VER, Config, ErrorMsg, LEECH_TAG, String
 from anki.consts import *
 
@@ -16,6 +16,8 @@ try:
     import aqt.operations
 except ModuleNotFoundError:
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
+
+DEFAULT_THRESHOLD = 8
 
 
 def build_hooks():
@@ -80,7 +82,23 @@ def sync_collection(is_manual_sync=False):
         thresholds: dict = {}
         for key, val in toolkit_configs.items():
             deck_conf = mw.col.decks.config_dict_for_deck_id(int(key))
-            thresholds[key] = deck_conf['lapse']['leechFails']
+
+            try:
+                thresholds[key] = deck_conf['lapse']['leechFails']
+
+            except KeyError:
+                all_conf = mw.col.decks.all_config()
+                try:
+                    for deck_conf in [all_conf]:
+                        if deck_conf['id'] == key:
+                            thresholds[key] = deck_conf['lapse']['leechFails']
+
+                except KeyError:
+                    try:
+                        thresholds[key] = all_conf[0]['lapse']['leechFails']
+
+                    except KeyError:
+                        thresholds[key] = DEFAULT_THRESHOLD
 
         cards = mw.col.db.all(f'SELECT id, did, lapses, type, nid FROM cards WHERE reps > 0 ORDER BY id DESC')
 
