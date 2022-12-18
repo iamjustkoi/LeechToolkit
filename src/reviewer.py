@@ -326,12 +326,12 @@ class ReviewWrapper:
 
             if action_type == Config.LEECH_ACTIONS:
                 card.note().add_tag(LEECH_TAG)
-                if self.toolkit_config[Config.TOOLTIP_ENABLED]:
+                if self.toolkit_config[Config.TOAST_ENABLED]:
                     tooltip(String.TIP_LEECHED_TEMPLATE.format(1))
 
             elif action_type == Config.UN_LEECH_ACTIONS:
                 card.note().remove_tag(LEECH_TAG)
-                if self.toolkit_config[Config.TOOLTIP_ENABLED]:
+                if self.toolkit_config[Config.TOAST_ENABLED]:
                     tooltip(String.TIP_UNLEECHED_TEMPLATE.format(1))
 
             return card

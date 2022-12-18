@@ -537,11 +537,10 @@ class OptionsDialog(QDialog):
                 self.ui.browseButtonBrowserCheckbox.stateChanged,
                 self.ui.browseButtonOverviewCheckbox.stateChanged,
             ],
-            'toolbar_signals': [
+            'misc_signals': [
                 self.ui.toolsOptionsCheckBox.stateChanged,
-            ],
-            'sync_signals': [
                 self.ui.syncUpdateCheckbox.stateChanged,
+                self.ui.toastCheckbox.stateChanged,
             ],
             'sync_tag_signals': [
                 self.ui.syncTagCheckbox.clicked,
@@ -768,6 +767,7 @@ class OptionsDialog(QDialog):
         Load all options.
         """
         self.ui.toolsOptionsCheckBox.setChecked(self.config[Config.TOOLBAR_ENABLED])
+        self.ui.toastCheckbox.setChecked(self.config[Config.TOAST_ENABLED])
         self.ui.syncUpdateCheckbox.setChecked(self.config[Config.SYNC_ENABLED])
 
         self.load_marker(self.config[Config.MARKER_OPTIONS])
@@ -785,6 +785,7 @@ class OptionsDialog(QDialog):
         Write all options.
         """
         self.config[Config.TOOLBAR_ENABLED] = self.ui.toolsOptionsCheckBox.isChecked()
+        self.config[Config.TOAST_ENABLED] = self.ui.toastCheckbox.isChecked()
         self.config[Config.SYNC_ENABLED] = self.ui.syncUpdateCheckbox.isChecked()
 
         self.write_marker(self.config[Config.MARKER_OPTIONS])

@@ -260,7 +260,7 @@ class Config:
     LEECH_COLOR = "leechColor"
     ALMOST_COLOR = "almostColor"
     ALMOST_DISTANCE = "almostDistance"
-    TOOLTIP_ENABLED = "tooltipEnabled"
+    TOAST_ENABLED = "tooltipEnabled"
     TOOLTIP_TIME = "tooltipTimeMs"
 
     DEFAULT_ACTIONS = {
@@ -343,7 +343,7 @@ class Config:
             REVERSE_CONS_ANS: 2,
             REVERSE_METHOD: 0,
         },
-        TOOLTIP_ENABLED: True,
+        TOAST_ENABLED: True,
         TOOLTIP_TIME: 5000,
         LEECH_ACTIONS: DEFAULT_ACTIONS,
         UN_LEECH_ACTIONS: DEFAULT_ACTIONS,
