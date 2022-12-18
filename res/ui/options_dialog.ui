@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <attribute name="title">
@@ -268,7 +268,7 @@
             <x>0</x>
             <y>0</y>
             <width>472</width>
-            <height>538</height>
+            <height>561</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -286,6 +286,16 @@ These can also be accessed in the Add-ons window from the &quot;Config&quot; but
              </property>
              <property name="text">
               <string>Show options in Tools menu</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="checkBox">
+             <property name="toolTip">
+              <string>Shows a popup whenever a card has its leech/lapse status updated during reviews.</string>
+             </property>
+             <property name="text">
+              <string>Show toast during reviews</string>
              </property>
             </widget>
            </item>

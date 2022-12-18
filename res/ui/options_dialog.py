@@ -133,7 +133,7 @@ class Ui_OptionsDialog(object):
         self.advancedScrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.advancedScrollArea.setObjectName("advancedScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 472, 538))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 472, 561))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -145,6 +145,9 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
         self.toolsOptionsCheckBox.setObjectName("toolsOptionsCheckBox")
         self.verticalLayout_2.addWidget(self.toolsOptionsCheckBox)
+        self.checkBox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
+        self.checkBox.setObjectName("checkBox")
+        self.verticalLayout_2.addWidget(self.checkBox)
         self.syncUpdateCheckbox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
         self.syncUpdateCheckbox.setChecked(False)
         self.syncUpdateCheckbox.setObjectName("syncUpdateCheckbox")
@@ -288,7 +291,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(0)
         self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
         self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
@@ -318,6 +321,8 @@ class Ui_OptionsDialog(object):
         self.toolsOptionsCheckBox.setToolTip(_translate("OptionsDialog", "Enables a Tools menu shortcut in the toolbar for accessing these options. \n"
 "These can also be accessed in the Add-ons window from the \"Config\" button."))
         self.toolsOptionsCheckBox.setText(_translate("OptionsDialog", "Show options in Tools menu"))
+        self.checkBox.setToolTip(_translate("OptionsDialog", "Shows a popup whenever a card has its leech/lapse status updated during reviews."))
+        self.checkBox.setText(_translate("OptionsDialog", "Show toast during reviews"))
         self.syncUpdateCheckbox.setToolTip(_translate("OptionsDialog", "After syncing, updates the entire collection with the current options/actions based on the synced review logs."))
         self.syncUpdateCheckbox.setText(_translate("OptionsDialog", "Update collection on-sync"))
         self.syncTagCheckbox.setToolTip(_translate("OptionsDialog", "Keeps track of leech/unleech actions across devices using a custom tag that gets added to any filtered leeches."))
