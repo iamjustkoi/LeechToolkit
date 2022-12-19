@@ -10,7 +10,7 @@ from anki import buildinfo
 from aqt.utils import tr
 from aqt.qt import QT_VERSION_STR
 
-CURRENT_VERSION = '1.3.4-b1'
+CURRENT_VERSION = '1.3.4'
 
 CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
 ANKI_SYNC_ISSUE_VER = 26
