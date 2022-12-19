@@ -421,12 +421,10 @@ class OptionsDialog(QDialog):
             :param button: push button to update with the returned key
             """
             super().__init__(parent=parent, flags=mw.windowFlags())
+
             self.button = button
-
             self.layout = QVBoxLayout()
-
             self.label = QLabel()
-
             self.layout.addWidget(self.label, alignment=AlignHCenter | AlignVCenter)
 
             self.setLayout(self.layout)
