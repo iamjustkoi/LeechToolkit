@@ -291,7 +291,7 @@ class Ui_OptionsDialog(object):
         self.verticalLayout_4.addWidget(self.buttonBox)
 
         self.retranslateUi(OptionsDialog)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         self.buttonBox.accepted.connect(OptionsDialog.accept) # type: ignore
         self.buttonBox.rejected.connect(OptionsDialog.reject) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
