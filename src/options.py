@@ -38,6 +38,7 @@ from aqt.qt import (
     QBoxLayout,
     QFontMetrics,
     QT_VERSION_STR,
+    QRect,
 )
 
 # AlignHCenter | AlignVCenter
@@ -106,6 +107,24 @@ except ModuleNotFoundError:
 MAX_FIELDS_HEIGHT = 572
 # max_queue_height = 256
 BUTTON_ATTR = 'button'
+HOVER = \
+    '''
+    QPushButton:active { 
+        border-style: outset;
+    }
+    
+    QPushButton:hover {
+        background-color:rgba(138, 138, 138, 0.314);
+        border-radius: 2px;
+    }
+    '''
+FLAT = \
+    '''
+    QPushButton {
+        background: transparent; 
+        border: none;
+    }
+    '''
 
 
 class DeckNameId:
@@ -148,8 +167,15 @@ def append_restore_button(parent: QWidget, insert_col=4):
         parent.default_button = QPushButton(parent)
 
         parent.default_button.setMaximumSize(QSize(16, 16))
+        parent.default_button.setMinimumSize(QSize(16, 16))
         parent.default_button.setFlat(True)
         parent.default_button.setToolTip(String.RESTORE_DEFAULT_SETTING)
+
+        size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(parent.default_button.sizePolicy().hasHeightForWidth())
+        parent.default_button.setSizePolicy(size_policy)
 
         pixmap = QPixmap(f'{Path(__file__).parent.resolve()}\\{RESTORE_ICON_PATH}')
         mask = pixmap.createMaskFromColor(QColor('black'), Qt.MaskOutColor)
@@ -157,27 +183,17 @@ def append_restore_button(parent: QWidget, insert_col=4):
         pixmap.fill(QColor('#adadad'))
         pixmap.setMask(mask)
         parent.default_button.setIcon(QIcon(pixmap))
-
-        size_policy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        size_policy.setHorizontalStretch(0)
-        size_policy.setVerticalStretch(0)
-        size_policy.setHeightForWidth(parent.default_button.sizePolicy().hasHeightForWidth())
-
-        parent.default_button.setSizePolicy(size_policy)
         parent.default_button.setContentsMargins(0, 0, 0, 0)
 
-        parent.default_button.setAutoFillBackground(False)
+        # parent.default_button.setAutoFillBackground(False)
+        parent.default_button.setStyleSheet(FLAT)
 
         layout = parent.parent().layout()
         pos = layout.indexOf(parent) + 1
 
         if layout is not None:
             if isinstance(layout, QGridLayout):
-                if CURRENT_QT_VER == 5:
-                    # noinspection PyTypeChecker
-                    layout.addItem(parent.default_button, pos, insert_col)
-                else:
-                    layout.addItem(parent.default_button.layout(), pos, insert_col)
+                layout.addItem(parent.default_button.layout(), pos, insert_col)
 
             elif isinstance(layout, QBoxLayout) or isinstance(layout, QVBoxLayout):
                 layout.insertWidget(pos, parent.default_button, alignment=AlignRight | AlignBottom)
@@ -1377,7 +1393,10 @@ class ExcludeFieldItem(QWidget):
         self.widget = Ui_ExcludedFieldItem()
         self.widget.setupUi(ExcludedFieldItem=self)
         self.widget.fieldLabel.setText(field_name)
+
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
+        self.widget.removeButton.setStyleSheet(FLAT + HOVER)
+
         nid = NoteId(self.mid) if CURRENT_ANKI_VER > ANKI_LEGACY_VER else self.mid
         self.widget.fieldLabel.setToolTip(f'{mw.col.models.get(nid)["name"]}')
 
@@ -1473,7 +1492,9 @@ class EditFieldItem(QWidget):
         self.widget = Ui_EditFieldItem()
         self.widget.setupUi(EditFieldItem=self)
         self.widget.fieldButtonLabel.setMenu(QMenu(self.widget.fieldButtonLabel))
+
         self.widget.removeButton.setIcon(QIcon(f'{Path(__file__).parent.resolve()}\\{REMOVE_ICON_PATH}'))
+        self.widget.removeButton.setStyleSheet(FLAT + HOVER)
 
         self.set_model(edit_list, mid, field_name)
 
