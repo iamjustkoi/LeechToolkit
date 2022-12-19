@@ -240,6 +240,7 @@ def setup_restore_button(
             load_callback(default_str)
         refresh_button_visibility()
 
+    # noinspection PyUnresolvedReferences
     button.clicked.connect(restore_defaults)
 
     # Initial update
@@ -398,6 +399,7 @@ def _redraw_list(list_widget: QListWidget, max_height=256):
     list_widget.setFixedHeight(data_height if data_height < max_height else list_widget.maximumHeight())
     list_widget.setMaximumWidth(list_widget.parent().maximumWidth())
     list_widget.setVisible(list_widget.count() != 0)
+    # noinspection PyUnresolvedReferences
     list_widget.currentRowChanged.emit(list_widget.currentRow())  # Used for updating any change receivers
 
 
@@ -1359,6 +1361,7 @@ class ExcludeFieldItem(QWidget):
         :param item: QListWidgetItem object located in the referenced list
         :return: an ExcludedFieldItem object
         """
+        # noinspection PyTypeChecker
         return field_list.itemWidget(item)
 
     def __init__(self, list_widget: QListWidget, mid: int, field_name: str):
@@ -1440,6 +1443,7 @@ class EditFieldItem(QWidget):
         :param item: QListWidgetItem object located in the referenced list
         :return: an EditFieldItem object
         """
+        # noinspection PyTypeChecker
         return edit_fields_list.itemWidget(item)
 
     def __init__(
