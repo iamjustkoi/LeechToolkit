@@ -405,7 +405,21 @@ class OptionsDialog(QDialog):
     restore_buttons: List[QPushButton] = []
 
     class ShortcutHandler(QDialog):
+        """
+        A Dialog that handles keyboard shortcuts for a given QPushButton.
+
+        Listens for button presses and update the push button
+        with the returned keys.
+        """
+
         def __init__(self, parent, button: QPushButton):
+            """
+            Initialize the ShortcutHandler.
+            Sets up the dialog and connects the necessary signals and slots.
+
+            :param parent: parent widget for this dialog
+            :param button: push button to update with the returned key
+            """
             super().__init__(parent=parent, flags=mw.windowFlags())
             self.button = button
 
