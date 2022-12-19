@@ -167,6 +167,8 @@ def append_restore_button(parent: QWidget, insert_col=4):
         parent.default_button.setSizePolicy(size_policy)
         parent.default_button.setContentsMargins(0, 0, 0, 0)
 
+        parent.default_button.setAutoFillBackground(False)
+
         layout = parent.parent().layout()
         pos = layout.indexOf(parent) + 1
 
@@ -611,7 +613,8 @@ class OptionsDialog(QDialog):
 
         signal_lists = list(global_signals.values()) \
                        + list(self.leech_form.get_signals().values()) \
-                       + list(self.unleech_form.get_signals().values())
+                       + list(self.unleech_form.get_signals().values()) \
+                       + list(self.reverse_form.get_signals().values())
 
         for signals in signal_lists:
             self._append_apply_signals(signals)
@@ -834,13 +837,15 @@ class ReverseWidget(QWidget):
         restore_buttons.append(self.ui.reverseGroup.default_button) if restore_buttons else None
 
     def get_signals(self):
-        return [
-            self.ui.reverseGroup.clicked,
-            self.ui.useLeechThresholdCheckbox.stateChanged,
-            self.ui.reverseMethodDropdown.currentIndexChanged,
-            self.ui.reverseThresholdSpinbox.valueChanged,
-            self.ui.consAnswerSpinbox.valueChanged,
-        ]
+        return {
+            'reverse_signals': [
+                self.ui.reverseGroup.clicked,
+                self.ui.useLeechThresholdCheckbox.stateChanged,
+                self.ui.reverseMethodDropdown.currentIndexChanged,
+                self.ui.reverseThresholdSpinbox.valueChanged,
+                self.ui.consAnswerSpinbox.valueChanged,
+            ]
+        }
 
     def load_ui(self, reverse_config: dict):
         self.ui.reverseGroup.setChecked(reverse_config[Config.REVERSE_ENABLED])
@@ -852,7 +857,7 @@ class ReverseWidget(QWidget):
     def setup_restorables(self, reverse_conf: dict, default_conf: dict = None):
         setup_restore_button(
             self.ui.reverseGroup.default_button,
-            self.get_signals(),
+            list(self.get_signals().values())[0],
             self.write,
             self.load_ui,
             reverse_conf,
