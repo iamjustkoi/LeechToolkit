@@ -103,6 +103,10 @@ try:
 except ModuleNotFoundError:
     print(f'{traceback.format_exc()}\n{ErrorMsg.MODULE_NOT_FOUND_LEGACY}')
 
+MAX_FIELDS_HEIGHT = 572
+# max_queue_height = 256
+BUTTON_ATTR = 'button'
+
 
 class DeckNameId:
     def __init__(self, name, did):
@@ -112,11 +116,6 @@ class DeckNameId:
 
 def legacy_name_id_handler(*args):
     return [DeckNameId(deck["name"], deck["id"]) for deck in mw.col.decks.all()]
-
-
-max_fields_height = 572
-max_queue_height = 256
-button_attr = 'button'
 
 
 def bind_actions():
@@ -145,7 +144,7 @@ def append_restore_button(parent: QWidget, insert_col=4):
     :param insert_col: optional column to place the button into if the provided parent's surrounding layout supports it
     :return: the newly appended restore button
     """
-    if not hasattr(parent, button_attr):
+    if not hasattr(parent, BUTTON_ATTR):
         parent.default_button = QPushButton(parent)
 
         parent.default_button.setMaximumSize(QSize(16, 16))
@@ -1175,7 +1174,7 @@ class ActionsWidget(QWidget):
 
             add_edit_field(self.ui.editFieldsList, mid, field_name, item_data[1], item_data[2], item_data[3])
 
-        _redraw_list(self.ui.editFieldsList, max_fields_height)
+        _redraw_list(self.ui.editFieldsList, MAX_FIELDS_HEIGHT)
 
     # DECK MOVE
     def load_move_deck(self, action_conf: dict):
