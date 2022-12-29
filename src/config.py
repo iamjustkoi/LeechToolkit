@@ -15,8 +15,8 @@ def merge_fields(config: dict, default_config: dict):
     Recursively initializes config variables using the default config. If a field exists but also has subfields,
     does subsequent checks through each subfield as well.
 
-    :param default_config: base config to compare against
     :param config: config to initialize with the default config
+    :param default_config: base config to compare against
     """
     default_copy = default_config.copy()
     for field in default_copy:
