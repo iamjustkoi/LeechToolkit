@@ -291,6 +291,7 @@ class ReviewWrapper:
                     self.reviewer.mw.col.update_note(updated_card.note())
 
                     try:
+                        entry = 0 if not isinstance(entry, int) else entry
                         changes = self.reviewer.mw.col.merge_undo_entries(entry)
                         self.refresh_if_needed(changes)
                     except InvalidInput:
