@@ -291,6 +291,8 @@ class ReviewWrapper:
                     self.reviewer.mw.col.update_note(updated_card.note())
 
                     try:
+                        if not isinstance(entry, int):
+                            self.reviewer.mw.col.add_custom_undo_entry(undo_msg)
                         entry = 0 if not isinstance(entry, int) else entry
                         changes = self.reviewer.mw.col.merge_undo_entries(entry)
                         self.refresh_if_needed(changes)
