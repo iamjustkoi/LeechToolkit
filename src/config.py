@@ -23,7 +23,12 @@ def merge_fields(config: dict, default_config: dict):
         if field not in config:
             config[field] = default_copy.get(field)
         elif isinstance(default_copy[field], dict):
-            config[field] = merge_fields(config[field], default_copy[field])
+            # Check if value will be none before merging to avoid loop-backs
+            if config.get(field) is not None:
+                config[field] = merge_fields(config[field], default_copy[field])
+            else:
+                config[field] = default_copy.get(field)
+
     return config
 
 
