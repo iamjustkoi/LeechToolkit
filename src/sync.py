@@ -22,8 +22,8 @@ DEFAULT_THRESHOLD = 8
 
 def build_hooks():
     if CURRENT_ANKI_VER > ANKI_SYNC_ISSUE_VER:
-        # noinspection PyUnresolvedReferences
-        from aqt.undo import UndoActionsInfo
+        # # noinspection PyUnresolvedReferences
+        # from aqt.undo import UndoActionsInfo
 
         # noinspection PyUnresolvedReferences
         gui_hooks.sync_did_finish.append(sync_collection)
