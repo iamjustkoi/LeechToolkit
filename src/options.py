@@ -415,7 +415,7 @@ def _redraw_list(list_widget: QListWidget, max_height=256):
     list_widget.setMaximumWidth(list_widget.parent().maximumWidth())
     list_widget.setVisible(list_widget.count() != 0)
     # noinspection PyUnresolvedReferences
-    list_widget.currentRowChanged.emit(list_widget.currentRow())  # Used for updating any change receivers
+    list_widget.currentRowChanged.emit(list_widget.currentRow())  # Used for updating change receivers/signals
 
 
 class OptionsDialog(QDialog):
