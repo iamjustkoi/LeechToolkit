@@ -335,7 +335,7 @@ class Ui_ActionsForm(object):
         self.label_4 = QtWidgets.QLabel(parent=self.frame_9)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_20.addWidget(self.label_4)
-        self.queueRatioSlider = TipSlider(parent=self.frame_9)
+        self.queueRatioSlider = TipSlider(self.frame_9)
         self.queueRatioSlider.setMinimum(0)
         self.queueRatioSlider.setMaximum(100)
         self.queueRatioSlider.setOrientation(QtCore.Qt.Orientation.Horizontal)
