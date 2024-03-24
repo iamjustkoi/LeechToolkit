@@ -134,6 +134,7 @@ class QueueSpinBox(QSpinBox):
 
 
 class TipSlider(QSlider):
+    # todo the init function should accept the parent argument if we want to use pyuic6
     def __init__(self, *args):
         super(QSlider, self).__init__(*args)
         self.style = aqt.mw.style()

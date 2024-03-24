@@ -9,6 +9,7 @@ import os
 import traceback
 
 import anki.cards
+import anki.collection
 import aqt.reviewer
 from anki import hooks
 from aqt.utils import showInfo, tooltip
@@ -186,7 +187,7 @@ class ReviewWrapper:
         """
         Appends hooks to the current reviewer.
         """
-        from anki.hooks import card_did_leech
+        from anki import hooks
         from aqt.gui_hooks import (
             reviewer_did_show_question,
             reviewer_did_show_answer,
@@ -197,7 +198,7 @@ class ReviewWrapper:
         if CURRENT_ANKI_VER > ANKI_LEGACY_VER and mw.col.v3_scheduler():
             reviewer_did_answer_card.append(self.on_answer_v3)
         else:
-            card_did_leech.append(self.save_leech)
+            hooks.card_did_leech.append(self.save_leech)
             reviewer_did_answer_card.append(self.on_answer)
 
         reviewer_did_show_question.append(self.on_show_front)
@@ -249,6 +250,8 @@ class ReviewWrapper:
             hooks.card_did_leech.remove(self.save_leech)
         except NameError:
             print(ErrorMsg.ACTION_MANAGER_NOT_DEFINED)
+        except AttributeError:
+            pass
 
         gui_hooks.reviewer_did_show_question.remove(self.on_show_front)
         gui_hooks.reviewer_did_show_answer.remove(self.on_show_back)

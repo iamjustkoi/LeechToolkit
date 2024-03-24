@@ -6,13 +6,12 @@ import traceback
 import os
 import aqt
 from typing import NewType
-from anki import buildinfo
 from aqt.utils import tr
 from aqt.qt import QT_VERSION_STR
 
 CURRENT_VERSION = '1.3.6'
 
-CURRENT_ANKI_VER = int(buildinfo.version.replace('2.1.', ''))
+CURRENT_ANKI_VER = 66 # hardcoding the anki version to the last 2.1.x
 ANKI_SYNC_ISSUE_VER = 26
 ANKI_LEGACY_VER = 40
 ANKI_UNDO_UPDATE_VER = 45
